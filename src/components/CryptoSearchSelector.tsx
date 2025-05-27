@@ -74,7 +74,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   className="text-white hover:bg-gray-700 cursor-pointer"
                 >
                   <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-1">
                       <Check
                         className={cn(
                           "h-4 w-4",
@@ -82,8 +82,8 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                         )}
                       />
                       <span className="text-xl">{option.icon}</span>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{option.label}</span>
+                      <div className="flex flex-col flex-1">
+                        <span className="font-medium text-white">{option.label}</span>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-500">
                             {option.category}
@@ -100,8 +100,11 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                       </span>
                       <Link 
                         to={`/token/${option.value}`}
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-gray-400 hover:text-white transition-colors"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setOpen(false);
+                        }}
+                        className="text-blue-400 hover:text-blue-300 transition-colors p-1"
                       >
                         <ExternalLink className="h-4 w-4" />
                       </Link>

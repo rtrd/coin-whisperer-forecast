@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -196,7 +195,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <IndexHeader 
           selectedCrypto={selectedCrypto}
           cryptoOptions={cryptoOptions}
@@ -204,8 +203,8 @@ const Index = () => {
           priceChange={priceChange}
         />
 
-        {/* Ad Banner 728x90 */}
-        <div className="flex justify-center mb-8">
+        {/* Ad Banner 728x90 - Hidden on mobile */}
+        <div className="hidden md:flex justify-center mb-6 md:mb-8">
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
@@ -238,7 +237,7 @@ const Index = () => {
         />
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
           <IndexMainContent
             cryptoData={cryptoData}
             prediction={prediction}
@@ -246,14 +245,17 @@ const Index = () => {
             dataLoading={dataLoading}
           />
 
-          <IndexSidebar
-            selectedCrypto={selectedCrypto}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-            cryptoData={cryptoData}
-            dataLoading={dataLoading}
-            cryptoOptions={cryptoOptions}
-          />
+          {/* Sidebar - Hidden on mobile */}
+          <div className="hidden lg:block">
+            <IndexSidebar
+              selectedCrypto={selectedCrypto}
+              currentPrice={currentPrice}
+              priceChange={priceChange}
+              cryptoData={cryptoData}
+              dataLoading={dataLoading}
+              cryptoOptions={cryptoOptions}
+            />
+          </div>
         </div>
 
         {/* Footer */}

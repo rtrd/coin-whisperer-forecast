@@ -51,9 +51,9 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
 
   return (
     <TooltipProvider>
-      <Card className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border-purple-700/50 shadow-2xl">
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-white flex items-center gap-2 text-shadow-lg">
             <span className="text-yellow-400">
               {selectedToken?.icon}
             </span>
@@ -65,13 +65,13 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">Current Price</span>
+                <span className="text-gray-100 font-medium">Current Price</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Real-time market price from multiple exchanges</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">Real-time market price from multiple exchanges</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -82,13 +82,13 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">AI Prediction</span>
+                <span className="text-gray-100 font-medium">AI Prediction</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Machine learning prediction based on 50+ indicators</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">Machine learning prediction based on 50+ indicators</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -99,47 +99,47 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">Momentum Score</span>
+                <span className="text-gray-100 font-medium">Momentum Score</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Price momentum indicator (-100 to +100)</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">Price momentum indicator (-100 to +100)</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <Badge className={`${analysis.momentum > 0 ? 'bg-green-600' : 'bg-red-600'}`}>
+              <Badge className={`${analysis.momentum > 0 ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`}>
                 {analysis.momentum.toFixed(1)}
               </Badge>
             </div>
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">Volatility</span>
+                <span className="text-gray-100 font-medium">Volatility</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Price volatility index (0-100)</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">Price volatility index (0-100)</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <Badge variant="outline" className="text-yellow-400 border-yellow-400">
+              <Badge variant="outline" className="text-yellow-400 border-yellow-400 bg-yellow-400/10">
                 {analysis.volatility.toFixed(1)}%
               </Badge>
             </div>
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">Support Level</span>
+                <span className="text-gray-100 font-medium">Support Level</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Key support price level based on technical analysis</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">Key support price level based on technical analysis</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -150,13 +150,13 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">Resistance Level</span>
+                <span className="text-gray-100 font-medium">Resistance Level</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Key resistance price level based on technical analysis</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">Key resistance price level based on technical analysis</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -167,13 +167,13 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
 
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <span className="text-gray-300">Confidence Score</span>
+                <span className="text-gray-100 font-medium">Confidence Score</span>
                 <Tooltip>
                   <TooltipTrigger>
-                    <HelpCircle className="h-3 w-3 text-gray-400" />
+                    <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>AI model confidence level in prediction accuracy</p>
+                  <TooltipContent className="bg-gray-700 border-gray-600">
+                    <p className="text-gray-100">AI model confidence level in prediction accuracy</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -192,8 +192,8 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                 {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}% (24h)
               </span>
               <Badge className={`ml-auto ${
-                analysis.marketSentiment === 'bullish' ? 'bg-green-600' :
-                analysis.marketSentiment === 'bearish' ? 'bg-red-600' : 'bg-yellow-600'
+                analysis.marketSentiment === 'bullish' ? 'bg-green-600 text-white' :
+                analysis.marketSentiment === 'bearish' ? 'bg-red-600 text-white' : 'bg-yellow-600 text-black'
               }`}>
                 {analysis.marketSentiment.toUpperCase()}
               </Badge>

@@ -40,17 +40,17 @@ export const IndexControls: React.FC<IndexControlsProps> = ({
   onPredict
 }) => {
   return (
-    <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
+    <Card className="mb-6 md:mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-white flex items-center gap-2 text-shadow-lg">
           <Target className="h-5 w-5 text-green-400" />
           AI Prediction Controls
           <Badge className="bg-green-600">Enhanced</Badge>
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-          <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+          <div className="sm:col-span-2 lg:col-span-1">
             <label className="text-sm font-medium text-gray-200 mb-2 block">Cryptocurrency</label>
             <CryptoSearchSelector
               cryptoOptions={filteredCryptos}
@@ -108,7 +108,7 @@ export const IndexControls: React.FC<IndexControlsProps> = ({
             </Select>
           </div>
           
-          <div className="flex items-end">
+          <div className="flex items-end sm:col-span-2 lg:col-span-3 xl:col-span-1">
             <Button 
               onClick={onPredict}
               disabled={dataLoading || predictionLoading || !cryptoData}
@@ -117,12 +117,14 @@ export const IndexControls: React.FC<IndexControlsProps> = ({
               {predictionLoading ? (
                 <div className="flex items-center gap-2">
                   <Activity className="h-4 w-4 animate-spin" />
-                  Analyzing...
+                  <span className="hidden sm:inline">Analyzing...</span>
+                  <span className="sm:hidden">...</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <Brain className="h-4 w-4" />
-                  Generate Prediction
+                  <span className="hidden sm:inline">Generate Prediction</span>
+                  <span className="sm:hidden">Predict</span>
                 </div>
               )}
             </Button>
