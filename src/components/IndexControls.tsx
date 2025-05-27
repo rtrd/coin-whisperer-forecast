@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Activity, Brain, Target } from "lucide-react";
-import { CryptoSearchSelector } from "./CryptoSearchSelector";
+import { CryptoSelector } from "./CryptoSelector";
 import { ModelTypeTooltip } from "./ModelTypeTooltip";
 
 interface IndexControlsProps {
@@ -52,7 +52,7 @@ export const IndexControls: React.FC<IndexControlsProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
           <div className="sm:col-span-2 lg:col-span-1">
             <label className="text-sm font-medium text-gray-200 mb-2 block">Cryptocurrency</label>
-            <CryptoSearchSelector
+            <CryptoSelector
               cryptoOptions={filteredCryptos}
               selectedCrypto={selectedCrypto}
               onSelectCrypto={onSelectCrypto}

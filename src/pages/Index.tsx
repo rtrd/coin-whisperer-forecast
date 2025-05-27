@@ -243,6 +243,7 @@ const Index = () => {
             prediction={prediction}
             selectedCrypto={selectedCrypto}
             dataLoading={dataLoading}
+            cryptoOptions={cryptoOptions}
           />
 
           {/* Sidebar - Hidden on mobile */}
