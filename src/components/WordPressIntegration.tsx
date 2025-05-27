@@ -2,7 +2,8 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import { ArticleCard } from "./ArticleCard";
 
 const WordPressIntegration = () => {
   const articles = [
@@ -86,43 +87,7 @@ const WordPressIntegration = () => {
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {articles.map((article) => (
-            <div key={article.id} className="group cursor-pointer">
-              <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
-                <div className="aspect-video bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-black/20"></div>
-                  <div className="absolute bottom-2 left-2">
-                    <Badge className="bg-black/50 text-white text-xs">
-                      {article.category}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <div className="p-3">
-                  <h3 className="text-white font-semibold text-sm mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
-                    {article.title}
-                  </h3>
-                  
-                  <p className="text-gray-400 text-xs mb-3 line-clamp-2">
-                    {article.excerpt}
-                  </p>
-                  
-                  <div className="flex items-center justify-between text-xs text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{article.author}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      <span>{new Date(article.date).toLocaleDateString()}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-2 text-xs text-blue-400">
-                    {article.readTime}
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ArticleCard key={article.id} article={article} />
           ))}
         </div>
       </CardContent>

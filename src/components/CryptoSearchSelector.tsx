@@ -66,7 +66,9 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => {
-                    onSelectCrypto(currentValue === selectedCrypto ? "" : currentValue);
+                    if (currentValue !== selectedCrypto) {
+                      onSelectCrypto(currentValue);
+                    }
                     setOpen(false);
                   }}
                   className="text-white hover:bg-gray-700 cursor-pointer"
@@ -83,7 +85,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                       <div className="flex flex-col">
                         <span className="font-medium">{option.label}</span>
                         <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-xs">
+                          <Badge variant="outline" className="text-xs text-gray-300 border-gray-500">
                             {option.category}
                           </Badge>
                           <span className="text-xs text-gray-400">Score: {option.score}/10</span>
