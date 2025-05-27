@@ -162,11 +162,11 @@ export const usePrediction = () => {
       const lastPrediction = predictions[predictions.length - 1].predictedPrice;
       const priceChange = (lastPrediction - currentPrice) / currentPrice;
       
-      const trend = priceChange > 0.05 ? 'bullish' : 
+      const trend: 'bullish' | 'bearish' | 'neutral' = priceChange > 0.05 ? 'bullish' : 
                    priceChange < -0.05 ? 'bearish' : 'neutral';
       
-      // Generate prediction factors
-      const factors = [
+      // Generate prediction factors with proper typing
+      const factors: { name: string; weight: number; impact: 'positive' | 'negative' | 'neutral' }[] = [
         {
           name: 'Technical Trend',
           weight: 0.3,

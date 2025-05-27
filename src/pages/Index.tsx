@@ -24,11 +24,72 @@ const Index = () => {
   const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   const cryptoOptions = [
-    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿' },
-    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ' },
-    { value: 'cardano', label: 'Cardano (ADA)', icon: '₳' },
-    { value: 'solana', label: 'Solana (SOL)', icon: '◎' },
-    { value: 'polygon', label: 'Polygon (MATIC)', icon: '⬟' },
+    // Major Cryptocurrencies
+    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major' },
+    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major' },
+    { value: 'binancecoin', label: 'BNB (BNB)', icon: '🔶', category: 'Major' },
+    { value: 'ripple', label: 'XRP (XRP)', icon: '💧', category: 'Major' },
+    { value: 'cardano', label: 'Cardano (ADA)', icon: '₳', category: 'Major' },
+    { value: 'solana', label: 'Solana (SOL)', icon: '◎', category: 'Major' },
+    { value: 'avalanche-2', label: 'Avalanche (AVAX)', icon: '🔺', category: 'Major' },
+    { value: 'polygon', label: 'Polygon (MATIC)', icon: '⬟', category: 'Major' },
+    { value: 'polkadot', label: 'Polkadot (DOT)', icon: '⚫', category: 'Major' },
+    { value: 'chainlink', label: 'Chainlink (LINK)', icon: '🔗', category: 'Major' },
+    
+    // DeFi Tokens
+    { value: 'uniswap', label: 'Uniswap (UNI)', icon: '🦄', category: 'DeFi' },
+    { value: 'aave', label: 'Aave (AAVE)', icon: '👻', category: 'DeFi' },
+    { value: 'compound-governance-token', label: 'Compound (COMP)', icon: '🏦', category: 'DeFi' },
+    { value: 'maker', label: 'Maker (MKR)', icon: '🏭', category: 'DeFi' },
+    { value: 'sushiswap', label: 'SushiSwap (SUSHI)', icon: '🍣', category: 'DeFi' },
+    { value: 'pancakeswap-token', label: 'PancakeSwap (CAKE)', icon: '🥞', category: 'DeFi' },
+    { value: 'curve-dao-token', label: 'Curve (CRV)', icon: '📈', category: 'DeFi' },
+    
+    // Meme Coins
+    { value: 'dogecoin', label: 'Dogecoin (DOGE)', icon: '🐕', category: 'Meme' },
+    { value: 'shiba-inu', label: 'Shiba Inu (SHIB)', icon: '🐕‍🦺', category: 'Meme' },
+    { value: 'pepe', label: 'Pepe (PEPE)', icon: '🐸', category: 'Meme' },
+    { value: 'floki', label: 'Floki (FLOKI)', icon: '🐺', category: 'Meme' },
+    { value: 'bonk', label: 'Bonk (BONK)', icon: '🔨', category: 'Meme' },
+    { value: 'dogelon-mars', label: 'Dogelon Mars (ELON)', icon: '🚀', category: 'Meme' },
+    { value: 'baby-doge-coin', label: 'Baby Doge (BABYDOGE)', icon: '🐶', category: 'Meme' },
+    { value: 'safemoon-2', label: 'SafeMoon (SFM)', icon: '🌙', category: 'Meme' },
+    
+    // Layer 2 & Scaling
+    { value: 'arbitrum', label: 'Arbitrum (ARB)', icon: '🔵', category: 'L2' },
+    { value: 'optimism', label: 'Optimism (OP)', icon: '🔴', category: 'L2' },
+    { value: 'immutable-x', label: 'Immutable X (IMX)', icon: '⚡', category: 'L2' },
+    { value: 'loopring', label: 'Loopring (LRC)', icon: '🔄', category: 'L2' },
+    
+    // Gaming & NFT
+    { value: 'axie-infinity', label: 'Axie Infinity (AXS)', icon: '🎮', category: 'Gaming' },
+    { value: 'the-sandbox', label: 'The Sandbox (SAND)', icon: '🏖️', category: 'Gaming' },
+    { value: 'decentraland', label: 'Decentraland (MANA)', icon: '🌐', category: 'Gaming' },
+    { value: 'enjincoin', label: 'Enjin Coin (ENJ)', icon: '💎', category: 'Gaming' },
+    { value: 'gala', label: 'Gala (GALA)', icon: '🎲', category: 'Gaming' },
+    
+    // AI & Data
+    { value: 'fetch-ai', label: 'Fetch.ai (FET)', icon: '🤖', category: 'AI' },
+    { value: 'singularitynet', label: 'SingularityNET (AGIX)', icon: '🧠', category: 'AI' },
+    { value: 'ocean-protocol', label: 'Ocean Protocol (OCEAN)', icon: '🌊', category: 'AI' },
+    { value: 'render-token', label: 'Render (RNDR)', icon: '🎨', category: 'AI' },
+    
+    // Privacy Coins
+    { value: 'monero', label: 'Monero (XMR)', icon: '🔒', category: 'Privacy' },
+    { value: 'zcash', label: 'Zcash (ZEC)', icon: '🛡️', category: 'Privacy' },
+    { value: 'dash', label: 'Dash (DASH)', icon: '💨', category: 'Privacy' },
+    
+    // Stablecoins
+    { value: 'tether', label: 'Tether (USDT)', icon: '💵', category: 'Stable' },
+    { value: 'usd-coin', label: 'USD Coin (USDC)', icon: '🪙', category: 'Stable' },
+    { value: 'dai', label: 'Dai (DAI)', icon: '⚖️', category: 'Stable' },
+    
+    // Newer/Trending
+    { value: 'sui', label: 'Sui (SUI)', icon: '🌊', category: 'New' },
+    { value: 'aptos', label: 'Aptos (APT)', icon: '🏛️', category: 'New' },
+    { value: 'blur', label: 'Blur (BLUR)', icon: '🌀', category: 'New' },
+    { value: 'injective-protocol', label: 'Injective (INJ)', icon: '💉', category: 'New' },
+    { value: 'celestia', label: 'Celestia (TIA)', icon: '⭐', category: 'New' },
   ];
 
   const handlePredict = async () => {
@@ -77,14 +138,23 @@ const Index = () => {
                   <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600">
-                    {cryptoOptions.map((crypto) => (
-                      <SelectItem key={crypto.value} value={crypto.value} className="text-white">
-                        <span className="flex items-center gap-2">
-                          <span className="text-yellow-400">{crypto.icon}</span>
-                          {crypto.label}
-                        </span>
-                      </SelectItem>
+                  <SelectContent className="bg-gray-700 border-gray-600 max-h-96 overflow-y-auto">
+                    {['Major', 'DeFi', 'Meme', 'L2', 'Gaming', 'AI', 'Privacy', 'Stable', 'New'].map(category => (
+                      <div key={category}>
+                        <div className="px-2 py-1 text-xs font-semibold text-gray-400 bg-gray-600">
+                          {category} Coins
+                        </div>
+                        {cryptoOptions
+                          .filter(crypto => crypto.category === category)
+                          .map((crypto) => (
+                            <SelectItem key={crypto.value} value={crypto.value} className="text-white">
+                              <span className="flex items-center gap-2">
+                                <span className="text-yellow-400">{crypto.icon}</span>
+                                {crypto.label}
+                              </span>
+                            </SelectItem>
+                          ))}
+                      </div>
                     ))}
                   </SelectContent>
                 </Select>
@@ -162,7 +232,7 @@ const Index = () => {
               <CardContent>
                 <PriceChart 
                   data={cryptoData} 
-                  prediction={prediction}
+                  prediction={prediction?.predictions || null}
                   isLoading={dataLoading}
                   crypto={selectedCrypto}
                 />
