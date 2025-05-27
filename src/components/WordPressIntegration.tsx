@@ -2,147 +2,131 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, ExternalLink } from "lucide-react";
-
-interface Article {
-  id: number;
-  title: string;
-  excerpt: string;
-  publishedDate: string;
-  category: string;
-  imageUrl: string;
-  readTime: string;
-  url: string;
-}
+import { Calendar, User, ExternalLink } from "lucide-react";
 
 const WordPressIntegration = () => {
-  // Mock WordPress articles data
-  const articles: Article[] = [
+  const articles = [
     {
       id: 1,
-      title: "Bitcoin Reaches New All-Time High: What This Means for Investors",
-      excerpt: "Analyzing the factors behind Bitcoin's latest surge and its implications for the broader cryptocurrency market...",
-      publishedDate: "2024-01-15",
+      title: "Bitcoin Breaks $45K: What This Means for Your Portfolio",
+      excerpt: "As Bitcoin surges past $45,000, analysts predict this could be the start of a new bull run. Here's what investors need to know.",
+      author: "Sarah Chen",
+      date: "2024-01-15",
       category: "Market Analysis",
-      imageUrl: "/placeholder.svg",
-      readTime: "5 min read",
+      readTime: "4 min read",
+      image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&h=240&fit=crop",
       url: "#"
     },
     {
       id: 2,
-      title: "The Rise of DeFi: Decentralized Finance Explained",
-      excerpt: "Understanding the fundamentals of DeFi protocols and how they're reshaping traditional financial services...",
-      publishedDate: "2024-01-14",
-      category: "DeFi",
-      imageUrl: "/placeholder.svg",
-      readTime: "8 min read",
+      title: "Ethereum 2.0 Staking Rewards: Complete Guide for 2024",
+      excerpt: "Everything you need to know about ETH staking, including risks, rewards, and the best platforms to maximize your returns.",
+      author: "Mike Rodriguez",
+      date: "2024-01-14",
+      category: "DeFi Guide",
+      readTime: "6 min read",
+      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=240&fit=crop",
       url: "#"
     },
     {
       id: 3,
-      title: "Meme Coins: From Joke to Serious Investment?",
-      excerpt: "Exploring the phenomenon of meme cryptocurrencies and their impact on the digital asset landscape...",
-      publishedDate: "2024-01-13",
-      category: "Trends",
-      imageUrl: "/placeholder.svg",
-      readTime: "6 min read",
+      title: "Top 5 Altcoins to Watch This Week",
+      excerpt: "Our AI analysis reveals these altcoins have the highest potential for significant price movements in the coming days.",
+      author: "Alex Thompson",
+      date: "2024-01-13",
+      category: "AI Predictions",
+      readTime: "3 min read",
+      image: "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=400&h=240&fit=crop",
       url: "#"
     },
     {
       id: 4,
-      title: "AI and Blockchain: The Future of Cryptocurrency Trading",
-      excerpt: "How artificial intelligence is revolutionizing crypto trading strategies and market predictions...",
-      publishedDate: "2024-01-12",
-      category: "Technology",
-      imageUrl: "/placeholder.svg",
-      readTime: "7 min read",
+      title: "DeFi Yield Farming: Risks vs Rewards in 2024",
+      excerpt: "A comprehensive analysis of yield farming strategies, including the latest protocols and risk management techniques.",
+      author: "Emma Davis",
+      date: "2024-01-12",
+      category: "DeFi Strategy",
+      readTime: "5 min read",
+      image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&h=240&fit=crop",
       url: "#"
     },
     {
       id: 5,
-      title: "Regulatory Updates: Global Crypto Legislation Overview",
-      excerpt: "A comprehensive look at recent regulatory developments affecting cryptocurrency markets worldwide...",
-      publishedDate: "2024-01-11",
-      category: "Regulation",
-      imageUrl: "/placeholder.svg",
-      readTime: "10 min read",
+      title: "Crypto Tax Guide: What You Need to Know",
+      excerpt: "Navigate the complex world of cryptocurrency taxation with our comprehensive guide for the 2024 tax season.",
+      author: "David Park",
+      date: "2024-01-11",
+      category: "Tax & Legal",
+      readTime: "8 min read",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=240&fit=crop",
       url: "#"
     },
     {
       id: 6,
-      title: "Layer 2 Solutions: Scaling Ethereum for the Future",
-      excerpt: "Examining the latest Layer 2 technologies and their role in addressing blockchain scalability challenges...",
-      publishedDate: "2024-01-10",
-      category: "Technology",
-      imageUrl: "/placeholder.svg",
-      readTime: "9 min read",
+      title: "NFT Market Recovery: Signs of a Comeback?",
+      excerpt: "After months of decline, the NFT market shows signs of recovery. We analyze the trends and what they mean for investors.",
+      author: "Lisa Wong",
+      date: "2024-01-10",
+      category: "NFT Analysis",
+      readTime: "4 min read",
+      image: "https://images.unsplash.com/photo-1639762681057-408e52192e55?w=400&h=240&fit=crop",
       url: "#"
     }
   ];
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
-
   return (
-    <div className="mb-8">
-      <div className="text-center mb-6">
-        <h2 className="text-2xl font-bold text-white mb-2 flex items-center justify-center gap-2">
-          <span className="text-blue-400">📰</span>
-          Latest Crypto News & Insights
-        </h2>
-        <p className="text-gray-300">Stay updated with the latest cryptocurrency trends and market analysis</p>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
-        {articles.map((article) => (
-          <Card key={article.id} className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-colors cursor-pointer group">
-            <div className="relative overflow-hidden rounded-t-lg">
-              <img 
-                src={article.imageUrl} 
-                alt={article.title}
-                className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <Badge className="absolute top-2 left-2 bg-blue-600 hover:bg-blue-700 text-xs">
-                {article.category}
-              </Badge>
-            </div>
-            
-            <CardHeader className="pb-2">
-              <CardTitle className="text-white text-sm line-clamp-2 group-hover:text-blue-400 transition-colors">
-                {article.title}
-              </CardTitle>
-            </CardHeader>
-            
-            <CardContent className="pt-0">
-              <p className="text-gray-300 text-xs line-clamp-2 mb-3">
-                {article.excerpt}
-              </p>
-              
-              <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-                <div className="flex items-center gap-1">
-                  <Clock className="h-3 w-3" />
-                  <span>{article.readTime}</span>
+    <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
+      <CardHeader>
+        <CardTitle className="text-white flex items-center gap-2">
+          <ExternalLink className="h-5 w-5 text-blue-400" />
+          Latest Crypto News & Analysis
+          <Badge className="bg-blue-600">Live Feed</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          {articles.map((article) => (
+            <div key={article.id} className="group cursor-pointer">
+              <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
+                <div className="aspect-video bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-black/20"></div>
+                  <div className="absolute bottom-2 left-2">
+                    <Badge className="bg-black/50 text-white text-xs">
+                      {article.category}
+                    </Badge>
+                  </div>
                 </div>
-                <span>{formatDate(article.publishedDate)}</span>
+                
+                <div className="p-3">
+                  <h3 className="text-white font-semibold text-sm mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors">
+                    {article.title}
+                  </h3>
+                  
+                  <p className="text-gray-400 text-xs mb-3 line-clamp-2">
+                    {article.excerpt}
+                  </p>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <div className="flex items-center gap-1">
+                      <User className="h-3 w-3" />
+                      <span>{article.author}</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      <span>{new Date(article.date).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 text-xs text-blue-400">
+                    {article.readTime}
+                  </div>
+                </div>
               </div>
-              
-              <a 
-                href={article.url} 
-                className="text-blue-400 hover:text-blue-300 text-xs flex items-center gap-1 transition-colors"
-              >
-                Read More
-                <ExternalLink className="h-3 w-3" />
-              </a>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

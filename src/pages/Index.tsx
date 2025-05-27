@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,12 +6,16 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, TrendingDown, Activity, Brain, Target, AlertCircle, BarChart3 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
 import WordPressIntegration from "@/components/WordPressIntegration";
-import MarketMovers from "@/components/MarketMovers";
+import { DynamicMarketMovers } from "@/components/DynamicMarketMovers";
+import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
+import { AdBanner } from "@/components/AdBanner";
+import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
@@ -130,6 +133,11 @@ const Index = () => {
             <Brain className="h-12 w-12 text-blue-400" />
             CryptoPredictAI
             <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold">PRO</Badge>
+            <Link to="/subscribe">
+              <Button className="ml-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
+                Unlock Premium
+              </Button>
+            </Link>
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Advanced cryptocurrency price prediction using machine learning, technical analysis, and market sentiment
@@ -162,11 +170,19 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Ad Banner 728x90 */}
+        <div className="flex justify-center mb-8">
+          <AdBanner width={728} height={90} position="horizontal" />
+        </div>
+
         {/* WordPress Integration */}
         <WordPressIntegration />
 
-        {/* Market Movers Widget */}
-        <MarketMovers />
+        {/* Pump.fun Integration */}
+        <PumpFunIntegration />
+
+        {/* Dynamic Market Movers Widget */}
+        <DynamicMarketMovers />
 
         {/* Controls */}
         <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
@@ -282,9 +298,9 @@ const Index = () => {
         </Card>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Column - Chart and Prediction */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-3 space-y-6">
             {/* Price Chart */}
             <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
               <CardHeader>
@@ -316,8 +332,11 @@ const Index = () => {
             )}
           </div>
 
-          {/* Right Column - Analysis */}
+          {/* Right Column - Analysis and Ads */}
           <div className="space-y-6">
+            {/* Side Ad 300x250 */}
+            <AdBanner width={300} height={250} position="vertical" />
+
             <Tabs defaultValue="technical" className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
                 <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
@@ -337,51 +356,13 @@ const Index = () => {
               </TabsContent>
             </Tabs>
 
-            {/* Token Score Card */}
-            {cryptoData && cryptoData.length > 0 && (
-              <Card className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border-purple-700/50 shadow-2xl">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <span className="text-yellow-400">
-                      {cryptoOptions.find(c => c.value === selectedCrypto)?.icon}
-                    </span>
-                    Token Analysis
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-300">Current Price</span>
-                      <span className="text-2xl font-bold text-white">
-                        ${currentPrice.toFixed(2)}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-300">AI Prediction</span>
-                      <span className="text-lg font-bold text-green-400">
-                        {cryptoOptions.find(c => c.value === selectedCrypto)?.prediction}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-300">Confidence Score</span>
-                      <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold text-lg px-3 py-1">
-                        {cryptoOptions.find(c => c.value === selectedCrypto)?.score}/10
-                      </Badge>
-                    </div>
-                    <div className="flex items-center gap-2 mt-4">
-                      {priceChange >= 0 ? (
-                        <TrendingUp className="h-4 w-4 text-green-400" />
-                      ) : (
-                        <TrendingDown className="h-4 w-4 text-red-400" />
-                      )}
-                      <span className={`text-sm ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}% (24h)
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            {/* Dynamic Token Analysis */}
+            <DynamicTokenAnalysis
+              selectedCrypto={selectedCrypto}
+              currentPrice={currentPrice}
+              priceChange={priceChange}
+              cryptoOptions={cryptoOptions}
+            />
 
             {/* Disclaimer */}
             <Card className="bg-yellow-900/20 border-yellow-700 shadow-2xl">

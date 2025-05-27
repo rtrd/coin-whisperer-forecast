@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ComposedChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line, Bar } from 'recharts';
+import { ComposedChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line, Bar, Cell } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface PriceData {
@@ -38,55 +38,65 @@ interface ChartDataPoint {
   predictedPrice?: number;
   confidence?: number;
   type: 'historical' | 'prediction';
+  wickHigh?: number;
+  wickLow?: number;
+  bodyHeight?: number;
+  isPositive?: boolean;
 }
 
-// Custom Candlestick component
-const Candlestick = (props: any) => {
-  const { payload, x, y, width, height } = props;
+// Custom Candlestick component for proper rendering
+const CandlestickBar = (props: any) => {
+  const { payload, x, width } = props;
   
-  if (!payload || typeof payload.open !== 'number' || typeof payload.close !== 'number' || 
+  if (!payload || payload.type !== 'historical' || 
+      typeof payload.open !== 'number' || typeof payload.close !== 'number' || 
       typeof payload.high !== 'number' || typeof payload.low !== 'number') {
     return null;
   }
 
   const { open, close, high, low } = payload;
-  const isUp = close > open;
-  const color = isUp ? '#10B981' : '#EF4444';
+  const isPositive = close >= open;
+  const bodyColor = isPositive ? '#10B981' : '#EF4444';
   const wickColor = '#6B7280';
+  
+  const centerX = x + width / 2;
+  const bodyWidth = width * 0.6;
+  const bodyLeft = centerX - bodyWidth / 2;
+  
+  // Calculate relative positions (these will be scaled by Recharts)
+  const bodyTop = Math.max(open, close);
+  const bodyBottom = Math.min(open, close);
+  const bodyHeight = Math.abs(close - open);
 
-  // Calculate positions with proper type safety
-  const priceValues = [open, close, high, low].filter((val): val is number => typeof val === 'number');
-  if (priceValues.length === 0) return null;
-  
-  const maxPrice = Math.max(...priceValues);
-  const minPrice = Math.min(...priceValues);
-  const priceRange = maxPrice - minPrice;
-  
-  if (priceRange === 0) return null;
-  
-  const yScale = height / priceRange;
-  const bodyTop = Math.min(open, close) * yScale;
-  const bodyHeight = Math.abs(close - open) * yScale;
-  
   return (
     <g>
-      {/* Wick */}
+      {/* Upper wick */}
       <line
-        x1={x + width / 2}
-        y1={y + high * yScale}
-        x2={x + width / 2}
-        y2={y + low * yScale}
+        x1={centerX}
+        y1={high}
+        x2={centerX}
+        y2={bodyTop}
+        stroke={wickColor}
+        strokeWidth={1}
+      />
+      {/* Lower wick */}
+      <line
+        x1={centerX}
+        y1={bodyBottom}
+        x2={centerX}
+        y2={low}
         stroke={wickColor}
         strokeWidth={1}
       />
       {/* Body */}
       <rect
-        x={x + width * 0.2}
-        y={y + bodyTop}
-        width={width * 0.6}
+        x={bodyLeft}
+        y={bodyTop}
+        width={bodyWidth}
         height={Math.max(bodyHeight, 1)}
-        fill={color}
-        stroke={color}
+        fill={bodyColor}
+        stroke={bodyColor}
+        strokeWidth={1}
       />
     </g>
   );
@@ -110,10 +120,10 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
     );
   }
 
-  // Generate OHLC data from price data
+  // Generate proper OHLC data from price data
   const ohlcData: ChartDataPoint[] = data.map((d, index) => {
     const basePrice = d.price;
-    const volatility = 0.02; // 2% volatility for demo
+    const volatility = 0.02; // 2% volatility for realistic candles
     
     const open = index > 0 ? data[index - 1].price : basePrice * (1 + (Math.random() - 0.5) * volatility);
     const close = basePrice;
@@ -128,8 +138,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
       high,
       low,
       close,
-      volume: d.volume,
-      type: 'historical' as const
+      volume: d.volume || Math.random() * 1000000,
+      type: 'historical' as const,
+      isPositive: close >= open
     };
   });
 
@@ -153,17 +164,24 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
     return `$${value.toFixed(0)}`;
   };
 
+  // Find price range for better scaling
+  const priceValues = chartData.flatMap(d => [d.open, d.close, d.high, d.low, d.predictedPrice].filter(v => typeof v === 'number'));
+  const minPrice = Math.min(...priceValues) * 0.995;
+  const maxPrice = Math.max(...priceValues) * 1.005;
+
   return (
     <div className="h-96">
       <ResponsiveContainer width="100%" height="100%">
-        <ComposedChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <ComposedChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
           <XAxis 
             dataKey="date" 
             stroke="#9CA3AF"
             fontSize={12}
+            interval="preserveStartEnd"
           />
           <YAxis 
+            domain={[minPrice, maxPrice]}
             stroke="#9CA3AF"
             tickFormatter={formatPrice}
             fontSize={12}
@@ -184,16 +202,17 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             }}
             formatter={(value: number, name: string) => [
               name === 'open' || name === 'high' || name === 'low' || name === 'close' || name === 'price' ? formatPrice(value) : 
-              name === 'predictedPrice' ? formatPrice(value) :
+              name === 'predictedPrice' ? `${formatPrice(value)} (Predicted)` :
               name === 'volume' ? formatVolume(value) : value,
               name === 'open' ? 'Open' :
               name === 'high' ? 'High' :
               name === 'low' ? 'Low' :
               name === 'close' ? 'Close' :
               name === 'price' ? 'Price' :
-              name === 'predictedPrice' ? 'Predicted Price' :
+              name === 'predictedPrice' ? 'AI Prediction' :
               name === 'volume' ? 'Volume' : name
             ]}
+            labelFormatter={(label) => `Date: ${label}`}
           />
           
           {/* Volume bars */}
@@ -203,38 +222,41 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             opacity={0.3}
             yAxisId="volume"
           />
-          
-          {/* Candlestick bodies - only for historical data */}
-          {chartData
-            .filter((entry): entry is ChartDataPoint & { open: number; close: number; high: number; low: number } => 
-              entry.type === 'historical' && 
-              typeof entry.open === 'number' && 
-              typeof entry.close === 'number' && 
-              typeof entry.high === 'number' && 
-              typeof entry.low === 'number'
-            )
-            .map((entry, index) => {
-              const isUp = entry.close > entry.open;
-              return (
-                <Bar 
-                  key={`candlestick-${index}`}
-                  dataKey={() => Math.abs(entry.close - entry.open)}
-                  fill={isUp ? '#10B981' : '#EF4444'}
-                  opacity={0.8}
-                />
-              );
-            })}
+
+          {/* Render high values for wick tops */}
+          <Bar 
+            dataKey="high" 
+            fill="transparent"
+            isAnimationActive={false}
+          />
+
+          {/* Render low values for wick bottoms */}
+          <Bar 
+            dataKey="low" 
+            fill="transparent"
+            isAnimationActive={false}
+          />
+
+          {/* Render candlestick bodies using custom shape */}
+          <Bar 
+            dataKey="close"
+            shape={<CandlestickBar />}
+            isAnimationActive={false}
+          />
           
           {/* Prediction line */}
           <Line 
             type="monotone" 
             dataKey="predictedPrice" 
             stroke="#10B981" 
-            strokeWidth={2}
-            strokeDasharray="5 5"
-            dot={{ r: 3, fill: '#10B981' }}
+            strokeWidth={3}
+            strokeDasharray="8 4"
+            dot={{ r: 4, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
             connectNulls={false}
+            name="AI Prediction"
           />
+
+          {/* Confidence area could be added here */}
         </ComposedChart>
       </ResponsiveContainer>
     </div>
