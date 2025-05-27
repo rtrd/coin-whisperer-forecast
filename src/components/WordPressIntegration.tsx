@@ -98,32 +98,32 @@ const WordPressIntegration = () => {
         <p className="text-gray-300">Stay updated with the latest cryptocurrency trends and market analysis</p>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
         {articles.map((article) => (
           <Card key={article.id} className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-colors cursor-pointer group">
             <div className="relative overflow-hidden rounded-t-lg">
               <img 
                 src={article.imageUrl} 
                 alt={article.title}
-                className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300"
               />
-              <Badge className="absolute top-3 left-3 bg-blue-600 hover:bg-blue-700">
+              <Badge className="absolute top-2 left-2 bg-blue-600 hover:bg-blue-700 text-xs">
                 {article.category}
               </Badge>
             </div>
             
-            <CardHeader className="pb-3">
-              <CardTitle className="text-white text-lg line-clamp-2 group-hover:text-blue-400 transition-colors">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-white text-sm line-clamp-2 group-hover:text-blue-400 transition-colors">
                 {article.title}
               </CardTitle>
             </CardHeader>
             
             <CardContent className="pt-0">
-              <p className="text-gray-300 text-sm line-clamp-3 mb-4">
+              <p className="text-gray-300 text-xs line-clamp-2 mb-3">
                 {article.excerpt}
               </p>
               
-              <div className="flex items-center justify-between text-xs text-gray-400">
+              <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
                 <div className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
                   <span>{article.readTime}</span>
@@ -131,15 +131,13 @@ const WordPressIntegration = () => {
                 <span>{formatDate(article.publishedDate)}</span>
               </div>
               
-              <div className="mt-3 flex items-center justify-between">
-                <a 
-                  href={article.url} 
-                  className="text-blue-400 hover:text-blue-300 text-sm flex items-center gap-1 transition-colors"
-                >
-                  Read More
-                  <ExternalLink className="h-3 w-3" />
-                </a>
-              </div>
+              <a 
+                href={article.url} 
+                className="text-blue-400 hover:text-blue-300 text-xs flex items-center gap-1 transition-colors"
+              >
+                Read More
+                <ExternalLink className="h-3 w-3" />
+              </a>
             </CardContent>
           </Card>
         ))}

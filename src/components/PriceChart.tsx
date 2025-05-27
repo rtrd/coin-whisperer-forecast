@@ -1,12 +1,16 @@
 
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, ComposedChart } from 'recharts';
+import { ComposedChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line, Bar } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface PriceData {
   timestamp: number;
   price: number;
   volume?: number;
+  open?: number;
+  high?: number;
+  low?: number;
+  close?: number;
 }
 
 interface PredictionData {
@@ -21,6 +25,48 @@ interface PriceChartProps {
   isLoading: boolean;
   crypto: string;
 }
+
+// Custom Candlestick component
+const Candlestick = (props: any) => {
+  const { payload, x, y, width, height } = props;
+  
+  if (!payload || !payload.open || !payload.close || !payload.high || !payload.low) {
+    return null;
+  }
+
+  const { open, close, high, low } = payload;
+  const isUp = close > open;
+  const color = isUp ? '#10B981' : '#EF4444';
+  const wickColor = '#6B7280';
+
+  // Calculate positions
+  const yScale = height / (Math.max(...Object.values(payload)) - Math.min(...Object.values(payload)));
+  const bodyTop = Math.min(open, close) * yScale;
+  const bodyHeight = Math.abs(close - open) * yScale;
+  
+  return (
+    <g>
+      {/* Wick */}
+      <line
+        x1={x + width / 2}
+        y1={y + high * yScale}
+        x2={x + width / 2}
+        y2={y + low * yScale}
+        stroke={wickColor}
+        strokeWidth={1}
+      />
+      {/* Body */}
+      <rect
+        x={x + width * 0.2}
+        y={y + bodyTop}
+        width={width * 0.6}
+        height={Math.max(bodyHeight, 1)}
+        fill={color}
+        stroke={color}
+      />
+    </g>
+  );
+};
 
 export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoading, crypto }) => {
   if (isLoading) {
@@ -40,15 +86,32 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
     );
   }
 
-  // Combine historical and prediction data
-  const chartData = [
-    ...data.map(d => ({
+  // Generate OHLC data from price data
+  const ohlcData = data.map((d, index) => {
+    const basePrice = d.price;
+    const volatility = 0.02; // 2% volatility for demo
+    
+    const open = index > 0 ? data[index - 1].price : basePrice * (1 + (Math.random() - 0.5) * volatility);
+    const close = basePrice;
+    const high = Math.max(open, close) * (1 + Math.random() * volatility);
+    const low = Math.min(open, close) * (1 - Math.random() * volatility);
+
+    return {
       timestamp: d.timestamp,
       date: new Date(d.timestamp).toLocaleDateString(),
       price: d.price,
+      open,
+      high,
+      low,
+      close,
       volume: d.volume,
       type: 'historical'
-    })),
+    };
+  });
+
+  // Combine with prediction data
+  const chartData = [
+    ...ohlcData,
     ...(prediction || []).map(p => ({
       timestamp: p.timestamp,
       date: new Date(p.timestamp).toLocaleDateString(),
@@ -89,24 +152,42 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
               color: '#F3F4F6'
             }}
             formatter={(value: number, name: string) => [
-              name === 'price' ? formatPrice(value) : 
+              name === 'open' || name === 'high' || name === 'low' || name === 'close' || name === 'price' ? formatPrice(value) : 
               name === 'predictedPrice' ? formatPrice(value) :
               name === 'volume' ? formatVolume(value) : value,
-              name === 'price' ? 'Historical Price' :
+              name === 'open' ? 'Open' :
+              name === 'high' ? 'High' :
+              name === 'low' ? 'Low' :
+              name === 'close' ? 'Close' :
+              name === 'price' ? 'Price' :
               name === 'predictedPrice' ? 'Predicted Price' :
               name === 'volume' ? 'Volume' : name
             ]}
           />
           
-          {/* Historical price line */}
-          <Line 
-            type="monotone" 
-            dataKey="price" 
-            stroke="#3B82F6" 
-            strokeWidth={2}
-            dot={false}
-            connectNulls={false}
+          {/* Volume bars */}
+          <Bar 
+            dataKey="volume" 
+            fill="#374151"
+            opacity={0.3}
+            yAxisId="volume"
           />
+          
+          {/* Candlestick bodies */}
+          {chartData.map((entry, index) => {
+            if (entry.type === 'historical' && entry.open && entry.close && entry.high && entry.low) {
+              const isUp = entry.close > entry.open;
+              return (
+                <Bar 
+                  key={index}
+                  dataKey={() => Math.abs(entry.close - entry.open)}
+                  fill={isUp ? '#10B981' : '#EF4444'}
+                  opacity={0.8}
+                />
+              );
+            }
+            return null;
+          })}
           
           {/* Prediction line */}
           <Line 
