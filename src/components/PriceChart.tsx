@@ -26,11 +26,26 @@ interface PriceChartProps {
   crypto: string;
 }
 
+interface ChartDataPoint {
+  timestamp: number;
+  date: string;
+  price?: number;
+  open?: number;
+  high?: number;
+  low?: number;
+  close?: number;
+  volume?: number;
+  predictedPrice?: number;
+  confidence?: number;
+  type: 'historical' | 'prediction';
+}
+
 // Custom Candlestick component
 const Candlestick = (props: any) => {
   const { payload, x, y, width, height } = props;
   
-  if (!payload || !payload.open || !payload.close || !payload.high || !payload.low) {
+  if (!payload || typeof payload.open !== 'number' || typeof payload.close !== 'number' || 
+      typeof payload.high !== 'number' || typeof payload.low !== 'number') {
     return null;
   }
 
@@ -39,8 +54,17 @@ const Candlestick = (props: any) => {
   const color = isUp ? '#10B981' : '#EF4444';
   const wickColor = '#6B7280';
 
-  // Calculate positions
-  const yScale = height / (Math.max(...Object.values(payload)) - Math.min(...Object.values(payload)));
+  // Calculate positions with proper type safety
+  const priceValues = [open, close, high, low].filter((val): val is number => typeof val === 'number');
+  if (priceValues.length === 0) return null;
+  
+  const maxPrice = Math.max(...priceValues);
+  const minPrice = Math.min(...priceValues);
+  const priceRange = maxPrice - minPrice;
+  
+  if (priceRange === 0) return null;
+  
+  const yScale = height / priceRange;
   const bodyTop = Math.min(open, close) * yScale;
   const bodyHeight = Math.abs(close - open) * yScale;
   
@@ -87,7 +111,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
   }
 
   // Generate OHLC data from price data
-  const ohlcData = data.map((d, index) => {
+  const ohlcData: ChartDataPoint[] = data.map((d, index) => {
     const basePrice = d.price;
     const volatility = 0.02; // 2% volatility for demo
     
@@ -105,19 +129,19 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
       low,
       close,
       volume: d.volume,
-      type: 'historical'
+      type: 'historical' as const
     };
   });
 
   // Combine with prediction data
-  const chartData = [
+  const chartData: ChartDataPoint[] = [
     ...ohlcData,
     ...(prediction || []).map(p => ({
       timestamp: p.timestamp,
       date: new Date(p.timestamp).toLocaleDateString(),
       predictedPrice: p.predictedPrice,
       confidence: p.confidence,
-      type: 'prediction'
+      type: 'prediction' as const
     }))
   ];
 
@@ -143,6 +167,13 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             stroke="#9CA3AF"
             tickFormatter={formatPrice}
             fontSize={12}
+          />
+          <YAxis 
+            yAxisId="volume"
+            orientation="right"
+            stroke="#9CA3AF"
+            tickFormatter={formatVolume}
+            fontSize={10}
           />
           <Tooltip 
             contentStyle={{ 
@@ -173,21 +204,26 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             yAxisId="volume"
           />
           
-          {/* Candlestick bodies */}
-          {chartData.map((entry, index) => {
-            if (entry.type === 'historical' && entry.open && entry.close && entry.high && entry.low) {
+          {/* Candlestick bodies - only for historical data */}
+          {chartData
+            .filter((entry): entry is ChartDataPoint & { open: number; close: number; high: number; low: number } => 
+              entry.type === 'historical' && 
+              typeof entry.open === 'number' && 
+              typeof entry.close === 'number' && 
+              typeof entry.high === 'number' && 
+              typeof entry.low === 'number'
+            )
+            .map((entry, index) => {
               const isUp = entry.close > entry.open;
               return (
                 <Bar 
-                  key={index}
+                  key={`candlestick-${index}`}
                   dataKey={() => Math.abs(entry.close - entry.open)}
                   fill={isUp ? '#10B981' : '#EF4444'}
                   opacity={0.8}
                 />
               );
-            }
-            return null;
-          })}
+            })}
           
           {/* Prediction line */}
           <Line 
