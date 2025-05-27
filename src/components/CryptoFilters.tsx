@@ -1,0 +1,164 @@
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Filter, TrendingUp, TrendingDown, X } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+
+interface FilterProps {
+  onFilterChange: (filters: FilterState) => void;
+}
+
+interface FilterState {
+  category: string;
+  priceRange: [number, number];
+  scoreRange: [number, number];
+  sortBy: string;
+  searchTerm: string;
+}
+
+export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [filters, setFilters] = useState<FilterState>({
+    category: 'all',
+    priceRange: [0, 100000],
+    scoreRange: [0, 10],
+    sortBy: 'score',
+    searchTerm: ''
+  });
+
+  const updateFilters = (newFilters: Partial<FilterState>) => {
+    const updatedFilters = { ...filters, ...newFilters };
+    setFilters(updatedFilters);
+    onFilterChange(updatedFilters);
+  };
+
+  const resetFilters = () => {
+    const defaultFilters: FilterState = {
+      category: 'all',
+      priceRange: [0, 100000],
+      scoreRange: [0, 10],
+      sortBy: 'score',
+      searchTerm: ''
+    };
+    setFilters(defaultFilters);
+    onFilterChange(defaultFilters);
+  };
+
+  const activeFiltersCount = Object.entries(filters).filter(([key, value]) => {
+    if (key === 'category' && value !== 'all') return true;
+    if (key === 'priceRange' && (value[0] !== 0 || value[1] !== 100000)) return true;
+    if (key === 'scoreRange' && (value[0] !== 0 || value[1] !== 10)) return true;
+    if (key === 'sortBy' && value !== 'score') return true;
+    if (key === 'searchTerm' && value !== '') return true;
+    return false;
+  }).length;
+
+  return (
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Card className="mb-6 bg-gray-800/50 border-gray-700 shadow-2xl">
+        <CollapsibleTrigger className="w-full">
+          <CardHeader className="cursor-pointer hover:bg-gray-700/50 transition-colors">
+            <CardTitle className="text-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Filter className="h-5 w-5 text-blue-400" />
+                Smart Crypto Filters
+                {activeFiltersCount > 0 && (
+                  <Badge className="bg-blue-600">{activeFiltersCount}</Badge>
+                )}
+              </div>
+              <Button variant="ghost" size="sm" className="text-gray-400">
+                {isOpen ? 'Hide Filters' : 'Show Filters'}
+              </Button>
+            </CardTitle>
+          </CardHeader>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Search */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">Search</label>
+                <Input
+                  placeholder="Search by name or symbol..."
+                  value={filters.searchTerm}
+                  onChange={(e) => updateFilters({ searchTerm: e.target.value })}
+                  className="bg-gray-700 border-gray-600 text-white"
+                />
+              </div>
+
+              {/* Category Filter */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">Category</label>
+                <Select value={filters.category} onValueChange={(value) => updateFilters({ category: value })}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600">
+                    <SelectItem value="all" className="text-white">All Categories</SelectItem>
+                    <SelectItem value="Major" className="text-white">Major</SelectItem>
+                    <SelectItem value="DeFi" className="text-white">DeFi</SelectItem>
+                    <SelectItem value="Meme" className="text-white">Meme</SelectItem>
+                    <SelectItem value="L2" className="text-white">Layer 2</SelectItem>
+                    <SelectItem value="Gaming" className="text-white">Gaming</SelectItem>
+                    <SelectItem value="AI" className="text-white">AI</SelectItem>
+                    <SelectItem value="Privacy" className="text-white">Privacy</SelectItem>
+                    <SelectItem value="New" className="text-white">New & Trending</SelectItem>
+                    <SelectItem value="Enterprise" className="text-white">Enterprise</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Sort By */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">Sort By</label>
+                <Select value={filters.sortBy} onValueChange={(value) => updateFilters({ sortBy: value })}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600">
+                    <SelectItem value="score" className="text-white">AI Score</SelectItem>
+                    <SelectItem value="prediction" className="text-white">Prediction %</SelectItem>
+                    <SelectItem value="name" className="text-white">Name (A-Z)</SelectItem>
+                    <SelectItem value="category" className="text-white">Category</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Reset Button */}
+              <div className="flex items-end">
+                <Button 
+                  onClick={resetFilters}
+                  variant="outline"
+                  className="w-full bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Reset Filters
+                </Button>
+              </div>
+            </div>
+
+            {/* Score Range */}
+            <div className="mt-4">
+              <label className="text-sm font-medium text-gray-300 mb-2 block">
+                AI Score Range: {filters.scoreRange[0]} - {filters.scoreRange[1]}
+              </label>
+              <Slider
+                value={filters.scoreRange}
+                onValueChange={(value) => updateFilters({ scoreRange: value as [number, number] })}
+                max={10}
+                min={0}
+                step={0.1}
+                className="w-full"
+              />
+            </div>
+          </CardContent>
+        </CollapsibleContent>
+      </Card>
+    </Collapsible>
+  );
+};

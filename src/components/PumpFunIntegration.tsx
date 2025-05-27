@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ interface PumpToken {
 
 export const PumpFunIntegration = () => {
   const [trendingTokens, setTrendingTokens] = useState<PumpToken[]>([]);
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false); // Changed to false for collapsed by default
 
   useEffect(() => {
     // Simulate pump.fun API data

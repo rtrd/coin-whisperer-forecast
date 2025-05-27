@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,6 +16,9 @@ import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { AdBanner } from "@/components/AdBanner";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
+import { CryptoSearchSelector } from "@/components/CryptoSearchSelector";
+import { CryptoFilters } from "@/components/CryptoFilters";
+import { ModelTypeTooltip } from "@/components/ModelTypeTooltip";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
@@ -26,6 +28,8 @@ const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
   const [timeframe, setTimeframe] = useState('7d');
   const [predictionDays, setPredictionDays] = useState(7);
+  const [modelType, setModelType] = useState('advanced');
+  const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
   
   const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(selectedCrypto, timeframe);
   const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
@@ -133,6 +137,55 @@ const Index = () => {
     { value: 'neo', label: 'NEO (NEO)', icon: '🟢', category: 'Enterprise', score: 6.5, prediction: '+7.1%' },
   ];
 
+  useEffect(() => {
+    setFilteredCryptos(cryptoOptions);
+  }, []);
+
+  const handleFilterChange = (filters: any) => {
+    let filtered = [...cryptoOptions];
+
+    // Apply search filter
+    if (filters.searchTerm) {
+      filtered = filtered.filter(crypto => 
+        crypto.label.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        crypto.value.toLowerCase().includes(filters.searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply category filter
+    if (filters.category !== 'all') {
+      filtered = filtered.filter(crypto => crypto.category === filters.category);
+    }
+
+    // Apply score range filter
+    filtered = filtered.filter(crypto => 
+      crypto.score >= filters.scoreRange[0] && 
+      crypto.score <= filters.scoreRange[1]
+    );
+
+    // Apply sorting
+    switch (filters.sortBy) {
+      case 'score':
+        filtered.sort((a, b) => b.score - a.score);
+        break;
+      case 'prediction':
+        filtered.sort((a, b) => {
+          const aPred = parseFloat(a.prediction.replace('%', '').replace('+', ''));
+          const bPred = parseFloat(b.prediction.replace('%', '').replace('+', ''));
+          return bPred - aPred;
+        });
+        break;
+      case 'name':
+        filtered.sort((a, b) => a.label.localeCompare(b.label));
+        break;
+      case 'category':
+        filtered.sort((a, b) => a.category.localeCompare(b.category));
+        break;
+    }
+
+    setFilteredCryptos(filtered);
+  };
+
   const handlePredict = async () => {
     if (!cryptoData) {
       toast.error("No data available for prediction");
@@ -213,6 +266,9 @@ const Index = () => {
         {/* Dynamic Market Movers Widget */}
         <DynamicMarketMovers />
 
+        {/* Crypto Filters */}
+        <CryptoFilters onFilterChange={handleFilterChange} />
+
         {/* Controls */}
         <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
           <CardHeader>
@@ -226,40 +282,11 @@ const Index = () => {
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">Cryptocurrency</label>
-                <Select value={selectedCrypto} onValueChange={setSelectedCrypto}>
-                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600 max-h-96 overflow-y-auto">
-                    {['Major', 'DeFi', 'Meme', 'L2', 'Gaming', 'AI', 'Privacy', 'Stable', 'New', 'Enterprise'].map(category => (
-                      <div key={category}>
-                        <div className="px-2 py-1 text-xs font-semibold text-gray-400 bg-gray-600">
-                          {category} Coins
-                        </div>
-                        {cryptoOptions
-                          .filter(crypto => crypto.category === category)
-                          .map((crypto) => (
-                            <SelectItem key={crypto.value} value={crypto.value} className="text-white">
-                              <div className="flex items-center justify-between w-full">
-                                <span className="flex items-center gap-2">
-                                  <span className="text-yellow-400">{crypto.icon}</span>
-                                  {crypto.label}
-                                </span>
-                                <div className="flex items-center gap-2 ml-4">
-                                  <Badge variant="outline" className="text-xs text-green-400 border-green-400">
-                                    {crypto.prediction}
-                                  </Badge>
-                                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
-                                    {crypto.score}
-                                  </Badge>
-                                </div>
-                              </div>
-                            </SelectItem>
-                          ))}
-                      </div>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <CryptoSearchSelector
+                  cryptoOptions={filteredCryptos}
+                  selectedCrypto={selectedCrypto}
+                  onSelectCrypto={setSelectedCrypto}
+                />
               </div>
               
               <div>
@@ -290,15 +317,18 @@ const Index = () => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">Model Type</label>
-                <Select defaultValue="advanced">
+                <label className="text-sm font-medium text-gray-300 mb-2 block flex items-center">
+                  AI Model Type
+                  <ModelTypeTooltip modelType={modelType} />
+                </label>
+                <Select value={modelType} onValueChange={setModelType}>
                   <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-700 border-gray-600">
-                    <SelectItem value="basic" className="text-white">Basic Model</SelectItem>
-                    <SelectItem value="advanced" className="text-white">Advanced AI</SelectItem>
-                    <SelectItem value="ensemble" className="text-white">Ensemble Model</SelectItem>
+                    <SelectItem value="basic" className="text-white">Technical Trend Spotter</SelectItem>
+                    <SelectItem value="advanced" className="text-white">AI Market Prophet</SelectItem>
+                    <SelectItem value="ensemble" className="text-white">Multi-Brain Consensus</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
