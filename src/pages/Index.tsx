@@ -11,6 +11,7 @@ import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import WordPressIntegration from "@/components/WordPressIntegration";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { toast } from "sonner";
@@ -121,6 +122,9 @@ const Index = () => {
             Advanced cryptocurrency price prediction using machine learning, technical analysis, and market sentiment
           </p>
         </div>
+
+        {/* WordPress Integration */}
+        <WordPressIntegration />
 
         {/* Controls */}
         <Card className="mb-8 bg-gray-800/50 border-gray-700">
