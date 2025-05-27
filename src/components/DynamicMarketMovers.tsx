@@ -2,7 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { TrendingUp, TrendingDown, ChevronDown, ChevronUp } from "lucide-react";
 
 interface MarketMover {
   symbol: string;
@@ -19,6 +20,8 @@ export const DynamicMarketMovers = () => {
     gainers: [],
     losers: []
   });
+  const [isGainersOpen, setIsGainersOpen] = useState(false);
+  const [isLosersOpen, setIsLosersOpen] = useState(false);
 
   const baseTokens: MarketMover[] = [
     { symbol: 'BONK', name: 'Bonk', price: 0.0000045, change24h: 45.2, icon: '🔨', predictedChange: 78.5, score: 9.2 },
@@ -50,14 +53,14 @@ export const DynamicMarketMovers = () => {
       // Sort by predicted change
       shuffledTokens.sort((a, b) => b.predictedChange - a.predictedChange);
       
-      const gainers = shuffledTokens.filter(t => t.predictedChange > 0).slice(0, 5);
-      const losers = shuffledTokens.filter(t => t.predictedChange < 0).slice(-5).reverse();
+      const gainers = shuffledTokens.filter(t => t.predictedChange > 0).slice(0, 3);
+      const losers = shuffledTokens.filter(t => t.predictedChange < 0).slice(-3).reverse();
       
       setMovers({ gainers, losers });
     };
 
     updateMovers();
-    const interval = setInterval(updateMovers, 15000); // Update every 15 seconds
+    const interval = setInterval(updateMovers, 15000);
 
     return () => clearInterval(interval);
   }, []);
@@ -76,74 +79,92 @@ export const DynamicMarketMovers = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-8">
       {/* Biggest Gainers */}
-      <Card className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 border-green-700/50">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-green-400" />
-            Biggest Potential Gainers
-            <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse ml-2"></div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {movers.gainers.map((crypto, index) => (
-              <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">{crypto.icon}</span>
-                  <div>
-                    <div className="text-white font-medium">{crypto.symbol}</div>
-                    <div className="text-gray-400 text-sm">${formatPrice(crypto.price)}</div>
-                  </div>
+      <Collapsible open={isGainersOpen} onOpenChange={setIsGainersOpen}>
+        <Card className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 border-green-700/50">
+          <CollapsibleTrigger className="w-full">
+            <CardHeader className="cursor-pointer hover:bg-green-900/10 transition-colors">
+              <CardTitle className="text-white flex items-center gap-2 justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4 text-green-400" />
+                  Potential Gainers
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 </div>
-                <div className="text-right">
-                  <div className="text-green-400 font-medium">
-                    {formatChange(crypto.predictedChange)}
+                {isGainersOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </CardTitle>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent>
+              <div className="space-y-2">
+                {movers.gainers.map((crypto, index) => (
+                  <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">{crypto.icon}</span>
+                      <div>
+                        <div className="text-white font-medium text-sm">{crypto.symbol}</div>
+                        <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-green-400 font-medium text-sm">
+                        {formatChange(crypto.predictedChange)}
+                      </div>
+                      <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
+                        {crypto.score.toFixed(1)}
+                      </Badge>
+                    </div>
                   </div>
-                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
-                    Score: {crypto.score.toFixed(1)}
-                  </Badge>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
 
       {/* Biggest Losers */}
-      <Card className="bg-gradient-to-br from-red-900/20 to-rose-900/20 border-red-700/50">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <TrendingDown className="h-5 w-5 text-red-400" />
-            Biggest Potential Losers
-            <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse ml-2"></div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {movers.losers.map((crypto, index) => (
-              <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">{crypto.icon}</span>
-                  <div>
-                    <div className="text-white font-medium">{crypto.symbol}</div>
-                    <div className="text-gray-400 text-sm">${formatPrice(crypto.price)}</div>
-                  </div>
+      <Collapsible open={isLosersOpen} onOpenChange={setIsLosersOpen}>
+        <Card className="bg-gradient-to-br from-red-900/20 to-rose-900/20 border-red-700/50">
+          <CollapsibleTrigger className="w-full">
+            <CardHeader className="cursor-pointer hover:bg-red-900/10 transition-colors">
+              <CardTitle className="text-white flex items-center gap-2 justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <TrendingDown className="h-4 w-4 text-red-400" />
+                  Potential Losers
+                  <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
                 </div>
-                <div className="text-right">
-                  <div className="text-red-400 font-medium">
-                    {formatChange(crypto.predictedChange)}
+                {isLosersOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </CardTitle>
+            </CardHeader>
+          </CollapsibleTrigger>
+          <CollapsibleContent>
+            <CardContent>
+              <div className="space-y-2">
+                {movers.losers.map((crypto, index) => (
+                  <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-2 bg-gray-800/50 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm">{crypto.icon}</span>
+                      <div>
+                        <div className="text-white font-medium text-sm">{crypto.symbol}</div>
+                        <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-red-400 font-medium text-sm">
+                        {formatChange(crypto.predictedChange)}
+                      </div>
+                      <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
+                        {crypto.score.toFixed(1)}
+                      </Badge>
+                    </div>
                   </div>
-                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
-                    Score: {crypto.score.toFixed(1)}
-                  </Badge>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
     </div>
   );
 };

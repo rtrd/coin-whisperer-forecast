@@ -16,6 +16,7 @@ import { DynamicMarketMovers } from "@/components/DynamicMarketMovers";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { AdBanner } from "@/components/AdBanner";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
+import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
@@ -41,6 +42,11 @@ const Index = () => {
     { value: 'polygon', label: 'Polygon (MATIC)', icon: '⬟', category: 'Major', score: 7.3, prediction: '+5.4%' },
     { value: 'polkadot', label: 'Polkadot (DOT)', icon: '⚫', category: 'Major', score: 6.8, prediction: '+2.1%' },
     { value: 'chainlink', label: 'Chainlink (LINK)', icon: '🔗', category: 'Major', score: 7.7, prediction: '+9.3%' },
+    { value: 'litecoin', label: 'Litecoin (LTC)', icon: 'Ł', category: 'Major', score: 6.5, prediction: '+3.8%' },
+    { value: 'bitcoin-cash', label: 'Bitcoin Cash (BCH)', icon: '₿', category: 'Major', score: 6.2, prediction: '+2.9%' },
+    { value: 'stellar', label: 'Stellar (XLM)', icon: '🌟', category: 'Major', score: 6.4, prediction: '+4.1%' },
+    { value: 'cosmos', label: 'Cosmos (ATOM)', icon: '⚛️', category: 'Major', score: 7.1, prediction: '+6.8%' },
+    { value: 'algorand', label: 'Algorand (ALGO)', icon: '🔺', category: 'Major', score: 6.7, prediction: '+4.5%' },
     
     // DeFi Tokens
     { value: 'uniswap', label: 'Uniswap (UNI)', icon: '🦄', category: 'DeFi', score: 7.1, prediction: '+11.2%' },
@@ -50,6 +56,9 @@ const Index = () => {
     { value: 'sushiswap', label: 'SushiSwap (SUSHI)', icon: '🍣', category: 'DeFi', score: 6.2, prediction: '+3.1%' },
     { value: 'pancakeswap-token', label: 'PancakeSwap (CAKE)', icon: '🥞', category: 'DeFi', score: 5.8, prediction: '-2.4%' },
     { value: 'curve-dao-token', label: 'Curve (CRV)', icon: '📈', category: 'DeFi', score: 6.4, prediction: '+1.9%' },
+    { value: 'yearn-finance', label: 'Yearn Finance (YFI)', icon: '🔥', category: 'DeFi', score: 6.8, prediction: '+7.2%' },
+    { value: 'synthetix', label: 'Synthetix (SNX)', icon: '⚡', category: 'DeFi', score: 6.1, prediction: '+3.4%' },
+    { value: 'balancer', label: 'Balancer (BAL)', icon: '⚖️', category: 'DeFi', score: 5.9, prediction: '+2.1%' },
     
     // Meme Coins
     { value: 'dogecoin', label: 'Dogecoin (DOGE)', icon: '🐕', category: 'Meme', score: 6.1, prediction: '+18.5%' },
@@ -60,12 +69,16 @@ const Index = () => {
     { value: 'dogelon-mars', label: 'Dogelon Mars (ELON)', icon: '🚀', category: 'Meme', score: 6.8, prediction: '+22.7%' },
     { value: 'baby-doge-coin', label: 'Baby Doge (BABYDOGE)', icon: '🐶', category: 'Meme', score: 5.5, prediction: '+14.2%' },
     { value: 'safemoon-2', label: 'SafeMoon (SFM)', icon: '🌙', category: 'Meme', score: 4.1, prediction: '-8.9%' },
+    { value: 'wojak', label: 'Wojak (WOJAK)', icon: '😭', category: 'Meme', score: 7.5, prediction: '+45.2%' },
+    { value: 'pepecoin-network', label: 'PepeCoin (PEPECOIN)', icon: '🐸', category: 'Meme', score: 6.9, prediction: '+28.3%' },
     
     // Layer 2 & Scaling
     { value: 'arbitrum', label: 'Arbitrum (ARB)', icon: '🔵', category: 'L2', score: 7.8, prediction: '+13.4%' },
     { value: 'optimism', label: 'Optimism (OP)', icon: '🔴', category: 'L2', score: 7.6, prediction: '+10.2%' },
     { value: 'immutable-x', label: 'Immutable X (IMX)', icon: '⚡', category: 'L2', score: 7.1, prediction: '+8.5%' },
     { value: 'loopring', label: 'Loopring (LRC)', icon: '🔄', category: 'L2', score: 6.3, prediction: '+4.7%' },
+    { value: 'polygon-ecosystem-token', label: 'POL Token (POL)', icon: '🟣', category: 'L2', score: 7.2, prediction: '+9.1%' },
+    { value: 'metis-token', label: 'Metis (METIS)', icon: '🔷', category: 'L2', score: 6.8, prediction: '+6.3%' },
     
     // Gaming & NFT
     { value: 'axie-infinity', label: 'Axie Infinity (AXS)', icon: '🎮', category: 'Gaming', score: 6.7, prediction: '+12.1%' },
@@ -73,35 +86,51 @@ const Index = () => {
     { value: 'decentraland', label: 'Decentraland (MANA)', icon: '🌐', category: 'Gaming', score: 6.4, prediction: '+9.8%' },
     { value: 'enjincoin', label: 'Enjin Coin (ENJ)', icon: '💎', category: 'Gaming', score: 6.2, prediction: '+7.1%' },
     { value: 'gala', label: 'Gala (GALA)', icon: '🎲', category: 'Gaming', score: 5.8, prediction: '+5.4%' },
+    { value: 'immutable-x', label: 'Immutable X (IMX)', icon: '🃏', category: 'Gaming', score: 7.1, prediction: '+11.5%' },
+    { value: 'flow', label: 'Flow (FLOW)', icon: '🌊', category: 'Gaming', score: 6.5, prediction: '+8.2%' },
+    { value: 'theta-token', label: 'Theta (THETA)', icon: '📺', category: 'Gaming', score: 6.3, prediction: '+6.9%' },
     
     // AI & Data
     { value: 'fetch-ai', label: 'Fetch.ai (FET)', icon: '🤖', category: 'AI', score: 8.5, prediction: '+52.1%' },
     { value: 'singularitynet', label: 'SingularityNET (AGIX)', icon: '🧠', category: 'AI', score: 8.1, prediction: '+41.8%' },
     { value: 'ocean-protocol', label: 'Ocean Protocol (OCEAN)', icon: '🌊', category: 'AI', score: 7.9, prediction: '+38.2%' },
     { value: 'render-token', label: 'Render (RNDR)', icon: '🎨', category: 'AI', score: 8.1, prediction: '+41.7%' },
+    { value: 'chainlink', label: 'Chainlink (LINK)', icon: '🔗', category: 'AI', score: 8.0, prediction: '+35.8%' },
+    { value: 'the-graph', label: 'The Graph (GRT)', icon: '📊', category: 'AI', score: 7.3, prediction: '+24.1%' },
+    { value: 'artificial-superintelligence-alliance', label: 'ASI Alliance (ASI)', icon: '🤖', category: 'AI', score: 8.3, prediction: '+48.9%' },
     
-    // New tokens
+    // New & Trending
     { value: 'worldcoin-wld', label: 'Worldcoin (WLD)', icon: '🌍', category: 'New', score: 7.3, prediction: '+28.4%' },
     { value: 'sei-network', label: 'Sei (SEI)', icon: '⚡', category: 'New', score: 7.8, prediction: '+34.2%' },
     { value: 'starknet', label: 'Starknet (STRK)', icon: '🌟', category: 'New', score: 8.0, prediction: '+45.1%' },
     { value: 'jupiter-exchange-solana', label: 'Jupiter (JUP)', icon: '🪐', category: 'New', score: 7.5, prediction: '+19.8%' },
-    
-    // Privacy Coins
-    { value: 'monero', label: 'Monero (XMR)', icon: '🔒', category: 'Privacy', score: 4.5, prediction: '-8.9%' },
-    { value: 'zcash', label: 'Zcash (ZEC)', icon: '🛡️', category: 'Privacy', score: 4.8, prediction: '-7.2%' },
-    { value: 'dash', label: 'Dash (DASH)', icon: '💨', category: 'Privacy', score: 4.1, prediction: '-12.3%' },
-    
-    // Stablecoins
-    { value: 'tether', label: 'Tether (USDT)', icon: '💵', category: 'Stable', score: 3.2, prediction: '-0.05%' },
-    { value: 'usd-coin', label: 'USD Coin (USDC)', icon: '🪙', category: 'Stable', score: 3.5, prediction: '+0.02%' },
-    { value: 'dai', label: 'Dai (DAI)', icon: '⚖️', category: 'Stable', score: 3.8, prediction: '+0.08%' },
-    
-    // Newer/Trending
     { value: 'sui', label: 'Sui (SUI)', icon: '🌊', category: 'New', score: 7.9, prediction: '+31.5%' },
     { value: 'aptos', label: 'Aptos (APT)', icon: '🏛️', category: 'New', score: 7.7, prediction: '+26.8%' },
     { value: 'blur', label: 'Blur (BLUR)', icon: '🌀', category: 'New', score: 6.8, prediction: '+12.4%' },
     { value: 'injective-protocol', label: 'Injective (INJ)', icon: '💉', category: 'New', score: 7.9, prediction: '+35.2%' },
     { value: 'celestia', label: 'Celestia (TIA)', icon: '⭐', category: 'New', score: 8.2, prediction: '+42.1%' },
+    { value: 'kaspa', label: 'Kaspa (KAS)', icon: '👻', category: 'New', score: 8.1, prediction: '+39.7%' },
+    
+    // Privacy Coins
+    { value: 'monero', label: 'Monero (XMR)', icon: '🔒', category: 'Privacy', score: 4.5, prediction: '-8.9%' },
+    { value: 'zcash', label: 'Zcash (ZEC)', icon: '🛡️', category: 'Privacy', score: 4.8, prediction: '-7.2%' },
+    { value: 'dash', label: 'Dash (DASH)', icon: '💨', category: 'Privacy', score: 4.1, prediction: '-12.3%' },
+    { value: 'beam', label: 'Beam (BEAM)', icon: '💡', category: 'Privacy', score: 5.2, prediction: '-3.1%' },
+    { value: 'secret', label: 'Secret (SCRT)', icon: '🤫', category: 'Privacy', score: 5.5, prediction: '-1.8%' },
+    
+    // Stablecoins
+    { value: 'tether', label: 'Tether (USDT)', icon: '💵', category: 'Stable', score: 3.2, prediction: '-0.05%' },
+    { value: 'usd-coin', label: 'USD Coin (USDC)', icon: '🪙', category: 'Stable', score: 3.5, prediction: '+0.02%' },
+    { value: 'dai', label: 'Dai (DAI)', icon: '⚖️', category: 'Stable', score: 3.8, prediction: '+0.08%' },
+    { value: 'first-digital-usd', label: 'FDUSD (FDUSD)', icon: '💰', category: 'Stable', score: 3.1, prediction: '+0.01%' },
+    { value: 'trueusd', label: 'TrueUSD (TUSD)', icon: '💎', category: 'Stable', score: 3.3, prediction: '-0.02%' },
+    
+    // Enterprise & Institutional
+    { value: 'vechain', label: 'VeChain (VET)', icon: '⚡', category: 'Enterprise', score: 6.9, prediction: '+8.4%' },
+    { value: 'quant-network', label: 'Quant (QNT)', icon: '🔢', category: 'Enterprise', score: 7.4, prediction: '+15.2%' },
+    { value: 'hedera-hashgraph', label: 'Hedera (HBAR)', icon: '♦️', category: 'Enterprise', score: 7.1, prediction: '+11.8%' },
+    { value: 'iota', label: 'IOTA (MIOTA)', icon: '🔗', category: 'Enterprise', score: 6.2, prediction: '+5.3%' },
+    { value: 'neo', label: 'NEO (NEO)', icon: '🟢', category: 'Enterprise', score: 6.5, prediction: '+7.1%' },
   ];
 
   const handlePredict = async () => {
@@ -131,7 +160,7 @@ const Index = () => {
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
             <Brain className="h-12 w-12 text-blue-400" />
-            CryptoPredictAI
+            PumpParade
             <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold">PRO</Badge>
             <Link to="/subscribe">
               <Button className="ml-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
@@ -202,7 +231,7 @@ const Index = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-700 border-gray-600 max-h-96 overflow-y-auto">
-                    {['Major', 'DeFi', 'Meme', 'L2', 'Gaming', 'AI', 'Privacy', 'Stable', 'New'].map(category => (
+                    {['Major', 'DeFi', 'Meme', 'L2', 'Gaming', 'AI', 'Privacy', 'Stable', 'New', 'Enterprise'].map(category => (
                       <div key={category}>
                         <div className="px-2 py-1 text-xs font-semibold text-gray-400 bg-gray-600">
                           {category} Coins
@@ -336,6 +365,13 @@ const Index = () => {
           <div className="space-y-6">
             {/* Side Ad 300x250 */}
             <AdBanner width={300} height={250} position="vertical" />
+
+            {/* Dynamic Prediction Adjuster */}
+            <DynamicPredictionAdjuster
+              selectedCrypto={selectedCrypto}
+              currentPrice={currentPrice}
+              priceChange={priceChange}
+            />
 
             <Tabs defaultValue="technical" className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
