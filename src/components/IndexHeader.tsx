@@ -18,6 +18,8 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
   currentPrice,
   priceChange
 }) => {
+  console.log('IndexHeader - currentPrice:', currentPrice, 'priceChange:', priceChange);
+  
   return (
     <div className="text-center mb-8">
       <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
@@ -42,20 +44,28 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
               {cryptoOptions.find(c => c.value === selectedCrypto)?.icon}
             </span>
             <div>
-              <div className="text-white font-bold text-lg">${currentPrice.toFixed(2)}</div>
+              <div className="text-white font-bold text-lg">
+                ${currentPrice > 0 ? currentPrice.toFixed(currentPrice < 1 ? 6 : 2) : 'Loading...'}
+              </div>
               <div className="text-gray-400 text-sm">
                 {cryptoOptions.find(c => c.value === selectedCrypto)?.label.split(' ')[0]}
               </div>
             </div>
           </div>
           <div className="text-right">
-            <div className={`flex items-center gap-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-              <span className="font-bold">
-                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
-              </span>
-            </div>
-            <div className="text-gray-400 text-xs">24h</div>
+            {currentPrice > 0 ? (
+              <>
+                <div className={`flex items-center gap-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+                  <span className="font-bold">
+                    {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+                  </span>
+                </div>
+                <div className="text-gray-400 text-xs">24h</div>
+              </>
+            ) : (
+              <div className="text-gray-400 text-sm">Loading...</div>
+            )}
           </div>
         </div>
       </div>

@@ -16,11 +16,12 @@ const fetchCryptoData = async (crypto: string, timeframe: string): Promise<Price
   const days = timeframe === '1d' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90;
   
   try {
+    // Use pro API URL since we have a pro API key
     const response = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=${days}&interval=${days === 1 ? 'hourly' : 'daily'}`,
+      `https://pro-api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=${days}&interval=${days === 1 ? 'hourly' : 'daily'}`,
       {
         headers: {
-          'X-CG-Demo-API-Key': COINGECKO_API_KEY,
+          'X-CG-Pro-API-Key': COINGECKO_API_KEY,
         },
       }
     );
@@ -38,6 +39,7 @@ const fetchCryptoData = async (crypto: string, timeframe: string): Promise<Price
       volume: data.total_volumes?.[index]?.[1] || 0
     }));
 
+    console.log(`Successfully fetched ${priceData.length} data points for ${crypto}`);
     return priceData;
   } catch (error) {
     console.error('Error fetching from CoinGecko:', error);

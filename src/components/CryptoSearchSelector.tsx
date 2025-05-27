@@ -104,7 +104,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                           e.stopPropagation();
                           setOpen(false);
                         }}
-                        className="text-blue-400 hover:text-blue-300 transition-colors p-1"
+                        className="text-blue-400 hover:text-blue-300 transition-colors p-1 z-10"
                       >
                         <ExternalLink className="h-4 w-4" />
                       </Link>
