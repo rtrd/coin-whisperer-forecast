@@ -1,30 +1,18 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { TrendingUp, TrendingDown, Activity, Brain, Target, AlertCircle, BarChart3 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { PriceChart } from "@/components/PriceChart";
-import { PredictionCard } from "@/components/PredictionCard";
-import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
-import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { toast } from "sonner";
+import { IndexHeader } from "@/components/IndexHeader";
+import { IndexControls } from "@/components/IndexControls";
+import { IndexMainContent } from "@/components/IndexMainContent";
+import { IndexSidebar } from "@/components/IndexSidebar";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import { DynamicMarketMovers } from "@/components/DynamicMarketMovers";
-import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { AdBanner } from "@/components/AdBanner";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
-import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
-import { CryptoSearchSelector } from "@/components/CryptoSearchSelector";
 import { CryptoFilters } from "@/components/CryptoFilters";
-import { ModelTypeTooltip } from "@/components/ModelTypeTooltip";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
-import { toast } from "sonner";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
@@ -92,7 +80,6 @@ const Index = () => {
     { value: 'decentraland', label: 'Decentraland (MANA)', icon: '🌐', category: 'Gaming', score: 6.4, prediction: '+9.8%' },
     { value: 'enjincoin', label: 'Enjin Coin (ENJ)', icon: '💎', category: 'Gaming', score: 6.2, prediction: '+7.1%' },
     { value: 'gala', label: 'Gala (GALA)', icon: '🎲', category: 'Gaming', score: 5.8, prediction: '+5.4%' },
-    { value: 'immutable-x', label: 'Immutable X (IMX)', icon: '🃏', category: 'Gaming', score: 7.1, prediction: '+11.5%' },
     { value: 'flow', label: 'Flow (FLOW)', icon: '🌊', category: 'Gaming', score: 6.5, prediction: '+8.2%' },
     { value: 'theta-token', label: 'Theta (THETA)', icon: '📺', category: 'Gaming', score: 6.3, prediction: '+6.9%' },
     
@@ -101,7 +88,6 @@ const Index = () => {
     { value: 'singularitynet', label: 'SingularityNET (AGIX)', icon: '🧠', category: 'AI', score: 8.1, prediction: '+41.8%' },
     { value: 'ocean-protocol', label: 'Ocean Protocol (OCEAN)', icon: '🌊', category: 'AI', score: 7.9, prediction: '+38.2%' },
     { value: 'render-token', label: 'Render (RNDR)', icon: '🎨', category: 'AI', score: 8.1, prediction: '+41.7%' },
-    { value: 'chainlink', label: 'Chainlink (LINK)', icon: '🔗', category: 'AI', score: 8.0, prediction: '+35.8%' },
     { value: 'the-graph', label: 'The Graph (GRT)', icon: '📊', category: 'AI', score: 7.3, prediction: '+24.1%' },
     { value: 'artificial-superintelligence-alliance', label: 'ASI Alliance (ASI)', icon: '🤖', category: 'AI', score: 8.3, prediction: '+48.9%' },
     
@@ -211,48 +197,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
-            <Brain className="h-12 w-12 text-blue-400" />
-            PumpParade
-            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold">PRO</Badge>
-            <Link to="/subscribe">
-              <Button className="ml-4 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
-                Unlock Premium
-              </Button>
-            </Link>
-          </h1>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Advanced cryptocurrency price prediction using machine learning, technical analysis, and market sentiment
-          </p>
-          
-          {/* Live Price Ticker */}
-          <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700 max-w-md mx-auto">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">
-                  {cryptoOptions.find(c => c.value === selectedCrypto)?.icon}
-                </span>
-                <div>
-                  <div className="text-white font-bold text-lg">${currentPrice.toFixed(2)}</div>
-                  <div className="text-gray-400 text-sm">
-                    {cryptoOptions.find(c => c.value === selectedCrypto)?.label.split(' ')[0]}
-                  </div>
-                </div>
-              </div>
-              <div className="text-right">
-                <div className={`flex items-center gap-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-                  <span className="font-bold">
-                    {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
-                  </span>
-                </div>
-                <div className="text-gray-400 text-xs">24h</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <IndexHeader 
+          selectedCrypto={selectedCrypto}
+          cryptoOptions={cryptoOptions}
+          currentPrice={currentPrice}
+          priceChange={priceChange}
+        />
 
         {/* Ad Banner 728x90 */}
         <div className="flex justify-center mb-8">
@@ -271,183 +221,39 @@ const Index = () => {
         {/* Crypto Filters */}
         <CryptoFilters onFilterChange={handleFilterChange} />
 
-        {/* Controls */}
-        <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Target className="h-5 w-5 text-green-400" />
-              AI Prediction Parameters
-              <Badge className="bg-blue-600">Advanced</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">Cryptocurrency</label>
-                <CryptoSearchSelector
-                  cryptoOptions={filteredCryptos}
-                  selectedCrypto={selectedCrypto}
-                  onSelectCrypto={setSelectedCrypto}
-                />
-              </div>
-              
-              <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">Historical Data Period</label>
-                <Select value={timeframe} onValueChange={setTimeframe}>
-                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600">
-                    <SelectItem value="1d" className="text-white">1 Day</SelectItem>
-                    <SelectItem value="7d" className="text-white">7 Days</SelectItem>
-                    <SelectItem value="30d" className="text-white">30 Days</SelectItem>
-                    <SelectItem value="90d" className="text-white">90 Days</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">Prediction Horizon</label>
-                <Input
-                  type="number"
-                  value={predictionDays}
-                  onChange={(e) => setPredictionDays(Number(e.target.value))}
-                  min="1"
-                  max="30"
-                  className="bg-gray-700 border-gray-600 text-white"
-                />
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block flex items-center">
-                  AI Model Type
-                  <ModelTypeTooltip modelType={modelType} />
-                </label>
-                <Select value={modelType} onValueChange={setModelType}>
-                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-700 border-gray-600">
-                    <SelectItem value="basic" className="text-white">Technical Trend Spotter</SelectItem>
-                    <SelectItem value="advanced" className="text-white">AI Market Prophet</SelectItem>
-                    <SelectItem value="ensemble" className="text-white">Multi-Brain Consensus</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              <div className="flex items-end">
-                <Button 
-                  onClick={handlePredict}
-                  disabled={dataLoading || predictionLoading || !cryptoData}
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-lg"
-                >
-                  {predictionLoading ? (
-                    <div className="flex items-center gap-2">
-                      <Activity className="h-4 w-4 animate-spin" />
-                      Analyzing...
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <Brain className="h-4 w-4" />
-                      Generate Prediction
-                    </div>
-                  )}
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <IndexControls
+          selectedCrypto={selectedCrypto}
+          timeframe={timeframe}
+          predictionDays={predictionDays}
+          modelType={modelType}
+          filteredCryptos={filteredCryptos}
+          dataLoading={dataLoading}
+          predictionLoading={predictionLoading}
+          cryptoData={cryptoData}
+          onSelectCrypto={setSelectedCrypto}
+          onTimeframeChange={setTimeframe}
+          onPredictionDaysChange={setPredictionDays}
+          onModelTypeChange={setModelType}
+          onPredict={handlePredict}
+        />
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Left Column - Chart and Prediction */}
-          <div className="lg:col-span-3 space-y-6">
-            {/* Price Chart */}
-            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-blue-400" />
-                    Advanced Candlestick Chart & AI Prediction
-                  </span>
-                  {cryptoData && (
-                    <Badge variant="outline" className="text-green-400 border-green-400">
-                      Live Data
-                    </Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <PriceChart 
-                  data={cryptoData} 
-                  prediction={prediction?.predictions || null}
-                  isLoading={dataLoading}
-                  crypto={selectedCrypto}
-                />
-              </CardContent>
-            </Card>
+          <IndexMainContent
+            cryptoData={cryptoData}
+            prediction={prediction}
+            selectedCrypto={selectedCrypto}
+            dataLoading={dataLoading}
+          />
 
-            {/* Prediction Results */}
-            {prediction && (
-              <PredictionCard prediction={prediction} crypto={selectedCrypto} />
-            )}
-          </div>
-
-          {/* Right Column - Analysis and Ads */}
-          <div className="space-y-6">
-            {/* Side Ad 300x250 */}
-            <AdBanner width={300} height={250} position="vertical" />
-
-            {/* Dynamic Prediction Adjuster */}
-            <DynamicPredictionAdjuster
-              selectedCrypto={selectedCrypto}
-              currentPrice={currentPrice}
-              priceChange={priceChange}
-            />
-
-            <Tabs defaultValue="technical" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
-                <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
-                  Technical
-                </TabsTrigger>
-                <TabsTrigger value="sentiment" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
-                  Sentiment
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="technical">
-                <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
-              </TabsContent>
-              
-              <TabsContent value="sentiment">
-                <SentimentAnalysis crypto={selectedCrypto} />
-              </TabsContent>
-            </Tabs>
-
-            {/* Dynamic Token Analysis */}
-            <DynamicTokenAnalysis
-              selectedCrypto={selectedCrypto}
-              currentPrice={currentPrice}
-              priceChange={priceChange}
-              cryptoOptions={cryptoOptions}
-            />
-
-            {/* Disclaimer */}
-            <Card className="bg-yellow-900/20 border-yellow-700 shadow-2xl">
-              <CardContent className="pt-6">
-                <div className="flex items-start gap-3">
-                  <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
-                  <div>
-                    <p className="text-sm text-yellow-200 font-medium mb-1">Investment Disclaimer</p>
-                    <p className="text-xs text-yellow-300">
-                      AI predictions are for educational purposes only. Cryptocurrency investments carry high risk. 
-                      Always do your own research before making investment decisions.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          <IndexSidebar
+            selectedCrypto={selectedCrypto}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+            cryptoData={cryptoData}
+            dataLoading={dataLoading}
+            cryptoOptions={cryptoOptions}
+          />
         </div>
 
         {/* Footer */}
