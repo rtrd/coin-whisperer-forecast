@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { BarChart3, ExternalLink } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
+import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 
 interface IndexMainContentProps {
   cryptoData: any;
@@ -13,6 +14,8 @@ interface IndexMainContentProps {
   selectedCrypto: string;
   dataLoading: boolean;
   cryptoOptions: any[];
+  currentPrice: number;
+  priceChange: number;
 }
 
 export const IndexMainContent: React.FC<IndexMainContentProps> = ({
@@ -20,7 +23,9 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
   prediction,
   selectedCrypto,
   dataLoading,
-  cryptoOptions
+  cryptoOptions,
+  currentPrice,
+  priceChange
 }) => {
   return (
     <div className="lg:col-span-3 space-y-6">
@@ -49,45 +54,32 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
         </CardContent>
       </Card>
 
-      {/* Token List */}
+      {/* Dynamic Token Analysis */}
+      <DynamicTokenAnalysis
+        selectedCrypto={selectedCrypto}
+        currentPrice={currentPrice}
+        priceChange={priceChange}
+        cryptoOptions={cryptoOptions}
+      />
+
+      {/* Browse All Tokens Link */}
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <ExternalLink className="h-5 w-5 text-blue-400" />
-            All Tokens
+            Explore More Tokens
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {cryptoOptions.map((token) => (
-              <Link
-                key={token.value}
-                to={`/token/${token.value}`}
-                className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg border border-gray-600 hover:bg-gray-600/50 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl">{token.icon}</span>
-                  <div>
-                    <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                      {token.label.split(' ')[0]}
-                    </div>
-                    <div className="text-gray-400 text-xs">
-                      Score: {token.score}/10
-                    </div>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className={`text-sm font-medium ${
-                    token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
-                  }`}>
-                    {token.prediction}
-                  </div>
-                  <Badge variant="outline" className="text-xs text-gray-300 border-gray-500">
-                    {token.category}
-                  </Badge>
-                </div>
-              </Link>
-            ))}
+          <div className="text-center py-8">
+            <p className="text-gray-300 mb-4">
+              Want to explore more cryptocurrencies and their AI predictions?
+            </p>
+            <Link to="/tokens">
+              <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-all">
+                Browse All Tokens
+              </button>
+            </Link>
           </div>
         </CardContent>
       </Card>

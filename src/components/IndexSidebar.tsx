@@ -7,7 +7,6 @@ import { AdBanner } from "@/components/AdBanner";
 import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
-import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 
 interface IndexSidebarProps {
   selectedCrypto: string;
@@ -56,14 +55,6 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
           <SentimentAnalysis crypto={selectedCrypto} />
         </TabsContent>
       </Tabs>
-
-      {/* Dynamic Token Analysis */}
-      <DynamicTokenAnalysis
-        selectedCrypto={selectedCrypto}
-        currentPrice={currentPrice}
-        priceChange={priceChange}
-        cryptoOptions={cryptoOptions}
-      />
 
       {/* Disclaimer */}
       <Card className="bg-yellow-900/20 border-yellow-700 shadow-2xl">

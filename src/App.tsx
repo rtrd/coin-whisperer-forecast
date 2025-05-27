@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Subscribe from "./pages/Subscribe";
 import TokenDetail from "./pages/TokenDetail";
 import Article from "./pages/Article";
+import AllTokens from "./pages/AllTokens";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/subscribe" element={<Subscribe />} />
           <Route path="/token/:tokenId" element={<TokenDetail />} />
           <Route path="/article/:articleId" element={<Article />} />
+          <Route path="/tokens" element={<AllTokens />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
