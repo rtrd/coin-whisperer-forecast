@@ -93,7 +93,7 @@ export const IndexControls: React.FC<IndexControlsProps> = ({
           <div>
             <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
               Model Type
-              <ModelTypeTooltip />
+              <ModelTypeTooltip modelType={modelType} />
             </label>
             <Select value={modelType} onValueChange={onModelTypeChange}>
               <SelectTrigger className="bg-gray-700 border-gray-600 text-white">

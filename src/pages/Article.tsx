@@ -149,12 +149,6 @@ const Article = () => {
               <div 
                 className="prose prose-invert max-w-none text-gray-200"
                 dangerouslySetInnerHTML={{ __html: article.content }}
-                style={{
-                  '--tw-prose-headings': 'rgb(243 244 246)',
-                  '--tw-prose-links': 'rgb(96 165 250)',
-                  '--tw-prose-strong': 'rgb(243 244 246)',
-                  '--tw-prose-bullets': 'rgb(156 163 175)',
-                }}
               />
             </CardContent>
           </Card>
