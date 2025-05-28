@@ -30,7 +30,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
     category: 'all',
-    priceRange: [0, 100000],
+    priceRange: [0, 1000000],
     scoreRange: [0, 10],
     aiScoreRange: [0, 100],
     predictionRange: [-50, 100],
@@ -50,7 +50,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
   const resetFilters = () => {
     const defaultFilters: FilterState = {
       category: 'all',
-      priceRange: [0, 100000],
+      priceRange: [0, 1000000],
       scoreRange: [0, 10],
       aiScoreRange: [0, 100],
       predictionRange: [-50, 100],
@@ -66,7 +66,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
 
   const activeFiltersCount = Object.entries(filters).filter(([key, value]) => {
     if (key === 'category' && value !== 'all') return true;
-    if (key === 'priceRange' && (value[0] !== 0 || value[1] !== 100000)) return true;
+    if (key === 'priceRange' && (value[0] !== 0 || value[1] !== 1000000)) return true;
     if (key === 'scoreRange' && (value[0] !== 0 || value[1] !== 10)) return true;
     if (key === 'aiScoreRange' && (value[0] !== 0 || value[1] !== 100)) return true;
     if (key === 'predictionRange' && (value[0] !== -50 || value[1] !== 100)) return true;
@@ -220,7 +220,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
                 <Slider
                   value={filters.priceRange}
                   onValueChange={(value) => updateFilters({ priceRange: value as [number, number] })}
-                  max={100000}
+                  max={1000000}
                   min={0}
                   step={100}
                   className="w-full"
