@@ -258,14 +258,14 @@ const Index = () => {
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
-        {/* Crypto Filters */}
-        <CryptoFilters onFilterChange={handleFilterChange} />
+        {/* WordPress Integration - Blog feed first */}
+        <WordPressIntegration />
 
-        {/* Dynamic Market Movers Widget - Now always visible and compact */}
+        {/* Dynamic Market Movers Widget - Top 5 gainers/losers second */}
         <DynamicMarketMovers />
 
-        {/* WordPress Integration */}
-        <WordPressIntegration />
+        {/* Crypto Filters - Smart filters third */}
+        <CryptoFilters onFilterChange={handleFilterChange} />
 
         {/* Market Data Widget */}
         <MarketDataWidget cryptoOptions={filteredCryptos} />
