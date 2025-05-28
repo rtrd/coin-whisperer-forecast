@@ -151,6 +151,42 @@ const Index = () => {
       crypto.score <= filters.scoreRange[1]
     );
 
+    // Apply AI score range filter (generate mock AI scores for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockAiScore = crypto.score * 10; // Convert score to 0-100 range
+      return mockAiScore >= filters.aiScoreRange[0] && mockAiScore <= filters.aiScoreRange[1];
+    });
+
+    // Apply prediction range filter
+    filtered = filtered.filter(crypto => {
+      const predictionValue = parseFloat(crypto.prediction.replace('%', '').replace('+', ''));
+      return predictionValue >= filters.predictionRange[0] && predictionValue <= filters.predictionRange[1];
+    });
+
+    // Apply price range filter (generate mock prices for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockPrice = Math.random() * 1000 + 1;
+      return mockPrice >= filters.priceRange[0] && mockPrice <= filters.priceRange[1];
+    });
+
+    // Apply 24h change range filter (generate mock changes for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockChange = (Math.random() - 0.5) * 20;
+      return mockChange >= filters.change24hRange[0] && mockChange <= filters.change24hRange[1];
+    });
+
+    // Apply volume range filter (generate mock volumes for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockVolume = Math.random() * 1000000000;
+      return mockVolume >= filters.volumeRange[0] && mockVolume <= filters.volumeRange[1];
+    });
+
+    // Apply market cap range filter (generate mock market caps for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockMarketCap = Math.random() * 1000000000000;
+      return mockMarketCap >= filters.marketCapRange[0] && mockMarketCap <= filters.marketCapRange[1];
+    });
+
     // Apply sorting
     switch (filters.sortBy) {
       case 'score':
@@ -168,6 +204,18 @@ const Index = () => {
         break;
       case 'category':
         filtered.sort((a, b) => a.category.localeCompare(b.category));
+        break;
+      case 'price':
+        filtered.sort((a, b) => (Math.random() * 1000 + 1) - (Math.random() * 1000 + 1));
+        break;
+      case 'change24h':
+        filtered.sort((a, b) => (Math.random() - 0.5) * 20 - (Math.random() - 0.5) * 20);
+        break;
+      case 'volume':
+        filtered.sort((a, b) => Math.random() * 1000000000 - Math.random() * 1000000000);
+        break;
+      case 'marketCap':
+        filtered.sort((a, b) => Math.random() * 1000000000000 - Math.random() * 1000000000000);
         break;
     }
 

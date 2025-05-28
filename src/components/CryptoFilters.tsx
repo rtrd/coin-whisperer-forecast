@@ -17,6 +17,11 @@ interface FilterState {
   category: string;
   priceRange: [number, number];
   scoreRange: [number, number];
+  aiScoreRange: [number, number];
+  predictionRange: [number, number];
+  volumeRange: [number, number];
+  marketCapRange: [number, number];
+  change24hRange: [number, number];
   sortBy: string;
   searchTerm: string;
 }
@@ -27,6 +32,11 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
     category: 'all',
     priceRange: [0, 100000],
     scoreRange: [0, 10],
+    aiScoreRange: [0, 100],
+    predictionRange: [-50, 100],
+    volumeRange: [0, 1000000000],
+    marketCapRange: [0, 1000000000000],
+    change24hRange: [-50, 50],
     sortBy: 'score',
     searchTerm: ''
   });
@@ -42,6 +52,11 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
       category: 'all',
       priceRange: [0, 100000],
       scoreRange: [0, 10],
+      aiScoreRange: [0, 100],
+      predictionRange: [-50, 100],
+      volumeRange: [0, 1000000000],
+      marketCapRange: [0, 1000000000000],
+      change24hRange: [-50, 50],
       sortBy: 'score',
       searchTerm: ''
     };
@@ -53,10 +68,29 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
     if (key === 'category' && value !== 'all') return true;
     if (key === 'priceRange' && (value[0] !== 0 || value[1] !== 100000)) return true;
     if (key === 'scoreRange' && (value[0] !== 0 || value[1] !== 10)) return true;
+    if (key === 'aiScoreRange' && (value[0] !== 0 || value[1] !== 100)) return true;
+    if (key === 'predictionRange' && (value[0] !== -50 || value[1] !== 100)) return true;
+    if (key === 'volumeRange' && (value[0] !== 0 || value[1] !== 1000000000)) return true;
+    if (key === 'marketCapRange' && (value[0] !== 0 || value[1] !== 1000000000000)) return true;
+    if (key === 'change24hRange' && (value[0] !== -50 || value[1] !== 50)) return true;
     if (key === 'sortBy' && value !== 'score') return true;
     if (key === 'searchTerm' && value !== '') return true;
     return false;
   }).length;
+
+  const formatVolume = (value: number) => {
+    if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
+    if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
+    if (value >= 1e3) return `$${(value / 1e3).toFixed(1)}K`;
+    return `$${value.toFixed(0)}`;
+  };
+
+  const formatMarketCap = (value: number) => {
+    if (value >= 1e12) return `$${(value / 1e12).toFixed(1)}T`;
+    if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
+    if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
+    return `$${(value / 1e3).toFixed(1)}K`;
+  };
 
   return (
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -79,7 +113,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
         </CollapsibleTrigger>
         <CollapsibleContent>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               {/* Search */}
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">Search</label>
@@ -125,6 +159,10 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
                     <SelectItem value="prediction" className="text-white">Prediction %</SelectItem>
                     <SelectItem value="name" className="text-white">Name (A-Z)</SelectItem>
                     <SelectItem value="category" className="text-white">Category</SelectItem>
+                    <SelectItem value="price" className="text-white">Price</SelectItem>
+                    <SelectItem value="change24h" className="text-white">24h Change</SelectItem>
+                    <SelectItem value="volume" className="text-white">Volume</SelectItem>
+                    <SelectItem value="marketCap" className="text-white">Market Cap</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -142,19 +180,97 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
               </div>
             </div>
 
-            {/* Score Range */}
-            <div className="mt-4">
-              <label className="text-sm font-medium text-gray-300 mb-2 block">
-                AI Score Range: {filters.scoreRange[0]} - {filters.scoreRange[1]}
-              </label>
-              <Slider
-                value={filters.scoreRange}
-                onValueChange={(value) => updateFilters({ scoreRange: value as [number, number] })}
-                max={10}
-                min={0}
-                step={0.1}
-                className="w-full"
-              />
+            {/* Slider Filters */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* AI Score Range */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  AI Score: {filters.aiScoreRange[0]} - {filters.aiScoreRange[1]}
+                </label>
+                <Slider
+                  value={filters.aiScoreRange}
+                  onValueChange={(value) => updateFilters({ aiScoreRange: value as [number, number] })}
+                  max={100}
+                  min={0}
+                  step={1}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Prediction Range */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  Prediction %: {filters.predictionRange[0]}% - {filters.predictionRange[1]}%
+                </label>
+                <Slider
+                  value={filters.predictionRange}
+                  onValueChange={(value) => updateFilters({ predictionRange: value as [number, number] })}
+                  max={100}
+                  min={-50}
+                  step={1}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Price Range */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  Price: ${filters.priceRange[0]} - ${filters.priceRange[1]}
+                </label>
+                <Slider
+                  value={filters.priceRange}
+                  onValueChange={(value) => updateFilters({ priceRange: value as [number, number] })}
+                  max={100000}
+                  min={0}
+                  step={100}
+                  className="w-full"
+                />
+              </div>
+
+              {/* 24h Change Range */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  24h Change: {filters.change24hRange[0]}% - {filters.change24hRange[1]}%
+                </label>
+                <Slider
+                  value={filters.change24hRange}
+                  onValueChange={(value) => updateFilters({ change24hRange: value as [number, number] })}
+                  max={50}
+                  min={-50}
+                  step={1}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Volume Range */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  Volume: {formatVolume(filters.volumeRange[0])} - {formatVolume(filters.volumeRange[1])}
+                </label>
+                <Slider
+                  value={filters.volumeRange}
+                  onValueChange={(value) => updateFilters({ volumeRange: value as [number, number] })}
+                  max={1000000000}
+                  min={0}
+                  step={1000000}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Market Cap Range */}
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">
+                  Market Cap: {formatMarketCap(filters.marketCapRange[0])} - {formatMarketCap(filters.marketCapRange[1])}
+                </label>
+                <Slider
+                  value={filters.marketCapRange}
+                  onValueChange={(value) => updateFilters({ marketCapRange: value as [number, number] })}
+                  max={1000000000000}
+                  min={0}
+                  step={1000000000}
+                  className="w-full"
+                />
+              </div>
             </div>
           </CardContent>
         </CollapsibleContent>
