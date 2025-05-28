@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -76,24 +75,24 @@ export const DynamicMarketMovers = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 mb-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 mb-3">
       {/* Biggest Gainers */}
       <Card className="bg-gradient-to-br from-green-900/20 to-emerald-900/20 border-green-700/50">
-        <CardHeader className="pb-2 pt-3">
-          <CardTitle className="text-white flex items-center gap-2 text-sm">
-            <TrendingUp className="h-3 w-3 text-green-400" />
+        <CardHeader className="pb-1 pt-2 px-3">
+          <CardTitle className="text-white flex items-center gap-1.5 text-xs">
+            <TrendingUp className="h-2.5 w-2.5 text-green-400" />
             Top 5 Potential Gainers
-            <div className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0 pb-3">
-          <div className="space-y-1.5">
+        <CardContent className="pt-0 pb-2 px-3">
+          <div className="space-y-1">
             {movers.gainers.map((crypto, index) => (
-              <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-1.5 bg-gray-800/50 rounded">
-                <div className="flex items-center gap-1.5">
+              <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-1 bg-gray-800/50 rounded text-xs">
+                <div className="flex items-center gap-1">
                   <span className="text-xs">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium text-xs">{crypto.symbol}</div>
+                    <div className="text-white font-medium">{crypto.symbol}</div>
                     <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>
@@ -101,7 +100,7 @@ export const DynamicMarketMovers = () => {
                   <div className="text-green-400 font-medium text-xs">
                     {formatChange(crypto.predictedChange)}
                   </div>
-                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-1 py-0">
+                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-1 py-0 h-4">
                     {crypto.score.toFixed(1)}
                   </Badge>
                 </div>
@@ -113,21 +112,21 @@ export const DynamicMarketMovers = () => {
 
       {/* Biggest Losers */}
       <Card className="bg-gradient-to-br from-red-900/20 to-rose-900/20 border-red-700/50">
-        <CardHeader className="pb-2 pt-3">
-          <CardTitle className="text-white flex items-center gap-2 text-sm">
-            <TrendingDown className="h-3 w-3 text-red-400" />
+        <CardHeader className="pb-1 pt-2 px-3">
+          <CardTitle className="text-white flex items-center gap-1.5 text-xs">
+            <TrendingDown className="h-2.5 w-2.5 text-red-400" />
             Top 5 Potential Losers
-            <div className="w-1.5 h-1.5 bg-red-400 rounded-full animate-pulse"></div>
+            <div className="w-1 h-1 bg-red-400 rounded-full animate-pulse"></div>
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0 pb-3">
-          <div className="space-y-1.5">
+        <CardContent className="pt-0 pb-2 px-3">
+          <div className="space-y-1">
             {movers.losers.map((crypto, index) => (
-              <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-1.5 bg-gray-800/50 rounded">
-                <div className="flex items-center gap-1.5">
+              <div key={`${crypto.symbol}-${index}`} className="flex items-center justify-between p-1 bg-gray-800/50 rounded text-xs">
+                <div className="flex items-center gap-1">
                   <span className="text-xs">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium text-xs">{crypto.symbol}</div>
+                    <div className="text-white font-medium">{crypto.symbol}</div>
                     <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>
@@ -135,7 +134,7 @@ export const DynamicMarketMovers = () => {
                   <div className="text-red-400 font-medium text-xs">
                     {formatChange(crypto.predictedChange)}
                   </div>
-                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-1 py-0">
+                  <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-1 py-0 h-4">
                     {crypto.score.toFixed(1)}
                   </Badge>
                 </div>
