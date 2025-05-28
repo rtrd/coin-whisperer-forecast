@@ -22,6 +22,16 @@ interface PriceChartProps {
   crypto: string;
 }
 
+// Define chart data type that includes both historical and prediction data
+interface ChartDataPoint {
+  timestamp: number;
+  date: string;
+  price: number | null;
+  volume: number;
+  predictedPrice?: number;
+  confidence?: number;
+}
+
 export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoading, crypto }) => {
   if (isLoading) {
     return (
@@ -41,7 +51,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
   }
 
   // Prepare chart data
-  const chartData = data.map(d => ({
+  const chartData: ChartDataPoint[] = data.map(d => ({
     timestamp: d.timestamp,
     date: new Date(d.timestamp).toLocaleDateString('en-US', { 
       month: 'short', 
@@ -72,7 +82,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
       volume: 0
     });
 
-    const predictionData = prediction.map(p => ({
+    const predictionData: ChartDataPoint[] = prediction.map(p => ({
       timestamp: p.timestamp,
       date: new Date(p.timestamp).toLocaleDateString('en-US', { 
         month: 'short', 
