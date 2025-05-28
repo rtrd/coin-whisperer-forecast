@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity } from "lucide-react";
+import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock } from "lucide-react";
 
 interface MarketSignal {
   type: 'bullish' | 'bearish' | 'neutral';
@@ -10,6 +10,14 @@ interface MarketSignal {
   timeframe: string;
   description: string;
   asset: string;
+}
+
+interface LiveSignal {
+  type: 'price_alert' | 'volume_spike' | 'breakout' | 'support_test' | 'momentum_shift';
+  asset: string;
+  message: string;
+  timestamp: string;
+  strength: 'high' | 'medium' | 'low';
 }
 
 interface TradingRecommendation {
@@ -24,6 +32,7 @@ export const AITradingSignals = () => {
   const [marketSentiment, setMarketSentiment] = useState<'bullish' | 'bearish' | 'neutral'>('bullish');
   const [sentimentScore, setSentimentScore] = useState(72);
   const [signals, setSignals] = useState<MarketSignal[]>([]);
+  const [liveSignals, setLiveSignals] = useState<LiveSignal[]>([]);
   const [recommendations, setRecommendations] = useState<TradingRecommendation[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
@@ -102,6 +111,52 @@ export const AITradingSignals = () => {
           }
         ];
 
+        // Generate live signals with real-time market events
+        const newLiveSignals: LiveSignal[] = [
+          {
+            type: 'volume_spike',
+            asset: 'BTC',
+            message: '250% volume increase detected',
+            timestamp: new Date(Date.now() - Math.random() * 300000).toLocaleTimeString(),
+            strength: 'high'
+          },
+          {
+            type: 'breakout',
+            asset: 'ETH',
+            message: 'Breaking resistance at $3,280',
+            timestamp: new Date(Date.now() - Math.random() * 600000).toLocaleTimeString(),
+            strength: 'medium'
+          },
+          {
+            type: 'price_alert',
+            asset: 'SOL',
+            message: '+8.5% price surge in 15 minutes',
+            timestamp: new Date(Date.now() - Math.random() * 900000).toLocaleTimeString(),
+            strength: 'high'
+          },
+          {
+            type: 'support_test',
+            asset: 'ADA',
+            message: 'Testing $0.42 support level',
+            timestamp: new Date(Date.now() - Math.random() * 1200000).toLocaleTimeString(),
+            strength: 'medium'
+          },
+          {
+            type: 'momentum_shift',
+            asset: 'MATIC',
+            message: 'RSI entering oversold territory',
+            timestamp: new Date(Date.now() - Math.random() * 1500000).toLocaleTimeString(),
+            strength: 'low'
+          },
+          {
+            type: 'volume_spike',
+            asset: 'LINK',
+            message: 'Unusual options activity detected',
+            timestamp: new Date(Date.now() - Math.random() * 1800000).toLocaleTimeString(),
+            strength: 'medium'
+          }
+        ];
+
         const newRecommendations: TradingRecommendation[] = [
           {
             action: 'buy',
@@ -126,6 +181,7 @@ export const AITradingSignals = () => {
         ];
 
         setSignals(newSignals);
+        setLiveSignals(newLiveSignals);
         setRecommendations(newRecommendations);
         
         // Randomize sentiment
@@ -183,6 +239,26 @@ export const AITradingSignals = () => {
     }
   };
 
+  const getLiveSignalIcon = (type: string) => {
+    switch (type) {
+      case 'volume_spike': return <Volume2 className="h-3 w-3 text-blue-300" />;
+      case 'breakout': return <TrendingUp className="h-3 w-3 text-green-300" />;
+      case 'price_alert': return <AlertTriangle className="h-3 w-3 text-orange-300" />;
+      case 'support_test': return <Target className="h-3 w-3 text-purple-300" />;
+      case 'momentum_shift': return <Activity className="h-3 w-3 text-red-300" />;
+      default: return <Zap className="h-3 w-3 text-gray-300" />;
+    }
+  };
+
+  const getLiveSignalColor = (strength: string) => {
+    switch (strength) {
+      case 'high': return 'border-red-300 bg-red-900/20';
+      case 'medium': return 'border-yellow-300 bg-yellow-900/20';
+      case 'low': return 'border-gray-300 bg-gray-900/20';
+      default: return 'border-gray-300 bg-gray-900/20';
+    }
+  };
+
   const currentAnalysis = marketAnalysis[marketSentiment];
 
   return (
@@ -230,19 +306,20 @@ export const AITradingSignals = () => {
             <div className="bg-gray-800/50 rounded-lg p-4">
               <h3 className="text-white font-medium flex items-center gap-2 mb-3">
                 <Zap className="h-4 w-4 text-blue-400" />
-                Live Signals
+                Live Market Alerts
+                <Clock className="h-3 w-3 text-gray-400" />
               </h3>
               <div className="space-y-2 max-h-32 overflow-y-auto">
-                {signals.map((signal, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm bg-gray-700/30 rounded p-2">
-                    <div className="flex items-center gap-2 flex-1">
-                      {getSignalTypeIcon(signal.type)}
-                      <span className="text-blue-300 font-medium text-xs">{signal.asset}</span>
-                      <span className="text-gray-300 text-xs">{signal.timeframe}</span>
+                {liveSignals.map((signal, index) => (
+                  <div key={index} className={`flex items-start gap-2 text-xs rounded p-2 border ${getLiveSignalColor(signal.strength)}`}>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      {getLiveSignalIcon(signal.type)}
+                      <span className="text-blue-300 font-medium">{signal.asset}</span>
                     </div>
-                    <Badge variant="outline" className={`text-xs h-5 ${getSignalTypeColor(signal.type)}`}>
-                      {signal.strength}%
-                    </Badge>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-gray-200 truncate">{signal.message}</div>
+                      <div className="text-gray-400 text-xs">{signal.timestamp}</div>
+                    </div>
                   </div>
                 ))}
               </div>
