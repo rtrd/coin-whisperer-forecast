@@ -50,7 +50,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
     );
   }
 
-  // Prepare chart data
+  // Prepare historical chart data
   const chartData: ChartDataPoint[] = data.map(d => ({
     timestamp: d.timestamp,
     date: new Date(d.timestamp).toLocaleDateString('en-US', { 
@@ -62,13 +62,13 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
     volume: d.volume || 0
   }));
 
-  // Get the last historical price point for connecting the prediction line
-  const lastHistoricalPrice = data[data.length - 1]?.price;
-  const lastHistoricalTimestamp = data[data.length - 1]?.timestamp;
-
   // Add prediction data if available
   if (prediction && prediction.length > 0) {
-    // Add a connecting point at the boundary between historical and predicted data
+    // Get the last historical price point for connecting the prediction line
+    const lastHistoricalPrice = data[data.length - 1]?.price;
+    const lastHistoricalTimestamp = data[data.length - 1]?.timestamp;
+
+    // Add a bridge point that connects historical data to predictions
     chartData.push({
       timestamp: lastHistoricalTimestamp,
       date: new Date(lastHistoricalTimestamp).toLocaleDateString('en-US', { 
@@ -76,26 +76,27 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
         day: 'numeric',
         hour: window.innerWidth < 768 ? undefined : '2-digit'
       }),
-      price: null,
-      predictedPrice: lastHistoricalPrice,
+      price: null, // No historical price for this point
+      predictedPrice: lastHistoricalPrice, // Start prediction from last historical price
       confidence: 1,
       volume: 0
     });
 
-    const predictionData: ChartDataPoint[] = prediction.map(p => ({
-      timestamp: p.timestamp,
-      date: new Date(p.timestamp).toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric',
-        hour: window.innerWidth < 768 ? undefined : '2-digit'
-      }),
-      price: null,
-      predictedPrice: p.predictedPrice,
-      confidence: p.confidence,
-      volume: 0
-    }));
-
-    chartData.push(...predictionData);
+    // Add all prediction points
+    prediction.forEach(p => {
+      chartData.push({
+        timestamp: p.timestamp,
+        date: new Date(p.timestamp).toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric',
+          hour: window.innerWidth < 768 ? undefined : '2-digit'
+        }),
+        price: null, // No historical price for future dates
+        predictedPrice: p.predictedPrice,
+        confidence: p.confidence,
+        volume: 0
+      });
+    });
   }
 
   const formatPrice = (value: number) => `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -109,15 +110,11 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
   return (
     <div className="h-64 md:h-96">
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
+        <LineChart data={chartData} margin={{ top: 10, right: 10, left: 10, bottom: 5 }}>
           <defs>
             <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
               <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
-            </linearGradient>
-            <linearGradient id="predictionGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10B981" stopOpacity={0.2}/>
-              <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
             </linearGradient>
           </defs>
           
@@ -158,28 +155,29 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             labelFormatter={(label) => `Date: ${label}`}
           />
           
-          {/* Historical Price Area */}
-          <Area 
+          {/* Historical Price Line */}
+          <Line 
             type="monotone" 
             dataKey="price" 
             stroke="#3B82F6" 
             strokeWidth={2}
-            fill="url(#priceGradient)"
             connectNulls={false}
             dot={false}
+            activeDot={{ r: 4, fill: '#3B82F6' }}
           />
           
-          {/* Prediction Line - continuing from historical data */}
+          {/* Prediction Line - dashed and different color */}
           <Line 
             type="monotone" 
             dataKey="predictedPrice" 
             stroke="#10B981" 
             strokeWidth={3}
             strokeDasharray="8 4"
-            dot={{ r: 3, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
             connectNulls={true}
+            dot={{ r: 3, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
+            activeDot={{ r: 5, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
           />
-        </AreaChart>
+        </LineChart>
       </ResponsiveContainer>
       
       {/* Legend */}
