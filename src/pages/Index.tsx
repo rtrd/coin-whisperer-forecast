@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { IndexHeader } from "@/components/IndexHeader";
-import { IndexControls } from "@/components/IndexControls";
 import { IndexMainContent } from "@/components/IndexMainContent";
 import { IndexSidebar } from "@/components/IndexSidebar";
 import WordPressIntegration from "@/components/WordPressIntegration";
@@ -13,6 +12,7 @@ import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
+import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
@@ -215,24 +215,11 @@ const Index = () => {
         {/* Crypto Filters */}
         <CryptoFilters onFilterChange={handleFilterChange} />
 
-        <IndexControls
-          selectedCrypto={selectedCrypto}
-          timeframe={timeframe}
-          predictionDays={predictionDays}
-          modelType={modelType}
-          filteredCryptos={filteredCryptos}
-          dataLoading={dataLoading}
-          predictionLoading={predictionLoading}
-          cryptoData={cryptoData}
-          onSelectCrypto={setSelectedCrypto}
-          onTimeframeChange={setTimeframe}
-          onPredictionDaysChange={setPredictionDays}
-          onModelTypeChange={setModelType}
-          onPredict={handlePredict}
-        />
-
         {/* Market Data Widget */}
         <MarketDataWidget cryptoOptions={filteredCryptos} />
+
+        {/* Independent AI Prediction Widget */}
+        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
 
         {/* Pump.fun Integration */}
         <PumpFunIntegration />
