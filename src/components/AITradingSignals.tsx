@@ -9,6 +9,7 @@ interface MarketSignal {
   strength: number;
   timeframe: string;
   description: string;
+  asset: string;
 }
 
 interface TradingRecommendation {
@@ -30,21 +31,21 @@ export const AITradingSignals = () => {
     bullish: {
       title: "Bulls in Control",
       description: "Strong buying pressure across major cryptocurrencies with institutional interest growing.",
-      color: "text-green-400",
+      color: "text-green-300",
       bgColor: "from-green-900/20 to-emerald-900/20",
       borderColor: "border-green-700/50"
     },
     bearish: {
       title: "Bears Dominating",
       description: "Selling pressure increasing with risk-off sentiment affecting crypto markets.",
-      color: "text-red-400",
+      color: "text-red-300",
       bgColor: "from-red-900/20 to-rose-900/20",
       borderColor: "border-red-700/50"
     },
     neutral: {
       title: "Market Consolidation",
       description: "Sideways movement as markets await key catalysts and price discovery.",
-      color: "text-yellow-400",
+      color: "text-yellow-300",
       bgColor: "from-yellow-900/20 to-orange-900/20",
       borderColor: "border-yellow-700/50"
     }
@@ -61,19 +62,43 @@ export const AITradingSignals = () => {
             type: 'bullish',
             strength: 85,
             timeframe: '4H',
-            description: 'Golden cross forming on Bitcoin with volume confirmation'
+            description: 'Golden cross forming with volume confirmation',
+            asset: 'BTC'
           },
           {
             type: 'neutral',
             strength: 60,
             timeframe: '1D',
-            description: 'Ethereum consolidating near key resistance levels'
+            description: 'Consolidating near key resistance levels',
+            asset: 'ETH'
           },
           {
             type: 'bearish',
             strength: 75,
             timeframe: '1H',
-            description: 'Altcoins showing weakness against BTC dominance rise'
+            description: 'Showing weakness against BTC dominance',
+            asset: 'ALTS'
+          },
+          {
+            type: 'bullish',
+            strength: 78,
+            timeframe: '6H',
+            description: 'Breaking above moving average resistance',
+            asset: 'SOL'
+          },
+          {
+            type: 'bullish',
+            strength: 68,
+            timeframe: '2H',
+            description: 'RSI bounce from oversold levels',
+            asset: 'ADA'
+          },
+          {
+            type: 'neutral',
+            strength: 55,
+            timeframe: '12H',
+            description: 'Testing support at key Fibonacci level',
+            asset: 'MATIC'
           }
         ];
 
@@ -128,17 +153,33 @@ export const AITradingSignals = () => {
 
   const getActionIcon = (action: string) => {
     switch (action) {
-      case 'buy': return <TrendingUp className="h-3 w-3 text-green-400" />;
-      case 'sell': return <TrendingDown className="h-3 w-3 text-red-400" />;
-      default: return <Target className="h-3 w-3 text-yellow-400" />;
+      case 'buy': return <TrendingUp className="h-3 w-3 text-green-300" />;
+      case 'sell': return <TrendingDown className="h-3 w-3 text-red-300" />;
+      default: return <Target className="h-3 w-3 text-yellow-300" />;
     }
   };
 
   const getActionColor = (action: string) => {
     switch (action) {
-      case 'buy': return 'text-green-400 border-green-400';
-      case 'sell': return 'text-red-400 border-red-400';
-      default: return 'text-yellow-400 border-yellow-400';
+      case 'buy': return 'text-green-300 border-green-300';
+      case 'sell': return 'text-red-300 border-red-300';
+      default: return 'text-yellow-300 border-yellow-300';
+    }
+  };
+
+  const getSignalTypeIcon = (type: string) => {
+    switch (type) {
+      case 'bullish': return <TrendingUp className="h-3 w-3 text-green-300" />;
+      case 'bearish': return <TrendingDown className="h-3 w-3 text-red-300" />;
+      default: return <Activity className="h-3 w-3 text-yellow-300" />;
+    }
+  };
+
+  const getSignalTypeColor = (type: string) => {
+    switch (type) {
+      case 'bullish': return 'text-green-300 border-green-300';
+      case 'bearish': return 'text-red-300 border-red-300';
+      default: return 'text-yellow-300 border-yellow-300';
     }
   };
 
@@ -171,7 +212,7 @@ export const AITradingSignals = () => {
                 <div className={`font-semibold ${currentAnalysis.color}`}>
                   {currentAnalysis.title}
                 </div>
-                <p className="text-gray-300 text-sm">
+                <p className="text-gray-200 text-sm">
                   {currentAnalysis.description}
                 </p>
                 <div className="w-full bg-gray-700 rounded-full h-2">
@@ -191,20 +232,15 @@ export const AITradingSignals = () => {
                 <Zap className="h-4 w-4 text-blue-400" />
                 Live Signals
               </h3>
-              <div className="space-y-2">
-                {signals.slice(0, 2).map((signal, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      {signal.type === 'bullish' ? (
-                        <TrendingUp className="h-3 w-3 text-green-400" />
-                      ) : signal.type === 'bearish' ? (
-                        <TrendingDown className="h-3 w-3 text-red-400" />
-                      ) : (
-                        <Activity className="h-3 w-3 text-yellow-400" />
-                      )}
-                      <span className="text-gray-300">{signal.timeframe}</span>
+              <div className="space-y-2 max-h-32 overflow-y-auto">
+                {signals.map((signal, index) => (
+                  <div key={index} className="flex items-center justify-between text-sm bg-gray-700/30 rounded p-2">
+                    <div className="flex items-center gap-2 flex-1">
+                      {getSignalTypeIcon(signal.type)}
+                      <span className="text-blue-300 font-medium text-xs">{signal.asset}</span>
+                      <span className="text-gray-300 text-xs">{signal.timeframe}</span>
                     </div>
-                    <Badge variant="outline" className="text-xs h-5">
+                    <Badge variant="outline" className={`text-xs h-5 ${getSignalTypeColor(signal.type)}`}>
                       {signal.strength}%
                     </Badge>
                   </div>
@@ -231,16 +267,16 @@ export const AITradingSignals = () => {
                       {rec.action}
                     </Badge>
                   </div>
-                  <div className="text-xs text-gray-300">
+                  <div className="text-xs text-gray-200">
                     {rec.reason}
                   </div>
                   <div className="flex justify-between items-center">
                     {rec.targetPrice && (
-                      <span className="text-xs text-blue-400">
+                      <span className="text-xs text-blue-300">
                         Target: ${rec.targetPrice.toLocaleString()}
                       </span>
                     )}
-                    <span className="text-xs text-gray-400">
+                    <span className="text-xs text-gray-300">
                       {rec.confidence}% confident
                     </span>
                   </div>
@@ -263,8 +299,8 @@ export const AITradingSignals = () => {
                     signal.type === 'bearish' ? 'bg-red-400' : 'bg-yellow-400'
                   }`}></div>
                   <div>
-                    <span className="text-gray-300">{signal.description}</span>
-                    <div className="text-xs text-gray-500 mt-1">
+                    <span className="text-gray-200">{signal.asset}: {signal.description}</span>
+                    <div className="text-xs text-gray-400 mt-1">
                       Strength: {signal.strength}% • Timeframe: {signal.timeframe}
                     </div>
                   </div>
