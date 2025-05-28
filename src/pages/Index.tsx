@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -257,11 +258,14 @@ const Index = () => {
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
-        {/* WordPress Integration */}
-        <WordPressIntegration />
-
         {/* Crypto Filters */}
         <CryptoFilters onFilterChange={handleFilterChange} />
+
+        {/* Dynamic Market Movers Widget - Now always visible and compact */}
+        <DynamicMarketMovers />
+
+        {/* WordPress Integration */}
+        <WordPressIntegration />
 
         {/* Market Data Widget */}
         <MarketDataWidget cryptoOptions={filteredCryptos} />
@@ -271,9 +275,6 @@ const Index = () => {
 
         {/* Pump.fun Integration */}
         <PumpFunIntegration />
-
-        {/* Dynamic Market Movers Widget */}
-        <DynamicMarketMovers />
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
