@@ -1,46 +1,59 @@
 
 import React from 'react';
-import { HelpCircle } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Info, Brain, Zap, Target, Layers } from "lucide-react";
 
 interface ModelTypeTooltipProps {
   modelType: string;
 }
 
-export const ModelTypeTooltip = ({ modelType }: ModelTypeTooltipProps) => {
+export const ModelTypeTooltip: React.FC<ModelTypeTooltipProps> = ({ modelType }) => {
   const getModelInfo = (type: string) => {
     switch (type) {
       case 'basic':
         return {
-          name: 'Technical Trend Spotter',
-          description: 'Uses moving averages, RSI, and basic chart patterns. Great for beginners who want simple, reliable signals based on price action.',
-          accuracy: '65-70%',
-          bestFor: 'Short-term trends, day trading'
+          icon: <Zap className="h-4 w-4 text-blue-400" />,
+          title: 'Basic LSTM',
+          description: 'Long Short-Term Memory neural network designed for basic time series prediction.',
+          bestFor: 'Short-term predictions (1-3 days)',
+          features: ['Fast processing', 'Simple pattern recognition', 'Good for stable markets'],
+          recommendation: 'Choose this for quick predictions on well-established cryptocurrencies with stable price patterns.'
         };
       case 'advanced':
         return {
-          name: 'AI Market Prophet',
-          description: 'Advanced neural networks analyzing 50+ indicators including sentiment, volume patterns, whale movements, and macro trends.',
-          accuracy: '78-85%',
-          bestFor: 'Medium-term predictions, swing trading'
+          icon: <Brain className="h-4 w-4 text-purple-400" />,
+          title: 'Advanced Neural Network',
+          description: 'Multi-layer neural network with advanced feature engineering and technical indicators.',
+          bestFor: 'Medium-term predictions (3-14 days)',
+          features: ['Technical indicator analysis', 'Volume pattern recognition', 'Market sentiment integration'],
+          recommendation: 'Recommended for most users. Balances accuracy with processing speed for reliable predictions.'
         };
       case 'ensemble':
         return {
-          name: 'Multi-Brain Consensus',
-          description: 'Combines 5 different AI models: Technical analyst, Sentiment tracker, Whale watcher, News processor, and Market correlator.',
-          accuracy: '82-88%',
-          bestFor: 'High-confidence predictions, portfolio decisions'
+          icon: <Layers className="h-4 w-4 text-green-400" />,
+          title: 'Ensemble Model',
+          description: 'Combines multiple AI models (LSTM, Random Forest, SVM) for enhanced accuracy.',
+          bestFor: 'All timeframes with higher accuracy',
+          features: ['Multiple model voting', 'Reduced overfitting', 'Cross-validation'],
+          recommendation: 'Best choice for important trading decisions. Higher accuracy but slower processing.'
+        };
+      case 'transformer':
+        return {
+          icon: <Target className="h-4 w-4 text-red-400" />,
+          title: 'Transformer Model',
+          description: 'State-of-the-art attention-based model similar to GPT, designed for complex pattern recognition.',
+          bestFor: 'Long-term predictions (14-30 days)',
+          features: ['Attention mechanisms', 'Complex pattern detection', 'Market regime changes'],
+          recommendation: 'Choose for volatile cryptocurrencies or when market conditions are changing rapidly.'
         };
       default:
         return {
-          name: 'Unknown Model',
-          description: 'Model information not available',
-          accuracy: 'N/A',
-          bestFor: 'N/A'
+          icon: <Info className="h-4 w-4 text-gray-400" />,
+          title: 'Model Information',
+          description: 'Select a model type to see detailed information.',
+          bestFor: 'Various use cases',
+          features: ['Different capabilities'],
+          recommendation: 'Choose based on your prediction needs.'
         };
     }
   };
@@ -48,26 +61,44 @@ export const ModelTypeTooltip = ({ modelType }: ModelTypeTooltipProps) => {
   const modelInfo = getModelInfo(modelType);
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <HelpCircle className="h-4 w-4 text-blue-400 cursor-help ml-2" />
-      </TooltipTrigger>
-      <TooltipContent className="max-w-xs p-4 bg-gray-800 border-gray-600">
-        <div className="space-y-2">
-          <h4 className="font-bold text-blue-400">{modelInfo.name}</h4>
-          <p className="text-sm text-gray-200">{modelInfo.description}</p>
-          <div className="border-t border-gray-600 pt-2 mt-2">
-            <div className="flex justify-between text-xs">
-              <span className="text-gray-400">Accuracy:</span>
-              <span className="text-green-400 font-medium">{modelInfo.accuracy}</span>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Info className="h-3 w-3 text-gray-400 hover:text-white transition-colors" />
+        </TooltipTrigger>
+        <TooltipContent className="max-w-sm p-4 bg-gray-800 border-gray-600">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              {modelInfo.icon}
+              <h4 className="font-semibold text-white">{modelInfo.title}</h4>
             </div>
-            <div className="flex justify-between text-xs mt-1">
-              <span className="text-gray-400">Best for:</span>
-              <span className="text-yellow-400 font-medium">{modelInfo.bestFor}</span>
+            
+            <p className="text-sm text-gray-300">{modelInfo.description}</p>
+            
+            <div>
+              <h5 className="text-sm font-medium text-white mb-1">Best For:</h5>
+              <p className="text-sm text-blue-300">{modelInfo.bestFor}</p>
+            </div>
+            
+            <div>
+              <h5 className="text-sm font-medium text-white mb-1">Key Features:</h5>
+              <ul className="text-sm text-gray-300 space-y-1">
+                {modelInfo.features.map((feature, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="border-t border-gray-600 pt-2">
+              <p className="text-sm text-green-300 font-medium">💡 Recommendation:</p>
+              <p className="text-sm text-gray-300 mt-1">{modelInfo.recommendation}</p>
             </div>
           </div>
-        </div>
-      </TooltipContent>
-    </Tooltip>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

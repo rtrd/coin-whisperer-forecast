@@ -8,6 +8,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Activity, Brain, Target, Info, BarChart3, TrendingUp, TrendingDown } from "lucide-react";
 import { CryptoSearchSelector } from "./CryptoSearchSelector";
 import { PriceChart } from "./PriceChart";
+import { ModelTypeTooltip } from "./ModelTypeTooltip";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { toast } from "sonner";
@@ -89,8 +90,18 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
                   <TooltipTrigger>
                     <Info className="h-3 w-3 text-gray-400" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Historical data period used for analysis and prediction generation</p>
+                  <TooltipContent className="max-w-xs">
+                    <div className="space-y-2">
+                      <p className="font-medium">Historical Data Period</p>
+                      <p className="text-sm">Amount of historical price data used to train the AI model:</p>
+                      <ul className="text-sm space-y-1">
+                        <li><strong>1 Day:</strong> Ultra short-term patterns, good for scalping</li>
+                        <li><strong>7 Days:</strong> Short-term trends and weekly patterns</li>
+                        <li><strong>30 Days:</strong> Medium-term analysis with monthly cycles</li>
+                        <li><strong>90 Days:</strong> Long-term trends and seasonal patterns</li>
+                      </ul>
+                      <p className="text-xs text-blue-300">💡 Longer periods provide more context but may miss recent trends</p>
+                    </div>
                   </TooltipContent>
                 </Tooltip>
               </label>
@@ -114,8 +125,18 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
                   <TooltipTrigger>
                     <Info className="h-3 w-3 text-gray-400" />
                   </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Number of days into the future to generate price predictions</p>
+                  <TooltipContent className="max-w-xs">
+                    <div className="space-y-2">
+                      <p className="font-medium">Forecast Timeline</p>
+                      <p className="text-sm">How far into the future to predict prices:</p>
+                      <ul className="text-sm space-y-1">
+                        <li><strong>1-3 Days:</strong> Highest accuracy, best for day trading</li>
+                        <li><strong>7 Days:</strong> Good for swing trading strategies</li>
+                        <li><strong>14 Days:</strong> Medium-term position planning</li>
+                        <li><strong>30 Days:</strong> Long-term investment decisions</li>
+                      </ul>
+                      <p className="text-xs text-yellow-300">⚠️ Accuracy decreases with longer prediction periods</p>
+                    </div>
                   </TooltipContent>
                 </Tooltip>
               </label>
@@ -134,7 +155,10 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
             </div>
             
             <div>
-              <label className="text-sm font-medium text-gray-200 mb-2 block">Model Type</label>
+              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
+                Model Type
+                <ModelTypeTooltip modelType={modelType} />
+              </label>
               <Select value={modelType} onValueChange={setModelType}>
                 <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                   <SelectValue />

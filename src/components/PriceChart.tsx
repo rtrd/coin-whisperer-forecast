@@ -52,8 +52,26 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
     volume: d.volume || 0
   }));
 
+  // Get the last historical price point for connecting the prediction line
+  const lastHistoricalPrice = data[data.length - 1]?.price;
+  const lastHistoricalTimestamp = data[data.length - 1]?.timestamp;
+
   // Add prediction data if available
   if (prediction && prediction.length > 0) {
+    // Add a connecting point at the boundary between historical and predicted data
+    chartData.push({
+      timestamp: lastHistoricalTimestamp,
+      date: new Date(lastHistoricalTimestamp).toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: window.innerWidth < 768 ? undefined : '2-digit'
+      }),
+      price: null,
+      predictedPrice: lastHistoricalPrice,
+      confidence: 1,
+      volume: 0
+    });
+
     const predictionData = prediction.map(p => ({
       timestamp: p.timestamp,
       date: new Date(p.timestamp).toLocaleDateString('en-US', { 
@@ -88,7 +106,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
               <stop offset="95%" stopColor="#3B82F6" stopOpacity={0}/>
             </linearGradient>
             <linearGradient id="predictionGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
+              <stop offset="5%" stopColor="#10B981" stopOpacity={0.2}/>
               <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
             </linearGradient>
           </defs>
@@ -121,9 +139,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             }}
             formatter={(value: number, name: string) => [
               name === 'price' ? formatPrice(value) : 
-              name === 'predictedPrice' ? `${formatPrice(value)} (Predicted)` :
+              name === 'predictedPrice' ? `${formatPrice(value)} (AI Prediction)` :
               name === 'volume' ? formatVolume(value) : value,
-              name === 'price' ? 'Current Price' :
+              name === 'price' ? 'Historical Price' :
               name === 'predictedPrice' ? 'AI Prediction' :
               name === 'volume' ? 'Volume' : name
             ]}
@@ -141,7 +159,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             dot={false}
           />
           
-          {/* Prediction Line */}
+          {/* Prediction Line - continuing from historical data */}
           <Line 
             type="monotone" 
             dataKey="predictedPrice" 
@@ -149,10 +167,24 @@ export const PriceChart: React.FC<PriceChartProps> = ({ data, prediction, isLoad
             strokeWidth={3}
             strokeDasharray="8 4"
             dot={{ r: 3, fill: '#10B981', strokeWidth: 2, stroke: '#ffffff' }}
-            connectNulls={false}
+            connectNulls={true}
           />
         </AreaChart>
       </ResponsiveContainer>
+      
+      {/* Legend */}
+      {prediction && prediction.length > 0 && (
+        <div className="flex justify-center gap-6 mt-4 text-sm">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-0.5 bg-blue-500"></div>
+            <span className="text-gray-300">Historical Price</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-0.5 bg-green-500 border-dashed" style={{ borderTop: '2px dashed #10B981', height: '1px', backgroundColor: 'transparent' }}></div>
+            <span className="text-gray-300">AI Prediction</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
