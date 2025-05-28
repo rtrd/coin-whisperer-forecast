@@ -12,6 +12,7 @@ import { CryptoFilters } from "@/components/CryptoFilters";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
+import { MarketDataWidget } from "@/components/MarketDataWidget";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
@@ -210,6 +211,9 @@ const Index = () => {
 
         {/* WordPress Integration */}
         <WordPressIntegration />
+
+        {/* Market Data Widget */}
+        <MarketDataWidget cryptoOptions={cryptoOptions} />
 
         {/* Pump.fun Integration */}
         <PumpFunIntegration />
