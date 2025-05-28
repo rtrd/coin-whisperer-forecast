@@ -212,15 +212,6 @@ const Index = () => {
         {/* WordPress Integration */}
         <WordPressIntegration />
 
-        {/* Market Data Widget */}
-        <MarketDataWidget cryptoOptions={cryptoOptions} />
-
-        {/* Pump.fun Integration */}
-        <PumpFunIntegration />
-
-        {/* Dynamic Market Movers Widget */}
-        <DynamicMarketMovers />
-
         {/* Crypto Filters */}
         <CryptoFilters onFilterChange={handleFilterChange} />
 
@@ -239,6 +230,15 @@ const Index = () => {
           onModelTypeChange={setModelType}
           onPredict={handlePredict}
         />
+
+        {/* Market Data Widget */}
+        <MarketDataWidget cryptoOptions={filteredCryptos} />
+
+        {/* Pump.fun Integration */}
+        <PumpFunIntegration />
+
+        {/* Dynamic Market Movers Widget */}
+        <DynamicMarketMovers />
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,12 +15,10 @@ type FilterType = 'market_cap' | 'volume' | 'gainers' | 'losers' | 'trending';
 export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOptions }) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>('market_cap');
 
-  // Mock market data - in a real app this would come from an API
+  // Generate market data from the filtered crypto options
   const generateMarketData = (filter: FilterType) => {
-    let sortedData = [...cryptoOptions].slice(0, 50); // Get more data to filter from
-    
-    // Add mock market data
-    const dataWithMarketData = sortedData.map((crypto, index) => {
+    // Use the passed cryptoOptions instead of the full list
+    let dataWithMarketData = cryptoOptions.map((crypto, index) => {
       const basePrice = parseFloat(crypto.prediction?.replace('%', '').replace('+', '')) || 0;
       const mockPrice = Math.random() * 1000 + 1;
       const mockChange24h = (Math.random() - 0.5) * 20; // -10% to +10%
