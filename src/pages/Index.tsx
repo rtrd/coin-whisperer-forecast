@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexMainContent } from "@/components/IndexMainContent";
 import { IndexSidebar } from "@/components/IndexSidebar";
 import WordPressIntegration from "@/components/WordPressIntegration";
-import { DynamicMarketMovers } from "@/components/DynamicMarketMovers";
+import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 import { CryptoFilters } from "@/components/CryptoFilters";
@@ -261,8 +260,8 @@ const Index = () => {
         {/* WordPress Integration - Blog feed first */}
         <WordPressIntegration />
 
-        {/* Dynamic Market Movers Widget - Top 5 gainers/losers second */}
-        <DynamicMarketMovers />
+        {/* AI Trading Signals - Replace market movers */}
+        <AITradingSignals />
 
         {/* Crypto Filters - Smart filters third */}
         <CryptoFilters onFilterChange={handleFilterChange} />
