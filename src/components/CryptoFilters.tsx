@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -134,7 +133,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
                   </SelectTrigger>
                   <SelectContent className="bg-gray-700 border-gray-600">
                     <SelectItem value="all" className="text-white">All Categories</SelectItem>
-                    <SelectItem value="Major" className="text-white">Major</SelectItem>
+                    <SelectItem value="Layer 1" className="text-white">Layer 1</SelectItem>
                     <SelectItem value="DeFi" className="text-white">DeFi</SelectItem>
                     <SelectItem value="Meme" className="text-white">Meme</SelectItem>
                     <SelectItem value="L2" className="text-white">Layer 2</SelectItem>

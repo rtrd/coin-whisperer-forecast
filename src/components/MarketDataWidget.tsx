@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -248,7 +247,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOption
                       <Badge 
                         variant="outline" 
                         className={`
-                          ${token.category === 'Major' ? 'border-blue-500 text-blue-400' : ''}
+                          ${token.category === 'Layer 1' ? 'border-blue-500 text-blue-400' : ''}
                           ${token.category === 'DeFi' ? 'border-green-500 text-green-400' : ''}
                           ${token.category === 'Meme' ? 'border-purple-500 text-purple-400' : ''}
                           ${token.category === 'AI' ? 'border-cyan-500 text-cyan-400' : ''}

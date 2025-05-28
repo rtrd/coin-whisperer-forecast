@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,22 +10,22 @@ const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
 
   const cryptoOptions = [
-    // Major Cryptocurrencies
-    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
-    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' },
-    { value: 'binancecoin', label: 'BNB (BNB)', icon: '🔶', category: 'Major', score: 7.8, prediction: '+6.1%' },
-    { value: 'ripple', label: 'XRP (XRP)', icon: '💧', category: 'Major', score: 7.2, prediction: '+4.7%' },
-    { value: 'cardano', label: 'Cardano (ADA)', icon: '₳', category: 'Major', score: 6.9, prediction: '+3.2%' },
-    { value: 'solana', label: 'Solana (SOL)', icon: '◎', category: 'Major', score: 8.1, prediction: '+15.8%' },
-    { value: 'avalanche-2', label: 'Avalanche (AVAX)', icon: '🔺', category: 'Major', score: 7.5, prediction: '+7.9%' },
-    { value: 'polygon', label: 'Polygon (MATIC)', icon: '⬟', category: 'Major', score: 7.3, prediction: '+5.4%' },
-    { value: 'polkadot', label: 'Polkadot (DOT)', icon: '⚫', category: 'Major', score: 6.8, prediction: '+2.1%' },
-    { value: 'chainlink', label: 'Chainlink (LINK)', icon: '🔗', category: 'Major', score: 7.7, prediction: '+9.3%' },
-    { value: 'litecoin', label: 'Litecoin (LTC)', icon: 'Ł', category: 'Major', score: 6.5, prediction: '+3.8%' },
-    { value: 'bitcoin-cash', label: 'Bitcoin Cash (BCH)', icon: '₿', category: 'Major', score: 6.2, prediction: '+2.9%' },
-    { value: 'stellar', label: 'Stellar (XLM)', icon: '🌟', category: 'Major', score: 6.4, prediction: '+4.1%' },
-    { value: 'cosmos', label: 'Cosmos (ATOM)', icon: '⚛️', category: 'Major', score: 7.1, prediction: '+6.8%' },
-    { value: 'algorand', label: 'Algorand (ALGO)', icon: '🔺', category: 'Major', score: 6.7, prediction: '+4.5%' },
+    // Layer 1 Cryptocurrencies
+    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Layer 1', score: 8.5, prediction: '+12.5%' },
+    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Layer 1', score: 8.2, prediction: '+8.3%' },
+    { value: 'binancecoin', label: 'BNB (BNB)', icon: '🔶', category: 'Layer 1', score: 7.8, prediction: '+6.1%' },
+    { value: 'ripple', label: 'XRP (XRP)', icon: '💧', category: 'Layer 1', score: 7.2, prediction: '+4.7%' },
+    { value: 'cardano', label: 'Cardano (ADA)', icon: '₳', category: 'Layer 1', score: 6.9, prediction: '+3.2%' },
+    { value: 'solana', label: 'Solana (SOL)', icon: '◎', category: 'Layer 1', score: 8.1, prediction: '+15.8%' },
+    { value: 'avalanche-2', label: 'Avalanche (AVAX)', icon: '🔺', category: 'Layer 1', score: 7.5, prediction: '+7.9%' },
+    { value: 'polygon', label: 'Polygon (MATIC)', icon: '⬟', category: 'Layer 1', score: 7.3, prediction: '+5.4%' },
+    { value: 'polkadot', label: 'Polkadot (DOT)', icon: '⚫', category: 'Layer 1', score: 6.8, prediction: '+2.1%' },
+    { value: 'chainlink', label: 'Chainlink (LINK)', icon: '🔗', category: 'Layer 1', score: 7.7, prediction: '+9.3%' },
+    { value: 'litecoin', label: 'Litecoin (LTC)', icon: 'Ł', category: 'Layer 1', score: 6.5, prediction: '+3.8%' },
+    { value: 'bitcoin-cash', label: 'Bitcoin Cash (BCH)', icon: '₿', category: 'Layer 1', score: 6.2, prediction: '+2.9%' },
+    { value: 'stellar', label: 'Stellar (XLM)', icon: '🌟', category: 'Layer 1', score: 6.4, prediction: '+4.1%' },
+    { value: 'cosmos', label: 'Cosmos (ATOM)', icon: '⚛️', category: 'Layer 1', score: 7.1, prediction: '+6.8%' },
+    { value: 'algorand', label: 'Algorand (ALGO)', icon: '🔺', category: 'Layer 1', score: 6.7, prediction: '+4.5%' },
     
     // DeFi Tokens
     { value: 'uniswap', label: 'Uniswap (UNI)', icon: '🦄', category: 'DeFi', score: 7.1, prediction: '+11.2%' },
