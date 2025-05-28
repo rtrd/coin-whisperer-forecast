@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock, ChevronDown, ChevronUp, Rocket, ExternalLink } from "lucide-react";
+import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock, ChevronDown, ChevronUp } from "lucide-react";
 
 interface MarketSignal {
   type: 'bullish' | 'bearish' | 'neutral';
@@ -29,17 +28,6 @@ interface TradingRecommendation {
   targetPrice?: number;
 }
 
-interface PumpToken {
-  name: string;
-  symbol: string;
-  price: number;
-  change24h: number;
-  volume: number;
-  marketCap: number;
-  icon: string;
-  pumpScore: number;
-}
-
 export const AITradingSignals = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [marketSentiment, setMarketSentiment] = useState<'bullish' | 'bearish' | 'neutral'>('bullish');
@@ -47,7 +35,6 @@ export const AITradingSignals = () => {
   const [signals, setSignals] = useState<MarketSignal[]>([]);
   const [liveSignals, setLiveSignals] = useState<LiveSignal[]>([]);
   const [recommendations, setRecommendations] = useState<TradingRecommendation[]>([]);
-  const [trendingTokens, setTrendingTokens] = useState<PumpToken[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const marketAnalysis = {
@@ -194,19 +181,9 @@ export const AITradingSignals = () => {
           }
         ];
 
-        // Add Pump.fun trending tokens
-        const mockTokens: PumpToken[] = [
-          { name: 'MoonShot', symbol: 'MOON', price: 0.0012, change24h: 1250, volume: 890000, marketCap: 2400000, icon: '🌙', pumpScore: 9.8 },
-          { name: 'RocketCoin', symbol: 'ROCK', price: 0.00089, change24h: 890, volume: 650000, marketCap: 1800000, icon: '🚀', pumpScore: 9.5 },
-          { name: 'LaserEyes', symbol: 'LASER', price: 0.0034, change24h: 650, volume: 1200000, marketCap: 5600000, icon: '👁️', pumpScore: 9.2 },
-          { name: 'DiamondHands', symbol: 'DIAM', price: 0.0067, change24h: 450, volume: 980000, marketCap: 8900000, icon: '💎', pumpScore: 8.9 },
-          { name: 'ToTheMoon', symbol: 'TTM', price: 0.0023, change24h: 320, volume: 750000, marketCap: 3400000, icon: '🌕', pumpScore: 8.7 }
-        ];
-
         setSignals(newSignals);
         setLiveSignals(newLiveSignals);
         setRecommendations(newRecommendations);
-        setTrendingTokens(mockTokens);
         
         // Randomize sentiment
         const sentiments: ('bullish' | 'bearish' | 'neutral')[] = ['bullish', 'bearish', 'neutral'];
@@ -283,12 +260,6 @@ export const AITradingSignals = () => {
     }
   };
 
-  const formatNumber = (num: number) => {
-    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
-    return num.toString();
-  };
-
   const currentAnalysis = marketAnalysis[marketSentiment];
 
   return (
@@ -300,9 +271,8 @@ export const AITradingSignals = () => {
               <CardTitle className="text-white flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
                   <Brain className="h-5 w-5 text-purple-400" />
-                  AI Trading Signals & Pump.fun Integration
+                  AI Trading Signals
                   {isAnalyzing && <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>}
-                  <Badge className="bg-orange-600">LIVE</Badge>
                 </div>
                 <div className="flex items-center gap-2">
                   <Badge variant="outline" className="text-purple-300 border-purple-300">
@@ -318,7 +288,7 @@ export const AITradingSignals = () => {
             </CardHeader>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-4">
               {/* Market Sentiment Overview */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-gray-800/50 rounded-lg p-4">
@@ -370,70 +340,6 @@ export const AITradingSignals = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-              </div>
-
-              {/* Pump.fun Trending Tokens Section */}
-              <div className="bg-gradient-to-br from-orange-900/30 to-red-900/30 rounded-lg border border-orange-700/50 p-4">
-                <div className="flex items-center gap-2 mb-4">
-                  <Rocket className="h-5 w-5 text-orange-400" />
-                  <h3 className="text-white font-bold text-lg">Trending Pump Tokens</h3>
-                  <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-                  {trendingTokens.map((token, index) => (
-                    <div key={index} className="p-4 bg-gray-800/50 rounded-lg border border-gray-600">
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <span className="text-2xl">{token.icon}</span>
-                          <div>
-                            <div className="text-white font-bold">{token.symbol}</div>
-                            <div className="text-gray-400 text-xs">{token.name}</div>
-                          </div>
-                        </div>
-                        <Badge className="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                          {token.pumpScore}
-                        </Badge>
-                      </div>
-                      
-                      <div className="space-y-2 text-sm mb-3">
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Price:</span>
-                          <span className="text-white">${token.price.toFixed(4)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">24h:</span>
-                          <span className="text-green-400 font-bold">+{token.change24h}%</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Volume:</span>
-                          <span className="text-white">${formatNumber(token.volume)}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-400">Market Cap:</span>
-                          <span className="text-white">${formatNumber(token.marketCap)}</span>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-2">
-                        <Button 
-                          className="flex-1 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
-                          size="sm"
-                        >
-                          <ExternalLink className="h-3 w-3 mr-1" />
-                          Pump.fun
-                        </Button>
-                        <Button 
-                          className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                          size="sm"
-                          onClick={() => window.open('https://andmilo.com', '_blank')}
-                        >
-                          Buy
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
 

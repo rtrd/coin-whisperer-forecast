@@ -1,166 +1,171 @@
 
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, CheckCircle, Star, Crown } from "lucide-react";
+import { Brain, Crown, Check, Mail, ArrowLeft } from "lucide-react";
+import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const Subscribe = () => {
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    toast.success("Successfully subscribed! Premium features unlocked.");
+    setIsLoading(false);
+    setEmail('');
+  };
+
+  const premiumFeatures = [
+    "Advanced AI Predictions with 95% accuracy",
+    "Real-time alerts for all 65+ cryptocurrencies",
+    "Exclusive pump.fun integration",
+    "Technical analysis with 50+ indicators",
+    "Portfolio tracking and recommendations",
+    "Priority customer support",
+    "Ad-free experience",
+    "Early access to new features"
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      <div className="container mx-auto px-4 py-4 md:py-8">
+      <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex items-center gap-4 mb-6 md:mb-8">
+        <div className="flex items-center gap-4 mb-8">
           <Link to="/">
-            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+            <Button variant="outline" size="sm" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
+              Back to Dashboard
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white text-shadow-lg">
-              Upgrade to Premium
-            </h1>
-            <p className="text-gray-300 mt-2">
-              Unlock advanced AI predictions and premium features
-            </p>
-          </div>
         </div>
 
-        {/* Subscription Content */}
-        <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white text-center">
+        <div className="max-w-4xl mx-auto">
+          {/* Main Title */}
+          <div className="text-center mb-12">
+            <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
+              <Crown className="h-12 w-12 text-yellow-400" />
               Unlock Premium Features
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Feature List */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span>Advanced AI Price Predictions</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span>Real-Time Market Analysis</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span>Exclusive Trading Signals</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span>Priority Support</span>
-              </div>
-              <div className="flex items-center gap-3 text-gray-300">
-                <CheckCircle className="h-5 w-5 text-green-500" />
-                <span>Ad-Free Experience</span>
-              </div>
-            </div>
-
-            {/* Pricing Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Monthly Plan */}
-              <Card className="bg-gray-700/50 border-gray-600 hover:border-blue-500 transition-all">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-xl font-semibold text-white">Monthly</CardTitle>
-                  <div className="flex items-center justify-center mt-2">
-                    <span className="text-gray-300">$</span>
-                    <span className="text-3xl font-bold text-white">19</span>
-                    <span className="text-gray-300">/month</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                    Subscribe Monthly
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Yearly Plan */}
-              <Card className="bg-gray-700/50 border-gray-600 hover:border-purple-500 transition-all">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-xl font-semibold text-white flex items-center justify-center gap-2">
-                    Yearly <Badge className="bg-purple-600">Save 20%</Badge>
-                  </CardTitle>
-                  <div className="flex items-center justify-center mt-2">
-                    <span className="text-gray-300">$</span>
-                    <span className="text-3xl font-bold text-white">179</span>
-                    <span className="text-gray-300">/year</span>
-                  </div>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                    Subscribe Yearly
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Premium Benefits */}
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-white mb-2">
-                <Star className="h-5 w-5 inline-block mr-1 align-middle" />
-                Premium Benefits
-              </h3>
-              <p className="text-gray-300">
-                Unlock exclusive features and get the most out of our AI-powered platform.
-              </p>
-            </div>
-
-            {/* Guarantee */}
-            <div className="text-center">
-              <p className="text-sm text-gray-400">
-                <CheckCircle className="h-4 w-4 inline-block mr-1 align-middle" />
-                30-Day Money-Back Guarantee
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Testimonials */}
-        <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-white text-center">
-              What Our Premium Users Say
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {/* Testimonial 1 */}
-            <div className="p-4 bg-gray-700/50 rounded-lg">
-              <p className="text-gray-300 italic">
-                "The AI predictions are incredibly accurate! I've made significant profits since upgrading to premium."
-              </p>
-              <p className="text-sm text-gray-400 mt-2">- John S.</p>
-            </div>
-
-            {/* Testimonial 2 */}
-            <div className="p-4 bg-gray-700/50 rounded-lg">
-              <p className="text-gray-300 italic">
-                "The real-time market analysis has helped me make informed decisions and stay ahead of the game."
-              </p>
-              <p className="text-sm text-gray-400 mt-2">- Emily K.</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Call to Action */}
-        <Card className="bg-gradient-to-r from-purple-800/50 to-pink-800/50 border-purple-700 shadow-2xl">
-          <CardContent className="text-center py-8">
-            <h2 className="text-2xl font-bold text-white mb-4">
-              Ready to Unlock Premium?
-            </h2>
-            <p className="text-gray-300 mb-6">
-              Upgrade now and take your crypto trading to the next level!
+              <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold">PRO</Badge>
+            </h1>
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+              Get access to advanced AI predictions, real-time alerts, and exclusive trading insights
             </p>
-            <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-medium transition-all">
-              Get Premium Now
-              <Crown className="h-5 w-5 ml-2" />
-            </Button>
-          </CardContent>
-        </Card>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Subscription Form */}
+            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Mail className="h-5 w-5 text-blue-400" />
+                  Subscribe to Unlock
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Enter your email to get instant access to all premium features
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Input
+                      type="email"
+                      placeholder="Enter your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="bg-gray-700 border-gray-600 text-white text-lg h-12"
+                      required
+                    />
+                  </div>
+                  
+                  <Button 
+                    type="submit"
+                    disabled={isLoading}
+                    className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg h-12 shadow-lg"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <Brain className="h-5 w-5 animate-spin" />
+                        Activating Premium...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Crown className="h-5 w-5" />
+                        Unlock Premium Access
+                      </div>
+                    )}
+                  </Button>
+                </form>
+
+                <div className="mt-6 p-4 bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-700/50 rounded-lg">
+                  <p className="text-green-300 text-sm text-center">
+                    ✨ <strong>Limited Time:</strong> Free premium access for early subscribers!
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Features List */}
+            <Card className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border-purple-700/50 shadow-2xl">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Brain className="h-5 w-5 text-purple-400" />
+                  Premium Features
+                </CardTitle>
+                <CardDescription className="text-gray-300">
+                  Everything you need for successful crypto trading
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {premiumFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3 p-3 bg-gray-800/30 rounded-lg">
+                      <Check className="h-5 w-5 text-green-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-200">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Stats Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <Card className="bg-gray-800/50 border-gray-700 text-center">
+              <CardContent className="pt-6">
+                <div className="text-3xl font-bold text-blue-400 mb-2">95%</div>
+                <div className="text-gray-300">Prediction Accuracy</div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gray-800/50 border-gray-700 text-center">
+              <CardContent className="pt-6">
+                <div className="text-3xl font-bold text-green-400 mb-2">65+</div>
+                <div className="text-gray-300">Supported Tokens</div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gray-800/50 border-gray-700 text-center">
+              <CardContent className="pt-6">
+                <div className="text-3xl font-bold text-purple-400 mb-2">10k+</div>
+                <div className="text-gray-300">Active Users</div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

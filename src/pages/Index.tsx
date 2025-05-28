@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 import { IndexHeader } from "@/components/IndexHeader";
+import { IndexMainContent } from "@/components/IndexMainContent";
+import { IndexSidebar } from "@/components/IndexSidebar";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
+import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 import { CryptoFilters } from "@/components/CryptoFilters";
-import { MarketDataWidget } from "@/components/MarketDataWidget";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
-import { BarChart3, ArrowRight, Brain, Target } from "lucide-react";
+import { usePrediction } from "@/hooks/usePrediction";
+import { MarketDataWidget } from "@/components/MarketDataWidget";
+import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
   const [timeframe, setTimeframe] = useState('7d');
+  const [predictionDays, setPredictionDays] = useState(7);
+  const [modelType, setModelType] = useState('advanced');
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
   
   const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(selectedCrypto, timeframe);
+  const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   const cryptoOptions = [
     // Layer 1 Cryptocurrencies
@@ -218,6 +222,16 @@ const Index = () => {
     setFilteredCryptos(filtered);
   };
 
+  const handlePredict = async () => {
+    if (!cryptoData) {
+      toast.error("No data available for prediction");
+      return;
+    }
+    
+    await generatePrediction(cryptoData, selectedCrypto, predictionDays);
+    toast.success("Prediction generated successfully!");
+  };
+
   useEffect(() => {
     if (dataError) {
       toast.error("Failed to fetch crypto data");
@@ -243,65 +257,48 @@ const Index = () => {
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
-        {/* WordPress Integration - Blog feed */}
+        {/* WordPress Integration - Blog feed first */}
         <WordPressIntegration />
 
-        {/* AI Trading Signals with Pump.fun Integration */}
+        {/* AI Trading Signals - Replace market movers */}
         <AITradingSignals />
 
-        {/* Call to Action to AI Prediction Page */}
-        <Card className="mb-8 bg-gradient-to-r from-purple-800/50 to-pink-800/50 border-purple-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Brain className="h-6 w-6 text-purple-400" />
-              Advanced AI Prediction Analysis
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <p className="text-gray-300 mb-6 text-lg">
-                Get detailed AI-powered price predictions with confidence scores, 
-                trend analysis, and advanced machine learning models.
-              </p>
-              <Link to="/ai-prediction">
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-medium transition-all">
-                  Start AI Prediction
-                  <Target className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Crypto Filters */}
+        {/* Crypto Filters - Smart filters third */}
         <CryptoFilters onFilterChange={handleFilterChange} />
 
-        {/* Market Data Widget with Buy Buttons */}
-        <MarketDataWidget cryptoOptions={filteredCryptos} showBuyButtons={true} />
+        {/* Market Data Widget */}
+        <MarketDataWidget cryptoOptions={filteredCryptos} />
 
-        {/* Call to Action to Token Analysis Page */}
-        <Card className="mb-8 bg-gradient-to-r from-blue-800/50 to-purple-800/50 border-blue-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <BarChart3 className="h-6 w-6 text-blue-400" />
-              Advanced Token Analysis & Market Data
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <p className="text-gray-300 mb-6 text-lg">
-                Explore comprehensive token analysis with advanced filtering, 
-                real-time market data, and detailed insights for over 100 cryptocurrencies.
-              </p>
-              <Link to="/token">
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-medium transition-all">
-                  Explore Token Analysis
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Independent AI Prediction Widget */}
+        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
+
+        {/* Pump.fun Integration */}
+        <PumpFunIntegration />
+
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
+          <IndexMainContent
+            cryptoData={cryptoData}
+            prediction={prediction}
+            selectedCrypto={selectedCrypto}
+            dataLoading={dataLoading}
+            cryptoOptions={cryptoOptions}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+          />
+
+          {/* Sidebar - Hidden on mobile */}
+          <div className="hidden lg:block">
+            <IndexSidebar
+              selectedCrypto={selectedCrypto}
+              currentPrice={currentPrice}
+              priceChange={priceChange}
+              cryptoData={cryptoData}
+              dataLoading={dataLoading}
+              cryptoOptions={cryptoOptions}
+            />
+          </div>
+        </div>
 
         {/* Footer */}
         <Footer />
