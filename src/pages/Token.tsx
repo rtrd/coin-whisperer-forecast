@@ -1,26 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
-import { toast } from "sonner";
-import { IndexHeader } from "@/components/IndexHeader";
-import { IndexMainContent } from "@/components/IndexMainContent";
-import { IndexSidebar } from "@/components/IndexSidebar";
+import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { CryptoFilters } from "@/components/CryptoFilters";
-import Footer from "@/components/Footer";
-import { useCryptoData } from "@/hooks/useCryptoData";
-import { usePrediction } from "@/hooks/usePrediction";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
-import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
-import { AdBanner } from "@/components/AdBanner";
+import Footer from "@/components/Footer";
 
 const Token = () => {
-  const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
-  const [timeframe, setTimeframe] = useState('7d');
-  const [predictionDays, setPredictionDays] = useState(7);
-  const [modelType, setModelType] = useState('advanced');
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
-  
-  const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(selectedCrypto, timeframe);
-  const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   const cryptoOptions = [
     // Layer 1 Cryptocurrencies
@@ -220,74 +207,32 @@ const Token = () => {
     setFilteredCryptos(filtered);
   };
 
-  const handlePredict = async () => {
-    if (!cryptoData) {
-      toast.error("No data available for prediction");
-      return;
-    }
-    
-    await generatePrediction(cryptoData, selectedCrypto, predictionDays);
-    toast.success("Prediction generated successfully!");
-  };
-
-  useEffect(() => {
-    if (dataError) {
-      toast.error("Failed to fetch crypto data");
-    }
-  }, [dataError]);
-
-  const currentPrice = cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1]?.price : 0;
-  const previousPrice = cryptoData && cryptoData.length > 1 ? cryptoData[cryptoData.length - 2]?.price : 0;
-  const priceChange = currentPrice && previousPrice ? ((currentPrice - previousPrice) / previousPrice) * 100 : 0;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader 
-          selectedCrypto={selectedCrypto}
-          cryptoOptions={cryptoOptions}
-          currentPrice={currentPrice}
-          priceChange={priceChange}
-        />
-
-        {/* Ad Banner 728x90 - Hidden on mobile */}
-        <div className="hidden md:flex justify-center mb-6 md:mb-8">
-          <AdBanner width={728} height={90} position="horizontal" />
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-6 md:mb-8">
+          <Link to="/">
+            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-white text-shadow-lg">
+              Token Analysis & Market Data
+            </h1>
+            <p className="text-gray-300 mt-2">
+              Comprehensive cryptocurrency analysis with advanced filtering and real-time data
+            </p>
+          </div>
         </div>
 
         {/* Crypto Filters */}
         <CryptoFilters onFilterChange={handleFilterChange} />
 
         {/* Market Data Widget */}
-        <MarketDataWidget cryptoOptions={filteredCryptos} />
-
-        {/* Independent AI Prediction Widget */}
-        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
-
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
-          <IndexMainContent
-            cryptoData={cryptoData}
-            prediction={prediction}
-            selectedCrypto={selectedCrypto}
-            dataLoading={dataLoading}
-            cryptoOptions={cryptoOptions}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-          />
-
-          {/* Sidebar - Hidden on mobile */}
-          <div className="hidden lg:block">
-            <IndexSidebar
-              selectedCrypto={selectedCrypto}
-              currentPrice={currentPrice}
-              priceChange={priceChange}
-              cryptoData={cryptoData}
-              dataLoading={dataLoading}
-              cryptoOptions={cryptoOptions}
-            />
-          </div>
-        </div>
+        <MarketDataWidget cryptoOptions={filteredCryptos} showBuyButtons={true} />
 
         {/* Footer */}
         <Footer />

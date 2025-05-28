@@ -10,6 +10,7 @@ import TokenDetail from "./pages/TokenDetail";
 import Article from "./pages/Article";
 import AllTokens from "./pages/AllTokens";
 import Token from "./pages/Token";
+import AIPrediction from "./pages/AIPrediction";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/token/:tokenId" element={<TokenDetail />} />
           <Route path="/tokens" element={<AllTokens />} />
           <Route path="/token" element={<Token />} />
+          <Route path="/ai-prediction" element={<AIPrediction />} />
           <Route path="/article/:articleId" element={<Article />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

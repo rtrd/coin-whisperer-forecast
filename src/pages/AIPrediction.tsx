@@ -1,25 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "sonner";
-import { IndexHeader } from "@/components/IndexHeader";
-import WordPressIntegration from "@/components/WordPressIntegration";
-import { AITradingSignals } from "@/components/AITradingSignals";
-import { AdBanner } from "@/components/AdBanner";
-import { CryptoFilters } from "@/components/CryptoFilters";
-import { MarketDataWidget } from "@/components/MarketDataWidget";
+import { ArrowLeft } from "lucide-react";
+import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
 import Footer from "@/components/Footer";
-import { useCryptoData } from "@/hooks/useCryptoData";
-import { BarChart3, ArrowRight, Brain, Target } from "lucide-react";
 
-const Index = () => {
-  const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
-  const [timeframe, setTimeframe] = useState('7d');
-  const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
-  
-  const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(selectedCrypto, timeframe);
-
+const AIPrediction = () => {
   const cryptoOptions = [
     // Layer 1 Cryptocurrencies
     { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Layer 1', score: 8.5, prediction: '+12.5%' },
@@ -121,187 +107,29 @@ const Index = () => {
     { value: 'neo', label: 'NEO (NEO)', icon: '🟢', category: 'Enterprise', score: 6.5, prediction: '+7.1%' },
   ];
 
-  useEffect(() => {
-    setFilteredCryptos(cryptoOptions);
-  }, []);
-
-  const handleFilterChange = (filters: any) => {
-    let filtered = [...cryptoOptions];
-
-    // Apply search filter
-    if (filters.searchTerm) {
-      filtered = filtered.filter(crypto => 
-        crypto.label.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
-        crypto.value.toLowerCase().includes(filters.searchTerm.toLowerCase())
-      );
-    }
-
-    // Apply category filter
-    if (filters.category !== 'all') {
-      filtered = filtered.filter(crypto => crypto.category === filters.category);
-    }
-
-    // Apply score range filter
-    filtered = filtered.filter(crypto => 
-      crypto.score >= filters.scoreRange[0] && 
-      crypto.score <= filters.scoreRange[1]
-    );
-
-    // Apply AI score range filter (generate mock AI scores for filtering)
-    filtered = filtered.filter(crypto => {
-      const mockAiScore = crypto.score * 10; // Convert score to 0-100 range
-      return mockAiScore >= filters.aiScoreRange[0] && mockAiScore <= filters.aiScoreRange[1];
-    });
-
-    // Apply prediction range filter
-    filtered = filtered.filter(crypto => {
-      const predictionValue = parseFloat(crypto.prediction.replace('%', '').replace('+', ''));
-      return predictionValue >= filters.predictionRange[0] && predictionValue <= filters.predictionRange[1];
-    });
-
-    // Apply price range filter (generate mock prices for filtering)
-    filtered = filtered.filter(crypto => {
-      const mockPrice = Math.random() * 1000 + 1;
-      return mockPrice >= filters.priceRange[0] && mockPrice <= filters.priceRange[1];
-    });
-
-    // Apply 24h change range filter (generate mock changes for filtering)
-    filtered = filtered.filter(crypto => {
-      const mockChange = (Math.random() - 0.5) * 20;
-      return mockChange >= filters.change24hRange[0] && mockChange <= filters.change24hRange[1];
-    });
-
-    // Apply volume range filter (generate mock volumes for filtering)
-    filtered = filtered.filter(crypto => {
-      const mockVolume = Math.random() * 1000000000;
-      return mockVolume >= filters.volumeRange[0] && mockVolume <= filters.volumeRange[1];
-    });
-
-    // Apply market cap range filter (generate mock market caps for filtering)
-    filtered = filtered.filter(crypto => {
-      const mockMarketCap = Math.random() * 1000000000000;
-      return mockMarketCap >= filters.marketCapRange[0] && mockMarketCap <= filters.marketCapRange[1];
-    });
-
-    // Apply sorting
-    switch (filters.sortBy) {
-      case 'score':
-        filtered.sort((a, b) => b.score - a.score);
-        break;
-      case 'prediction':
-        filtered.sort((a, b) => {
-          const aPred = parseFloat(a.prediction.replace('%', '').replace('+', ''));
-          const bPred = parseFloat(b.prediction.replace('%', '').replace('+', ''));
-          return bPred - aPred;
-        });
-        break;
-      case 'name':
-        filtered.sort((a, b) => a.label.localeCompare(b.label));
-        break;
-      case 'category':
-        filtered.sort((a, b) => a.category.localeCompare(b.category));
-        break;
-      case 'price':
-        filtered.sort((a, b) => (Math.random() * 1000 + 1) - (Math.random() * 1000 + 1));
-        break;
-      case 'change24h':
-        filtered.sort((a, b) => (Math.random() - 0.5) * 20 - (Math.random() - 0.5) * 20);
-        break;
-      case 'volume':
-        filtered.sort((a, b) => Math.random() * 1000000000 - Math.random() * 1000000000);
-        break;
-      case 'marketCap':
-        filtered.sort((a, b) => Math.random() * 1000000000000 - Math.random() * 1000000000000);
-        break;
-    }
-
-    setFilteredCryptos(filtered);
-  };
-
-  useEffect(() => {
-    if (dataError) {
-      toast.error("Failed to fetch crypto data");
-    }
-  }, [dataError]);
-
-  const currentPrice = cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1]?.price : 0;
-  const previousPrice = cryptoData && cryptoData.length > 1 ? cryptoData[cryptoData.length - 2]?.price : 0;
-  const priceChange = currentPrice && previousPrice ? ((currentPrice - previousPrice) / previousPrice) * 100 : 0;
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader 
-          selectedCrypto={selectedCrypto}
-          cryptoOptions={cryptoOptions}
-          currentPrice={currentPrice}
-          priceChange={priceChange}
-        />
-
-        {/* Ad Banner 728x90 - Hidden on mobile */}
-        <div className="hidden md:flex justify-center mb-6 md:mb-8">
-          <AdBanner width={728} height={90} position="horizontal" />
+        {/* Header */}
+        <div className="flex items-center gap-4 mb-6 md:mb-8">
+          <Link to="/">
+            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Button>
+          </Link>
+          <div>
+            <h1 className="text-3xl md:text-4xl font-bold text-white text-shadow-lg">
+              AI Prediction Analysis
+            </h1>
+            <p className="text-gray-300 mt-2">
+              Advanced cryptocurrency price predictions using machine learning
+            </p>
+          </div>
         </div>
 
-        {/* WordPress Integration - Blog feed */}
-        <WordPressIntegration />
-
-        {/* AI Trading Signals with Pump.fun Integration */}
-        <AITradingSignals />
-
-        {/* Call to Action to AI Prediction Page */}
-        <Card className="mb-8 bg-gradient-to-r from-purple-800/50 to-pink-800/50 border-purple-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <Brain className="h-6 w-6 text-purple-400" />
-              Advanced AI Prediction Analysis
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <p className="text-gray-300 mb-6 text-lg">
-                Get detailed AI-powered price predictions with confidence scores, 
-                trend analysis, and advanced machine learning models.
-              </p>
-              <Link to="/ai-prediction">
-                <Button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 text-lg font-medium transition-all">
-                  Start AI Prediction
-                  <Target className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Crypto Filters */}
-        <CryptoFilters onFilterChange={handleFilterChange} />
-
-        {/* Market Data Widget with Buy Buttons */}
-        <MarketDataWidget cryptoOptions={filteredCryptos} showBuyButtons={true} />
-
-        {/* Call to Action to Token Analysis Page */}
-        <Card className="mb-8 bg-gradient-to-r from-blue-800/50 to-purple-800/50 border-blue-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <BarChart3 className="h-6 w-6 text-blue-400" />
-              Advanced Token Analysis & Market Data
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-center py-8">
-              <p className="text-gray-300 mb-6 text-lg">
-                Explore comprehensive token analysis with advanced filtering, 
-                real-time market data, and detailed insights for over 100 cryptocurrencies.
-              </p>
-              <Link to="/token">
-                <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg font-medium transition-all">
-                  Explore Token Analysis
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Independent AI Prediction Widget */}
+        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
 
         {/* Footer */}
         <Footer />
@@ -310,4 +138,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default AIPrediction;
