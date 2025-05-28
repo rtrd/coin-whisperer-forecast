@@ -9,6 +9,9 @@ import WordPressIntegration from "@/components/WordPressIntegration";
 import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
+import { CryptoFilters } from "@/components/CryptoFilters";
+import { MarketDataWidget } from "@/components/MarketDataWidget";
+import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { BarChart3, ArrowRight } from "lucide-react";
@@ -16,6 +19,7 @@ import { BarChart3, ArrowRight } from "lucide-react";
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
   const [timeframe, setTimeframe] = useState('7d');
+  const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
   
   const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(selectedCrypto, timeframe);
 
@@ -121,6 +125,103 @@ const Index = () => {
   ];
 
   useEffect(() => {
+    setFilteredCryptos(cryptoOptions);
+  }, []);
+
+  const handleFilterChange = (filters: any) => {
+    let filtered = [...cryptoOptions];
+
+    // Apply search filter
+    if (filters.searchTerm) {
+      filtered = filtered.filter(crypto => 
+        crypto.label.toLowerCase().includes(filters.searchTerm.toLowerCase()) ||
+        crypto.value.toLowerCase().includes(filters.searchTerm.toLowerCase())
+      );
+    }
+
+    // Apply category filter
+    if (filters.category !== 'all') {
+      filtered = filtered.filter(crypto => crypto.category === filters.category);
+    }
+
+    // Apply score range filter
+    filtered = filtered.filter(crypto => 
+      crypto.score >= filters.scoreRange[0] && 
+      crypto.score <= filters.scoreRange[1]
+    );
+
+    // Apply AI score range filter (generate mock AI scores for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockAiScore = crypto.score * 10; // Convert score to 0-100 range
+      return mockAiScore >= filters.aiScoreRange[0] && mockAiScore <= filters.aiScoreRange[1];
+    });
+
+    // Apply prediction range filter
+    filtered = filtered.filter(crypto => {
+      const predictionValue = parseFloat(crypto.prediction.replace('%', '').replace('+', ''));
+      return predictionValue >= filters.predictionRange[0] && predictionValue <= filters.predictionRange[1];
+    });
+
+    // Apply price range filter (generate mock prices for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockPrice = Math.random() * 1000 + 1;
+      return mockPrice >= filters.priceRange[0] && mockPrice <= filters.priceRange[1];
+    });
+
+    // Apply 24h change range filter (generate mock changes for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockChange = (Math.random() - 0.5) * 20;
+      return mockChange >= filters.change24hRange[0] && mockChange <= filters.change24hRange[1];
+    });
+
+    // Apply volume range filter (generate mock volumes for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockVolume = Math.random() * 1000000000;
+      return mockVolume >= filters.volumeRange[0] && mockVolume <= filters.volumeRange[1];
+    });
+
+    // Apply market cap range filter (generate mock market caps for filtering)
+    filtered = filtered.filter(crypto => {
+      const mockMarketCap = Math.random() * 1000000000000;
+      return mockMarketCap >= filters.marketCapRange[0] && mockMarketCap <= filters.marketCapRange[1];
+    });
+
+    // Apply sorting
+    switch (filters.sortBy) {
+      case 'score':
+        filtered.sort((a, b) => b.score - a.score);
+        break;
+      case 'prediction':
+        filtered.sort((a, b) => {
+          const aPred = parseFloat(a.prediction.replace('%', '').replace('+', ''));
+          const bPred = parseFloat(b.prediction.replace('%', '').replace('+', ''));
+          return bPred - aPred;
+        });
+        break;
+      case 'name':
+        filtered.sort((a, b) => a.label.localeCompare(b.label));
+        break;
+      case 'category':
+        filtered.sort((a, b) => a.category.localeCompare(b.category));
+        break;
+      case 'price':
+        filtered.sort((a, b) => (Math.random() * 1000 + 1) - (Math.random() * 1000 + 1));
+        break;
+      case 'change24h':
+        filtered.sort((a, b) => (Math.random() - 0.5) * 20 - (Math.random() - 0.5) * 20);
+        break;
+      case 'volume':
+        filtered.sort((a, b) => Math.random() * 1000000000 - Math.random() * 1000000000);
+        break;
+      case 'marketCap':
+        filtered.sort((a, b) => Math.random() * 1000000000000 - Math.random() * 1000000000000);
+        break;
+    }
+
+    setFilteredCryptos(filtered);
+  };
+
+  useEffect(() => {
     if (dataError) {
       toast.error("Failed to fetch crypto data");
     }
@@ -153,6 +254,15 @@ const Index = () => {
 
         {/* Pump.fun Integration */}
         <PumpFunIntegration />
+
+        {/* Crypto Filters */}
+        <CryptoFilters onFilterChange={handleFilterChange} />
+
+        {/* Market Data Widget */}
+        <MarketDataWidget cryptoOptions={filteredCryptos} />
+
+        {/* Independent AI Prediction Widget */}
+        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
 
         {/* Call to Action to Token Analysis Page */}
         <Card className="mb-8 bg-gradient-to-r from-blue-800/50 to-purple-800/50 border-blue-700 shadow-2xl">
