@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { toast } from "sonner";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -6,13 +7,15 @@ import { IndexSidebar } from "@/components/IndexSidebar";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
-import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
-import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Brain, Rocket, ExternalLink } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
@@ -257,23 +260,62 @@ const Index = () => {
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
-        {/* WordPress Integration - Blog feed first */}
+        {/* WordPress Integration - Latest Crypto News & Analysis */}
         <WordPressIntegration />
 
-        {/* AI Trading Signals - Replace market movers */}
+        {/* AI Trading Signals */}
         <AITradingSignals />
 
-        {/* Crypto Filters - Smart filters third */}
+        {/* Crypto Filters - Smart Crypto Filters */}
         <CryptoFilters onFilterChange={handleFilterChange} />
 
-        {/* Market Data Widget */}
+        {/* Market Data Widget - Top 10 by Market Cap */}
         <MarketDataWidget cryptoOptions={filteredCryptos} />
 
-        {/* Independent AI Prediction Widget */}
-        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
+        {/* Navigation Cards to Other Features */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          {/* AI Prediction Analysis */}
+          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Brain className="h-5 w-5 text-purple-400" />
+                AI Prediction Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-300 mb-4">
+                Get advanced AI-powered cryptocurrency predictions and market analysis
+              </p>
+              <Link to="/ai-prediction">
+                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  View AI Predictions
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
 
-        {/* Pump.fun Integration */}
-        <PumpFunIntegration />
+          {/* Pump.fun Integration */}
+          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Rocket className="h-5 w-5 text-purple-400" />
+                Pump.fun Integration
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-300 mb-4">
+                Discover and track trending meme coins and new token launches
+              </p>
+              <Link to="/pump-fun">
+                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  Explore Pump.fun
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
