@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { TrendingUp, TrendingDown, BarChart3, Volume2, Star, Info } from "lucide-react";
+import { TrendingUp, TrendingDown, BarChart3, Volume2, Star, Info, Lock } from "lucide-react";
 import { Link } from 'react-router-dom';
 
 interface MarketDataWidgetProps {
@@ -15,6 +15,9 @@ type FilterType = 'market_cap' | 'volume' | 'gainers' | 'losers' | 'trending';
 
 export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOptions }) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>('market_cap');
+  const [isUnlocked] = useState(() => {
+    return localStorage.getItem('ai-content-unlocked') === 'true';
+  });
 
   // Generate market data from the filtered crypto options
   const generateMarketData = (filter: FilterType) => {
@@ -154,6 +157,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOption
                   <TableHead className="text-gray-300">
                     <div className="flex items-center gap-1">
                       AI Score
+                      {!isUnlocked && <Lock className="h-3 w-3 text-yellow-400" />}
                       <Tooltip>
                         <TooltipTrigger>
                           <Info className="h-3 w-3 text-gray-400" />
@@ -224,16 +228,23 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOption
                       </div>
                     </TableCell>
                     <TableCell>
-                      <div className="flex items-center gap-1">
-                        <div className={`font-mono ${
-                          token.aiScore >= 80 ? 'text-green-400' : 
-                          token.aiScore >= 60 ? 'text-yellow-400' : 
-                          token.aiScore >= 40 ? 'text-orange-400' : 'text-red-400'
-                        }`}>
-                          {token.aiScore.toFixed(0)}
+                      {isUnlocked ? (
+                        <div className="flex items-center gap-1">
+                          <div className={`font-mono ${
+                            token.aiScore >= 80 ? 'text-green-400' : 
+                            token.aiScore >= 60 ? 'text-yellow-400' : 
+                            token.aiScore >= 40 ? 'text-orange-400' : 'text-red-400'
+                          }`}>
+                            {token.aiScore.toFixed(0)}
+                          </div>
+                          <div className="text-gray-400 text-xs">/100</div>
                         </div>
-                        <div className="text-gray-400 text-xs">/100</div>
-                      </div>
+                      ) : (
+                        <div className="flex items-center gap-1">
+                          <Lock className="h-3 w-3 text-yellow-400" />
+                          <span className="text-yellow-400 text-xs">Premium</span>
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell className="text-gray-300 font-mono">
                       {formatVolume(token.volume24h)}

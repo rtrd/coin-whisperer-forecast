@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Brain, TrendingUp, Activity, BarChart3 } from "lucide-react";
+import { Brain, TrendingUp, Activity, BarChart3, Zap } from "lucide-react";
 
 export const PredictionSkeleton = () => (
   <Card className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border-purple-700/50">
@@ -89,6 +89,78 @@ export const SentimentSkeleton = () => (
             <div key={item} className="flex justify-between items-center">
               <span className="text-gray-300">{item}</span>
               <Skeleton className="h-4 w-16 bg-gray-700" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+);
+
+export const AITradingSignalsSkeleton = () => (
+  <Card className="mb-6 bg-gray-800/50 border-gray-700 shadow-2xl">
+    <CardHeader>
+      <CardTitle className="text-white flex items-center gap-2">
+        <Brain className="h-5 w-5 text-purple-400" />
+        AI Trading Signals
+        <Badge className="bg-green-600">Live Data</Badge>
+      </CardTitle>
+    </CardHeader>
+    <CardContent className="space-y-4">
+      {/* Market Sentiment Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-gray-800/50 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-white font-medium flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              Market Sentiment
+            </h3>
+            <Skeleton className="h-6 w-12 bg-gray-700" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-32 bg-gray-700" />
+            <Skeleton className="h-4 w-full bg-gray-700" />
+            <Skeleton className="h-2 w-full bg-gray-700" />
+          </div>
+        </div>
+
+        <div className="bg-gray-800/50 rounded-lg p-4">
+          <h3 className="text-white font-medium flex items-center gap-2 mb-3">
+            <Zap className="h-4 w-4 text-blue-400" />
+            Live Market Alerts
+          </h3>
+          <div className="space-y-2">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="flex items-start gap-2 p-2 border border-gray-600 rounded">
+                <Skeleton className="h-3 w-3 bg-gray-700 rounded-full" />
+                <div className="flex-1">
+                  <Skeleton className="h-3 w-20 bg-gray-700 mb-1" />
+                  <Skeleton className="h-2 w-full bg-gray-700" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Trading Recommendations */}
+      <div className="bg-gray-800/50 rounded-lg p-4">
+        <h3 className="text-white font-medium flex items-center gap-2 mb-4">
+          <BarChart3 className="h-4 w-4 text-purple-400" />
+          AI Trading Recommendations
+        </h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-gray-700/50 rounded-lg p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <Skeleton className="h-4 w-12 bg-gray-600" />
+                <Skeleton className="h-5 w-16 bg-gray-600" />
+              </div>
+              <Skeleton className="h-3 w-full bg-gray-600" />
+              <div className="flex justify-between">
+                <Skeleton className="h-3 w-16 bg-gray-600" />
+                <Skeleton className="h-3 w-12 bg-gray-600" />
+              </div>
             </div>
           ))}
         </div>
