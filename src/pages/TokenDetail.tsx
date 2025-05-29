@@ -325,6 +325,15 @@ const TokenDetail = () => {
           </CardContent>
         </Card>
 
+        {/* Dynamic Prediction Adjuster - Moved here from sidebar */}
+        <div className="mb-8">
+          <DynamicPredictionAdjuster
+            selectedCrypto={tokenId || 'bitcoin'}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+          />
+        </div>
+
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Column - Chart and Analysis */}
@@ -389,13 +398,6 @@ const TokenDetail = () => {
               currentPrice={currentPrice}
               priceChange={priceChange}
               cryptoOptions={cryptoOptions}
-            />
-
-            {/* Dynamic Prediction Adjuster */}
-            <DynamicPredictionAdjuster
-              selectedCrypto={tokenId || 'bitcoin'}
-              currentPrice={currentPrice}
-              priceChange={priceChange}
             />
 
             {/* Live Market Data */}
