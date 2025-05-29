@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,11 +25,12 @@ import {
 } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
-import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
-import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
+import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
+import { LockedDynamicPrediction } from "@/components/LockedDynamicPrediction";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
-import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
 import { AdBanner } from "@/components/AdBanner";
+import { IndexHeader } from "@/components/IndexHeader";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { toast } from "sonner";
@@ -156,6 +156,14 @@ const TokenDetail = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-8">
+        {/* Homepage Header */}
+        <IndexHeader 
+          selectedCrypto={tokenId || 'bitcoin'}
+          cryptoOptions={cryptoOptions}
+          currentPrice={currentPrice}
+          priceChange={priceChange}
+        />
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link to="/">
@@ -325,9 +333,9 @@ const TokenDetail = () => {
           </CardContent>
         </Card>
 
-        {/* Dynamic Prediction Adjuster - Moved here from sidebar */}
+        {/* Dynamic Prediction Adjuster - Now locked */}
         <div className="mb-8">
-          <DynamicPredictionAdjuster
+          <LockedDynamicPrediction
             selectedCrypto={tokenId || 'bitcoin'}
             currentPrice={currentPrice}
             priceChange={priceChange}
@@ -366,7 +374,7 @@ const TokenDetail = () => {
               <PredictionCard prediction={prediction} crypto={tokenId || 'bitcoin'} />
             )}
 
-            {/* Detailed Analysis Tabs */}
+            {/* Detailed Analysis Tabs - Now locked */}
             <Tabs defaultValue="technical" className="w-full">
               <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
                 <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
@@ -378,11 +386,11 @@ const TokenDetail = () => {
               </TabsList>
               
               <TabsContent value="technical">
-                <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+                <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
               </TabsContent>
               
               <TabsContent value="sentiment">
-                <SentimentAnalysis crypto={tokenId || 'bitcoin'} />
+                <LockedSentimentAnalysis crypto={tokenId || 'bitcoin'} />
               </TabsContent>
             </Tabs>
           </div>
@@ -399,48 +407,6 @@ const TokenDetail = () => {
               priceChange={priceChange}
               cryptoOptions={cryptoOptions}
             />
-
-            {/* Live Market Data */}
-            <Card className="bg-gradient-to-br from-green-900/20 to-blue-900/20 border-green-700/50">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Activity className="h-5 w-5 text-green-400" />
-                  Live Market Data
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-gray-300">Circulating Supply</span>
-                  <span className="text-white font-medium">
-                    {(marketData.circulatingSupply / 1000000).toFixed(2)}M
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-300">Total Supply</span>
-                  <span className="text-white font-medium">
-                    {(marketData.totalSupply / 1000000).toFixed(2)}M
-                  </span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-300">30d Change</span>
-                  <span className={`font-medium ${marketData.priceChange30d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {marketData.priceChange30d >= 0 ? '+' : ''}{marketData.priceChange30d.toFixed(2)}%
-                  </span>
-                </div>
-                <div className="pt-2 border-t border-gray-600">
-                  <div className="text-xs text-gray-400 mb-2">Price Performance</div>
-                  <Progress 
-                    value={((currentPrice - marketData.allTimeLow) / (marketData.allTimeHigh - marketData.allTimeLow)) * 100} 
-                    className="h-2"
-                  />
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
-                    <span>ATL: ${marketData.allTimeLow.toFixed(2)}</span>
-                    <span>ATH: ${marketData.allTimeHigh.toFixed(2)}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Disclaimer */}
             <Card className="bg-yellow-900/20 border-yellow-700">

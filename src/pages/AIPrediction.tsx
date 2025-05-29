@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Brain, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { IndexHeader } from "@/components/IndexHeader";
 import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
 
 const AIPrediction = () => {
@@ -21,6 +22,14 @@ const AIPrediction = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-8">
+        {/* Homepage Header */}
+        <IndexHeader 
+          selectedCrypto="bitcoin"
+          cryptoOptions={cryptoOptions}
+          currentPrice={50000}
+          priceChange={2.5}
+        />
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link to="/">

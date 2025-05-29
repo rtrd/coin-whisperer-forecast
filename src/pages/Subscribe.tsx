@@ -6,11 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Brain, Crown, Check, Mail, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import { IndexHeader } from "@/components/IndexHeader";
 import { toast } from "sonner";
 
 const Subscribe = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const cryptoOptions = [
+    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
+    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' }
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +49,14 @@ const Subscribe = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-8">
+        {/* Homepage Header */}
+        <IndexHeader 
+          selectedCrypto="bitcoin"
+          cryptoOptions={cryptoOptions}
+          currentPrice={50000}
+          priceChange={2.5}
+        />
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link to="/">
