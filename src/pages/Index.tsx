@@ -1,21 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
+import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
-import { IndexHeader } from "@/components/IndexHeader";
-import { IndexMainContent } from "@/components/IndexMainContent";
-import { IndexSidebar } from "@/components/IndexSidebar";
-import WordPressIntegration from "@/components/WordPressIntegration";
-import { AITradingSignals } from "@/components/AITradingSignals";
-import { AdBanner } from "@/components/AdBanner";
-import { CryptoFilters } from "@/components/CryptoFilters";
-import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
-import { MarketDataWidget } from "@/components/MarketDataWidget";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Brain, Rocket, ExternalLink } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { IndexSidebar } from "@/components/IndexSidebar";
+import { IndexMainContent } from "@/components/IndexMainContent";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
@@ -247,77 +236,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <IndexContent
+        selectedCrypto={selectedCrypto}
+        cryptoOptions={cryptoOptions}
+        currentPrice={currentPrice}
+        priceChange={priceChange}
+        filteredCryptos={filteredCryptos}
+        handleFilterChange={handleFilterChange}
+      />
       <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader 
-          selectedCrypto={selectedCrypto}
-          cryptoOptions={cryptoOptions}
-          currentPrice={currentPrice}
-          priceChange={priceChange}
-        />
-
-        {/* Ad Banner 728x90 - Hidden on mobile */}
-        <div className="hidden md:flex justify-center mb-6 md:mb-8">
-          <AdBanner width={728} height={90} position="horizontal" />
-        </div>
-
-        {/* WordPress Integration - Latest Crypto News & Analysis */}
-        <WordPressIntegration />
-
-        {/* AI Trading Signals */}
-        <AITradingSignals />
-
-        {/* Crypto Filters - Smart Crypto Filters */}
-        <CryptoFilters onFilterChange={handleFilterChange} />
-
-        {/* Market Data Widget - Top 10 by Market Cap */}
-        <MarketDataWidget cryptoOptions={filteredCryptos} />
-
-        {/* Navigation Cards to Other Features */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* AI Prediction Analysis */}
-          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Brain className="h-5 w-5 text-purple-400" />
-                AI Prediction Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-300 mb-4">
-                Get advanced AI-powered cryptocurrency predictions and market analysis
-              </p>
-              <Link to="/ai-prediction">
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  View AI Predictions
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-
-          {/* Pump.fun Integration */}
-          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Rocket className="h-5 w-5 text-purple-400" />
-                Pump.fun Integration
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-300 mb-4">
-                Discover and track trending meme coins and new token launches
-              </p>
-              <Link to="/pump-fun">
-                <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Explore Pump.fun
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
           <IndexMainContent
             cryptoData={cryptoData}
@@ -341,9 +268,6 @@ const Index = () => {
             />
           </div>
         </div>
-
-        {/* Footer */}
-        <Footer />
       </div>
     </div>
   );
