@@ -3,8 +3,6 @@ import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
-import { IndexSidebar } from "@/components/IndexSidebar";
-import { IndexMainContent } from "@/components/IndexMainContent";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
@@ -244,31 +242,6 @@ const Index = () => {
         filteredCryptos={filteredCryptos}
         handleFilterChange={handleFilterChange}
       />
-      <div className="container mx-auto px-4 py-4 md:py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
-          <IndexMainContent
-            cryptoData={cryptoData}
-            prediction={prediction}
-            selectedCrypto={selectedCrypto}
-            dataLoading={dataLoading}
-            cryptoOptions={cryptoOptions}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-          />
-
-          {/* Sidebar - Hidden on mobile */}
-          <div className="hidden lg:block">
-            <IndexSidebar
-              selectedCrypto={selectedCrypto}
-              currentPrice={currentPrice}
-              priceChange={priceChange}
-              cryptoData={cryptoData}
-              dataLoading={dataLoading}
-              cryptoOptions={cryptoOptions}
-            />
-          </div>
-        </div>
-      </div>
     </div>
   );
 };
