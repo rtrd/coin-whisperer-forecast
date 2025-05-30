@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Separator } from "@/components/ui/separator";
 import { Brain, Twitter, Github, Mail } from "lucide-react";
 
@@ -23,11 +24,11 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Features</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>AI Price Prediction</li>
-              <li>Technical Analysis</li>
-              <li>Sentiment Analysis</li>
-              <li>Real-time Data</li>
-              <li>Portfolio Tracking</li>
+              <li><Link to="/ai-price-prediction" className="hover:text-white transition-colors">AI Price Prediction</Link></li>
+              <li><Link to="/technical-analysis" className="hover:text-white transition-colors">Technical Analysis</Link></li>
+              <li><Link to="/sentiment-analysis" className="hover:text-white transition-colors">Sentiment Analysis</Link></li>
+              <li><Link to="/real-time-data" className="hover:text-white transition-colors">Real-time Data</Link></li>
+              <li><Link to="/portfolio-tracking" className="hover:text-white transition-colors">Portfolio Tracking</Link></li>
             </ul>
           </div>
 

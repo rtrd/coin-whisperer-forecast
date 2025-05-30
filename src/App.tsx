@@ -11,6 +11,11 @@ import Article from "./pages/Article";
 import AllTokens from "./pages/AllTokens";
 import AIPrediction from "./pages/AIPrediction";
 import PumpFun from "./pages/PumpFun";
+import AIPricePrediction from "./pages/AIPricePrediction";
+import TechnicalAnalysisPage from "./pages/TechnicalAnalysisPage";
+import SentimentAnalysisPage from "./pages/SentimentAnalysisPage";
+import RealTimeData from "./pages/RealTimeData";
+import PortfolioTracking from "./pages/PortfolioTracking";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +34,11 @@ const App = () => (
           <Route path="/tokens" element={<AllTokens />} />
           <Route path="/ai-prediction" element={<AIPrediction />} />
           <Route path="/pump-fun" element={<PumpFun />} />
+          <Route path="/ai-price-prediction" element={<AIPricePrediction />} />
+          <Route path="/technical-analysis" element={<TechnicalAnalysisPage />} />
+          <Route path="/sentiment-analysis" element={<SentimentAnalysisPage />} />
+          <Route path="/real-time-data" element={<RealTimeData />} />
+          <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
