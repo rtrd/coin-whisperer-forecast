@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Calendar, User, Clock, Share2, BookmarkPlus } from "lucide-react";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
+import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
+import Footer from "@/components/Footer";
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
@@ -127,7 +130,10 @@ const Article = () => {
                   <div className="flex items-center gap-2 mb-4">
                     <Badge className="bg-blue-600">{article.category}</Badge>
                   </div>
-                  <CardTitle className="text-3xl md:text-4xl text-white mb-4 text-shadow-lg">
+                  <CardTitle 
+                    className="text-3xl md:text-4xl text-white mb-4"
+                    style={{ textShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}
+                  >
                     {article.title}
                   </CardTitle>
                   
@@ -218,14 +224,17 @@ const Article = () => {
             </Card>
           </div>
 
-          {/* Sticky Sidebar with just the ad */}
+          {/* Sticky Sidebar */}
           <div className="hidden lg:block">
-            <div className="sticky top-8">
+            <div className="sticky top-8 space-y-6">
+              <MarketWinnersWidget />
               <AdBanner width={300} height={600} position="vertical" />
             </div>
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 };
