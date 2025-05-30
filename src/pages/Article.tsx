@@ -226,7 +226,7 @@ const Article = () => {
 
           {/* Sticky Sidebar */}
           <div className="hidden lg:block">
-            <div className="sticky top-8 space-y-6">
+            <div className="sticky top-8 space-y-8">
               <MarketWinnersWidget />
               <AdBanner width={300} height={600} position="vertical" />
             </div>
