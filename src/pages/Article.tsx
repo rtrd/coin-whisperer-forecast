@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -176,7 +175,7 @@ const Article = () => {
             {/* Related Articles - 3x1 layout with images */}
             <Card className="bg-gray-800/50 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white text-shadow-lg">Related Articles</CardTitle>
+                <CardTitle className="text-white" style={{ textShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}>Related Articles</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
