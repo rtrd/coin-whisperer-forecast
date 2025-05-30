@@ -8,6 +8,7 @@ import { AdBanner } from "@/components/AdBanner";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
 import Footer from "@/components/Footer";
+import { MonkeyAnimation } from "@/components/MonkeyAnimation";
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -34,6 +35,9 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         currentPrice={currentPrice}
         priceChange={priceChange}
       />
+
+      {/* Monkey Animation */}
+      <MonkeyAnimation />
 
       {/* Ad Banner 728x90 - Hidden on mobile */}
       <div className="hidden md:flex justify-center mb-6 md:mb-8">
