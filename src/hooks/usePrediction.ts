@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -99,53 +98,31 @@ const generateAIPrediction = async (
     ((currentPrice - prices[0]) / prices[0]) * 100 : 0;
   
   try {
-    // Call OpenRouter API for AI analysis
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Use Supabase Edge Function instead of direct API call
+    const response = await fetch('/api/openrouter-proxy', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'meta-llama/llama-3.1-8b-instruct:free',
-        messages: [
-          {
-            role: 'system',
-            content: `You are a cryptocurrency price prediction AI. Analyze the provided data and return a JSON response with price predictions. Current price: $${currentPrice}, RSI: ${rsi.toFixed(2)}, Volatility: ${(volatility * 100).toFixed(2)}%, Price change: ${priceChange.toFixed(2)}%`
-          },
-          {
-            role: 'user',
-            content: `Predict the price of ${crypto} for the next ${predictionDays} days. Return only a JSON object with: {"trend": "bullish|bearish|neutral", "prediction_percentage": number, "confidence": number}. Base your analysis on: Current price $${currentPrice}, RSI ${rsi.toFixed(2)}, recent ${priceChange > 0 ? 'gains' : 'losses'} of ${Math.abs(priceChange).toFixed(2)}%.`
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 200,
+        crypto,
+        currentPrice,
+        rsi,
+        volatility,
+        priceChange,
+        predictionDays
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`OpenRouter API error: ${response.status}`);
+      throw new Error(`Proxy API error: ${response.status}`);
     }
 
-    const aiResponse = await response.json();
-    const aiContent = aiResponse.choices[0]?.message?.content;
-    
-    let aiPrediction;
-    try {
-      aiPrediction = JSON.parse(aiContent);
-    } catch {
-      // Fallback if JSON parsing fails
-      aiPrediction = {
-        trend: priceChange > 5 ? 'bullish' : priceChange < -5 ? 'bearish' : 'neutral',
-        prediction_percentage: priceChange * 0.5,
-        confidence: 0.75
-      };
-    }
-
+    const aiPrediction = await response.json();
     console.log('AI Prediction received:', aiPrediction);
 
   } catch (error) {
-    console.error('OpenRouter API error:', error);
+    console.error('Secure proxy API error:', error);
     // Use fallback prediction
     var aiPrediction = {
       trend: priceChange > 5 ? 'bullish' : priceChange < -5 ? 'bearish' : 'neutral',

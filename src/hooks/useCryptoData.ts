@@ -1,4 +1,3 @@
-
 import { useQuery } from '@tanstack/react-query';
 
 interface PriceData {
@@ -7,44 +6,30 @@ interface PriceData {
   volume?: number;
 }
 
-const COINGECKO_API_KEY = 'CG-fRsEMvVNHLdQy1eBcC2WkhAs';
-
 const fetchCryptoData = async (crypto: string, timeframe: string): Promise<PriceData[]> => {
   console.log(`Fetching real ${crypto} data for ${timeframe}`);
   
-  // Convert timeframe to days
-  const days = timeframe === '1d' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90;
-  
   try {
-    // Use pro API URL since we have a pro API key
-    const response = await fetch(
-      `https://pro-api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=${days}&interval=${days === 1 ? 'hourly' : 'daily'}`,
-      {
-        headers: {
-          'X-CG-Pro-API-Key': COINGECKO_API_KEY,
-        },
-      }
-    );
+    // Use Supabase Edge Function instead of direct API call
+    const response = await fetch('/api/coingecko-proxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ crypto, timeframe }),
+    });
 
     if (!response.ok) {
-      throw new Error(`CoinGecko API error: ${response.status}`);
+      throw new Error(`Proxy API error: ${response.status}`);
     }
 
-    const data = await response.json();
-    
-    // Transform CoinGecko data to our format
-    const priceData: PriceData[] = data.prices.map((price: [number, number], index: number) => ({
-      timestamp: price[0],
-      price: price[1],
-      volume: data.total_volumes?.[index]?.[1] || 0
-    }));
-
+    const priceData = await response.json();
     console.log(`Successfully fetched ${priceData.length} data points for ${crypto}`);
     return priceData;
   } catch (error) {
-    console.error('Error fetching from CoinGecko:', error);
+    console.error('Error fetching from secure proxy:', error);
     
-    // Fallback to mock data if API fails
+    // Fallback to mock data if proxy fails
     return generateMockData(crypto, timeframe);
   }
 };
