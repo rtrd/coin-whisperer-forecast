@@ -38,7 +38,7 @@ export const DynamicMarketMovers = () => {
     { symbol: 'ZEC', name: 'Zcash', price: 28, change24h: -5.8, icon: '🛡️', predictedChange: -7.2, score: 4.8, volume24h: 150000000 },
     { symbol: 'CAKE', name: 'PancakeSwap', price: 2.8, change24h: -4.3, icon: '🥞', predictedChange: -6.1, score: 5.2, volume24h: 420000000 },
   ];
-
+   
   useEffect(() => {
     const updateMovers = () => {
       // Shuffle and add random variations to simulate dynamic market
