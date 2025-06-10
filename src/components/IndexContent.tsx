@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import WordPressIntegration from "@/components/WordPressIntegration";
@@ -12,6 +11,7 @@ import Footer from "@/components/Footer";
 interface IndexContentProps {
   selectedCrypto: string;
   cryptoOptions: any[];
+  AllCryptosData: any[];
   currentPrice: number;
   priceChange: number;
   filteredCryptos: any[];
@@ -24,11 +24,12 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   currentPrice,
   priceChange,
   filteredCryptos,
-  handleFilterChange
+  AllCryptosData,
+  handleFilterChange,
 }) => {
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
-      <IndexHeader 
+      <IndexHeader
         selectedCrypto={selectedCrypto}
         cryptoOptions={cryptoOptions}
         currentPrice={currentPrice}
@@ -50,7 +51,11 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <CryptoFilters onFilterChange={handleFilterChange} />
 
       {/* Market Data Widget - Top 10 by Market Cap */}
-      <MarketDataWidget cryptoOptions={filteredCryptos} />
+      <MarketDataWidget
+        onMarketDataFilter={handleFilterChange}
+        cryptoOptions={filteredCryptos}
+        AllCryptosData={AllCryptosData}
+      />
 
       {/* Navigation Cards to Other Features */}
       <IndexNavigationCards />

@@ -1,26 +1,33 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { BarChart3 } from "lucide-react";
-import { Link } from 'react-router-dom';
-import { MarketDataFilters, FilterType } from './MarketDataFilters';
-import { MarketDataTable } from './MarketDataTable';
-import { generateMarketData, getFilterTitle } from './MarketDataUtils';
+import { Link } from "react-router-dom";
+import { MarketDataFilters, FilterType } from "./MarketDataFilters";
+import { MarketDataTable } from "./MarketDataTable";
+import { generateMarketData, getFilterTitle } from "./MarketDataUtils";
 
 interface MarketDataWidgetProps {
   cryptoOptions: any[];
+  AllCryptosData: any;
+  onMarketDataFilter: (filter: any) => void;
 }
 
-export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOptions }) => {
-  const [activeFilter, setActiveFilter] = useState<FilterType>('market_cap');
+export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
+  cryptoOptions,
+  AllCryptosData,
+  onMarketDataFilter,
+}) => {
+  const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
   const [isUnlocked] = useState(() => {
-    return localStorage.getItem('ai-content-unlocked') === 'true';
+    return localStorage.getItem("ai-content-unlocked") === "true";
   });
 
   const marketData = generateMarketData(cryptoOptions, activeFilter);
+
+  console.log("Market data", marketData);
 
   return (
     <TooltipProvider>
@@ -31,22 +38,23 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({ cryptoOption
             {getFilterTitle(activeFilter)}
             <Badge className="bg-green-600">Live Data</Badge>
           </CardTitle>
-          
+
           <MarketDataFilters
             activeFilter={activeFilter}
             onFilterChange={setActiveFilter}
+            onMarketDataFilter={onMarketDataFilter}
           />
         </CardHeader>
-        
+
         <CardContent>
           <MarketDataTable
             marketData={marketData}
             isUnlocked={isUnlocked}
             activeFilter={activeFilter}
           />
-          
+
           <div className="mt-6 text-center">
-            <Link to="/tokens">
+            <Link to="/tokens" state={{ AllCryptosData }}>
               <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
                 View All {cryptoOptions.length}+ Tokens
               </Button>

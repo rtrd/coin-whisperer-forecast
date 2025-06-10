@@ -33,10 +33,10 @@ export const getFilterTitle = (filter: string) => {
 export const generateMarketData = (cryptoOptions: any[], filter: string) => {
   let dataWithMarketData = cryptoOptions.map((crypto, index) => {
     const basePrice = parseFloat(crypto.prediction?.replace('%', '').replace('+', '')) || 0;
-    const mockPrice = Math.random() * 1000 + 1;
-    const mockChange24h = (Math.random() - 0.5) * 20;
-    const mockVolume = Math.random() * 1000000000;
-    const mockMarketCap = mockPrice * (Math.random() * 100000000 + 1000000);
+    const mockPrice = crypto.current_price; //Math.random() * 1000 + 1;
+    const mockChange24h = crypto.price_change_percentage_24h
+    const mockVolume = crypto.total_volume;//Math.random() * 1000000000;
+    const mockMarketCap = crypto.market_cap;//mockPrice * (Math.random() * 100000000 + 1000000);
     const predictionPercentage = basePrice || (Math.random() - 0.5) * 20;
     const aiScore = Math.random() * 100;
     
@@ -53,16 +53,16 @@ export const generateMarketData = (cryptoOptions: any[], filter: string) => {
   });
 
   switch (filter) {
-    case 'market_cap':
-      return dataWithMarketData.sort((a, b) => b.marketCap - a.marketCap).slice(0, 10);
-    case 'volume':
-      return dataWithMarketData.sort((a, b) => b.volume24h - a.volume24h).slice(0, 10);
-    case 'gainers':
-      return dataWithMarketData.filter(item => item.change24h > 0).sort((a, b) => b.change24h - a.change24h).slice(0, 10);
-    case 'losers':
-      return dataWithMarketData.filter(item => item.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 10);
-    case 'trending':
-      return dataWithMarketData.filter(item => item.category === 'Meme' || item.category === 'AI' || item.category === 'New').slice(0, 10);
+    // case 'market_cap':
+    //   return dataWithMarketData.sort((a, b) => b.marketCap - a.marketCap).slice(0, 10);
+    // case 'volume':
+    //   return dataWithMarketData.sort((a, b) => b.volume24h - a.volume24h).slice(0, 10);
+    // case 'gainers':
+    //   return dataWithMarketData.filter(item => item.change24h > 0).sort((a, b) => b.change24h - a.change24h).slice(0, 10);
+    // case 'losers':
+    //   return dataWithMarketData.filter(item => item.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 10);
+    // case 'trending':
+    //   return dataWithMarketData.filter(item => item.category === 'Meme' || item.category === 'AI' || item.category === 'New').slice(0, 10);
     default:
       return dataWithMarketData.slice(0, 10);
   }
