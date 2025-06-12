@@ -78,7 +78,7 @@ export const TradingInsightsChat: React.FC = () => {
       <CardHeader className="pb-3">
         <CardTitle className="text-white font-medium flex items-center gap-2 text-sm">
           <MessageCircle className="h-4 w-4 text-blue-400" />
-          Ask AI About Signals
+          Ask AI
         </CardTitle>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-3 pt-0">
