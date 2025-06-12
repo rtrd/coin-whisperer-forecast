@@ -5,7 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, ChevronsUpDown, ExternalLink } from "lucide-react";
+import { Check, ChevronsUpDown, ExternalLink, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CryptoOption {
@@ -32,6 +32,12 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
 
   const selectedOption = cryptoOptions.find(option => option.value === selectedCrypto);
 
+  // Extract name and ticker from label
+  const formatLabel = (label: string) => {
+    // Assuming format is "Name (TICKER)"
+    return label;
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -44,7 +50,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
           {selectedOption ? (
             <div className="flex items-center gap-2">
               <span className="text-lg">{selectedOption.icon}</span>
-              <span className="truncate">{selectedOption.label}</span>
+              <span className="truncate">{formatLabel(selectedOption.label)}</span>
             </div>
           ) : (
             "Select cryptocurrency..."
@@ -54,10 +60,13 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <CommandInput 
-            placeholder="Search cryptocurrencies..." 
-            className="text-white border-gray-600 bg-gray-700"
-          />
+          <div className="flex items-center border-b border-gray-600 px-3">
+            <Search className="mr-2 h-4 w-4 shrink-0 text-white" />
+            <CommandInput 
+              placeholder="Search cryptocurrencies..." 
+              className="flex h-8 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50"
+            />
+          </div>
           <CommandList className="max-h-[300px] overflow-y-auto">
             <CommandEmpty className="text-gray-400">No cryptocurrency found.</CommandEmpty>
             <CommandGroup>
@@ -83,7 +92,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                       />
                       <span className="text-xl">{option.icon}</span>
                       <div className="flex flex-col flex-1">
-                        <span className="font-medium text-white">{option.label}</span>
+                        <span className="font-medium text-white">{formatLabel(option.label)}</span>
                         <div className="flex items-center gap-2">
                           <Badge variant="outline" className="text-xs text-gray-300 border-gray-500">
                             {option.category}
