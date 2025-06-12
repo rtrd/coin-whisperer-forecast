@@ -20,12 +20,12 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
     <div className="overflow-x-auto">
       <Table className="w-full table-fixed">
         <TableHeader>
-          <TableRow className="border-gray-700">
-            <TableHead className="text-gray-300 w-12">#</TableHead>
-            <TableHead className="text-gray-300 w-48">Token</TableHead>
-            <TableHead className="text-gray-300 w-32">Price</TableHead>
-            <TableHead className="text-gray-300 w-32">24h Change</TableHead>
-            <TableHead className="text-gray-300 w-32">
+          <TableRow className="border-gray-700 h-14">
+            <TableHead className="text-gray-300 w-12 px-2">#</TableHead>
+            <TableHead className="text-gray-300 w-48 px-2">Token</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">Price</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">24h Change</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">
               <div className="flex items-center gap-1">
                 Prediction %
                 <Tooltip>
@@ -38,7 +38,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            <TableHead className="text-gray-300 w-28">
+            <TableHead className="text-gray-300 w-28 px-2">
               <div className="flex items-center gap-1">
                 AI Score
                 {!isUnlocked && <Lock className="h-3 w-3 text-yellow-400" />}
@@ -52,7 +52,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            <TableHead className="text-gray-300 w-32">
+            <TableHead className="text-gray-300 w-40 px-2">
               <div className="flex items-center gap-1">
                 Trading Volume
                 <Tooltip>
@@ -65,7 +65,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            <TableHead className="text-gray-300 w-32">
+            <TableHead className="text-gray-300 w-32 px-2">
               <div className="flex items-center gap-1">
                 Market Cap
                 <Tooltip>
@@ -78,7 +78,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            <TableHead className="text-gray-300 w-24">Category</TableHead>
+            <TableHead className="text-gray-300 w-36 px-2">Category</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

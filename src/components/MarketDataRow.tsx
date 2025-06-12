@@ -24,8 +24,8 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
       key={token.value}
       className="border-gray-700 hover:bg-gray-700/50 h-16"
     >
-      <TableCell className="text-gray-300 font-medium w-12">{index + 1}</TableCell>
-      <TableCell className="w-48">
+      <TableCell className="text-gray-300 font-medium w-12 px-2 py-3">{index + 1}</TableCell>
+      <TableCell className="w-48 px-2 py-3">
         <Link
           to={`/token/${token.value}`}
           className="flex items-center gap-2 hover:text-blue-400 transition-colors"
@@ -44,10 +44,10 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
         </Link>
       </TableCell>
 
-      <TableCell className="text-white font-mono w-32">
+      <TableCell className="text-white font-mono w-32 px-2 py-3">
         {formatPrice(token.price)}
       </TableCell>
-      <TableCell className="w-32">
+      <TableCell className="w-32 px-2 py-3">
         <div
           className={`flex items-center gap-1 ${
             token.change24h >= 0 ? "text-green-400" : "text-red-400"
@@ -62,7 +62,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           {token.change24h.toFixed(2)}%
         </div>
       </TableCell>
-      <TableCell className="w-32">
+      <TableCell className="w-32 px-2 py-3">
         {isUnlocked ? (
           <div
             className={`flex items-center gap-1 ${
@@ -79,7 +79,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           </div>
         )}
       </TableCell>
-      <TableCell className="w-28">
+      <TableCell className="w-28 px-2 py-3">
         {isUnlocked ? (
           <div className="flex items-center gap-1">
             <div
@@ -104,13 +104,13 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           </div>
         )}
       </TableCell>
-      <TableCell className="text-gray-300 font-mono w-32">
+      <TableCell className="text-gray-300 font-mono w-40 px-2 py-3">
         {formatVolume(token.volume24h)}
       </TableCell>
-      <TableCell className="text-gray-300 font-mono w-32">
+      <TableCell className="text-gray-300 font-mono w-32 px-2 py-3">
         {formatMarketCap(token.marketCap)}
       </TableCell>
-      <TableCell className="w-24">
+      <TableCell className="w-36 px-2 py-3">
         <Badge
           variant="outline"
           className={`
