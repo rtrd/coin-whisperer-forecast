@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Activity, Brain, Target, Info, BarChart3, TrendingUp, TrendingDown } from "lucide-react";
+import { Activity, Brain, Target, Info, BarChart3, TrendingUp, TrendingDown, Clock, Calendar } from "lucide-react";
 import { CryptoSearchSelector } from "./CryptoSearchSelector";
 import { PriceChart } from "./PriceChart";
 import { ModelTypeTooltip } from "./ModelTypeTooltip";
@@ -25,6 +25,197 @@ interface CryptoOption {
 interface IndependentPredictionWidgetProps {
   cryptoOptions: CryptoOption[];
 }
+
+const TimePeriodTooltip: React.FC<{ timeframe: string }> = ({ timeframe }) => {
+  const getTimePeriodInfo = (period: string) => {
+    switch (period) {
+      case '1d':
+        return {
+          icon: <Clock className="h-4 w-4 text-blue-400" />,
+          title: '1 Day Period',
+          description: 'Ultra short-term analysis using the last 24 hours of price data.',
+          bestFor: 'Scalping and high-frequency trading',
+          features: ['Real-time patterns', 'Immediate market reactions', 'Intraday volatility'],
+          recommendation: 'Best for experienced day traders who can monitor positions closely and react quickly to market changes.'
+        };
+      case '7d':
+        return {
+          icon: <Calendar className="h-4 w-4 text-green-400" />,
+          title: '7 Days Period',
+          description: 'Short-term analysis incorporating weekly trading patterns and trends.',
+          bestFor: 'Swing trading and weekly strategies',
+          features: ['Weekly trend analysis', 'Market cycle patterns', 'Technical breakouts'],
+          recommendation: 'Ideal for most traders. Provides good balance between recent trends and pattern recognition.'
+        };
+      case '30d':
+        return {
+          icon: <BarChart3 className="h-4 w-4 text-purple-400" />,
+          title: '30 Days Period',
+          description: 'Medium-term analysis using a full month of historical price data.',
+          bestFor: 'Position trading and monthly cycles',
+          features: ['Monthly trend analysis', 'Support/resistance levels', 'Market sentiment shifts'],
+          recommendation: 'Great for identifying medium-term trends and major support/resistance levels for position trading.'
+        };
+      case '90d':
+        return {
+          icon: <TrendingUp className="h-4 w-4 text-orange-400" />,
+          title: '90 Days Period',
+          description: 'Long-term analysis incorporating quarterly patterns and seasonal trends.',
+          bestFor: 'Long-term investment decisions',
+          features: ['Quarterly patterns', 'Seasonal trends', 'Major market cycles'],
+          recommendation: 'Perfect for long-term investors looking to identify major trend reversals and market cycles.'
+        };
+      default:
+        return {
+          icon: <Info className="h-4 w-4 text-gray-400" />,
+          title: 'Time Period',
+          description: 'Select a time period to see detailed information.',
+          bestFor: 'Various trading strategies',
+          features: ['Different analysis depths'],
+          recommendation: 'Choose based on your trading timeframe and strategy.'
+        };
+    }
+  };
+
+  const periodInfo = getTimePeriodInfo(timeframe);
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Info className="h-3 w-3 text-gray-400 hover:text-white transition-colors" />
+        </TooltipTrigger>
+        <TooltipContent className="max-w-sm p-4 bg-gray-800 border-gray-600">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              {periodInfo.icon}
+              <h4 className="font-semibold text-white">{periodInfo.title}</h4>
+            </div>
+            
+            <p className="text-sm text-gray-300">{periodInfo.description}</p>
+            
+            <div>
+              <h5 className="text-sm font-medium text-white mb-1">Best For:</h5>
+              <p className="text-sm text-blue-300">{periodInfo.bestFor}</p>
+            </div>
+            
+            <div>
+              <h5 className="text-sm font-medium text-white mb-1">Key Features:</h5>
+              <ul className="text-sm text-gray-300 space-y-1">
+                {periodInfo.features.map((feature, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="border-t border-gray-600 pt-2">
+              <p className="text-sm text-green-300 font-medium">💡 Recommendation:</p>
+              <p className="text-sm text-gray-300 mt-1">{periodInfo.recommendation}</p>
+            </div>
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
+const PredictionDaysTooltip: React.FC<{ predictionDays: number }> = ({ predictionDays }) => {
+  const getPredictionDaysInfo = (days: number) => {
+    if (days <= 1) {
+      return {
+        icon: <Target className="h-4 w-4 text-green-400" />,
+        title: '1 Day Prediction',
+        description: 'Ultra-precise short-term forecast for the next 24 hours.',
+        bestFor: 'Day trading and scalping strategies',
+        features: ['Highest accuracy', 'Immediate actionable insights', 'Real-time market reactions'],
+        recommendation: 'Perfect for day traders who need high-confidence predictions for quick market entry and exit decisions.'
+      };
+    } else if (days <= 3) {
+      return {
+        icon: <Activity className="h-4 w-4 text-blue-400" />,
+        title: '3 Days Prediction',
+        description: 'Short-term forecast covering the next 2-3 trading days.',
+        bestFor: 'Short-term swing trading',
+        features: ['High accuracy', 'Multi-day trend analysis', 'Weekend gap considerations'],
+        recommendation: 'Ideal for swing traders looking to capitalize on short-term price movements over a few days.'
+      };
+    } else if (days <= 7) {
+      return {
+        icon: <Calendar className="h-4 w-4 text-purple-400" />,
+        title: '7 Days Prediction',
+        description: 'Weekly forecast incorporating full trading week patterns.',
+        bestFor: 'Weekly swing trading strategies',
+        features: ['Weekly trend prediction', 'Pattern completion analysis', 'Market cycle timing'],
+        recommendation: 'Best balance of accuracy and timeframe for most traders. Great for weekly position planning.'
+      };
+    } else if (days <= 14) {
+      return {
+        icon: <TrendingUp className="h-4 w-4 text-orange-400" />,
+        title: '14 Days Prediction',
+        description: 'Bi-weekly forecast for medium-term position planning.',
+        bestFor: 'Position trading and trend following',
+        features: ['Medium-term trend analysis', 'Support/resistance forecasting', 'Momentum predictions'],
+        recommendation: 'Suitable for position traders who want to identify and ride medium-term trends with good confidence.'
+      };
+    } else {
+      return {
+        icon: <BarChart3 className="h-4 w-4 text-red-400" />,
+        title: '30 Days Prediction',
+        description: 'Long-term forecast for major trend and cycle analysis.',
+        bestFor: 'Long-term investment decisions',
+        features: ['Long-term trend forecasting', 'Major cycle predictions', 'Investment planning'],
+        recommendation: 'Best for long-term investors planning major position changes. Lower accuracy but valuable for strategic decisions.'
+      };
+    }
+  };
+
+  const daysInfo = getPredictionDaysInfo(predictionDays);
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          <Info className="h-3 w-3 text-gray-400 hover:text-white transition-colors" />
+        </TooltipTrigger>
+        <TooltipContent className="max-w-sm p-4 bg-gray-800 border-gray-600">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              {daysInfo.icon}
+              <h4 className="font-semibold text-white">{daysInfo.title}</h4>
+            </div>
+            
+            <p className="text-sm text-gray-300">{daysInfo.description}</p>
+            
+            <div>
+              <h5 className="text-sm font-medium text-white mb-1">Best For:</h5>
+              <p className="text-sm text-blue-300">{daysInfo.bestFor}</p>
+            </div>
+            
+            <div>
+              <h5 className="text-sm font-medium text-white mb-1">Key Features:</h5>
+              <ul className="text-sm text-gray-300 space-y-1">
+                {daysInfo.features.map((feature, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="border-t border-gray-600 pt-2">
+              <p className="text-sm text-green-300 font-medium">💡 Recommendation:</p>
+              <p className="text-sm text-gray-300 mt-1">{daysInfo.recommendation}</p>
+            </div>
+          </div>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
 
 export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetProps> = ({
   cryptoOptions
@@ -84,26 +275,9 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
             </div>
             
             <div>
-              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-1">
+              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
                 Time Period
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-3 w-3 text-gray-400" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <div className="space-y-2">
-                      <p className="font-medium">Historical Data Period</p>
-                      <p className="text-sm">Amount of historical price data used to train the AI model:</p>
-                      <ul className="text-sm space-y-1">
-                        <li><strong>1 Day:</strong> Ultra short-term patterns, good for scalping</li>
-                        <li><strong>7 Days:</strong> Short-term trends and weekly patterns</li>
-                        <li><strong>30 Days:</strong> Medium-term analysis with monthly cycles</li>
-                        <li><strong>90 Days:</strong> Long-term trends and seasonal patterns</li>
-                      </ul>
-                      <p className="text-xs text-blue-300">💡 Longer periods provide more context but may miss recent trends</p>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
+                <TimePeriodTooltip timeframe={timeframe} />
               </label>
               <Select value={timeframe} onValueChange={setTimeframe}>
                 <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
@@ -119,26 +293,9 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
             </div>
             
             <div>
-              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-1">
+              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
                 Prediction Days
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="h-3 w-3 text-gray-400" />
-                  </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <div className="space-y-2">
-                      <p className="font-medium">Forecast Timeline</p>
-                      <p className="text-sm">How far into the future to predict prices:</p>
-                      <ul className="text-sm space-y-1">
-                        <li><strong>1-3 Days:</strong> Highest accuracy, best for day trading</li>
-                        <li><strong>7 Days:</strong> Good for swing trading strategies</li>
-                        <li><strong>14 Days:</strong> Medium-term position planning</li>
-                        <li><strong>30 Days:</strong> Long-term investment decisions</li>
-                      </ul>
-                      <p className="text-xs text-yellow-300">⚠️ Accuracy decreases with longer prediction periods</p>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
+                <PredictionDaysTooltip predictionDays={predictionDays} />
               </label>
               <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
                 <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
