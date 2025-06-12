@@ -374,6 +374,7 @@ const TokenDetail = () => {
                 prediction={showPrediction ? prediction?.predictions || null : null}
                 isLoading={dataLoading}
                 crypto={tokenId || 'bitcoin'}
+                onClearPrediction={handleClearPrediction}
               />
 
               {/* AI Analysis Controls - Moved below chart */}
@@ -432,11 +433,11 @@ const TokenDetail = () => {
                     </Select>
                   </div>
                   
-                  <div className="flex items-end gap-2">
+                  <div className="flex items-end">
                     <Button 
                       onClick={handlePredict}
                       disabled={dataLoading || predictionLoading || !cryptoData}
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                     >
                       {predictionLoading ? (
                         <div className="flex items-center gap-2">
@@ -450,17 +451,6 @@ const TokenDetail = () => {
                         </div>
                       )}
                     </Button>
-                    
-                    {showPrediction && prediction && (
-                      <Button 
-                        onClick={handleClearPrediction}
-                        variant="outline"
-                        size="sm"
-                        className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    )}
                   </div>
                 </div>
               </div>

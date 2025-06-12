@@ -16,6 +16,7 @@ interface IndexMainContentProps {
   cryptoOptions: any[];
   currentPrice: number;
   priceChange: number;
+  onClearPrediction?: () => void;
 }
 
 export const IndexMainContent: React.FC<IndexMainContentProps> = ({
@@ -25,7 +26,8 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
   dataLoading,
   cryptoOptions,
   currentPrice,
-  priceChange
+  priceChange,
+  onClearPrediction
 }) => {
   return (
     <div className="lg:col-span-3 space-y-6">
@@ -50,6 +52,7 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
             prediction={prediction?.predictions || null}
             isLoading={dataLoading}
             crypto={selectedCrypto}
+            onClearPrediction={onClearPrediction}
           />
         </CardContent>
       </Card>
