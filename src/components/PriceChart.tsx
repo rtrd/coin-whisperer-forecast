@@ -71,25 +71,44 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     volume: d.volume || 0
   }));
 
-  // Add prediction data if available
+  // Add prediction data if available - create smoother transition
   if (prediction && prediction.length > 0) {
     // Get the last historical price point for connecting the prediction line
     const lastHistoricalPrice = data[data.length - 1]?.price;
 
-    // Add all prediction points, starting from the last historical point
+    // Add a bridge point that connects historical to prediction smoothly
+    const firstPredictionTime = prediction[0].timestamp;
+    const bridgePoint = {
+      timestamp: firstPredictionTime,
+      date: new Date(firstPredictionTime).toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: window.innerWidth < 768 ? undefined : '2-digit'
+      }),
+      price: lastHistoricalPrice, // Keep historical price for smooth connection
+      predictedPrice: lastHistoricalPrice, // Start prediction from same point
+      confidence: prediction[0].confidence,
+      volume: 0
+    };
+
+    chartData.push(bridgePoint);
+
+    // Add remaining prediction points
     prediction.forEach((p, index) => {
-      chartData.push({
-        timestamp: p.timestamp,
-        date: new Date(p.timestamp).toLocaleDateString('en-US', { 
-          month: 'short', 
-          day: 'numeric',
-          hour: window.innerWidth < 768 ? undefined : '2-digit'
-        }),
-        price: index === 0 ? lastHistoricalPrice : null, // Connect first prediction point to historical data
-        predictedPrice: p.predictedPrice,
-        confidence: p.confidence,
-        volume: 0
-      });
+      if (index > 0) { // Skip first point as we already added bridge
+        chartData.push({
+          timestamp: p.timestamp,
+          date: new Date(p.timestamp).toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric',
+            hour: window.innerWidth < 768 ? undefined : '2-digit'
+          }),
+          price: null, // No historical price for future points
+          predictedPrice: p.predictedPrice,
+          confidence: p.confidence,
+          volume: 0
+        });
+      }
     });
   }
 
@@ -213,13 +232,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 fill="url(#priceGradient)"
                 connectNulls={false}
                 dot={false}
-                activeDot={{ 
-                  r: 6, 
-                  fill: '#3B82F6', 
-                  strokeWidth: 3, 
-                  stroke: '#ffffff',
-                  filter: "url(#glow)"
-                }}
+                activeDot={false}
               />
               
               {/* Prediction Area */}
@@ -233,13 +246,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                   fill="url(#predictionGradient)"
                   connectNulls={true}
                   dot={false}
-                  activeDot={{ 
-                    r: 6, 
-                    fill: '#10B981', 
-                    strokeWidth: 3, 
-                    stroke: '#ffffff',
-                    filter: "url(#glow)"
-                  }}
+                  activeDot={false}
                 />
               )}
             </AreaChart>
@@ -252,7 +259,6 @@ export const PriceChart: React.FC<PriceChartProps> = ({
             <div className="flex items-center gap-3 px-4 py-2 bg-blue-500/15 rounded-xl border border-blue-500/30 backdrop-blur-sm">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
-                <div className="w-2 h-2 bg-blue-500 rounded-full shadow-lg shadow-blue-500/50"></div>
               </div>
               <span className="text-blue-300 font-semibold">Historical Price</span>
             </div>
@@ -261,7 +267,6 @@ export const PriceChart: React.FC<PriceChartProps> = ({
               <div className="flex items-center gap-3 px-4 py-2 bg-green-500/15 rounded-xl border border-green-500/30 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-1 border-t-2 border-dashed border-green-400 rounded"></div>
-                  <div className="w-2 h-2 bg-green-500 rounded-full shadow-lg shadow-green-500/50"></div>
                 </div>
                 <span className="text-green-300 font-semibold">AI Prediction</span>
               </div>
