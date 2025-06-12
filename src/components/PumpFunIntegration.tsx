@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Rocket, TrendingUp, TrendingDown, ExternalLink, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { Rocket, TrendingUp, TrendingDown, ExternalLink, ChevronDown, ChevronUp, Sparkles, LayoutList, LayoutGrid } from "lucide-react";
 
 interface PumpToken {
   name: string;
@@ -21,6 +21,7 @@ export const PumpFunIntegration = () => {
   const [topLosers, setTopLosers] = useState<PumpToken[]>([]);
   const [newLaunches, setNewLaunches] = useState<PumpToken[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
 
   useEffect(() => {
     // Mock data for top performers
@@ -109,6 +110,53 @@ export const PumpFunIntegration = () => {
     </div>
   );
 
+  const renderTokenList = (tokens: PumpToken[], changeColorClass: string) => (
+    <div className="space-y-2 px-2">
+      {tokens.map((token, index) => (
+        <div key={index} className="flex items-center justify-between bg-card/50 border border-border rounded-lg p-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xl">{token.icon}</span>
+            <div>
+              <div className="text-foreground font-bold text-sm">{token.symbol}</div>
+              <div className="text-muted-foreground text-xs">{token.name}</div>
+            </div>
+            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+              {token.pumpScore}
+            </Badge>
+          </div>
+          
+          <div className="flex items-center gap-4 text-xs">
+            <div className="text-center">
+              <div className="text-muted-foreground">Price</div>
+              <div className="text-foreground">${token.price.toFixed(4)}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-muted-foreground">24h</div>
+              <div className={`${changeColorClass} font-bold`}>
+                {token.change24h >= 0 ? '+' : ''}{token.change24h}%
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-muted-foreground">Volume</div>
+              <div className="text-foreground">${formatNumber(token.volume)}</div>
+            </div>
+            <div className="text-center">
+              <div className="text-muted-foreground">Market Cap</div>
+              <div className="text-foreground">${formatNumber(token.marketCap)}</div>
+            </div>
+            <Button 
+              className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+              size="sm"
+            >
+              <ExternalLink className="h-3 w-3 mr-1" />
+              Trade
+            </Button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
@@ -135,12 +183,32 @@ export const PumpFunIntegration = () => {
           </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent className="space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="text-muted-foreground text-sm">Choose your view preference</div>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant={viewMode === "list" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setViewMode("list")}
+                  >
+                    <LayoutList className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === "grid" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setViewMode("grid")}
+                  >
+                    <LayoutGrid className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
               <div className="bg-muted/50 rounded-lg p-4">
                 <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
                   <TrendingUp className="h-4 w-4 text-green-400" />
                   Top Performers
                 </h3>
-                {renderTokenGrid(topPerformers, 'text-green-400')}
+                {viewMode === "grid" ? renderTokenGrid(topPerformers, 'text-green-400') : renderTokenList(topPerformers, 'text-green-400')}
               </div>
 
               <div className="bg-muted/50 rounded-lg p-4">
@@ -148,7 +216,7 @@ export const PumpFunIntegration = () => {
                   <TrendingDown className="h-4 w-4 text-red-400" />
                   Top Losers
                 </h3>
-                {renderTokenGrid(topLosers, 'text-red-400')}
+                {viewMode === "grid" ? renderTokenGrid(topLosers, 'text-red-400') : renderTokenList(topLosers, 'text-red-400')}
               </div>
 
               <div className="bg-muted/50 rounded-lg p-4">
@@ -156,7 +224,7 @@ export const PumpFunIntegration = () => {
                   <Sparkles className="h-4 w-4 text-yellow-400" />
                   New Launches
                 </h3>
-                {renderTokenGrid(newLaunches, 'text-green-400')}
+                {viewMode === "grid" ? renderTokenGrid(newLaunches, 'text-green-400') : renderTokenList(newLaunches, 'text-green-400')}
               </div>
             </CardContent>
           </CollapsibleContent>
