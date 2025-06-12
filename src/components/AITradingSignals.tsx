@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -277,7 +278,7 @@ export const AITradingSignals = () => {
                   {isAnalyzing && <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>}
                 </div>
                 <Button variant="ghost" size="sm" className="text-slate-600 hover:bg-gray-700/50 hover:text-white flex items-center gap-1">
-                  {isOpen ? 'Hide Signals' : 'Show Signals'}
+                  {isOpen ? 'Hide Insights' : 'Show Insights'}
                   {isOpen ? (
                     <ChevronUp className="h-4 w-4" />
                   ) : (
