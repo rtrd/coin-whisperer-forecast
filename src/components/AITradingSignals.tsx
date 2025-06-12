@@ -273,7 +273,7 @@ export const AITradingSignals = () => {
               <CardTitle className="text-slate-600 flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
                   <Brain className="h-5 w-5 text-purple-400" />
-                  AI Trading Signals
+                  AI Trading Insights
                   {isAnalyzing && <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>}
                 </div>
                 <Button variant="ghost" size="sm" className="text-slate-600 hover:bg-gray-700/50 hover:text-white flex items-center gap-1">
