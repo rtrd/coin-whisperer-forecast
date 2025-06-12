@@ -270,7 +270,7 @@ export const AITradingSignals = () => {
         <Card className={`bg-gradient-to-br ${currentAnalysis.bgColor} ${currentAnalysis.borderColor} border`}>
           <CollapsibleTrigger asChild>
             <CardHeader className="pb-4 cursor-pointer hover:bg-white/5 transition-colors">
-              <CardTitle className="text-white flex items-center justify-between text-lg">
+              <CardTitle className="text-slate-600 flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
                   <Brain className="h-5 w-5 text-purple-400" />
                   AI Trading Signals
