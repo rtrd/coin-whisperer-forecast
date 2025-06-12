@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Zap, ArrowLeft } from "lucide-react";
+import { Brain, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
@@ -42,7 +42,7 @@ const AIPrediction = () => {
 
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
-            <Zap className="h-12 w-12 text-yellow-400" />
+            <Brain className="h-12 w-12 text-blue-400" />
             AI Prediction Analysis
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
