@@ -66,7 +66,7 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
     <TooltipProvider>
       <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2 text-shadow-lg">
+          <CardTitle className="text-white flex items-center gap-2">
             <Target className="h-5 w-5 text-green-400" />
             Independent AI Prediction Analysis
             <Badge className="bg-blue-600">Advanced</Badge>
