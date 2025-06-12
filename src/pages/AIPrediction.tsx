@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -42,7 +43,7 @@ const AIPrediction = () => {
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
             <Target className="h-12 w-12 text-blue-400" />
-            Advanced Market Forecasting
+            Smart Price Predictions
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Advanced cryptocurrency predictions using machine learning algorithms and market sentiment analysis
