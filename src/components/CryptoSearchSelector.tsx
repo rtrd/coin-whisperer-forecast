@@ -60,7 +60,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="flex items-center border-b border-gray-600 px-3">
+          <div className="flex items-center px-3">
             <Search className="mr-2 h-4 w-4 shrink-0 text-white" />
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
