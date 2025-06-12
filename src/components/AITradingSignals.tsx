@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock, ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
+import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Clock, ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
 import { TradingInsightsChat } from "@/components/TradingInsightsChat";
 
 interface MarketSignal {
@@ -245,7 +245,7 @@ export const AITradingSignals = () => {
 
   const getLiveSignalIcon = (type: string) => {
     switch (type) {
-      case 'volume_spike': return <Volume2 className="h-3 w-3 text-blue-300" />;
+      case 'volume_spike': return <BarChart3 className="h-3 w-3 text-blue-300" />;
       case 'breakout': return <TrendingUp className="h-3 w-3 text-green-300" />;
       case 'price_alert': return <AlertTriangle className="h-3 w-3 text-orange-300" />;
       case 'support_test': return <Target className="h-3 w-3 text-purple-300" />;
