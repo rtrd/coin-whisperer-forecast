@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Rocket, TrendingUp, TrendingDown, Zap, ExternalLink, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
+import { Rocket, TrendingUp, TrendingDown, ExternalLink, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
 
 interface PumpToken {
   name: string;
@@ -136,14 +135,6 @@ export const PumpFunIntegration = () => {
           </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent className="space-y-4">
-              <div className="bg-muted/50 rounded-lg p-4">
-                <div className="text-center">
-                  <Zap className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <h3 className="text-foreground font-bold text-lg mb-2">Live Memecoin Data</h3>
-                  <p className="text-muted-foreground text-sm">Real-time data from pump.fun ecosystem</p>
-                </div>
-              </div>
-
               <div className="bg-muted/50 rounded-lg p-4">
                 <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
                   <TrendingUp className="h-4 w-4 text-green-400" />
