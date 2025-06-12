@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -181,13 +182,13 @@ const TokenDetail = () => {
         </div>
 
         {/* Combined Header Card */}
-        <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
+        <Card className="mb-8 bg-gradient-to-br from-gray-800/60 to-gray-900/60 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
           <CardContent className="p-8">
-            <div className="space-y-6">
+            <div className="space-y-8">
               {/* Token Info Section */}
-              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+              <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
                 <div className="flex-1">
-                  <div className="flex items-center gap-4 mb-3">
+                  <div className="flex items-center gap-4 mb-4">
                     <h1 className="text-3xl lg:text-4xl font-bold text-white">{selectedToken.label}</h1>
                     <Badge 
                       className={`px-3 py-1 text-sm font-medium ${
@@ -202,120 +203,139 @@ const TokenDetail = () => {
                     </Badge>
                   </div>
                   
-                  <p className="text-gray-300 text-base lg:text-lg mb-4 leading-relaxed">
+                  <p className="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
                     {selectedToken.description}
                   </p>
                   
                   <div className="flex items-center gap-4">
                     {selectedToken.website && (
                       <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
-                         className="text-gray-400 hover:text-blue-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/30">
+                         className="text-gray-400 hover:text-blue-400 transition-all duration-200 p-3 rounded-xl hover:bg-gray-700/30 hover:scale-105">
                         <Globe className="h-5 w-5" />
                       </a>
                     )}
                     {selectedToken.twitter && (
                       <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
-                         className="text-gray-400 hover:text-blue-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/30">
+                         className="text-gray-400 hover:text-blue-400 transition-all duration-200 p-3 rounded-xl hover:bg-gray-700/30 hover:scale-105">
                         <Twitter className="h-5 w-5" />
                       </a>
                     )}
                   </div>
                 </div>
 
-                {/* Current Price - Highlighted */}
-                <div className="lg:w-64">
-                  <div className="bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/50 text-center">
-                    <div className="flex items-center justify-center gap-2 mb-2">
-                      <DollarSign className="h-5 w-5 text-blue-400" />
-                      <div className="text-gray-400 text-sm font-medium">Current Price</div>
+                {/* Current Price - Enhanced */}
+                <div className="lg:w-72">
+                  <div className="bg-gradient-to-br from-blue-500/10 via-purple-500/10 to-pink-500/10 rounded-2xl p-6 border border-gray-500/30 text-center backdrop-blur-sm shadow-xl">
+                    <div className="flex items-center justify-center gap-2 mb-3">
+                      <div className="p-2 rounded-full bg-blue-500/20">
+                        <DollarSign className="h-5 w-5 text-blue-400" />
+                      </div>
+                      <div className="text-gray-300 text-sm font-medium">Current Price</div>
                     </div>
-                    <div className="text-3xl font-bold text-white mb-2">${currentPrice.toFixed(2)}</div>
-                    <div className={`flex items-center justify-center gap-2 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    <div className="text-4xl font-bold text-white mb-3">${currentPrice.toFixed(2)}</div>
+                    <div className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl ${priceChange >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                       {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
                       <span className="text-lg font-semibold">
                         {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
                       </span>
-                      <span className="text-gray-400 text-sm">24h</span>
+                      <span className="text-sm opacity-80">24h</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Market Statistics - Full Width Grid */}
-              <div className="bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/50">
-                <h3 className="text-white font-semibold text-lg mb-4 flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-blue-400" />
+              {/* Market Statistics - Enhanced Design */}
+              <div className="bg-gradient-to-br from-gray-700/40 via-gray-800/40 to-gray-900/40 rounded-2xl p-6 border border-gray-600/40 backdrop-blur-sm shadow-xl">
+                <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
+                  <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+                    <BarChart3 className="h-6 w-6 text-blue-400" />
+                  </div>
                   Market Statistics
                 </h3>
                 
-                {/* Market Metrics in a responsive grid spanning full width */}
-                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <BarChart3 className="h-3 w-3 text-blue-400" />
-                      <span className="text-gray-400 text-xs">Market Cap</span>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-blue-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-blue-500/20">
+                        <BarChart3 className="h-4 w-4 text-blue-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">Market Cap</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">${(marketData.marketCap / 1000000000).toFixed(2)}B</span>
+                    <span className="text-white font-bold text-lg">${(marketData.marketCap / 1000000000).toFixed(2)}B</span>
                   </div>
                   
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Activity className="h-3 w-3 text-green-400" />
-                      <span className="text-gray-400 text-xs">24h Volume</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-green-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-green-500/20">
+                        <Activity className="h-4 w-4 text-green-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">24h Volume</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">${(marketData.volume24h / 1000000).toFixed(2)}M</span>
+                    <span className="text-white font-bold text-lg">${(marketData.volume24h / 1000000).toFixed(2)}M</span>
                   </div>
 
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Clock className="h-3 w-3 text-purple-400" />
-                      <span className="text-gray-400 text-xs">7d Change</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-purple-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-purple-500/20">
+                        <Clock className="h-4 w-4 text-purple-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">7d Change</span>
                     </div>
-                    <span className={`font-semibold text-sm ${marketData.priceChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    <span className={`font-bold text-lg ${marketData.priceChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                       {marketData.priceChange7d >= 0 ? '+' : ''}{marketData.priceChange7d.toFixed(2)}%
                     </span>
                   </div>
 
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Clock className="h-3 w-3 text-orange-400" />
-                      <span className="text-gray-400 text-xs">30d Change</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-orange-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-orange-500/20">
+                        <Clock className="h-4 w-4 text-orange-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">30d Change</span>
                     </div>
-                    <span className={`font-semibold text-sm ${marketData.priceChange30d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    <span className={`font-bold text-lg ${marketData.priceChange30d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                       {marketData.priceChange30d >= 0 ? '+' : ''}{marketData.priceChange30d.toFixed(2)}%
                     </span>
                   </div>
 
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <TrendingUp className="h-3 w-3 text-emerald-400" />
-                      <span className="text-gray-400 text-xs">All Time High</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-emerald-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-emerald-500/20">
+                        <TrendingUp className="h-4 w-4 text-emerald-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">All Time High</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">${marketData.allTimeHigh.toFixed(2)}</span>
+                    <span className="text-white font-bold text-lg">${marketData.allTimeHigh.toFixed(2)}</span>
                   </div>
 
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <TrendingDown className="h-3 w-3 text-red-400" />
-                      <span className="text-gray-400 text-xs">All Time Low</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-red-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-red-500/20">
+                        <TrendingDown className="h-4 w-4 text-red-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">All Time Low</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">${marketData.allTimeLow.toFixed(2)}</span>
+                    <span className="text-white font-bold text-lg">${marketData.allTimeLow.toFixed(2)}</span>
                   </div>
 
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <Activity className="h-3 w-3 text-cyan-400" />
-                      <span className="text-gray-400 text-xs">Circulating</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-cyan-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-cyan-500/20">
+                        <Activity className="h-4 w-4 text-cyan-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">Circulating</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">{(marketData.circulatingSupply / 1000000).toFixed(2)}M</span>
+                    <span className="text-white font-bold text-lg">{(marketData.circulatingSupply / 1000000).toFixed(2)}M</span>
                   </div>
 
-                  <div className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30">
-                    <div className="flex items-center gap-1 mb-1">
-                      <BarChart3 className="h-3 w-3 text-yellow-400" />
-                      <span className="text-gray-400 text-xs">Total Supply</span>
+                  <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-yellow-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="p-1.5 rounded-lg bg-yellow-500/20">
+                        <BarChart3 className="h-4 w-4 text-yellow-400" />
+                      </div>
+                      <span className="text-gray-300 text-sm font-medium">Total Supply</span>
                     </div>
-                    <span className="text-white font-semibold text-sm">{(marketData.totalSupply / 1000000).toFixed(2)}M</span>
+                    <span className="text-white font-bold text-lg">{(marketData.totalSupply / 1000000).toFixed(2)}M</span>
                   </div>
                 </div>
               </div>
