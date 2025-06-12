@@ -170,117 +170,129 @@ const TokenDetail = () => {
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Link to="/">
-            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-          </Link>
-          
-          <div className="flex-1">
-            <div>
-              <h1 className="text-4xl font-bold text-white">{selectedToken.label}</h1>
-              
-              <div className="mt-4">
-                <p className="text-gray-300 text-lg">{selectedToken.description}</p>
+        {/* Header - Improved styling */}
+        <Card className="mb-8 bg-gradient-to-r from-gray-800/80 to-gray-900/80 border-gray-700 backdrop-blur-sm">
+          <CardContent className="p-8">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-6">
+                <Link to="/">
+                  <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
+                    <ArrowLeft className="h-4 w-4 mr-2" />
+                    Back
+                  </Button>
+                </Link>
+                
+                <div className="space-y-4">
+                  <div>
+                    <h1 className="text-4xl font-bold text-white mb-4">{selectedToken.label}</h1>
+                    
+                    <p className="text-gray-300 text-lg mb-4">{selectedToken.description}</p>
+                    
+                    <div className="flex items-center gap-4">
+                      <Badge 
+                        className={`px-3 py-1 text-sm font-medium ${
+                          selectedToken.category === 'Major' ? 'bg-blue-500 text-white' :
+                          selectedToken.category === 'DeFi' ? 'bg-purple-500 text-white' :
+                          selectedToken.category === 'Meme' ? 'bg-orange-500 text-white' :
+                          selectedToken.category === 'AI' ? 'bg-green-500 text-white' : 
+                          'bg-gray-500 text-white'
+                        }`}
+                      >
+                        {selectedToken.category}
+                      </Badge>
+                      {selectedToken.website && (
+                        <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
+                           className="text-gray-400 hover:text-white transition-colors">
+                          <Globe className="h-5 w-5" />
+                        </a>
+                      )}
+                      {selectedToken.twitter && (
+                        <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
+                           className="text-gray-400 hover:text-white transition-colors">
+                          <Twitter className="h-5 w-5" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <div className="flex items-center gap-4 mt-4">
-                <Badge 
-                  variant="outline" 
-                  className={`text-white border ${
-                    selectedToken.category === 'Major' ? 'bg-blue-500/20 border-blue-400 text-blue-300' :
-                    selectedToken.category === 'DeFi' ? 'bg-purple-500/20 border-purple-400 text-purple-300' :
-                    selectedToken.category === 'Meme' ? 'bg-orange-500/20 border-orange-400 text-orange-300' :
-                    selectedToken.category === 'AI' ? 'bg-green-500/20 border-green-400 text-green-300' : 
-                    'bg-gray-500/20 border-gray-400 text-gray-300'
-                  }`}
-                >
-                  {selectedToken.category}
-                </Badge>
-                {selectedToken.website && (
-                  <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
-                     className="text-gray-400 hover:text-white transition-colors">
-                    <Globe className="h-5 w-5" />
-                  </a>
-                )}
-                {selectedToken.twitter && (
-                  <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
-                     className="text-gray-400 hover:text-white transition-colors">
-                    <Twitter className="h-5 w-5" />
-                  </a>
-                )}
+
+              <div className="text-right bg-gray-700/30 rounded-xl p-6 border border-gray-600/50">
+                <div className="text-4xl font-bold text-white mb-2">${currentPrice.toFixed(2)}</div>
+                <div className={`flex items-center gap-2 justify-end ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {priceChange >= 0 ? <TrendingUp className="h-5 w-5" /> : <TrendingDown className="h-5 w-5" />}
+                  <span className="text-xl font-bold">
+                    {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+                  </span>
+                  <span className="text-gray-400 text-sm">24h</span>
+                </div>
+                <div className="mt-3 pt-3 border-t border-gray-600">
+                  <div className="text-sm text-gray-400">AI Score</div>
+                  <div className="text-yellow-400 font-bold text-lg">{selectedToken.score}/10</div>
+                </div>
               </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <div className="text-right">
-            <div className="text-4xl font-bold text-white">${currentPrice.toFixed(2)}</div>
-            <div className={`flex items-center gap-2 justify-end mt-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-              {priceChange >= 0 ? <TrendingUp className="h-5 w-5" /> : <TrendingDown className="h-5 w-5" />}
-              <span className="text-xl font-bold">
-                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
-              </span>
-              <span className="text-gray-400 text-sm">24h</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Market Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-8">
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-4">
-              <div className="text-gray-400 text-sm">Market Cap</div>
-              <div className="text-white font-bold">${(marketData.marketCap / 1000000000).toFixed(2)}B</div>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-4">
-              <div className="text-gray-400 text-sm">24h Volume</div>
-              <div className="text-white font-bold">${(marketData.volume24h / 1000000).toFixed(2)}M</div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-4">
-              <div className="text-gray-400 text-sm">7d Change</div>
-              <div className={`font-bold ${marketData.priceChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                {marketData.priceChange7d >= 0 ? '+' : ''}{marketData.priceChange7d.toFixed(2)}%
+        {/* Market Stats - Combined into attractive card */}
+        <Card className="mb-8 bg-gradient-to-br from-gray-800/60 to-gray-900/60 border-gray-700 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="text-white text-xl">Market Statistics</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+              <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
+                <div className="flex items-center gap-2 mb-2">
+                  <DollarSign className="h-4 w-4 text-blue-400" />
+                  <div className="text-gray-400 text-sm font-medium">Market Cap</div>
+                </div>
+                <div className="text-white font-bold text-lg">${(marketData.marketCap / 1000000000).toFixed(2)}B</div>
               </div>
-            </CardContent>
-          </Card>
+              
+              <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
+                <div className="flex items-center gap-2 mb-2">
+                  <Activity className="h-4 w-4 text-green-400" />
+                  <div className="text-gray-400 text-sm font-medium">24h Volume</div>
+                </div>
+                <div className="text-white font-bold text-lg">${(marketData.volume24h / 1000000).toFixed(2)}M</div>
+              </div>
 
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-4">
-              <div className="text-gray-400 text-sm">All Time High</div>
-              <div className="text-white font-bold">${marketData.allTimeHigh.toFixed(2)}</div>
-            </CardContent>
-          </Card>
+              <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
+                <div className="flex items-center gap-2 mb-2">
+                  <Clock className="h-4 w-4 text-purple-400" />
+                  <div className="text-gray-400 text-sm font-medium">7d Change</div>
+                </div>
+                <div className={`font-bold text-lg ${marketData.priceChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {marketData.priceChange7d >= 0 ? '+' : ''}{marketData.priceChange7d.toFixed(2)}%
+                </div>
+              </div>
 
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-4">
-              <div className="text-gray-400 text-sm">All Time Low</div>
-              <div className="text-white font-bold">${marketData.allTimeLow.toFixed(2)}</div>
-            </CardContent>
-          </Card>
+              <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingUp className="h-4 w-4 text-emerald-400" />
+                  <div className="text-gray-400 text-sm font-medium">All Time High</div>
+                </div>
+                <div className="text-white font-bold text-lg">${marketData.allTimeHigh.toFixed(2)}</div>
+              </div>
 
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-4">
-              <div className="text-gray-400 text-sm">AI Score</div>
-              <div className="text-yellow-400 font-bold">{selectedToken.score}/10</div>
-            </CardContent>
-          </Card>
-        </div>
+              <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
+                <div className="flex items-center gap-2 mb-2">
+                  <TrendingDownIcon className="h-4 w-4 text-red-400" />
+                  <div className="text-gray-400 text-sm font-medium">All Time Low</div>
+                </div>
+                <div className="text-white font-bold text-lg">${marketData.allTimeLow.toFixed(2)}</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Ad Banner */}
         <div className="flex justify-center mb-8">
           <AdBanner width={728} height={90} position="horizontal" />
         </div>
 
-        {/* Controls */}
+        {/* AI Analysis Controls */}
         <Card className="mb-8 bg-gray-800/50 border-gray-700">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
