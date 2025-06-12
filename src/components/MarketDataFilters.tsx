@@ -1,10 +1,11 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   TrendingUp,
   TrendingDown,
   BarChart3,
-  Volume2,
+  Activity,
   Star,
 } from "lucide-react";
 
@@ -28,7 +29,7 @@ export const MarketDataFilters: React.FC<MarketDataFiltersProps> = ({
 }) => {
   const filters = [
     { key: "market_cap" as FilterType, label: "Market Cap", icon: BarChart3 },
-    { key: "volume" as FilterType, label: "Volume", icon: Volume2 },
+    { key: "volume" as FilterType, label: "Volume", icon: Activity },
     { key: "gainers" as FilterType, label: "Top Gainers", icon: TrendingUp },
     { key: "losers" as FilterType, label: "Top Losers", icon: TrendingDown },
     { key: "trending" as FilterType, label: "Trending", icon: Star },
