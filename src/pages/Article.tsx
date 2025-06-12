@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +11,7 @@ import {
   Clock,
   Share2,
   BookmarkPlus,
+  Tag,
 } from "lucide-react";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -31,6 +33,7 @@ const Article = () => {
       category: article.category || "General",
       readTime: article.readTime || "4 min read",
       image: article.image || "https://via.placeholder.com/800x400",
+      tags: article.tags || ["crypto", "analysis", "market"],
     };
   };
 
@@ -39,59 +42,6 @@ const Article = () => {
     : location.state?.article
     ? [formatArticleForDisplay(location.state.article)]
     : [];
-
-  //     content: `
-  //       <p>As Bitcoin surges past $45,000, analysts predict this could be the start of a new bull run. The cryptocurrency market has been showing signs of recovery after months of uncertainty, and this latest milestone could signal a shift in investor sentiment.</p>
-
-  //       <h2>Market Analysis</h2>
-  //       <p>The recent price action can be attributed to several factors:</p>
-  //       <ul>
-  //         <li>Increased institutional adoption</li>
-  //         <li>Regulatory clarity in major markets</li>
-  //         <li>Improved market sentiment</li>
-  //         <li>Technical breakout patterns</li>
-  //       </ul>
-
-  //       <h2>What This Means for Investors</h2>
-  //       <p>For retail investors, this price movement presents both opportunities and risks. It's crucial to maintain a balanced perspective and consider your risk tolerance before making investment decisions.</p>
-
-  //       <p>Remember to always do your own research and never invest more than you can afford to lose. The cryptocurrency market remains highly volatile and unpredictable.</p>
-  //     `,
-  //     author: "Sarah Chen",
-  //     date: "2024-01-15",
-  //     category: "Market Analysis",
-  //     readTime: "4 min read",
-  //     image:
-  //       "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&h=400&fit=crop",
-  //   },
-  //   {
-  //     id: 2,
-  //     title: "Ethereum 2.0 Staking Rewards: Complete Guide for 2024",
-  //     content: `
-  //       <p>Ethereum 2.0 staking has become one of the most popular ways to earn passive income in the cryptocurrency space. This comprehensive guide will walk you through everything you need to know about ETH staking in 2024.</p>
-
-  //       <h2>Understanding ETH Staking</h2>
-  //       <p>Staking is the process of participating in the proof-of-stake consensus mechanism by locking up your ETH to help secure the network. In return, you earn rewards in the form of additional ETH.</p>
-
-  //       <h2>Staking Options</h2>
-  //       <ul>
-  //         <li>Solo staking (32 ETH minimum)</li>
-  //         <li>Staking pools</li>
-  //         <li>Centralized exchange staking</li>
-  //         <li>Liquid staking protocols</li>
-  //       </ul>
-
-  //       <h2>Risks and Considerations</h2>
-  //       <p>While staking can be profitable, it's important to understand the risks involved, including slashing penalties, smart contract risks, and liquidity considerations.</p>
-  //     `,
-  //     author: "Mike Rodriguez",
-  //     date: "2024-01-14",
-  //     category: "DeFi Guide",
-  //     readTime: "6 min read",
-  //     image:
-  //       "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=400&fit=crop",
-  //   },
-  // ];
 
   const cryptoOptions = [
     {
@@ -114,6 +64,69 @@ const Article = () => {
 
   const article = articles.find((a) => a.id === Number(articleId));
 
+  // Mock related articles with tags for filtering
+  const allArticles = [
+    ...articles,
+    {
+      id: 3,
+      title: "Top 5 Altcoins to Watch This Week",
+      author: "Alex Thompson",
+      date: "2024-01-13",
+      category: "AI Predictions",
+      readTime: "3 min read",
+      image: "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=400&h=240&fit=crop",
+      content: "",
+      tags: ["altcoins", "crypto", "predictions"],
+    },
+    {
+      id: 4,
+      title: "DeFi Protocol Analysis: Compound vs Aave",
+      author: "Maria Garcia",
+      date: "2024-01-12",
+      category: "DeFi Guide", 
+      readTime: "5 min read",
+      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=240&fit=crop",
+      content: "",
+      tags: ["defi", "analysis", "protocols"],
+    },
+    {
+      id: 5,
+      title: "Market Sentiment Analysis for Bitcoin",
+      author: "John Doe",
+      date: "2024-01-11",
+      category: "Market Analysis",
+      readTime: "4 min read", 
+      image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&h=240&fit=crop",
+      content: "",
+      tags: ["bitcoin", "analysis", "sentiment"],
+    },
+    {
+      id: 6,
+      title: "NFT Market Trends and Predictions",
+      author: "Sarah Wilson",
+      date: "2024-01-10",
+      category: "NFT Analysis",
+      readTime: "6 min read",
+      image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=400&h=240&fit=crop", 
+      content: "",
+      tags: ["nft", "trends", "market"],
+    },
+  ];
+
+  // Filter related articles by matching tags
+  const getRelatedArticles = () => {
+    if (!article) return [];
+    
+    const currentTags = article.tags || [];
+    return allArticles
+      .filter((a) => a.id !== article.id)
+      .filter((a) => {
+        const articleTags = a.tags || [];
+        return currentTags.some(tag => articleTags.includes(tag));
+      })
+      .slice(0, 4);
+  };
+
   if (!article) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center px-4">
@@ -133,6 +146,8 @@ const Article = () => {
       </div>
     );
   }
+
+  const relatedArticles = getRelatedArticles();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -230,44 +245,55 @@ const Article = () => {
             <Card className="bg-gray-800/50 border-gray-700">
               <CardContent className="p-4 md:p-8">
                 <div
-                  className="prose prose-invert max-w-none text-gray-200 prose-headings:text-shadow-lg prose-h2:text-shadow-lg prose-h3:text-shadow-lg"
+                  className="prose prose-invert max-w-none text-gray-200 
+                  prose-headings:text-shadow-lg prose-h1:text-4xl prose-h1:font-bold prose-h1:mb-6 prose-h1:text-white
+                  prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-white
+                  prose-h3:text-xl prose-h3:font-medium prose-h3:mb-3 prose-h3:mt-6 prose-h3:text-gray-100
+                  prose-h4:text-lg prose-h4:font-medium prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-gray-200
+                  prose-p:mb-6 prose-p:leading-relaxed prose-p:text-gray-200
+                  prose-ul:mb-6 prose-li:mb-2"
                   dangerouslySetInnerHTML={{ __html: article.content }}
                 />
+
+                {/* Article Tags */}
+                <div className="border-t border-gray-600 pt-6 mt-8">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Tag className="h-4 w-4 text-blue-400" />
+                    <span className="text-white font-medium">Tags:</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {article.tags.map((tag: string, index: number) => (
+                      <Badge
+                        key={index}
+                        variant="outline" 
+                        className="bg-gray-700/50 border-gray-600 text-gray-300 hover:bg-gray-600/50"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Related Articles - 3x1 layout with images */}
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle
-                  className="text-white"
-                  style={{ textShadow: "0 0 10px rgba(0, 0, 0, 0.3)" }}
-                >
-                  Related Articles
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {articles
-                    .filter((a) => a.id !== article.id)
-                    .concat([
-                      {
-                        id: 3,
-                        title: "Top 5 Altcoins to Watch This Week",
-                        author: "Alex Thompson",
-                        date: "2024-01-13",
-                        category: "AI Predictions",
-                        readTime: "3 min read",
-                        image:
-                          "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=400&h=240&fit=crop",
-                        content: "",
-                      },
-                    ])
-                    .slice(0, 3)
-                    .map((relatedArticle) => (
+            {/* Related Articles */}
+            {relatedArticles.length > 0 && (
+              <Card className="bg-gray-800/50 border-gray-700">
+                <CardHeader>
+                  <CardTitle
+                    className="text-white"
+                    style={{ textShadow: "0 0 10px rgba(0, 0, 0, 0.3)" }}
+                  >
+                    Related Articles
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {relatedArticles.map((relatedArticle) => (
                       <Link
                         key={relatedArticle.id}
                         to={`/article/${relatedArticle.id}`}
+                        state={{ article: relatedArticle }}
                         className="block group"
                       >
                         <div className="bg-gray-700/50 rounded-lg overflow-hidden hover:bg-gray-700/70 transition-colors">
@@ -287,17 +313,29 @@ const Article = () => {
                             <h3 className="text-white font-semibold mb-2 text-shadow-lg group-hover:text-blue-400 transition-colors line-clamp-2">
                               {relatedArticle.title}
                             </h3>
-                            <div className="flex items-center justify-between text-xs text-gray-400">
+                            <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
                               <span>{relatedArticle.author}</span>
                               <span>{relatedArticle.readTime}</span>
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                              {relatedArticle.tags?.slice(0, 2).map((tag: string, index: number) => (
+                                <Badge
+                                  key={index}
+                                  variant="outline"
+                                  className="text-xs bg-gray-600/50 border-gray-500 text-gray-300"
+                                >
+                                  {tag}
+                                </Badge>
+                              ))}
                             </div>
                           </div>
                         </div>
                       </Link>
                     ))}
-                </div>
-              </CardContent>
-            </Card>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Sticky Sidebar */}
