@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Separator } from "@/components/ui/separator";
-import { Brain, Twitter, Github, Mail } from "lucide-react";
+import { BicepsFlexed, Twitter, Github, Mail } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -12,8 +11,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1">
             <div className="flex items-center gap-2 mb-4">
-              <Brain className="h-6 w-6 text-blue-400" />
-              <span className="text-xl font-bold text-white">CryptoPredictAI</span>
+              <BicepsFlexed className="h-6 w-6 text-blue-400" />
+              <span className="text-xl font-bold text-white">PumpParade</span>
             </div>
             <p className="text-gray-400 text-sm">
               Advanced cryptocurrency price prediction using machine learning and market analysis.
@@ -64,7 +63,7 @@ const Footer = () => {
         <Separator className="my-8 bg-gray-700" />
         
         <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-          <p>&copy; 2024 CryptoPredictAI. All rights reserved.</p>
+          <p>&copy; 2024 PumpParade. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
