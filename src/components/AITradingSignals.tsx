@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -302,7 +301,7 @@ export const AITradingSignals = () => {
                       {sentimentScore}%
                     </Badge>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-2 px-2">
                     <div className={`font-semibold ${currentAnalysis.color}`}>
                       {currentAnalysis.title}
                     </div>
@@ -327,7 +326,7 @@ export const AITradingSignals = () => {
                     Live Market Alerts
                     <Clock className="h-3 w-3 text-gray-400" />
                   </h3>
-                  <div className="space-y-2 max-h-32 overflow-y-auto">
+                  <div className="space-y-2 max-h-32 overflow-y-auto px-2">
                     {liveSignals.map((signal, index) => (
                       <div key={index} className={`flex items-start gap-2 text-xs rounded p-2 border ${getLiveSignalColor(signal.strength)}`}>
                         <div className="flex items-center gap-1 flex-shrink-0">
@@ -350,7 +349,7 @@ export const AITradingSignals = () => {
                   <BarChart3 className="h-4 w-4 text-purple-400" />
                   AI Trading Signals
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 px-2">
                   {recommendations.map((rec, index) => (
                     <div key={index} className="bg-gray-700/50 rounded-lg p-3 space-y-2">
                       <div className="flex items-center justify-between">
@@ -389,7 +388,7 @@ export const AITradingSignals = () => {
                       <Lightbulb className="h-4 w-4 text-orange-400" />
                       Key Market Insights
                     </h3>
-                    <div className="space-y-2">
+                    <div className="space-y-2 px-2">
                       {signals.map((signal, index) => (
                         <div key={index} className="flex items-start gap-3 text-sm">
                           <div className={`mt-1 w-2 h-2 rounded-full ${
@@ -416,7 +415,7 @@ export const AITradingSignals = () => {
 
               {/* Disclaimer */}
               <div className="bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-3">
-                <p className="text-xs text-yellow-200 flex items-start gap-2">
+                <p className="text-xs text-yellow-200 flex items-start gap-2 px-2">
                   <AlertTriangle className="h-3 w-3 mt-0.5 text-yellow-400" />
                   AI-generated signals are for educational purposes only. Always conduct your own research and consider risk management before trading.
                 </p>
