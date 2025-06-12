@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -274,16 +276,14 @@ export const AITradingSignals = () => {
                   AI Trading Signals
                   {isAnalyzing && <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-white border-gray-400 bg-gray-800 hover:bg-gray-700 [text-shadow:none]">
-                    {isOpen ? 'Collapse' : 'Expand'}
-                  </Badge>
+                <Button variant="ghost" size="sm" className="text-gray-400 hover:bg-gray-700/50 hover:text-white flex items-center gap-1">
+                  {isOpen ? 'Hide Signals' : 'Show Signals'}
                   {isOpen ? (
-                    <ChevronUp className="h-4 w-4 text-white" />
+                    <ChevronUp className="h-4 w-4" />
                   ) : (
-                    <ChevronDown className="h-4 w-4 text-white" />
+                    <ChevronDown className="h-4 w-4" />
                   )}
-                </div>
+                </Button>
               </CardTitle>
             </CardHeader>
           </CollapsibleTrigger>
