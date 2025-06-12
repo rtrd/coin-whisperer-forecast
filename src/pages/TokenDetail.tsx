@@ -156,7 +156,7 @@ const TokenDetail = () => {
             <Link to="/">
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Dashboard
+                Back
               </Button>
             </Link>
           </CardContent>
@@ -186,7 +186,7 @@ const TokenDetail = () => {
           <Link to="/">
             <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Dashboard
+              Back
             </Button>
           </Link>
         </div>
