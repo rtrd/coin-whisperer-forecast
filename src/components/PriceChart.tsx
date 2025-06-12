@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
@@ -45,7 +43,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <div className="h-64 md:h-96 space-y-4">
+      <div className="h-80 md:h-[500px] space-y-4">
         <Skeleton className="h-8 w-48 bg-gray-700" />
         <Skeleton className="h-full w-full bg-gray-700" />
       </div>
@@ -54,7 +52,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
 
   if (!data || data.length === 0) {
     return (
-      <div className="h-64 md:h-96 flex items-center justify-center">
+      <div className="h-80 md:h-[500px] flex items-center justify-center">
         <p className="text-gray-400">No price data available for {crypto}</p>
       </div>
     );
@@ -183,9 +181,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({
         )}
 
         {/* Chart */}
-        <div className="h-64 md:h-96 p-6">
+        <div className="h-80 md:h-[500px] p-2 md:p-4">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
+            <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
               <defs>
                 {/* Enhanced gradients */}
                 <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
@@ -224,7 +222,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 interval={0}
                 angle={-30}
                 textAnchor="end"
-                height={60}
+                height={40}
                 tick={{ 
                   fill: '#D1D5DB', 
                   fontWeight: 500,
@@ -232,7 +230,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 }}
                 axisLine={{ stroke: '#4B5563', strokeWidth: 1 }}
                 tickLine={{ stroke: '#6B7280', strokeWidth: 1 }}
-                tickMargin={8}
+                tickMargin={4}
               />
               
               <YAxis 
@@ -244,7 +242,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                   fontWeight: 500,
                   fontSize: window.innerWidth < 768 ? 10 : 12
                 }}
-                width={window.innerWidth < 768 ? 60 : 80}
+                width={window.innerWidth < 768 ? 50 : 60}
                 axisLine={{ stroke: '#4B5563', strokeWidth: 1 }}
                 tickLine={{ stroke: '#6B7280', strokeWidth: 1 }}
                 tickCount={8}
@@ -307,4 +305,3 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     </div>
   );
 };
-
