@@ -1,9 +1,10 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock, ChevronDown, ChevronUp } from "lucide-react";
+import { TrendingUp, TrendingDown, Brain, Target, AlertTriangle, Zap, BarChart3, Activity, Volume2, Clock, ChevronDown, ChevronUp, Lightbulb } from "lucide-react";
 import { TradingInsightsChat } from "@/components/TradingInsightsChat";
 
 interface MarketSignal {
@@ -385,7 +386,7 @@ export const AITradingSignals = () => {
                 <div className="lg:col-span-7">
                   <div className="bg-gray-800/50 rounded-lg p-4">
                     <h3 className="text-white font-medium flex items-center gap-2 mb-3">
-                      <AlertTriangle className="h-4 w-4 text-orange-400" />
+                      <Lightbulb className="h-4 w-4 text-orange-400" />
                       Key Market Insights
                     </h3>
                     <div className="space-y-2">
