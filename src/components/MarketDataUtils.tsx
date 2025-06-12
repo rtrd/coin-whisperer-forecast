@@ -62,7 +62,13 @@ export const generateMarketData = (cryptoOptions: any[], filter: string) => {
     case 'losers':
       return dataWithMarketData.filter(item => item.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 10);
     case 'trending':
-      return dataWithMarketData.sort((a, b) => b.volume24h - a.volume24h).slice(0, 10);
+      // Calculate trending score based on volume and absolute price change
+      return dataWithMarketData.map(item => ({
+        ...item,
+        trendingScore: (item.volume24h / 1000000) + (Math.abs(item.change24h) * 100)
+      }))
+      .sort((a, b) => b.trendingScore - a.trendingScore)
+      .slice(0, 10);
     default:
       return dataWithMarketData.slice(0, 10);
   }
