@@ -188,6 +188,11 @@
   color: rgb(229 231 235) !important;
 }
 
+.prose ol li::marker {
+  color: #3b82f6 !important;
+  font-weight: bold !important;
+}
+
 .prose blockquote {
   border-left: 4px solid #3b82f6 !important;
   background: rgba(59, 130, 246, 0.1) !important;
