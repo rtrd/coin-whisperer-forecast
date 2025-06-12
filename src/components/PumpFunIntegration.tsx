@@ -43,17 +43,17 @@ export const PumpFunIntegration = () => {
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className="bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-700/50">
+        <Card className="bg-card border-border">
           <CollapsibleTrigger asChild>
-            <CardHeader className="pb-4 cursor-pointer hover:bg-white/5 transition-colors">
-              <CardTitle className="text-slate-600 flex items-center justify-between text-lg">
+            <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
+              <CardTitle className="text-foreground flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
-                  <Rocket className="h-5 w-5 text-purple-400" />
-                  Pump.fun Integration
-                  <Badge className="bg-purple-600">LIVE</Badge>
-                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                  <Rocket className="h-5 w-5 text-primary" />
+                  Solana Memecoin Insights
+                  <Badge className="bg-primary text-primary-foreground">LIVE</Badge>
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                 </div>
-                <Button variant="ghost" size="sm" className="text-slate-600 hover:bg-gray-700/50 hover:text-white flex items-center gap-1">
+                <Button variant="ghost" size="sm" className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-1">
                   {isOpen ? 'Hide Insights' : 'Show Insights'}
                   {isOpen ? (
                     <ChevronUp className="h-4 w-4" />
