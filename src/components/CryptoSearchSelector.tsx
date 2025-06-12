@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Check, ChevronsUpDown, ExternalLink, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -91,33 +90,18 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                         )}
                       />
                       <span className="text-xl">{option.icon}</span>
-                      <div className="flex flex-col flex-1">
-                        <span className="font-medium text-white">{formatLabel(option.label)}</span>
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className="text-xs text-gray-300 border-gray-500">
-                            {option.category}
-                          </Badge>
-                          <span className="text-xs text-gray-400">Score: {option.score}/10</span>
-                        </div>
-                      </div>
+                      <span className="font-medium text-white">{formatLabel(option.label)}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-sm font-medium ${
-                        option.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
-                      }`}>
-                        {option.prediction}
-                      </span>
-                      <Link 
-                        to={`/token/${option.value}`}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setOpen(false);
-                        }}
-                        className="text-blue-400 hover:text-blue-300 transition-colors p-1 z-10"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </Link>
-                    </div>
+                    <Link 
+                      to={`/token/${option.value}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setOpen(false);
+                      }}
+                      className="text-blue-400 hover:text-blue-300 transition-colors p-1 z-10"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </Link>
                   </div>
                 </CommandItem>
               ))}
