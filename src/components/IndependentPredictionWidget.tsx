@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -32,47 +31,47 @@ const TimePeriodTooltip: React.FC<{ timeframe: string }> = ({ timeframe }) => {
       case '1d':
         return {
           icon: <Clock className="h-4 w-4 text-blue-400" />,
-          title: '1 Day Period',
-          description: 'Ultra short-term analysis using the last 24 hours of price data.',
-          bestFor: 'Scalping and high-frequency trading',
-          features: ['Real-time patterns', 'Immediate market reactions', 'Intraday volatility'],
-          recommendation: 'Best for experienced day traders who can monitor positions closely and react quickly to market changes.'
+          title: '1 Day Analysis',
+          description: 'Analyzes the last 24 hours of price data for ultra short-term patterns.',
+          bestFor: 'Real-time trading and scalping',
+          features: ['Minute-level price movements', 'Immediate market reactions', 'High-frequency patterns'],
+          recommendation: 'Use for day trading strategies that require immediate market entry and exit decisions.'
         };
       case '7d':
         return {
           icon: <Calendar className="h-4 w-4 text-green-400" />,
-          title: '7 Days Period',
-          description: 'Short-term analysis incorporating weekly trading patterns and trends.',
-          bestFor: 'Swing trading and weekly strategies',
-          features: ['Weekly trend analysis', 'Market cycle patterns', 'Technical breakouts'],
-          recommendation: 'Ideal for most traders. Provides good balance between recent trends and pattern recognition.'
+          title: '7 Days Analysis',
+          description: 'Incorporates a full week of trading data to identify short-term trends and patterns.',
+          bestFor: 'Swing trading strategies',
+          features: ['Weekly trend identification', 'Support/resistance levels', 'Pattern completion signals'],
+          recommendation: 'Ideal for most traders seeking reliable short-term predictions with good accuracy.'
         };
       case '30d':
         return {
           icon: <BarChart3 className="h-4 w-4 text-purple-400" />,
-          title: '30 Days Period',
-          description: 'Medium-term analysis using a full month of historical price data.',
-          bestFor: 'Position trading and monthly cycles',
-          features: ['Monthly trend analysis', 'Support/resistance levels', 'Market sentiment shifts'],
-          recommendation: 'Great for identifying medium-term trends and major support/resistance levels for position trading.'
+          title: '30 Days Analysis',
+          description: 'Uses a full month of historical data to capture medium-term market cycles.',
+          bestFor: 'Position trading decisions',
+          features: ['Monthly trend analysis', 'Market cycle patterns', 'Volume confirmation signals'],
+          recommendation: 'Perfect for identifying medium-term opportunities and major trend reversals.'
         };
       case '90d':
         return {
           icon: <TrendingUp className="h-4 w-4 text-orange-400" />,
-          title: '90 Days Period',
-          description: 'Long-term analysis incorporating quarterly patterns and seasonal trends.',
-          bestFor: 'Long-term investment decisions',
+          title: '90 Days Analysis',
+          description: 'Analyzes quarterly data to understand long-term trends and seasonal patterns.',
+          bestFor: 'Long-term investment planning',
           features: ['Quarterly patterns', 'Seasonal trends', 'Major market cycles'],
-          recommendation: 'Perfect for long-term investors looking to identify major trend reversals and market cycles.'
+          recommendation: 'Best for long-term investors looking to time major position changes.'
         };
       default:
         return {
           icon: <Info className="h-4 w-4 text-gray-400" />,
-          title: 'Time Period',
-          description: 'Select a time period to see detailed information.',
-          bestFor: 'Various trading strategies',
-          features: ['Different analysis depths'],
-          recommendation: 'Choose based on your trading timeframe and strategy.'
+          title: 'Time Period Options',
+          description: 'Choose from 1 day, 7 days, 30 days, or 90 days of historical data.',
+          bestFor: 'Different trading timeframes',
+          features: ['Multiple analysis depths'],
+          recommendation: 'Select based on your trading strategy and time horizon.'
         };
     }
   };
@@ -124,50 +123,59 @@ const TimePeriodTooltip: React.FC<{ timeframe: string }> = ({ timeframe }) => {
 
 const PredictionDaysTooltip: React.FC<{ predictionDays: number }> = ({ predictionDays }) => {
   const getPredictionDaysInfo = (days: number) => {
-    if (days <= 1) {
+    if (days === 1) {
       return {
         icon: <Target className="h-4 w-4 text-green-400" />,
-        title: '1 Day Prediction',
-        description: 'Ultra-precise short-term forecast for the next 24 hours.',
-        bestFor: 'Day trading and scalping strategies',
-        features: ['Highest accuracy', 'Immediate actionable insights', 'Real-time market reactions'],
-        recommendation: 'Perfect for day traders who need high-confidence predictions for quick market entry and exit decisions.'
+        title: '1 Day Forecast',
+        description: 'Predicts price movements for the next 24 hours with highest accuracy.',
+        bestFor: 'Day trading and scalping',
+        features: ['Highest prediction accuracy', 'Immediate actionable signals', 'Real-time market entry/exit'],
+        recommendation: 'Choose for high-frequency trading strategies requiring precise timing.'
       };
-    } else if (days <= 3) {
+    } else if (days === 3) {
       return {
         icon: <Activity className="h-4 w-4 text-blue-400" />,
-        title: '3 Days Prediction',
-        description: 'Short-term forecast covering the next 2-3 trading days.',
+        title: '3 Days Forecast',
+        description: 'Forecasts short-term price direction over the next 2-3 trading days.',
         bestFor: 'Short-term swing trading',
-        features: ['High accuracy', 'Multi-day trend analysis', 'Weekend gap considerations'],
-        recommendation: 'Ideal for swing traders looking to capitalize on short-term price movements over a few days.'
+        features: ['High accuracy predictions', 'Multi-day trend analysis', 'Weekend gap considerations'],
+        recommendation: 'Ideal for capturing short-term price swings and momentum plays.'
       };
-    } else if (days <= 7) {
+    } else if (days === 7) {
       return {
         icon: <Calendar className="h-4 w-4 text-purple-400" />,
-        title: '7 Days Prediction',
-        description: 'Weekly forecast incorporating full trading week patterns.',
-        bestFor: 'Weekly swing trading strategies',
-        features: ['Weekly trend prediction', 'Pattern completion analysis', 'Market cycle timing'],
-        recommendation: 'Best balance of accuracy and timeframe for most traders. Great for weekly position planning.'
+        title: '7 Days Forecast',
+        description: 'Provides weekly price predictions incorporating full market cycles.',
+        bestFor: 'Weekly swing strategies',
+        features: ['Weekly trend forecasting', 'Pattern completion timing', 'Market cycle analysis'],
+        recommendation: 'Best balance of accuracy and timeframe for most trading strategies.'
       };
-    } else if (days <= 14) {
+    } else if (days === 14) {
       return {
         icon: <TrendingUp className="h-4 w-4 text-orange-400" />,
-        title: '14 Days Prediction',
-        description: 'Bi-weekly forecast for medium-term position planning.',
-        bestFor: 'Position trading and trend following',
-        features: ['Medium-term trend analysis', 'Support/resistance forecasting', 'Momentum predictions'],
-        recommendation: 'Suitable for position traders who want to identify and ride medium-term trends with good confidence.'
+        title: '14 Days Forecast',
+        description: 'Medium-term predictions for bi-weekly position planning and trend following.',
+        bestFor: 'Position trading strategies',
+        features: ['Medium-term trend analysis', 'Support/resistance forecasting', 'Momentum sustainability'],
+        recommendation: 'Perfect for position traders looking to ride medium-term trends.'
+      };
+    } else if (days === 30) {
+      return {
+        icon: <BarChart3 className="h-4 w-4 text-red-400" />,
+        title: '30 Days Forecast',
+        description: 'Long-term predictions for monthly investment and strategic position changes.',
+        bestFor: 'Long-term investment decisions',
+        features: ['Long-term trend forecasting', 'Major cycle predictions', 'Strategic planning insights'],
+        recommendation: 'Use for major investment decisions and long-term portfolio adjustments.'
       };
     } else {
       return {
-        icon: <BarChart3 className="h-4 w-4 text-red-400" />,
-        title: '30 Days Prediction',
-        description: 'Long-term forecast for major trend and cycle analysis.',
-        bestFor: 'Long-term investment decisions',
-        features: ['Long-term trend forecasting', 'Major cycle predictions', 'Investment planning'],
-        recommendation: 'Best for long-term investors planning major position changes. Lower accuracy but valuable for strategic decisions.'
+        icon: <Info className="h-4 w-4 text-gray-400" />,
+        title: 'Prediction Timeframes',
+        description: 'Choose from 1, 3, 7, 14, or 30 days for different trading strategies.',
+        bestFor: 'Various trading approaches',
+        features: ['Multiple forecast horizons'],
+        recommendation: 'Select based on your trading timeframe and strategy needs.'
       };
     }
   };
