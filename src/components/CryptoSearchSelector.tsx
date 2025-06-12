@@ -36,6 +36,11 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
     return label;
   };
 
+  const handleSelect = (optionValue: string) => {
+    onSelectCrypto(optionValue);
+    setOpen(false);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -67,14 +72,14 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
               {cryptoOptions.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value}
-                  onSelect={(currentValue) => {
-                    onSelectCrypto(currentValue);
-                    setOpen(false);
-                  }}
+                  value={option.label}
+                  onSelect={() => handleSelect(option.value)}
                   className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected]:bg-gray-700"
                 >
-                  <div className="flex items-center w-full">
+                  <div 
+                    className="flex items-center w-full cursor-pointer"
+                    onClick={() => handleSelect(option.value)}
+                  >
                     <Check
                       className={cn(
                         "h-4 w-4 mr-3 text-blue-400",
