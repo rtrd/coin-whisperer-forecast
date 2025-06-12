@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -42,17 +43,23 @@ export const AITradingSignals = () => {
     bullish: {
       title: "Bulls in Control",
       description: "Strong buying pressure across major cryptocurrencies with institutional interest growing.",
-      color: "text-green-300"
+      color: "text-green-300",
+      bgColor: "from-green-900/20 to-emerald-900/20",
+      borderColor: "border-green-700/50"
     },
     bearish: {
       title: "Bears Dominating",
       description: "Selling pressure increasing with risk-off sentiment affecting crypto markets.",
-      color: "text-red-300"
+      color: "text-red-300",
+      bgColor: "from-red-900/20 to-rose-900/20",
+      borderColor: "border-red-700/50"
     },
     neutral: {
       title: "Market Consolidation",
       description: "Sideways movement as markets await key catalysts and price discovery.",
-      color: "text-yellow-300"
+      color: "text-yellow-300",
+      bgColor: "from-yellow-900/20 to-orange-900/20",
+      borderColor: "border-yellow-700/50"
     }
   };
 
@@ -260,7 +267,7 @@ export const AITradingSignals = () => {
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className="bg-gray-800/50 border-gray-700/50 border">
+        <Card className={`bg-gradient-to-br ${currentAnalysis.bgColor} ${currentAnalysis.borderColor} border`}>
           <CollapsibleTrigger asChild>
             <CardHeader className="pb-4 cursor-pointer hover:bg-white/5 transition-colors">
               <CardTitle className="text-slate-600 flex items-center justify-between text-lg" style={{ textShadow: 'none' }}>
