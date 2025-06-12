@@ -109,10 +109,17 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
     }
   };
 
+  const getProgressBarColor = (value: number) => {
+    // Calculate RGB values for gradient from red (0%) to green (100%)
+    const red = Math.round(255 * (1 - value / 100));
+    const green = Math.round(255 * (value / 100));
+    return `rgb(${red}, ${green}, 0)`;
+  };
+
   return (
     <Card className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border-purple-700/50 shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-gray-200 flex items-center gap-2">
           <Brain className="h-5 w-5 text-purple-400" />
           Dynamic AI Prediction
           <Badge className="bg-purple-600">REAL-TIME</Badge>
@@ -123,19 +130,27 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
         <div className="space-y-4">
           {/* Overall Prediction */}
           <div className="p-4 bg-gray-800/50 rounded-lg border border-purple-700/30">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-3">
               <span className="text-white font-medium">AI Prediction Score</span>
               <div className={`flex items-center gap-1 ${aiPrediction >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                 {aiPrediction >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-                <span className="font-bold">
+                <span className="font-bold text-lg">
                   {aiPrediction >= 0 ? '+' : ''}{aiPrediction.toFixed(1)}%
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-gray-400 text-sm">Confidence:</span>
-              <Progress value={overallConfidence} className="flex-1 h-2" />
-              <span className="text-white text-sm">{overallConfidence}%</span>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-gray-300 text-lg font-medium">Confidence:</span>
+              <div className="flex-1 relative">
+                <Progress 
+                  value={overallConfidence} 
+                  className="h-4 bg-gray-700" 
+                  style={{
+                    '--progress-foreground': getProgressBarColor(overallConfidence)
+                  } as React.CSSProperties}
+                />
+              </div>
+              <span className="text-white text-lg font-bold min-w-[50px]">{overallConfidence}%</span>
             </div>
           </div>
 
@@ -143,7 +158,7 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
           <div className="space-y-3">
             {adjustments.map((adjustment, index) => (
               <div key={index} className="p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     {getTrendIcon(adjustment.trend)}
                     <span className="text-white font-medium text-sm">{adjustment.factor}</span>
@@ -152,11 +167,19 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
                     {adjustment.impact >= 0 ? '+' : ''}{adjustment.impact.toFixed(1)}%
                   </div>
                 </div>
-                <p className="text-gray-400 text-xs mb-2">{adjustment.reason}</p>
-                <div className="flex items-center gap-2">
-                  <span className="text-gray-500 text-xs">Confidence:</span>
-                  <Progress value={adjustment.confidence} className="flex-1 h-1" />
-                  <span className="text-gray-400 text-xs">{adjustment.confidence}%</span>
+                <p className="text-gray-400 text-xs mb-3">{adjustment.reason}</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-300 text-base font-medium">Confidence:</span>
+                  <div className="flex-1 relative">
+                    <Progress 
+                      value={adjustment.confidence} 
+                      className="h-3 bg-gray-700"
+                      style={{
+                        '--progress-foreground': getProgressBarColor(adjustment.confidence)
+                      } as React.CSSProperties}
+                    />
+                  </div>
+                  <span className="text-gray-200 text-base font-bold min-w-[50px]">{adjustment.confidence}%</span>
                 </div>
               </div>
             ))}
