@@ -46,7 +46,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
           className="w-full justify-between bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
         >
           {selectedOption ? (
-            <span className="truncate text-blue-300">{formatLabel(selectedOption.label)}</span>
+            <span className="truncate text-blue-200">{formatLabel(selectedOption.label)}</span>
           ) : (
             "Select cryptocurrency..."
           )}
@@ -74,7 +74,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                     }
                     setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2"
+                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700"
                 >
                   <div className="flex items-center w-full">
                     <Check
@@ -83,7 +83,12 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                         selectedCrypto === option.value ? "opacity-100" : "opacity-0"
                       )}
                     />
-                    <span className="font-medium text-white text-left hover:text-blue-200 transition-colors">{formatLabel(option.label)}</span>
+                    <span className={cn(
+                      "font-medium text-left transition-colors",
+                      selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
+                    )}>
+                      {formatLabel(option.label)}
+                    </span>
                   </div>
                 </CommandItem>
               ))}
