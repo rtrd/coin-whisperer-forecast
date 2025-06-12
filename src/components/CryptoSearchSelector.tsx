@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -72,7 +73,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                     onSelectCrypto(currentValue);
                     setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected=true]:bg-gray-700 select-none flex items-center w-full"
+                  className="!text-white !cursor-pointer !px-3 !py-3 !select-none !flex !items-center !w-full hover:!bg-gray-700 aria-selected:!bg-gray-700 data-[selected=true]:!bg-gray-700 !transition-colors"
                 >
                   <Check
                     className={cn(
@@ -82,7 +83,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   />
                   <span className={cn(
                     "font-medium text-left transition-colors flex-1 text-sm",
-                    selectedCrypto === option.value ? "text-white" : "text-gray-300 hover:text-blue-200"
+                    selectedCrypto === option.value ? "text-white" : "text-gray-300"
                   )}>
                     {formatLabel(option.label)}
                   </span>
