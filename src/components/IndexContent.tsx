@@ -1,3 +1,4 @@
+
 import React from "react";
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
@@ -45,7 +46,9 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <WordPressIntegration />
 
       {/* AI Trading Signals - Now Locked */}
-      <LockedAITradingSignals />
+      <div className="mb-8">
+        <LockedAITradingSignals />
+      </div>
 
       {/* Crypto Filters - Smart Crypto Filters */}
       <CryptoFilters onFilterChange={handleFilterChange} />
