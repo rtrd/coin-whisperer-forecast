@@ -46,7 +46,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
           className="w-full justify-between bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
         >
           {selectedOption ? (
-            <span className="truncate text-blue-200">{formatLabel(selectedOption.label)}</span>
+            <span className="truncate text-white">{formatLabel(selectedOption.label)}</span>
           ) : (
             "Select cryptocurrency..."
           )}
@@ -55,10 +55,10 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="px-3 py-3 border-b border-gray-600">
+          <div className="px-3 py-3">
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
-              className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-blue-400"
+              className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-gray-400"
             />
           </div>
           <CommandList className="max-h-[300px] overflow-y-auto">
@@ -84,7 +84,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                     />
                     <span className={cn(
                       "font-medium text-left transition-colors flex-1 text-sm",
-                      selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
+                      selectedCrypto === option.value ? "text-white" : "text-gray-300 hover:text-blue-200"
                     )}>
                       {formatLabel(option.label)}
                     </span>
