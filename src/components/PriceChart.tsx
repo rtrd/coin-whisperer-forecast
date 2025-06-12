@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
@@ -112,7 +111,32 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     });
   }
 
-  const formatPrice = (value: number) => `$${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+  const formatPrice = (value: number) => {
+    if (value >= 1000000) {
+      return `$${(value / 1000000).toFixed(1)}M`;
+    } else if (value >= 1000) {
+      return `$${(value / 1000).toFixed(1)}K`;
+    } else if (value >= 1) {
+      return `$${value.toFixed(0)}`;
+    } else {
+      return `$${value.toFixed(4)}`;
+    }
+  };
+
+  const formatDate = (tickItem: string) => {
+    const date = new Date(tickItem);
+    if (window.innerWidth < 768) {
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric'
+      });
+    }
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric',
+      hour: '2-digit'
+    });
+  };
 
   // Custom tooltip component
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -169,7 +193,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
         {/* Chart */}
         <div className="h-64 md:h-96 p-6">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={chartData} margin={{ top: 20, right: 20, left: 20, bottom: 20 }}>
+            <AreaChart data={chartData} margin={{ top: 20, right: 30, left: 10, bottom: 60 }}>
               <defs>
                 {/* Enhanced gradients */}
                 <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
@@ -196,7 +220,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
               <CartesianGrid 
                 strokeDasharray="2 4" 
                 stroke="#374151" 
-                opacity={0.4}
+                opacity={0.3}
                 horizontal={true}
                 vertical={false}
               />
@@ -204,21 +228,35 @@ export const PriceChart: React.FC<PriceChartProps> = ({
               <XAxis 
                 dataKey="date" 
                 stroke="#9CA3AF"
-                fontSize={window.innerWidth < 768 ? 11 : 13}
-                interval="preserveStartEnd"
-                tick={{ fill: '#D1D5DB', fontWeight: 500 }}
+                fontSize={window.innerWidth < 768 ? 10 : 12}
+                interval={window.innerWidth < 768 ? Math.ceil(chartData.length / 4) : Math.ceil(chartData.length / 6)}
+                angle={window.innerWidth < 768 ? -45 : -30}
+                textAnchor="end"
+                height={60}
+                tick={{ 
+                  fill: '#D1D5DB', 
+                  fontWeight: 500,
+                  fontSize: window.innerWidth < 768 ? 10 : 12
+                }}
                 axisLine={{ stroke: '#4B5563', strokeWidth: 1 }}
-                tickLine={{ stroke: '#6B7280' }}
+                tickLine={{ stroke: '#6B7280', strokeWidth: 1 }}
+                tickMargin={8}
               />
               
               <YAxis 
                 stroke="#9CA3AF"
                 tickFormatter={formatPrice}
-                fontSize={window.innerWidth < 768 ? 11 : 13}
-                tick={{ fill: '#D1D5DB', fontWeight: 500 }}
-                width={window.innerWidth < 768 ? 70 : 90}
+                fontSize={window.innerWidth < 768 ? 10 : 12}
+                tick={{ 
+                  fill: '#D1D5DB', 
+                  fontWeight: 500,
+                  fontSize: window.innerWidth < 768 ? 10 : 12
+                }}
+                width={window.innerWidth < 768 ? 60 : 80}
                 axisLine={{ stroke: '#4B5563', strokeWidth: 1 }}
-                tickLine={{ stroke: '#6B7280' }}
+                tickLine={{ stroke: '#6B7280', strokeWidth: 1 }}
+                tickCount={6}
+                domain={['dataMin * 0.98', 'dataMax * 1.02']}
               />
               
               <Tooltip content={<CustomTooltip />} />
