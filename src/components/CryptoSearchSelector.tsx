@@ -72,27 +72,24 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
               {cryptoOptions.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.label}
-                  onSelect={() => handleSelect(option.value)}
+                  value={option.value}
+                  onSelect={(currentValue) => {
+                    handleSelect(currentValue);
+                  }}
                   className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected]:bg-gray-700"
                 >
-                  <div 
-                    className="flex items-center w-full cursor-pointer"
-                    onClick={() => handleSelect(option.value)}
-                  >
-                    <Check
-                      className={cn(
-                        "h-4 w-4 mr-3 text-blue-400",
-                        selectedCrypto === option.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    <span className={cn(
-                      "font-medium text-left transition-colors cursor-pointer",
-                      selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
-                    )}>
-                      {formatLabel(option.label)}
-                    </span>
-                  </div>
+                  <Check
+                    className={cn(
+                      "h-4 w-4 mr-3 text-blue-400",
+                      selectedCrypto === option.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  <span className={cn(
+                    "font-medium text-left transition-colors cursor-pointer",
+                    selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
+                  )}>
+                    {formatLabel(option.label)}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>
