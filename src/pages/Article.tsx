@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -179,13 +180,13 @@ const Article = () => {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
             {/* Article Content with Header */}
-            <Card className="bg-gray-800/50 border-gray-700 overflow-hidden">
+            <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
               {/* Article Header with Background Image */}
               <div
-                className="relative bg-cover bg-center h-80 article_image_custom"
+                className="relative bg-cover bg-center h-80 article_image_custom rounded-t-lg"
                 style={{ backgroundImage: `url(${article.image})` }}
               >
-                <div className="absolute inset-0 bg-black/70"></div>
+                <div className="absolute inset-0 bg-black/70 rounded-t-lg"></div>
                 <CardHeader className="relative z-10 h-full flex flex-col justify-end">
                   <div className="flex items-center gap-2 mb-4">
                     <Badge className="bg-blue-600">{article.category}</Badge>
@@ -297,12 +298,12 @@ const Article = () => {
                       >
                         <div className="bg-gray-700/50 rounded-lg overflow-hidden hover:bg-gray-700/70 transition-colors">
                           <div
-                            className="aspect-video bg-cover bg-center"
+                            className="aspect-video bg-cover bg-center rounded-t-lg"
                             style={{
                               backgroundImage: `url(${relatedArticle.image})`,
                             }}
                           >
-                            <div className="h-full bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+                            <div className="h-full bg-gradient-to-t from-black/60 to-transparent flex items-end p-3 rounded-t-lg">
                               <Badge className="bg-blue-600 text-xs">
                                 {relatedArticle.category}
                               </Badge>
