@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +15,7 @@ import {
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
+import { ArticleIndex } from "@/components/ArticleIndex";
 import Footer from "@/components/Footer";
 
 const Article = () => {
@@ -340,6 +340,7 @@ const Article = () => {
           {/* Sticky Sidebar */}
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
+              <ArticleIndex content={article.content} />
               <MarketWinnersWidget />
               <AdBanner width={300} height={600} position="vertical" />
             </div>
