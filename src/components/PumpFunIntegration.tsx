@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -69,17 +68,13 @@ export const PumpFunIntegration = () => {
     <div className="mb-6">
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader className="pb-4">
-          <CardTitle className="text-white flex items-center justify-between text-lg">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-white flex items-center gap-2 text-lg">
               <Rocket className="h-5 w-5 text-purple-400" />
               Solana Memecoin Insights
               <Badge className="bg-green-600 text-white">LIVE</Badge>
               <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
-            </div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="flex items-center justify-end">
+            </CardTitle>
             <div className="flex items-center gap-2">
               <Button
                 variant={viewMode === "list" ? "default" : "outline"}
@@ -107,7 +102,8 @@ export const PumpFunIntegration = () => {
               </Button>
             </div>
           </div>
-
+        </CardHeader>
+        <CardContent className="space-y-6">
           <TokenSection
             title="Top Performers"
             icon={<TrendingUp className="h-4 w-4 text-green-400" />}
