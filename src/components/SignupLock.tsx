@@ -53,13 +53,13 @@ export const SignupLock: React.FC<SignupLockProps> = ({
 
   return (
     <div className="relative">
-      {/* Blurred background content */}
-      <div className="blur-sm pointer-events-none select-none">
+      {/* Blurred background content with rounded edges */}
+      <div className="blur-sm pointer-events-none select-none rounded-lg overflow-hidden">
         {skeletonData || children}
       </div>
       
-      {/* Overlay with signup form */}
-      <div className="absolute inset-0 bg-gray-900/80 backdrop-blur-sm flex items-center justify-center p-4">
+      {/* Overlay with signup form - dark glow instead of white */}
+      <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm flex items-center justify-center p-4 rounded-lg shadow-2xl shadow-black/50">
         <Card className="w-full max-w-md bg-gray-800/90 border-gray-700 shadow-2xl">
           <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
