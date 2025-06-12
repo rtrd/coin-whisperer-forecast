@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,7 +34,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
     <TooltipProvider>
       <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-white flex items-center gap-2 mb-6">
             <BarChart3 className="h-5 w-5 text-blue-400" />
             {getFilterTitle(activeFilter)}
             <Badge className="bg-green-600">Live Data</Badge>
