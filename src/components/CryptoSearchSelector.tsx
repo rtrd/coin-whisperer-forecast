@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -73,22 +72,20 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                     onSelectCrypto(currentValue);
                     setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected=true]:bg-gray-700 select-none"
+                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected=true]:bg-gray-700 select-none flex items-center w-full"
                 >
-                  <div className="flex items-center w-full pointer-events-auto">
-                    <Check
-                      className={cn(
-                        "h-4 w-4 mr-3 text-blue-400 flex-shrink-0",
-                        selectedCrypto === option.value ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    <span className={cn(
-                      "font-medium text-left transition-colors flex-1 text-sm cursor-pointer",
-                      selectedCrypto === option.value ? "text-white" : "text-gray-300 hover:text-blue-200"
-                    )}>
-                      {formatLabel(option.label)}
-                    </span>
-                  </div>
+                  <Check
+                    className={cn(
+                      "h-4 w-4 mr-3 text-blue-400 flex-shrink-0",
+                      selectedCrypto === option.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  <span className={cn(
+                    "font-medium text-left transition-colors flex-1 text-sm",
+                    selectedCrypto === option.value ? "text-white" : "text-gray-300 hover:text-blue-200"
+                  )}>
+                    {formatLabel(option.label)}
+                  </span>
                 </CommandItem>
               ))}
             </CommandGroup>
