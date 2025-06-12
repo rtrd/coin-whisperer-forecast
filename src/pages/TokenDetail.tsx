@@ -174,33 +174,38 @@ const TokenDetail = () => {
           </Link>
           
           <div className="flex-1">
-            <div className="flex items-center gap-4">
-              <span className="text-6xl">{selectedToken.icon}</span>
-              <div>
-                <h1 className="text-4xl font-bold text-white">{selectedToken.label}</h1>
+            <div>
+              <h1 className="text-4xl font-bold text-white">{selectedToken.label}</h1>
+              
+              <div className="mt-4">
                 <p className="text-gray-300 text-lg">{selectedToken.description}</p>
-                <div className="flex items-center gap-4 mt-2">
-                  <Badge className={`${
-                    selectedToken.category === 'Major' ? 'bg-blue-600' :
-                    selectedToken.category === 'DeFi' ? 'bg-purple-600' :
-                    selectedToken.category === 'Meme' ? 'bg-orange-600' :
-                    selectedToken.category === 'AI' ? 'bg-green-600' : 'bg-gray-600'
-                  }`}>
-                    {selectedToken.category}
-                  </Badge>
-                  {selectedToken.website && (
-                    <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
-                       className="text-gray-400 hover:text-white transition-colors">
-                      <Globe className="h-5 w-5" />
-                    </a>
-                  )}
-                  {selectedToken.twitter && (
-                    <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
-                       className="text-gray-400 hover:text-white transition-colors">
-                      <Twitter className="h-5 w-5" />
-                    </a>
-                  )}
-                </div>
+              </div>
+              
+              <div className="flex items-center gap-4 mt-4">
+                <Badge 
+                  variant="outline" 
+                  className={`text-white border ${
+                    selectedToken.category === 'Major' ? 'bg-blue-500/20 border-blue-400 text-blue-300' :
+                    selectedToken.category === 'DeFi' ? 'bg-purple-500/20 border-purple-400 text-purple-300' :
+                    selectedToken.category === 'Meme' ? 'bg-orange-500/20 border-orange-400 text-orange-300' :
+                    selectedToken.category === 'AI' ? 'bg-green-500/20 border-green-400 text-green-300' : 
+                    'bg-gray-500/20 border-gray-400 text-gray-300'
+                  }`}
+                >
+                  {selectedToken.category}
+                </Badge>
+                {selectedToken.website && (
+                  <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
+                     className="text-gray-400 hover:text-white transition-colors">
+                    <Globe className="h-5 w-5" />
+                  </a>
+                )}
+                {selectedToken.twitter && (
+                  <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
+                     className="text-gray-400 hover:text-white transition-colors">
+                    <Twitter className="h-5 w-5" />
+                  </a>
+                )}
               </div>
             </div>
           </div>
