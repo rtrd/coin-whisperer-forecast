@@ -124,7 +124,7 @@
 
 /* Article content paragraph spacing override */
 .prose p {
-  margin-bottom: 2rem !important;
+  margin-bottom: 1.5rem !important;
   line-height: 1.75 !important;
   color: rgb(229 231 235) !important;
 }
