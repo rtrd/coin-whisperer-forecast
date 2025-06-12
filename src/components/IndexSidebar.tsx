@@ -28,8 +28,8 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
   return (
     <div className="space-y-6">
       {/* Side Ad - Full width to match other components */}
-      <div className="w-full">
-        <AdBanner width={300} height={250} position="vertical" className="w-full" />
+      <div className="w-full min-h-[250px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
+        <AdBanner width={300} height={250} position="vertical" className="w-full h-full" />
       </div>
 
       {/* Dynamic Prediction Adjuster */}
