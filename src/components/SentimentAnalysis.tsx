@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -96,10 +95,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
 
   if (isLoading) {
     return (
-      <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 border-b border-gray-600/30">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
           <CardTitle className="text-white flex items-center gap-3">
-            <div className="p-2 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20">
+            <div className="p-2 rounded-full bg-pink-500/20">
               <Heart className="h-6 w-6 text-pink-400" />
             </div>
             Market Sentiment
@@ -125,10 +124,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
 
   if (!sentiment) {
     return (
-      <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm overflow-hidden">
-        <CardHeader className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 border-b border-gray-600/30">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
           <CardTitle className="text-white flex items-center gap-3">
-            <div className="p-2 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20">
+            <div className="p-2 rounded-full bg-pink-500/20">
               <Heart className="h-6 w-6 text-pink-400" />
             </div>
             Market Sentiment
@@ -142,10 +141,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
   }
 
   return (
-    <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-blue-500/10 border-b border-gray-600/30">
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+      <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
         <CardTitle className="text-white flex items-center gap-3">
-          <div className="p-2 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20">
+          <div className="p-2 rounded-full bg-pink-500/20">
             <Heart className="h-6 w-6 text-pink-400" />
           </div>
           Market Sentiment
@@ -157,9 +156,9 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
       </CardHeader>
       <CardContent className="space-y-6 p-6">
         {/* Overall Sentiment - Enhanced */}
-        <div className="text-center space-y-4 p-4 bg-gradient-to-br from-gray-700/40 via-gray-800/40 to-gray-900/40 rounded-xl border border-gray-600/30 shadow-lg">
+        <div className="text-center space-y-4 p-4 bg-gray-700/40 rounded-xl border border-gray-600/30 shadow-lg">
           <div className="flex items-center justify-center gap-3">
-            <div className="p-2 rounded-full bg-gradient-to-r from-pink-500/20 to-purple-500/20">
+            <div className="p-2 rounded-full bg-pink-500/20">
               {getSentimentIcon(sentiment.score)}
             </div>
             <Badge variant="outline" className={`${getSentimentColor(sentiment.score)} font-semibold text-sm backdrop-blur-sm`}>
@@ -174,11 +173,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
           </div>
           <Progress 
             value={sentiment.score} 
-            className="h-4 bg-gray-800/50"
-            style={{
-              '--progress-foreground': sentiment.score > 60 ? 'rgb(34, 197, 94)' : 
-                                      sentiment.score < 40 ? 'rgb(239, 68, 68)' : 'rgb(245, 158, 11)'
-            }}
+            className={`h-4 ${sentiment.score > 60 ? '[&>div]:bg-emerald-400' : sentiment.score < 40 ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
           />
         </div>
 
@@ -190,7 +185,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
           </div>
           <div className="space-y-3">
             {sentiment.sources.map((source, index) => (
-              <div key={index} className="group p-4 bg-gradient-to-br from-gray-700/30 via-gray-800/30 to-gray-900/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+              <div key={index} className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-1.5 rounded-lg bg-gray-600/30">
@@ -209,11 +204,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
                 </div>
                 <Progress 
                   value={source.sentiment} 
-                  className="h-2.5 bg-gray-800/50"
-                  style={{
-                    '--progress-foreground': source.sentiment > 60 ? 'rgb(34, 197, 94)' : 
-                                            source.sentiment < 40 ? 'rgb(239, 68, 68)' : 'rgb(245, 158, 11)'
-                  }}
+                  className={`h-2.5 ${source.sentiment > 60 ? '[&>div]:bg-emerald-400' : source.sentiment < 40 ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
                 />
               </div>
             ))}
@@ -222,7 +213,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
 
         {/* Sentiment Indicators - Enhanced */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-gradient-to-br from-blue-900/30 via-blue-800/20 to-gray-900/30 rounded-xl border border-blue-700/30 hover:border-blue-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
+          <div className="p-4 bg-blue-900/20 rounded-xl border border-blue-700/30 hover:border-blue-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1 rounded-full bg-blue-500/20">
                 <Heart className="h-3 w-3 text-blue-400" />
@@ -234,7 +225,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
               {sentiment.score > 50 ? 'Greed Dominates' : 'Fear Prevails'}
             </p>
           </div>
-          <div className="p-4 bg-gradient-to-br from-purple-900/30 via-purple-800/20 to-gray-900/30 rounded-xl border border-purple-700/30 hover:border-purple-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
+          <div className="p-4 bg-purple-900/20 rounded-xl border border-purple-700/30 hover:border-purple-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
             <div className="flex items-center gap-2 mb-2">
               <div className="p-1 rounded-full bg-purple-500/20">
                 <Zap className="h-3 w-3 text-purple-400" />
@@ -255,13 +246,13 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
             <h4 className="text-sm font-semibold text-gray-200">Recent Trends</h4>
           </div>
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-lg border border-gray-600/20">
+            <div className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
               <span className="text-sm text-gray-300 font-medium">vs Yesterday</span>
               <span className={`text-sm font-bold ${sentiment.score > 50 ? 'text-emerald-400' : 'text-red-400'}`}>
                 {sentiment.score > 50 ? '+' : ''}{(sentiment.score - 50).toFixed(1)}%
               </span>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-lg border border-gray-600/20">
+            <div className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
               <span className="text-sm text-gray-300 font-medium">vs Last Week</span>
               <span className={`text-sm font-bold ${sentiment.score > 45 ? 'text-emerald-400' : 'text-red-400'}`}>
                 {sentiment.score > 45 ? '+' : ''}{(sentiment.score - 45).toFixed(1)}%

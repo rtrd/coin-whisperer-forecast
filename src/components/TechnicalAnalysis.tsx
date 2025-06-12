@@ -74,8 +74,8 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
 
   if (isLoading) {
     return (
-      <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-b border-gray-600/30">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
           <Skeleton className="h-6 w-32 bg-gray-700" />
           <Skeleton className="h-4 w-48 bg-gray-700" />
         </CardHeader>
@@ -90,10 +90,10 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
 
   if (!data || data.length === 0) {
     return (
-      <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-b border-gray-600/30">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
           <CardTitle className="text-white flex items-center gap-3">
-            <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+            <div className="p-2 rounded-full bg-blue-500/20">
               <BarChart3 className="h-6 w-6 text-blue-400" />
             </div>
             Technical Analysis
@@ -167,10 +167,10 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
   const overallTrend = overallSignal > 0.1 ? 'buy' : overallSignal < -0.1 ? 'sell' : 'neutral';
 
   return (
-    <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-b border-gray-600/30">
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+      <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
         <CardTitle className="text-white flex items-center gap-3">
-          <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+          <div className="p-2 rounded-full bg-blue-500/20">
             <BarChart3 className="h-6 w-6 text-blue-400" />
           </div>
           Technical Analysis
@@ -182,10 +182,10 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
       </CardHeader>
       <CardContent className="space-y-6 p-6">
         {/* Overall Signal - Enhanced */}
-        <div className="p-4 bg-gradient-to-br from-gray-700/40 via-gray-800/40 to-gray-900/40 rounded-xl border border-gray-600/30 shadow-lg">
+        <div className="p-4 bg-gray-700/40 rounded-xl border border-gray-600/30 shadow-lg">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+              <div className="p-1.5 rounded-lg bg-blue-500/20">
                 <Target className="h-4 w-4 text-blue-400" />
               </div>
               <span className="text-sm font-semibold text-gray-200">Overall Signal</span>
@@ -197,11 +197,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
           </div>
           <Progress 
             value={Math.abs(overallSignal) * 50} 
-            className="h-3 bg-gray-800/50"
-            style={{
-              '--progress-foreground': overallTrend === 'buy' ? 'rgb(34, 197, 94)' : 
-                                      overallTrend === 'sell' ? 'rgb(239, 68, 68)' : 'rgb(245, 158, 11)'
-            }}
+            className={`h-3 ${overallTrend === 'buy' ? '[&>div]:bg-emerald-400' : overallTrend === 'sell' ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
           />
           <div className="flex justify-between mt-2 text-xs text-gray-400">
             <span>Strength: {(Math.abs(overallSignal) * 100).toFixed(0)}%</span>
@@ -216,7 +212,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
             <h4 className="text-sm font-semibold text-gray-200">Technical Indicators</h4>
           </div>
           {indicators.map((indicator, index) => (
-            <div key={index} className="group p-4 bg-gradient-to-br from-gray-700/30 via-gray-800/30 to-gray-900/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+            <div key={index} className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-200">{indicator.name}</span>
                 <Badge variant="outline" className={`${getSignalColor(indicator.signal)} text-xs font-medium backdrop-blur-sm`}>
@@ -237,11 +233,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
               </div>
               <Progress 
                 value={indicator.strength * 100} 
-                className="h-2 bg-gray-800/50"
-                style={{
-                  '--progress-foreground': indicator.signal === 'buy' ? 'rgb(34, 197, 94)' : 
-                                          indicator.signal === 'sell' ? 'rgb(239, 68, 68)' : 'rgb(245, 158, 11)'
-                }}
+                className={`h-2 ${indicator.signal === 'buy' ? '[&>div]:bg-emerald-400' : indicator.signal === 'sell' ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
               />
             </div>
           ))}
@@ -254,7 +246,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
             <h4 className="text-sm font-semibold text-gray-200">Key Price Levels</h4>
           </div>
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-4 bg-gradient-to-br from-emerald-900/30 via-emerald-800/20 to-gray-900/30 rounded-xl border border-emerald-700/30 hover:border-emerald-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10">
+            <div className="p-4 bg-emerald-900/20 rounded-xl border border-emerald-700/30 hover:border-emerald-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10">
               <div className="flex items-center gap-2 mb-2">
                 <div className="p-1 rounded-full bg-emerald-500/20">
                   <TrendingUp className="h-3 w-3 text-emerald-400" />
@@ -264,7 +256,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
               <p className="text-lg font-bold text-white">${(currentPrice * 0.95).toFixed(2)}</p>
               <p className="text-xs text-emerald-300/80">Strong buying interest</p>
             </div>
-            <div className="p-4 bg-gradient-to-br from-red-900/30 via-red-800/20 to-gray-900/30 rounded-xl border border-red-700/30 hover:border-red-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
+            <div className="p-4 bg-red-900/20 rounded-xl border border-red-700/30 hover:border-red-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
               <div className="flex items-center gap-2 mb-2">
                 <div className="p-1 rounded-full bg-red-500/20">
                   <TrendingDown className="h-3 w-3 text-red-400" />
