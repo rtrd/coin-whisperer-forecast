@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -187,17 +186,17 @@ export const PumpFunIntegration = () => {
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className="bg-card border-border shadow-2xl">
+        <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
           <CollapsibleTrigger asChild>
             <CardHeader className="pb-4 cursor-pointer">
-              <CardTitle className="text-foreground flex items-center justify-between text-lg">
+              <CardTitle className="text-white flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
                   <Rocket className="h-5 w-5 text-purple-400" />
                   Solana Memecoin Insights
                   <Badge className="bg-green-600 text-white">LIVE</Badge>
                   <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
                 </div>
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:bg-accent hover:text-accent-foreground flex items-center gap-1">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center gap-1">
                   {isOpen ? 'Hide Insights' : 'Show Insights'}
                   {isOpen ? (
                     <ChevronUp className="h-4 w-4" />
@@ -211,7 +210,7 @@ export const PumpFunIntegration = () => {
           <CollapsibleContent>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between mb-4">
-                <div className="text-muted-foreground text-sm">Choose your view preference</div>
+                <div className="text-gray-300 text-sm">Choose your view preference</div>
                 <div className="flex items-center gap-2">
                   <Button
                     variant={viewMode === "list" ? "default" : "outline"}
@@ -219,8 +218,8 @@ export const PumpFunIntegration = () => {
                     onClick={() => setViewMode("list")}
                     className={`${
                       viewMode === "list" 
-                        ? "text-primary-foreground" 
-                        : "text-muted-foreground border-border bg-muted hover:bg-accent hover:text-accent-foreground"
+                        ? "text-white" 
+                        : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
                     }`}
                   >
                     <LayoutList className="h-4 w-4" />
@@ -231,8 +230,8 @@ export const PumpFunIntegration = () => {
                     onClick={() => setViewMode("grid")}
                     className={`${
                       viewMode === "grid" 
-                        ? "text-primary-foreground" 
-                        : "text-muted-foreground border-border bg-muted hover:bg-accent hover:text-accent-foreground"
+                        ? "text-white" 
+                        : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
                     }`}
                   >
                     <LayoutGrid className="h-4 w-4" />
@@ -240,24 +239,24 @@ export const PumpFunIntegration = () => {
                 </div>
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <TrendingUp className="h-4 w-4 text-green-400" />
                   Top Performers
                 </h3>
                 {viewMode === "grid" ? renderTokenGrid(topPerformers, 'text-green-400') : renderTokenList(topPerformers, 'text-green-400')}
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <TrendingDown className="h-4 w-4 text-red-400" />
                   Top Losers
                 </h3>
                 {viewMode === "grid" ? renderTokenGrid(topLosers, 'text-red-400') : renderTokenList(topLosers, 'text-red-400')}
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <Sparkles className="h-4 w-4 text-yellow-400" />
                   New Launches
                 </h3>
