@@ -55,10 +55,10 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="px-3 py-3">
+          <div className="px-3 py-3 border-b border-gray-600">
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
-              className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-blue-300"
+              className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-blue-400"
             />
           </div>
           <CommandList className="max-h-[300px] overflow-y-auto">
