@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -110,10 +109,20 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
   };
 
   const getProgressBarColor = (value: number) => {
-    // Calculate RGB values for gradient from red (0%) to green (100%)
-    const red = Math.round(255 * (1 - value / 100));
-    const green = Math.round(255 * (value / 100));
-    return `rgb(${red}, ${green}, 0)`;
+    // Red to yellow to green gradient
+    if (value <= 50) {
+      // Red to yellow (0% to 50%)
+      const ratio = value / 50;
+      const red = 255;
+      const green = Math.round(255 * ratio);
+      return `rgb(${red}, ${green}, 0)`;
+    } else {
+      // Yellow to green (50% to 100%)
+      const ratio = (value - 50) / 50;
+      const red = Math.round(255 * (1 - ratio));
+      const green = 255;
+      return `rgb(${red}, ${green}, 0)`;
+    }
   };
 
   return (
