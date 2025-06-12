@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Zap, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { IndexHeader } from "@/components/IndexHeader";
-import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
+import { LockedIndependentPrediction } from "@/components/LockedIndependentPrediction";
 import { getAllCryptos } from "../../utils/api";
 import { category } from "../../utils/Category";
 
@@ -139,7 +139,7 @@ const AIPrediction = () => {
           </p>
         </div>
 
-        <IndependentPredictionWidget cryptoOptions={cryptoOptions} />
+        <LockedIndependentPrediction cryptoOptions={cryptoOptions} />
       </div>
     </div>
   );
