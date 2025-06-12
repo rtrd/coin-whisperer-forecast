@@ -18,79 +18,6 @@ interface SentimentAnalysisProps {
   crypto: string;
 }
 
-// Speedometer component for Fear & Greed index
-const SpeedometerChart: React.FC<{ value: number }> = ({ value }) => {
-  const radius = 60;
-  const strokeWidth = 8;
-  const normalizedRadius = radius - strokeWidth * 2;
-  const circumference = normalizedRadius * Math.PI; // Half circle
-  const strokeDasharray = `${circumference} ${circumference}`;
-  const strokeDashoffset = circumference - (value / 100) * circumference;
-
-  // Calculate needle rotation (0 to 180 degrees)
-  const needleRotation = (value / 100) * 180;
-
-  const getColor = (value: number) => {
-    if (value < 25) return '#ef4444'; // red
-    if (value < 50) return '#f97316'; // orange
-    if (value < 75) return '#eab308'; // yellow
-    return '#22c55e'; // green
-  };
-
-  return (
-    <div className="relative flex items-center justify-center w-32 h-20">
-      {/* Background arc */}
-      <svg
-        height={radius + strokeWidth}
-        width={radius * 2 + strokeWidth}
-        className="absolute"
-      >
-        <path
-          d={`M ${strokeWidth} ${radius} A ${normalizedRadius} ${normalizedRadius} 0 0 1 ${radius * 2 - strokeWidth} ${radius}`}
-          fill="transparent"
-          stroke="#374151"
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-        />
-        {/* Progress arc */}
-        <path
-          d={`M ${strokeWidth} ${radius} A ${normalizedRadius} ${normalizedRadius} 0 0 1 ${radius * 2 - strokeWidth} ${radius}`}
-          fill="transparent"
-          stroke={getColor(value)}
-          strokeWidth={strokeWidth}
-          strokeLinecap="round"
-          strokeDasharray={strokeDasharray}
-          strokeDashoffset={strokeDashoffset}
-          className="transition-all duration-1000 ease-out"
-        />
-        {/* Needle */}
-        <line
-          x1={radius}
-          y1={radius}
-          x2={radius}
-          y2={strokeWidth * 2}
-          stroke="#ffffff"
-          strokeWidth="2"
-          strokeLinecap="round"
-          transform={`rotate(${needleRotation - 90} ${radius} ${radius})`}
-          className="transition-transform duration-1000 ease-out"
-        />
-        {/* Center dot */}
-        <circle
-          cx={radius}
-          cy={radius}
-          r="3"
-          fill="#ffffff"
-        />
-      </svg>
-      {/* Value display */}
-      <div className="absolute bottom-0 text-center">
-        <div className="text-sm font-bold text-white">{value.toFixed(0)}</div>
-      </div>
-    </div>
-  );
-};
-
 export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) => {
   const [sentiment, setSentiment] = useState<SentimentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -246,7 +173,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
           </div>
           <Progress 
             value={sentiment.score} 
-            className={`h-4 ${sentiment.score > 60 ? 'progress-emerald' : sentiment.score < 40 ? 'progress-red' : 'progress-amber'}`}
+            className={`h-4 ${sentiment.score > 60 ? '[&>div]:bg-emerald-400' : sentiment.score < 40 ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
           />
         </div>
 
@@ -277,7 +204,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
                 </div>
                 <Progress 
                   value={source.sentiment} 
-                  className={`h-2.5 ${source.sentiment > 60 ? 'progress-emerald' : source.sentiment < 40 ? 'progress-red' : 'progress-amber'}`}
+                  className={`h-2.5 ${source.sentiment > 60 ? '[&>div]:bg-emerald-400' : source.sentiment < 40 ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
                 />
               </div>
             ))}
@@ -293,15 +220,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
               </div>
               <p className="text-xs text-blue-400 font-semibold">Fear & Greed</p>
             </div>
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-xl font-bold text-white mb-1">{(sentiment.score * 0.8 + 10).toFixed(0)}</p>
-                <p className="text-xs text-blue-300/80">
-                  {sentiment.score > 50 ? 'Greed Dominates' : 'Fear Prevails'}
-                </p>
-              </div>
-              <SpeedometerChart value={sentiment.score * 0.8 + 10} />
-            </div>
+            <p className="text-xl font-bold text-white mb-1">{(sentiment.score * 0.8 + 10).toFixed(0)}</p>
+            <p className="text-xs text-blue-300/80">
+              {sentiment.score > 50 ? 'Greed Dominates' : 'Fear Prevails'}
+            </p>
           </div>
           <div className="p-4 bg-purple-900/20 rounded-xl border border-purple-700/30 hover:border-purple-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
             <div className="flex items-center gap-2 mb-2">
