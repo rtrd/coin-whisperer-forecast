@@ -65,13 +65,13 @@ export const PumpFunIntegration = () => {
   const renderTokenGrid = (tokens: PumpToken[], changeColorClass: string) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-2">
       {tokens.map((token, index) => (
-        <div key={index} className="bg-card/50 border border-border rounded-lg p-3 space-y-2">
+        <div key={index} className="bg-gray-700/50 border border-gray-600 rounded-lg p-3 space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-2xl">{token.icon}</span>
               <div>
-                <div className="text-foreground font-bold text-sm">{token.symbol}</div>
-                <div className="text-muted-foreground text-xs">{token.name}</div>
+                <div className="text-white font-bold text-sm">{token.symbol}</div>
+                <div className="text-gray-400 text-xs">{token.name}</div>
               </div>
             </div>
             <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
@@ -81,22 +81,22 @@ export const PumpFunIntegration = () => {
           
           <div className="space-y-1 text-xs">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Price:</span>
-              <span className="text-foreground">${token.price.toFixed(4)}</span>
+              <span className="text-gray-400">Price:</span>
+              <span className="text-white">${token.price.toFixed(4)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">24h:</span>
+              <span className="text-gray-400">24h:</span>
               <span className={`${changeColorClass} font-bold`}>
                 {token.change24h >= 0 ? '+' : ''}{token.change24h}%
               </span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Volume:</span>
-              <span className="text-foreground">${formatNumber(token.volume)}</span>
+              <span className="text-gray-400">Volume:</span>
+              <span className="text-white">${formatNumber(token.volume)}</span>
             </div>
             <div className="flex justify-between">
-              <span className="text-muted-foreground">Market Cap:</span>
-              <span className="text-foreground">${formatNumber(token.marketCap)}</span>
+              <span className="text-gray-400">Market Cap:</span>
+              <span className="text-white">${formatNumber(token.marketCap)}</span>
             </div>
           </div>
 
@@ -116,33 +116,33 @@ export const PumpFunIntegration = () => {
     <div className="overflow-x-auto">
       <Table className="w-full table-fixed">
         <TableHeader>
-          <TableRow className="border-border h-14">
-            <TableHead className="text-muted-foreground w-12 px-2">#</TableHead>
-            <TableHead className="text-muted-foreground w-48 px-2">Token</TableHead>
-            <TableHead className="text-muted-foreground w-32 px-2">Price</TableHead>
-            <TableHead className="text-muted-foreground w-32 px-2">24h Change</TableHead>
-            <TableHead className="text-muted-foreground w-28 px-2">Pump Score</TableHead>
-            <TableHead className="text-muted-foreground w-40 px-2">Trading Volume</TableHead>
-            <TableHead className="text-muted-foreground w-32 px-2">Market Cap</TableHead>
-            <TableHead className="text-muted-foreground w-28 px-2">Action</TableHead>
+          <TableRow className="border-gray-700 h-14">
+            <TableHead className="text-gray-300 w-12 px-2">#</TableHead>
+            <TableHead className="text-gray-300 w-48 px-2">Token</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">Price</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">24h Change</TableHead>
+            <TableHead className="text-gray-300 w-28 px-2">Pump Score</TableHead>
+            <TableHead className="text-gray-300 w-40 px-2">Trading Volume</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">Market Cap</TableHead>
+            <TableHead className="text-gray-300 w-28 px-2">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {tokens.map((token, index) => (
-            <TableRow key={index} className="border-border hover:bg-muted/50">
-              <TableCell className="text-muted-foreground text-sm font-medium px-2">
+            <TableRow key={index} className="border-gray-700 hover:bg-gray-700/50">
+              <TableCell className="text-gray-300 text-sm font-medium px-2">
                 #{index + 1}
               </TableCell>
               <TableCell className="px-2">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{token.icon}</span>
                   <div>
-                    <div className="text-foreground font-bold text-sm">{token.symbol}</div>
-                    <div className="text-muted-foreground text-xs">{token.name}</div>
+                    <div className="text-white font-bold text-sm">{token.symbol}</div>
+                    <div className="text-gray-400 text-xs">{token.name}</div>
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-foreground font-mono text-sm px-2">
+              <TableCell className="text-white font-mono text-sm px-2">
                 ${token.price.toFixed(4)}
               </TableCell>
               <TableCell className="px-2">
@@ -162,10 +162,10 @@ export const PumpFunIntegration = () => {
                   {token.pumpScore}
                 </Badge>
               </TableCell>
-              <TableCell className="text-foreground font-mono text-sm px-2">
+              <TableCell className="text-gray-300 font-mono text-sm px-2">
                 ${formatNumber(token.volume)}
               </TableCell>
-              <TableCell className="text-foreground font-mono text-sm px-2">
+              <TableCell className="text-gray-300 font-mono text-sm px-2">
                 ${formatNumber(token.marketCap)}
               </TableCell>
               <TableCell className="px-2">
@@ -187,17 +187,17 @@ export const PumpFunIntegration = () => {
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className="bg-card/50 border-border shadow-2xl">
+        <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
           <CollapsibleTrigger asChild>
-            <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
-              <CardTitle className="text-foreground flex items-center justify-between text-lg">
+            <CardHeader className="pb-4 cursor-pointer hover:bg-gray-700/50 transition-colors">
+              <CardTitle className="text-white flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
-                  <Rocket className="h-5 w-5 text-primary" />
+                  <Rocket className="h-5 w-5 text-purple-400" />
                   Solana Memecoin Insights
-                  <Badge className="bg-primary text-primary-foreground">LIVE</Badge>
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  <Badge className="bg-green-600 text-white">LIVE</Badge>
+                  <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
                 </div>
-                <Button variant="ghost" size="sm" className="text-muted-foreground hover:bg-muted hover:text-foreground flex items-center gap-1">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700 hover:text-white flex items-center gap-1">
                   {isOpen ? 'Hide Insights' : 'Show Insights'}
                   {isOpen ? (
                     <ChevronUp className="h-4 w-4" />
@@ -211,7 +211,7 @@ export const PumpFunIntegration = () => {
           <CollapsibleContent>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between mb-4">
-                <div className="text-muted-foreground text-sm">Choose your view preference</div>
+                <div className="text-gray-300 text-sm">Choose your view preference</div>
                 <div className="flex items-center gap-2">
                   <Button
                     variant={viewMode === "list" ? "default" : "outline"}
@@ -219,8 +219,8 @@ export const PumpFunIntegration = () => {
                     onClick={() => setViewMode("list")}
                     className={`${
                       viewMode === "list" 
-                        ? "" 
-                        : "text-muted-foreground border-border bg-muted/30 hover:bg-muted/50 hover:text-foreground"
+                        ? "text-white" 
+                        : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
                     }`}
                   >
                     <LayoutList className="h-4 w-4" />
@@ -231,8 +231,8 @@ export const PumpFunIntegration = () => {
                     onClick={() => setViewMode("grid")}
                     className={`${
                       viewMode === "grid" 
-                        ? "" 
-                        : "text-muted-foreground border-border bg-muted/30 hover:bg-muted/50 hover:text-foreground"
+                        ? "text-white" 
+                        : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
                     }`}
                   >
                     <LayoutGrid className="h-4 w-4" />
@@ -240,24 +240,24 @@ export const PumpFunIntegration = () => {
                 </div>
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <TrendingUp className="h-4 w-4 text-green-400" />
                   Top Performers
                 </h3>
                 {viewMode === "grid" ? renderTokenGrid(topPerformers, 'text-green-400') : renderTokenList(topPerformers, 'text-green-400')}
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <TrendingDown className="h-4 w-4 text-red-400" />
                   Top Losers
                 </h3>
                 {viewMode === "grid" ? renderTokenGrid(topLosers, 'text-red-400') : renderTokenList(topLosers, 'text-red-400')}
               </div>
 
-              <div className="bg-muted/50 rounded-lg p-4">
-                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <Sparkles className="h-4 w-4 text-yellow-400" />
                   New Launches
                 </h3>
