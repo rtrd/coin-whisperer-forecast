@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,6 +32,7 @@ import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
+import { ModelTypeTooltip } from "@/components/ModelTypeTooltip";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { toast } from "sonner";
@@ -41,6 +41,7 @@ const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const [timeframe, setTimeframe] = useState('7d');
   const [predictionDays, setPredictionDays] = useState(7);
+  const [modelType, setModelType] = useState('advanced');
   const [marketData, setMarketData] = useState({
     marketCap: 0,
     volume24h: 0,
@@ -253,7 +254,7 @@ const TokenDetail = () => {
                   Market Statistics
                 </h3>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-blue-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="p-1.5 rounded-lg bg-blue-500/20">
@@ -352,7 +353,7 @@ const TokenDetail = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-300 mb-2 block">Time Period</label>
                 <Select value={timeframe} onValueChange={setTimeframe}>
@@ -380,6 +381,24 @@ const TokenDetail = () => {
                     <SelectItem value="7" className="text-white">7 Days</SelectItem>
                     <SelectItem value="14" className="text-white">14 Days</SelectItem>
                     <SelectItem value="30" className="text-white">30 Days</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  Model Type
+                  <ModelTypeTooltip modelType={modelType} />
+                </label>
+                <Select value={modelType} onValueChange={setModelType}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600">
+                    <SelectItem value="basic" className="text-white">Basic LSTM</SelectItem>
+                    <SelectItem value="advanced" className="text-white">Advanced Neural</SelectItem>
+                    <SelectItem value="ensemble" className="text-white">Ensemble Model</SelectItem>
+                    <SelectItem value="transformer" className="text-white">Transformer</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
