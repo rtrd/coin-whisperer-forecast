@@ -250,7 +250,7 @@ const Article = () => {
                   prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-white
                   prose-h3:text-xl prose-h3:font-medium prose-h3:mb-3 prose-h3:mt-6 prose-h3:text-gray-100
                   prose-h4:text-lg prose-h4:font-medium prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-gray-200
-                  prose-p:mb-6 prose-p:leading-relaxed prose-p:text-gray-200
+                  prose-p:mb-8 prose-p:leading-relaxed prose-p:text-gray-200
                   prose-ul:mb-6 prose-li:mb-2"
                   dangerouslySetInnerHTML={{ __html: article.content }}
                 />
