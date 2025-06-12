@@ -75,7 +75,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   }}
                   className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected=true]:bg-gray-700 select-none"
                 >
-                  <div className="flex items-center w-full pointer-events-auto">
+                  <div className="flex items-center w-full cursor-pointer">
                     <Check
                       className={cn(
                         "h-4 w-4 mr-3 text-blue-400 flex-shrink-0",
