@@ -122,3 +122,24 @@
 .article_image_custom{
   background-position: top;
 }
+
+/* Article content paragraph spacing override */
+.prose p {
+  margin-bottom: 2rem !important;
+  line-height: 1.75 !important;
+  color: rgb(229 231 235) !important;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+  color: white !important;
+}
+
+.prose ul, .prose ol {
+  margin-bottom: 1.5rem !important;
+}
+
+.prose li {
+  margin-bottom: 0.5rem !important;
+}
