@@ -185,7 +185,7 @@ const Article = () => {
                 className="relative bg-cover bg-center h-80 article_image_custom"
                 style={{ backgroundImage: `url(${article.image})` }}
               >
-                <div className="absolute inset-0 bg-black/50"></div>
+                <div className="absolute inset-0 bg-black/70"></div>
                 <CardHeader className="relative z-10 h-full flex flex-col justify-end">
                   <div className="flex items-center gap-2 mb-4">
                     <Badge className="bg-blue-600">{article.category}</Badge>
