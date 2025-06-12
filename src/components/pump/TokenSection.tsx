@@ -30,13 +30,13 @@ export const TokenSection: React.FC<TokenSectionProps> = ({
   viewMode,
 }) => {
   return (
-    <div className="bg-gray-700/50 rounded-lg p-4">
-      <h3 className="text-white font-medium flex items-center gap-2 mb-4">
+    <div className="bg-gray-700/50 rounded-lg p-6">
+      <h3 className="text-white font-medium flex items-center gap-2 mb-6">
         {icon}
         {title}
       </h3>
       {viewMode === "grid" ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {tokens.map((token, index) => (
             <TokenCard
               key={index}

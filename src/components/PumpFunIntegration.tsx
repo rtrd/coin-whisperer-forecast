@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -81,9 +80,8 @@ export const PumpFunIntegration = () => {
             </CardHeader>
           </CollapsibleTrigger>
           <CollapsibleContent>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="text-gray-300 text-sm">Choose your view preference</div>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-end">
                 <div className="flex items-center gap-2">
                   <Button
                     variant={viewMode === "list" ? "default" : "outline"}

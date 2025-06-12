@@ -28,46 +28,51 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass })
   };
 
   return (
-    <div className="bg-gray-700/50 border border-gray-600 rounded-lg p-3 space-y-2">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">{token.icon}</span>
-          <div>
-            <div className="text-white font-bold text-sm">{token.symbol}</div>
-            <div className="text-gray-400 text-xs">{token.name}</div>
+    <div className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 space-y-4 hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <div className="text-3xl">{token.icon}</div>
+          <div className="min-w-0">
+            <div className="text-white font-bold text-base truncate">{token.symbol}</div>
+            <div className="text-gray-400 text-sm truncate">{token.name}</div>
           </div>
         </div>
-        <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
+        <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold shrink-0">
           {token.pumpScore}
         </Badge>
       </div>
       
-      <div className="space-y-1 text-xs">
-        <div className="flex justify-between">
-          <span className="text-gray-400">Price:</span>
-          <span className="text-white">${token.price.toFixed(4)}</span>
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="space-y-1">
+            <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
+            <div className="text-white font-mono font-medium">${token.price.toFixed(4)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-gray-400 text-xs uppercase tracking-wide">24h Change</div>
+            <div className={`${changeColorClass} font-bold font-mono`}>
+              {token.change24h >= 0 ? '+' : ''}{token.change24h}%
+            </div>
+          </div>
         </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">24h:</span>
-          <span className={`${changeColorClass} font-bold`}>
-            {token.change24h >= 0 ? '+' : ''}{token.change24h}%
-          </span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">Volume:</span>
-          <span className="text-white">${formatNumber(token.volume)}</span>
-        </div>
-        <div className="flex justify-between">
-          <span className="text-gray-400">Market Cap:</span>
-          <span className="text-white">${formatNumber(token.marketCap)}</span>
+        
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="space-y-1">
+            <div className="text-gray-400 text-xs uppercase tracking-wide">Volume</div>
+            <div className="text-gray-300 font-mono">${formatNumber(token.volume)}</div>
+          </div>
+          <div className="space-y-1">
+            <div className="text-gray-400 text-xs uppercase tracking-wide">Market Cap</div>
+            <div className="text-gray-300 font-mono">${formatNumber(token.marketCap)}</div>
+          </div>
         </div>
       </div>
 
       <Button 
-        className="w-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+        className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
         size="sm"
       >
-        <ExternalLink className="h-3 w-3 mr-1" />
+        <ExternalLink className="h-4 w-4 mr-2" />
         Trade on Pump.fun
       </Button>
     </div>
