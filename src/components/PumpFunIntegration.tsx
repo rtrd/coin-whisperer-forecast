@@ -43,7 +43,7 @@ export const PumpFunIntegration = () => {
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className="bg-card border-border">
+        <Card className="bg-card/50 border-border shadow-2xl">
           <CollapsibleTrigger asChild>
             <CardHeader className="pb-4 cursor-pointer hover:bg-muted/50 transition-colors">
               <CardTitle className="text-foreground flex items-center justify-between text-lg">
@@ -66,28 +66,28 @@ export const PumpFunIntegration = () => {
           </CollapsibleTrigger>
           <CollapsibleContent>
             <CardContent className="space-y-4">
-              <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="bg-muted/50 rounded-lg p-4">
                 <div className="text-center">
-                  <Zap className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                  <h3 className="text-white font-bold text-lg mb-2">Trending Pump Tokens</h3>
-                  <p className="text-gray-300 text-sm">Real-time data from pump.fun ecosystem</p>
+                  <Zap className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <h3 className="text-foreground font-bold text-lg mb-2">Trending Pump Tokens</h3>
+                  <p className="text-muted-foreground text-sm">Real-time data from pump.fun ecosystem</p>
                 </div>
               </div>
 
-              <div className="bg-gray-800/50 rounded-lg p-4">
-                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
-                  <TrendingUp className="h-4 w-4 text-purple-400" />
+              <div className="bg-muted/50 rounded-lg p-4">
+                <h3 className="text-foreground font-medium flex items-center gap-2 mb-4">
+                  <TrendingUp className="h-4 w-4 text-primary" />
                   Top Performers
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-2">
                   {trendingTokens.map((token, index) => (
-                    <div key={index} className="bg-gray-700/50 rounded-lg p-3 space-y-2">
+                    <div key={index} className="bg-card/50 border border-border rounded-lg p-3 space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <span className="text-2xl">{token.icon}</span>
                           <div>
-                            <div className="text-white font-bold text-sm">{token.symbol}</div>
-                            <div className="text-gray-400 text-xs">{token.name}</div>
+                            <div className="text-foreground font-bold text-sm">{token.symbol}</div>
+                            <div className="text-muted-foreground text-xs">{token.name}</div>
                           </div>
                         </div>
                         <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
@@ -97,20 +97,20 @@ export const PumpFunIntegration = () => {
                       
                       <div className="space-y-1 text-xs">
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Price:</span>
-                          <span className="text-white">${token.price.toFixed(4)}</span>
+                          <span className="text-muted-foreground">Price:</span>
+                          <span className="text-foreground">${token.price.toFixed(4)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">24h:</span>
+                          <span className="text-muted-foreground">24h:</span>
                           <span className="text-green-400 font-bold">+{token.change24h}%</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Volume:</span>
-                          <span className="text-white">${formatNumber(token.volume)}</span>
+                          <span className="text-muted-foreground">Volume:</span>
+                          <span className="text-foreground">${formatNumber(token.volume)}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Market Cap:</span>
-                          <span className="text-white">${formatNumber(token.marketCap)}</span>
+                          <span className="text-muted-foreground">Market Cap:</span>
+                          <span className="text-foreground">${formatNumber(token.marketCap)}</span>
                         </div>
                       </div>
 
