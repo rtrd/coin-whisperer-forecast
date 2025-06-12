@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -180,7 +179,7 @@ const TokenDetail = () => {
           </Link>
         </div>
 
-        {/* Combined Header Card - Styled like main page sections */}
+        {/* Combined Header Card */}
         <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
           <CardContent className="p-8">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
@@ -219,33 +218,36 @@ const TokenDetail = () => {
                     )}
                   </div>
                 </div>
-
-                {/* Current Price and Change */}
-                <div className="bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/50">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-sm text-gray-400 mb-1">Current Price</div>
-                      <div className="text-4xl font-bold text-white">${currentPrice.toFixed(2)}</div>
-                    </div>
-                    <div className={`flex items-center gap-2 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {priceChange >= 0 ? <TrendingUp className="h-6 w-6" /> : <TrendingDown className="h-6 w-6" />}
-                      <span className="text-2xl font-bold">
-                        {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
-                      </span>
-                      <span className="text-gray-400 text-sm">24h</span>
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Right Column - Market Stats */}
+              {/* Right Column - Market Stats with Current Price */}
               <div className="lg:w-80">
                 <div className="bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/50">
-                  <h3 className="text-white font-semibold text-lg mb-4">Market Statistics</h3>
+                  <h3 className="text-white font-semibold text-lg mb-6">Market Statistics</h3>
+                  
+                  {/* Current Price - Highlighted with higher hierarchy */}
+                  <div className="mb-6 pb-6 border-b border-gray-600/50">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <DollarSign className="h-5 w-5 text-blue-400" />
+                        <div className="text-gray-400 text-sm font-medium">Current Price</div>
+                      </div>
+                      <div className="text-4xl font-bold text-white mb-2">${currentPrice.toFixed(2)}</div>
+                      <div className={`flex items-center justify-center gap-2 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+                        <span className="text-lg font-semibold">
+                          {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+                        </span>
+                        <span className="text-gray-400 text-sm">24h</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Other Market Stats */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <DollarSign className="h-4 w-4 text-blue-400" />
+                        <BarChart3 className="h-4 w-4 text-blue-400" />
                         <div className="text-gray-400 text-sm">Market Cap</div>
                       </div>
                       <div className="text-white font-semibold">${(marketData.marketCap / 1000000000).toFixed(2)}B</div>
