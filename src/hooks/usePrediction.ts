@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -214,14 +213,9 @@ export const usePrediction = () => {
     }
   };
 
-  const clearPrediction = () => {
-    setPrediction(null);
-  };
-
   return {
     prediction,
     isLoading,
-    generatePrediction,
-    clearPrediction
+    generatePrediction
   };
 };

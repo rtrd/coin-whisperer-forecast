@@ -3,8 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Brain, TrendingUp, TrendingDown, Activity, AlertTriangle, Info } from "lucide-react";
+import { Brain, TrendingUp, TrendingDown, Activity, AlertTriangle } from "lucide-react";
 
 interface PredictionAdjustment {
   factor: string;
@@ -111,163 +110,93 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
   };
 
   const getProgressBarColor = (value: number) => {
-    // Red to yellow to green gradient
-    if (value <= 50) {
-      // Red to yellow (0% to 50%)
-      const ratio = value / 50;
-      const red = 255;
-      const green = Math.round(255 * ratio);
-      return `rgb(${red}, ${green}, 0)`;
-    } else {
-      // Yellow to green (50% to 100%)
-      const ratio = (value - 50) / 50;
-      const red = Math.round(255 * (1 - ratio));
-      const green = 255;
-      return `rgb(${red}, ${green}, 0)`;
-    }
-  };
-
-  const getTooltipContent = (factor: string) => {
-    switch (factor) {
-      case 'AI Sentiment':
-        return (
-          <div className="max-w-sm space-y-2">
-            <h4 className="font-semibold text-white">AI Sentiment Analysis</h4>
-            <p className="text-sm text-gray-300">
-              Our AI analyzes thousands of social media posts, news articles, and market discussions in real-time to gauge market sentiment.
-            </p>
-            <div className="space-y-1">
-              <p className="text-xs text-blue-300 font-medium">Scoring Method:</p>
-              <ul className="text-xs text-gray-300 space-y-1">
-                <li>• 0-40: Negative sentiment dominates</li>
-                <li>• 40-60: Neutral market sentiment</li>
-                <li>• 60-100: Positive sentiment prevails</li>
-              </ul>
-            </div>
-            <p className="text-xs text-green-300">
-              💡 Higher scores indicate bullish market sentiment and potential price increases.
-            </p>
-          </div>
-        );
-      case 'Technical Analysis':
-        return (
-          <div className="max-w-sm space-y-2">
-            <h4 className="font-semibold text-white">Technical Analysis Score</h4>
-            <p className="text-sm text-gray-300">
-              AI evaluates multiple technical indicators including RSI, moving averages, MACD, and volume patterns.
-            </p>
-            <div className="space-y-1">
-              <p className="text-xs text-blue-300 font-medium">Key Indicators:</p>
-              <ul className="text-xs text-gray-300 space-y-1">
-                <li>• RSI (Relative Strength Index)</li>
-                <li>• Moving Average Convergence</li>
-                <li>• Volume and momentum analysis</li>
-                <li>• Support/resistance levels</li>
-              </ul>
-            </div>
-            <p className="text-xs text-green-300">
-              💡 Scores above 70 indicate strong buy signals, below 30 suggest oversold conditions.
-            </p>
-          </div>
-        );
-      default:
-        return null;
-    }
+    // Calculate RGB values for gradient from red (0%) to green (100%)
+    const red = Math.round(255 * (1 - value / 100));
+    const green = Math.round(255 * (value / 100));
+    return `rgb(${red}, ${green}, 0)`;
   };
 
   return (
-    <TooltipProvider>
-      <Card className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border-purple-700/50 shadow-2xl">
-        <CardHeader>
-          <CardTitle className="text-gray-200 flex items-center gap-2">
-            <Brain className="h-5 w-5 text-purple-400" />
-            Dynamic AI Prediction
-            <Badge className="bg-purple-600">REAL-TIME</Badge>
-            <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse ml-2"></div>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {/* Overall Prediction */}
-            <div className="p-4 bg-gray-800/50 rounded-lg border border-purple-700/30">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-white font-medium">AI Prediction Score</span>
-                <div className={`flex items-center gap-1 ${aiPrediction >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {aiPrediction >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-                  <span className="font-bold text-lg">
-                    {aiPrediction >= 0 ? '+' : ''}{aiPrediction.toFixed(1)}%
-                  </span>
-                </div>
-              </div>
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-gray-200 text-base font-medium">Confidence:</span>
-                <div className="flex-1 relative">
-                  <Progress 
-                    value={overallConfidence} 
-                    className="h-3 bg-gray-700" 
-                    style={{
-                      '--progress-foreground': getProgressBarColor(overallConfidence)
-                    } as React.CSSProperties}
-                  />
-                </div>
-                <span className="text-gray-200 text-base font-bold min-w-[50px]">{overallConfidence}%</span>
+    <Card className="bg-gradient-to-br from-purple-900/20 to-indigo-900/20 border-purple-700/50 shadow-2xl">
+      <CardHeader>
+        <CardTitle className="text-gray-200 flex items-center gap-2">
+          <Brain className="h-5 w-5 text-purple-400" />
+          Dynamic AI Prediction
+          <Badge className="bg-purple-600">REAL-TIME</Badge>
+          <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse ml-2"></div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {/* Overall Prediction */}
+          <div className="p-4 bg-gray-800/50 rounded-lg border border-purple-700/30">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-white font-medium">AI Prediction Score</span>
+              <div className={`flex items-center gap-1 ${aiPrediction >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {aiPrediction >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+                <span className="font-bold text-lg">
+                  {aiPrediction >= 0 ? '+' : ''}{aiPrediction.toFixed(1)}%
+                </span>
               </div>
             </div>
-
-            {/* Individual Adjustments */}
-            <div className="space-y-3">
-              {adjustments.map((adjustment, index) => (
-                <div key={index} className="p-3 bg-gray-800/30 rounded-lg border border-gray-600">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      {getTrendIcon(adjustment.trend)}
-                      <span className="text-white font-medium text-sm">{adjustment.factor}</span>
-                      {(adjustment.factor === 'AI Sentiment' || adjustment.factor === 'Technical Analysis') && (
-                        <Tooltip>
-                          <TooltipTrigger>
-                            <Info className="h-3 w-3 text-gray-400 hover:text-white transition-colors" />
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-gray-800 border-gray-600">
-                            {getTooltipContent(adjustment.factor)}
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
-                    </div>
-                    <div className={`font-bold text-sm ${getTrendColor(adjustment.trend)}`}>
-                      {adjustment.impact >= 0 ? '+' : ''}{adjustment.impact.toFixed(1)}%
-                    </div>
-                  </div>
-                  <p className="text-gray-400 text-xs mb-3">{adjustment.reason}</p>
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-200 text-base font-medium">Confidence:</span>
-                    <div className="flex-1 relative">
-                      <Progress 
-                        value={adjustment.confidence} 
-                        className="h-3 bg-gray-700"
-                        style={{
-                          '--progress-foreground': getProgressBarColor(adjustment.confidence)
-                        } as React.CSSProperties}
-                      />
-                    </div>
-                    <span className="text-gray-200 text-base font-bold min-w-[50px]">{adjustment.confidence}%</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Warning */}
-            <div className="flex items-start gap-2 p-3 bg-yellow-900/20 rounded-lg border border-yellow-700/50">
-              <AlertTriangle className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-yellow-200 text-xs font-medium">Real-time Analysis</p>
-                <p className="text-yellow-300 text-xs">
-                  This AI model adjusts predictions based on live price movements and market conditions.
-                </p>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-gray-300 text-base font-medium">Confidence:</span>
+              <div className="flex-1 relative">
+                <Progress 
+                  value={overallConfidence} 
+                  className="h-3 bg-gray-700" 
+                  style={{
+                    '--progress-foreground': getProgressBarColor(overallConfidence)
+                  } as React.CSSProperties}
+                />
               </div>
+              <span className="text-gray-200 text-base font-bold min-w-[50px]">{overallConfidence}%</span>
             </div>
           </div>
-        </CardContent>
-      </Card>
-    </TooltipProvider>
+
+          {/* Individual Adjustments */}
+          <div className="space-y-3">
+            {adjustments.map((adjustment, index) => (
+              <div key={index} className="p-3 bg-gray-800/30 rounded-lg border border-gray-600">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    {getTrendIcon(adjustment.trend)}
+                    <span className="text-white font-medium text-sm">{adjustment.factor}</span>
+                  </div>
+                  <div className={`font-bold text-sm ${getTrendColor(adjustment.trend)}`}>
+                    {adjustment.impact >= 0 ? '+' : ''}{adjustment.impact.toFixed(1)}%
+                  </div>
+                </div>
+                <p className="text-gray-400 text-xs mb-3">{adjustment.reason}</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-300 text-base font-medium">Confidence:</span>
+                  <div className="flex-1 relative">
+                    <Progress 
+                      value={adjustment.confidence} 
+                      className="h-3 bg-gray-700"
+                      style={{
+                        '--progress-foreground': getProgressBarColor(adjustment.confidence)
+                      } as React.CSSProperties}
+                    />
+                  </div>
+                  <span className="text-gray-200 text-base font-bold min-w-[50px]">{adjustment.confidence}%</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Warning */}
+          <div className="flex items-start gap-2 p-3 bg-yellow-900/20 rounded-lg border border-yellow-700/50">
+            <AlertTriangle className="h-4 w-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-yellow-200 text-xs font-medium">Real-time Analysis</p>
+              <p className="text-yellow-300 text-xs">
+                This AI model adjusts predictions based on live price movements and market conditions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

@@ -21,13 +21,13 @@ import {
   ExternalLink,
   Clock,
   DollarSign,
-  TrendingDownIcon,
-  Trash2
+  TrendingDownIcon
 } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
 import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
 import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
+import { LockedDynamicPrediction } from "@/components/LockedDynamicPrediction";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -54,7 +54,7 @@ const TokenDetail = () => {
   });
 
   const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(tokenId || 'bitcoin', timeframe);
-  const { prediction, isLoading: predictionLoading, generatePrediction, clearPrediction } = usePrediction();
+  const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   const cryptoOptions = [
     // Major Cryptocurrencies
@@ -132,11 +132,6 @@ const TokenDetail = () => {
     
     await generatePrediction(cryptoData, tokenId || 'bitcoin', predictionDays);
     toast.success("Prediction generated successfully!");
-  };
-
-  const handleClearPrediction = () => {
-    clearPrediction();
-    toast.success("Prediction cleared from chart");
   };
 
   const currentPrice = cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1]?.price : 0;
@@ -349,11 +344,102 @@ const TokenDetail = () => {
           </CardContent>
         </Card>
 
+        {/* AI Analysis Controls */}
+        <Card className="mb-8 bg-gray-800/50 border-gray-700">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-2">
+              <Target className="h-5 w-5 text-green-400" />
+              AI Analysis Controls
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">Time Period</label>
+                <Select value={timeframe} onValueChange={setTimeframe}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600">
+                    <SelectItem value="1d" className="text-white">1 Day</SelectItem>
+                    <SelectItem value="7d" className="text-white">7 Days</SelectItem>
+                    <SelectItem value="30d" className="text-white">30 Days</SelectItem>
+                    <SelectItem value="90d" className="text-white">90 Days</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 block">Prediction Days</label>
+                <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600">
+                    <SelectItem value="1" className="text-white">1 Day</SelectItem>
+                    <SelectItem value="3" className="text-white">3 Days</SelectItem>
+                    <SelectItem value="7" className="text-white">7 Days</SelectItem>
+                    <SelectItem value="14" className="text-white">14 Days</SelectItem>
+                    <SelectItem value="30" className="text-white">30 Days</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <label className="text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                  Model Type
+                  <ModelTypeTooltip modelType={modelType} />
+                </label>
+                <Select value={modelType} onValueChange={setModelType}>
+                  <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-700 border-gray-600">
+                    <SelectItem value="basic" className="text-white">Basic LSTM</SelectItem>
+                    <SelectItem value="advanced" className="text-white">Advanced Neural</SelectItem>
+                    <SelectItem value="ensemble" className="text-white">Ensemble Model</SelectItem>
+                    <SelectItem value="transformer" className="text-white">Transformer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="flex items-end">
+                <Button 
+                  onClick={handlePredict}
+                  disabled={dataLoading || predictionLoading || !cryptoData}
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                >
+                  {predictionLoading ? (
+                    <div className="flex items-center gap-2">
+                      <Activity className="h-4 w-4 animate-spin" />
+                      Analyzing...
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Brain className="h-4 w-4" />
+                      Generate Prediction
+                    </div>
+                  )}
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Dynamic Prediction Adjuster - Now locked */}
+        <div className="mb-8">
+          <LockedDynamicPrediction
+            selectedCrypto={tokenId || 'bitcoin'}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+          />
+        </div>
+
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Column - Chart and Analysis */}
           <div className="lg:col-span-3 space-y-6">
-            {/* Combined Price Chart and AI Controls */}
+            {/* Price Chart */}
             <Card className="bg-gray-800/50 border-gray-700">
               <CardHeader>
                 <CardTitle className="text-white flex items-center justify-between">
@@ -366,100 +452,7 @@ const TokenDetail = () => {
                   </Badge>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6">
-                {/* AI Analysis Controls */}
-                <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Target className="h-5 w-5 text-green-400" />
-                    <h3 className="text-white font-medium">AI Analysis Controls</h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 block">Time Period</label>
-                      <Select value={timeframe} onValueChange={setTimeframe}>
-                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1d" className="text-white">1 Day</SelectItem>
-                          <SelectItem value="7d" className="text-white">7 Days</SelectItem>
-                          <SelectItem value="30d" className="text-white">30 Days</SelectItem>
-                          <SelectItem value="90d" className="text-white">90 Days</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 block">Prediction Days</label>
-                      <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1" className="text-white">1 Day</SelectItem>
-                          <SelectItem value="3" className="text-white">3 Days</SelectItem>
-                          <SelectItem value="7" className="text-white">7 Days</SelectItem>
-                          <SelectItem value="14" className="text-white">14 Days</SelectItem>
-                          <SelectItem value="30" className="text-white">30 Days</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-                        Model Type
-                        <ModelTypeTooltip modelType={modelType} />
-                      </label>
-                      <Select value={modelType} onValueChange={setModelType}>
-                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="basic" className="text-white">Basic LSTM</SelectItem>
-                          <SelectItem value="advanced" className="text-white">Advanced Neural</SelectItem>
-                          <SelectItem value="ensemble" className="text-white">Ensemble Model</SelectItem>
-                          <SelectItem value="transformer" className="text-white">Transformer</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="flex items-end">
-                      <Button 
-                        onClick={handlePredict}
-                        disabled={dataLoading || predictionLoading || !cryptoData}
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                      >
-                        {predictionLoading ? (
-                          <div className="flex items-center gap-2">
-                            <Activity className="h-4 w-4 animate-spin" />
-                            Analyzing...
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <Brain className="h-4 w-4" />
-                            Generate
-                          </div>
-                        )}
-                      </Button>
-                    </div>
-
-                    <div className="flex items-end">
-                      <Button 
-                        onClick={handleClearPrediction}
-                        disabled={!prediction}
-                        variant="outline"
-                        className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
-                      >
-                        <div className="flex items-center gap-2">
-                          <Trash2 className="h-4 w-4" />
-                          Clear
-                        </div>
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Price Chart */}
+              <CardContent>
                 <PriceChart 
                   data={cryptoData} 
                   prediction={prediction?.predictions || null}
