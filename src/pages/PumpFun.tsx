@@ -4,12 +4,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Rocket, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
+import { IndexHeader } from "@/components/IndexHeader";
+import Footer from "@/components/Footer";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 
 const PumpFun = () => {
+  const cryptoOptions = [
+    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
+    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-8">
+        {/* Homepage Header */}
+        <IndexHeader 
+          selectedCrypto="bitcoin"
+          cryptoOptions={cryptoOptions}
+          currentPrice={50000}
+          priceChange={2.5}
+        />
+
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link to="/">
@@ -32,6 +47,8 @@ const PumpFun = () => {
 
         <PumpFunIntegration />
       </div>
+      
+      <Footer />
     </div>
   );
 };

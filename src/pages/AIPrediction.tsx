@@ -5,6 +5,7 @@ import { Zap, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { IndexHeader } from "@/components/IndexHeader";
 import { LockedIndependentPrediction } from "@/components/LockedIndependentPrediction";
+import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import { category } from "../../utils/Category";
 
@@ -141,6 +142,8 @@ const AIPrediction = () => {
 
         <LockedIndependentPrediction cryptoOptions={cryptoOptions} />
       </div>
+      
+      <Footer />
     </div>
   );
 };

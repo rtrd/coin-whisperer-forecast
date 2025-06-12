@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Crown, Check, Mail, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
+import Footer from "@/components/Footer";
 import { toast } from "sonner";
 
 const Subscribe = () => {
@@ -181,6 +182,8 @@ const Subscribe = () => {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </div>
   );
 };

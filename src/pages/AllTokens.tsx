@@ -6,6 +6,8 @@ import { ExternalLink, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { useLocation } from "react-router-dom";
+import { IndexHeader } from "@/components/IndexHeader";
+import Footer from "@/components/Footer";
 import { generateMarketData } from "./../components/MarketDataUtils";
 import {
   MarketDataFilters,
@@ -18,7 +20,11 @@ const AllTokens = () => {
 
   const location = useLocation();
   const { AllCryptosData } = location.state || { AllCryptosData: [] };
-  console.log("Crypto Options:", AllCryptosData);
+
+  const cryptoOptions = [
+    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
+    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' }
+  ];
 
   useEffect(() => {
     setFilteredCryptos(AllCryptosData);
@@ -135,6 +141,14 @@ const AllTokens = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
+        {/* Homepage Header */}
+        <IndexHeader 
+          selectedCrypto="bitcoin"
+          cryptoOptions={cryptoOptions}
+          currentPrice={50000}
+          priceChange={2.5}
+        />
+
         <div className="mb-6">
           <Link to="/">
             <Button
@@ -214,6 +228,8 @@ const AllTokens = () => {
           </CardContent>
         </Card>
       </div>
+      
+      <Footer />
     </div>
   );
 };
