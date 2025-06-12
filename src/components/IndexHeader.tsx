@@ -33,7 +33,7 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
         </Link>
       </h1>
       <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-        Advanced cryptocurrency price prediction using machine learning, technical analysis, and market sentiment
+        AI-powered crypto market analysis tools that help you spot trends, assess risk, and execute the right crypto trading strategy.
       </p>
     </div>
   );
