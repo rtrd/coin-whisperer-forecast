@@ -185,25 +185,32 @@ const TokenDetail = () => {
           <CardContent className="p-8">
             <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
               {/* Left Column - Token Info */}
-              <div className="flex-1 space-y-6">
-                <div>
-                  <div className="flex items-center gap-4 mb-4">
-                    <h1 className="text-4xl font-bold text-white">{selectedToken.label}</h1>
-                    <Badge 
-                      className={`px-3 py-1 text-sm font-medium ${
-                        selectedToken.category === 'Major' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
-                        selectedToken.category === 'DeFi' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
-                        selectedToken.category === 'Meme' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
-                        selectedToken.category === 'AI' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
-                        'bg-gray-500/20 text-gray-400 border-gray-500/30'
-                      } border backdrop-blur-sm`}
-                    >
-                      {selectedToken.category}
-                    </Badge>
+              <div className="flex-1 space-y-4">
+                <div className="flex items-start justify-between lg:justify-start gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-4 mb-3">
+                      <h1 className="text-3xl lg:text-4xl font-bold text-white">{selectedToken.label}</h1>
+                      <Badge 
+                        className={`px-3 py-1 text-sm font-medium ${
+                          selectedToken.category === 'Major' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+                          selectedToken.category === 'DeFi' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
+                          selectedToken.category === 'Meme' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                          selectedToken.category === 'AI' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
+                          'bg-gray-500/20 text-gray-400 border-gray-500/30'
+                        } border backdrop-blur-sm`}
+                      >
+                        {selectedToken.category}
+                      </Badge>
+                    </div>
+                    
+                    <p className="text-gray-300 text-base lg:text-lg mb-4 leading-relaxed pr-4">
+                      {selectedToken.description}
+                    </p>
                   </div>
-                  
-                  <p className="text-gray-300 text-lg mb-6 leading-relaxed">{selectedToken.description}</p>
-                  
+                </div>
+                
+                {/* Bottom row with links and current price display for mobile */}
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div className="flex items-center gap-4">
                     {selectedToken.website && (
                       <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
@@ -218,11 +225,29 @@ const TokenDetail = () => {
                       </a>
                     )}
                   </div>
+                  
+                  {/* Current Price for mobile - shown only on small screens */}
+                  <div className="lg:hidden">
+                    <div className="text-center bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-4 border border-gray-600/50">
+                      <div className="flex items-center justify-center gap-2 mb-1">
+                        <DollarSign className="h-4 w-4 text-blue-400" />
+                        <div className="text-gray-400 text-xs font-medium">Current Price</div>
+                      </div>
+                      <div className="text-2xl font-bold text-white mb-1">${currentPrice.toFixed(2)}</div>
+                      <div className={`flex items-center justify-center gap-1 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {priceChange >= 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                        <span className="text-sm font-semibold">
+                          {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+                        </span>
+                        <span className="text-gray-400 text-xs">24h</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Right Column - Market Stats with Current Price */}
-              <div className="lg:w-80">
+              {/* Right Column - Market Stats with Current Price - hidden on mobile */}
+              <div className="hidden lg:block lg:w-80">
                 <div className="bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/50">
                   <h3 className="text-white font-semibold text-lg mb-6">Market Statistics</h3>
                   
