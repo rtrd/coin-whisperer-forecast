@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -405,7 +406,7 @@ export const AITradingSignals = () => {
 
               {/* Disclaimer */}
               <div className="bg-yellow-900/20 border border-yellow-700/50 rounded-lg p-3">
-                <p className="text-xs text-yellow-200 flex items-start gap-2 px-2">
+                <p className="text-xs text-gray-300 flex items-start gap-2 px-2">
                   <AlertTriangle className="h-3 w-3 mt-0.5 text-yellow-400" />
                   AI-generated signals are for educational purposes only. Always conduct your own research and consider risk management before trading.
                 </p>
