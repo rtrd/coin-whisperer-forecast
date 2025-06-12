@@ -341,8 +341,8 @@ const Article = () => {
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
               <ArticleIndex content={article.content} />
-              <MarketWinnersWidget />
               <AdBanner width={300} height={600} position="vertical" />
+              <MarketWinnersWidget />
             </div>
           </div>
         </div>
