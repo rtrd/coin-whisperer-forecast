@@ -55,10 +55,10 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="px-3 py-3 border-b border-gray-600">
+          <div className="px-3 py-3 border-b border-gray-700">
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
-              className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-blue-400"
+              className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 border-b border-gray-600 focus:border-gray-500 [&_.lucide-search]:text-blue-400"
             />
           </div>
           <CommandList className="max-h-[300px] overflow-y-auto">
@@ -69,23 +69,25 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => {
-                    if (currentValue !== selectedCrypto) {
-                      onSelectCrypto(currentValue);
-                    }
+                    onSelectCrypto(currentValue);
                     setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700"
+                  className={cn(
+                    "text-white cursor-pointer px-3 py-2 transition-colors duration-200",
+                    "hover:bg-gray-600 focus:bg-gray-600",
+                    "aria-selected:bg-gray-700 data-[selected]:bg-gray-700"
+                  )}
                 >
                   <div className="flex items-center w-full">
                     <Check
                       className={cn(
-                        "h-4 w-4 mr-3 text-blue-400",
+                        "h-4 w-4 mr-3 text-blue-400 transition-opacity",
                         selectedCrypto === option.value ? "opacity-100" : "opacity-0"
                       )}
                     />
                     <span className={cn(
                       "font-medium text-left transition-colors",
-                      selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
+                      selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 group-hover:text-blue-200"
                     )}>
                       {formatLabel(option.label)}
                     </span>
