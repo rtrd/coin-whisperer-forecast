@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown, Search } from "lucide-react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CryptoOption {
@@ -55,8 +55,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="flex items-center px-3">
-            <Search className="mr-2 h-4 w-4 shrink-0 text-white" />
+          <div className="px-3">
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
               className="flex h-6 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50"
