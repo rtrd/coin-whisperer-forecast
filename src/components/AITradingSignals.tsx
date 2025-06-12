@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -380,37 +379,27 @@ export const AITradingSignals = () => {
                 </div>
               </div>
 
-              {/* Key Insights - Split into two columns */}
-              <div className="grid grid-cols-1 lg:grid-cols-10 gap-4">
-                {/* Key Market Insights - 70% width */}
-                <div className="lg:col-span-7">
-                  <div className="bg-gray-800/50 rounded-lg p-4">
-                    <h3 className="text-white font-medium flex items-center gap-2 mb-3">
-                      <Lightbulb className="h-4 w-4 text-orange-400" />
-                      Key Market Insights
-                    </h3>
-                    <div className="space-y-2 px-2">
-                      {signals.map((signal, index) => (
-                        <div key={index} className="flex items-start gap-3 text-sm">
-                          <div className={`mt-1 w-2 h-2 rounded-full ${
-                            signal.type === 'bullish' ? 'bg-green-400' : 
-                            signal.type === 'bearish' ? 'bg-red-400' : 'bg-yellow-400'
-                          }`}></div>
-                          <div>
-                            <span className="text-gray-200">{signal.asset}: {signal.description}</span>
-                            <div className="text-xs text-gray-300 mt-1">
-                              Strength: {signal.strength}% • Timeframe: {signal.timeframe}
-                            </div>
-                          </div>
+              {/* Key Market Insights - Now Full Width */}
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-3">
+                  <Lightbulb className="h-4 w-4 text-orange-400" />
+                  Key Market Insights
+                </h3>
+                <div className="space-y-2 px-2">
+                  {signals.map((signal, index) => (
+                    <div key={index} className="flex items-start gap-3 text-sm">
+                      <div className={`mt-1 w-2 h-2 rounded-full ${
+                        signal.type === 'bullish' ? 'bg-green-400' : 
+                        signal.type === 'bearish' ? 'bg-red-400' : 'bg-yellow-400'
+                      }`}></div>
+                      <div>
+                        <span className="text-gray-200">{signal.asset}: {signal.description}</span>
+                        <div className="text-xs text-gray-300 mt-1">
+                          Strength: {signal.strength}% • Timeframe: {signal.timeframe}
                         </div>
-                      ))}
+                      </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* AI Chat Interface - 30% width */}
-                <div className="lg:col-span-3">
-                  <TradingInsightsChat />
+                  ))}
                 </div>
               </div>
 
