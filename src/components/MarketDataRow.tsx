@@ -22,10 +22,10 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
   return (
     <TableRow
       key={token.value}
-      className="border-gray-700 hover:bg-gray-700/50"
+      className="border-gray-700 hover:bg-gray-700/50 h-16"
     >
-      <TableCell className="text-gray-300 font-medium">{index + 1}</TableCell>
-      <TableCell>
+      <TableCell className="text-gray-300 font-medium w-12">{index + 1}</TableCell>
+      <TableCell className="w-48">
         <Link
           to={`/token/${token.value}`}
           className="flex items-center gap-2 hover:text-blue-400 transition-colors"
@@ -44,10 +44,10 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
         </Link>
       </TableCell>
 
-      <TableCell className="text-white font-mono">
+      <TableCell className="text-white font-mono w-32">
         {formatPrice(token.price)}
       </TableCell>
-      <TableCell>
+      <TableCell className="w-32">
         <div
           className={`flex items-center gap-1 ${
             token.change24h >= 0 ? "text-green-400" : "text-red-400"
@@ -62,7 +62,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           {token.change24h.toFixed(2)}%
         </div>
       </TableCell>
-      <TableCell>
+      <TableCell className="w-32">
         {isUnlocked ? (
           <div
             className={`flex items-center gap-1 ${
@@ -79,7 +79,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           </div>
         )}
       </TableCell>
-      <TableCell>
+      <TableCell className="w-28">
         {isUnlocked ? (
           <div className="flex items-center gap-1">
             <div
@@ -104,15 +104,13 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           </div>
         )}
       </TableCell>
-      <TableCell className="text-gray-300 font-mono">
+      <TableCell className="text-gray-300 font-mono w-32">
         {formatVolume(token.volume24h)}
       </TableCell>
-      {activeFilter === "market_cap" && (
-        <TableCell className="text-gray-300 font-mono">
-          {formatMarketCap(token.marketCap)}
-        </TableCell>
-      )}
-      <TableCell>
+      <TableCell className="text-gray-300 font-mono w-32">
+        {formatMarketCap(token.marketCap)}
+      </TableCell>
+      <TableCell className="w-24">
         <Badge
           variant="outline"
           className={`

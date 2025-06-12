@@ -18,14 +18,14 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
 }) => {
   return (
     <div className="overflow-x-auto">
-      <Table>
+      <Table className="w-full table-fixed">
         <TableHeader>
           <TableRow className="border-gray-700">
-            <TableHead className="text-gray-300">#</TableHead>
-            <TableHead className="text-gray-300">Token</TableHead>
-            <TableHead className="text-gray-300">Price</TableHead>
-            <TableHead className="text-gray-300">24h Change</TableHead>
-            <TableHead className="text-gray-300">
+            <TableHead className="text-gray-300 w-12">#</TableHead>
+            <TableHead className="text-gray-300 w-48">Token</TableHead>
+            <TableHead className="text-gray-300 w-32">Price</TableHead>
+            <TableHead className="text-gray-300 w-32">24h Change</TableHead>
+            <TableHead className="text-gray-300 w-32">
               <div className="flex items-center gap-1">
                 Prediction %
                 <Tooltip>
@@ -38,7 +38,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            <TableHead className="text-gray-300">
+            <TableHead className="text-gray-300 w-28">
               <div className="flex items-center gap-1">
                 AI Score
                 {!isUnlocked && <Lock className="h-3 w-3 text-yellow-400" />}
@@ -52,7 +52,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            <TableHead className="text-gray-300">
+            <TableHead className="text-gray-300 w-32">
               <div className="flex items-center gap-1">
                 Trading Volume
                 <Tooltip>
@@ -65,10 +65,20 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                 </Tooltip>
               </div>
             </TableHead>
-            {activeFilter === 'market_cap' && (
-              <TableHead className="text-gray-300">Market Cap</TableHead>
-            )}
-            <TableHead className="text-gray-300">Category</TableHead>
+            <TableHead className="text-gray-300 w-32">
+              <div className="flex items-center gap-1">
+                Market Cap
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="h-3 w-3 text-gray-400" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Total market capitalization</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </TableHead>
+            <TableHead className="text-gray-300 w-24">Category</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
