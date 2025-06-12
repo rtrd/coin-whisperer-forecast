@@ -26,7 +26,7 @@ const PumpFun = () => {
             Solana Memecoin Insights
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Discover and track trending meme coins and new token launches on Pump.fun
+            Discover and track trending memecoins and new token launches on Pump.fun
           </p>
         </div>
 

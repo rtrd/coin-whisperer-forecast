@@ -39,7 +39,7 @@ export const IndexNavigationCards = () => {
         </CardHeader>
         <CardContent>
           <p className="text-gray-300 mb-4">
-            Discover and track trending meme coins and new token launches
+            Discover and track trending memecoins and new token launches
           </p>
           <Link to="/pump-fun">
             <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
