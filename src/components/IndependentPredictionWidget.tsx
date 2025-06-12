@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Activity, Brain, Target, Info, BarChart3, TrendingUp, TrendingDown } from "lucide-react";
+import { Activity, Brain, Target, Info, BarChart3, TrendingUp, TrendingDown, Clock, Calendar } from "lucide-react";
 import { CryptoSearchSelector } from "./CryptoSearchSelector";
 import { PriceChart } from "./PriceChart";
 import { ModelTypeTooltip } from "./ModelTypeTooltip";
@@ -84,23 +84,47 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
             </div>
             
             <div>
-              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-1">
+              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
                 Time Period
                 <Tooltip>
                   <TooltipTrigger>
-                    <Info className="h-3 w-3 text-gray-400" />
+                    <Info className="h-3 w-3 text-gray-400 hover:text-white transition-colors" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <div className="space-y-2">
-                      <p className="font-medium">Historical Data Period</p>
-                      <p className="text-sm">Amount of historical price data used to train the AI model:</p>
-                      <ul className="text-sm space-y-1">
-                        <li><strong>1 Day:</strong> Ultra short-term patterns, good for scalping</li>
-                        <li><strong>7 Days:</strong> Short-term trends and weekly patterns</li>
-                        <li><strong>30 Days:</strong> Medium-term analysis with monthly cycles</li>
-                        <li><strong>90 Days:</strong> Long-term trends and seasonal patterns</li>
-                      </ul>
-                      <p className="text-xs text-blue-300">💡 Longer periods provide more context but may miss recent trends</p>
+                  <TooltipContent className="max-w-sm p-4 bg-gray-800 border-gray-600">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-blue-400" />
+                        <h4 className="font-semibold text-white">Historical Data Period</h4>
+                      </div>
+                      
+                      <p className="text-sm text-gray-300">Amount of historical price data used to train the AI model</p>
+                      
+                      <div>
+                        <h5 className="text-sm font-medium text-white mb-1">Available Options:</h5>
+                        <ul className="text-sm text-gray-300 space-y-1">
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>1 Day:</strong> Ultra short-term patterns, good for scalping
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>7 Days:</strong> Short-term trends and weekly patterns
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>30 Days:</strong> Medium-term analysis with monthly cycles
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>90 Days:</strong> Long-term trends and seasonal patterns
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      <div className="border-t border-gray-600 pt-2">
+                        <p className="text-sm text-green-300 font-medium">💡 Recommendation:</p>
+                        <p className="text-sm text-gray-300 mt-1">Longer periods provide more context but may miss recent trends</p>
+                      </div>
                     </div>
                   </TooltipContent>
                 </Tooltip>
@@ -119,23 +143,51 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
             </div>
             
             <div>
-              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-1">
+              <label className="text-sm font-medium text-gray-200 mb-2 flex items-center gap-2">
                 Prediction Days
                 <Tooltip>
                   <TooltipTrigger>
-                    <Info className="h-3 w-3 text-gray-400" />
+                    <Info className="h-3 w-3 text-gray-400 hover:text-white transition-colors" />
                   </TooltipTrigger>
-                  <TooltipContent className="max-w-xs">
-                    <div className="space-y-2">
-                      <p className="font-medium">Forecast Timeline</p>
-                      <p className="text-sm">How far into the future to predict prices:</p>
-                      <ul className="text-sm space-y-1">
-                        <li><strong>1-3 Days:</strong> Highest accuracy, best for day trading</li>
-                        <li><strong>7 Days:</strong> Good for swing trading strategies</li>
-                        <li><strong>14 Days:</strong> Medium-term position planning</li>
-                        <li><strong>30 Days:</strong> Long-term investment decisions</li>
-                      </ul>
-                      <p className="text-xs text-yellow-300">⚠️ Accuracy decreases with longer prediction periods</p>
+                  <TooltipContent className="max-w-sm p-4 bg-gray-800 border-gray-600">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-purple-400" />
+                        <h4 className="font-semibold text-white">Forecast Timeline</h4>
+                      </div>
+                      
+                      <p className="text-sm text-gray-300">How far into the future to predict prices</p>
+                      
+                      <div>
+                        <h5 className="text-sm font-medium text-white mb-1">Available Options:</h5>
+                        <ul className="text-sm text-gray-300 space-y-1">
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>1 Day:</strong> Highest accuracy, best for day trading
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>3 Days:</strong> Short-term precision for quick decisions
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>7 Days:</strong> Good for swing trading strategies
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>14 Days:</strong> Medium-term position planning
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <div className="w-1 h-1 bg-blue-400 rounded-full" />
+                            <strong>30 Days:</strong> Long-term investment decisions
+                          </li>
+                        </ul>
+                      </div>
+                      
+                      <div className="border-t border-gray-600 pt-2">
+                        <p className="text-sm text-green-300 font-medium">💡 Recommendation:</p>
+                        <p className="text-sm text-gray-300 mt-1">Accuracy decreases with longer prediction periods</p>
+                      </div>
                     </div>
                   </TooltipContent>
                 </Tooltip>
