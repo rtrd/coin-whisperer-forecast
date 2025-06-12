@@ -75,7 +75,7 @@ export const ArticleIndex: React.FC<ArticleIndexProps> = ({ content }) => {
       </CardHeader>
       <CardContent className="pt-0">
         <div className="space-y-1">
-          {headings.map((heading) => (
+          {headings.map((heading, index) => (
             <button
               key={heading.id}
               onClick={() => handleHeadingClick(heading.id)}
@@ -88,6 +88,7 @@ export const ArticleIndex: React.FC<ArticleIndexProps> = ({ content }) => {
                 hover:bg-gray-700/30 rounded px-2 py-1
               `}
             >
+              <span className="text-blue-400 font-medium mr-2">{index + 1}.</span>
               {heading.text}
             </button>
           ))}
