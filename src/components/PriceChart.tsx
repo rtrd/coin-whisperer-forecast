@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
@@ -64,8 +65,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     timestamp: d.timestamp,
     date: new Date(d.timestamp).toLocaleDateString('en-US', { 
       month: 'short', 
-      day: 'numeric',
-      hour: window.innerWidth < 768 ? undefined : '2-digit'
+      day: 'numeric'
     }),
     price: d.price,
     volume: d.volume || 0
@@ -82,8 +82,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
       timestamp: firstPredictionTime,
       date: new Date(firstPredictionTime).toLocaleDateString('en-US', { 
         month: 'short', 
-        day: 'numeric',
-        hour: window.innerWidth < 768 ? undefined : '2-digit'
+        day: 'numeric'
       }),
       price: lastHistoricalPrice, // Keep historical price for smooth connection
       predictedPrice: lastHistoricalPrice, // Start prediction from same point
@@ -100,8 +99,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
           timestamp: p.timestamp,
           date: new Date(p.timestamp).toLocaleDateString('en-US', { 
             month: 'short', 
-            day: 'numeric',
-            hour: window.innerWidth < 768 ? undefined : '2-digit'
+            day: 'numeric'
           }),
           price: null, // No historical price for future points
           predictedPrice: p.predictedPrice,
@@ -126,16 +124,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({
 
   const formatDate = (tickItem: string) => {
     const date = new Date(tickItem);
-    if (window.innerWidth < 768) {
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric'
-      });
-    }
     return date.toLocaleDateString('en-US', { 
       month: 'short', 
-      day: 'numeric',
-      hour: '2-digit'
+      day: 'numeric'
     });
   };
 
@@ -230,8 +221,8 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 dataKey="date" 
                 stroke="#9CA3AF"
                 fontSize={window.innerWidth < 768 ? 10 : 12}
-                interval={window.innerWidth < 768 ? Math.ceil(chartData.length / 8) : Math.ceil(chartData.length / 12)}
-                angle={window.innerWidth < 768 ? -45 : -30}
+                interval={0}
+                angle={-30}
                 textAnchor="end"
                 height={60}
                 tick={{ 
@@ -256,7 +247,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 width={window.innerWidth < 768 ? 60 : 80}
                 axisLine={{ stroke: '#4B5563', strokeWidth: 1 }}
                 tickLine={{ stroke: '#6B7280', strokeWidth: 1 }}
-                tickCount={6}
+                tickCount={8}
                 domain={['dataMin * 0.98', 'dataMax * 1.02']}
               />
               
@@ -316,3 +307,4 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     </div>
   );
 };
+
