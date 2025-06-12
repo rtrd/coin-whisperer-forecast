@@ -9,13 +9,15 @@ interface IndexHeaderProps {
   cryptoOptions: any[];
   currentPrice: number;
   priceChange: number;
+  onSelectCrypto?: (crypto: string) => void;
 }
 
 export const IndexHeader: React.FC<IndexHeaderProps> = ({
   selectedCrypto,
   cryptoOptions,
   currentPrice,
-  priceChange
+  priceChange,
+  onSelectCrypto
 }) => {
   const selectedToken = cryptoOptions.find(c => c.value === selectedCrypto) || cryptoOptions[0];
 
@@ -33,8 +35,8 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
-        {/* Crypto Selection Card - Updated background */}
-        <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
+        {/* Crypto Selection Card */}
+        <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
           <CardContent className="p-4 md:p-6">
             <div className="space-y-4">
               <div>
@@ -44,6 +46,7 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
                 <CryptoSearchSelector
                   selectedCrypto={selectedCrypto}
                   cryptoOptions={cryptoOptions}
+                  onSelectCrypto={onSelectCrypto}
                 />
               </div>
               
