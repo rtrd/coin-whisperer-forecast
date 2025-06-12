@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -116,7 +115,7 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
     <Collapsible open={isOpen} onOpenChange={setIsOpen}>
       <Card className="mb-6 bg-gray-800/50 border-gray-700 shadow-2xl">
         <CollapsibleTrigger className="w-full">
-          <CardHeader className="cursor-pointer hover:bg-gray-700/50 transition-colors">
+          <CardHeader className="cursor-pointer transition-colors">
             <CardTitle className="text-white flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Filter className="h-5 w-5 text-blue-400" />
