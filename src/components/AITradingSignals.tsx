@@ -347,7 +347,7 @@ export const AITradingSignals = () => {
               <div className="bg-gray-800/50 rounded-lg p-4">
                 <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <BarChart3 className="h-4 w-4 text-purple-400" />
-                  AI Trading Recommendations
+                  AI Trading Signals
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {recommendations.map((rec, index) => (
@@ -370,7 +370,7 @@ export const AITradingSignals = () => {
                             Target: ${rec.targetPrice.toLocaleString()}
                           </span>
                         )}
-                        <span className="text-xs text-gray-300">
+                        <span className="text-xs text-blue-300">
                           {rec.confidence}% confident
                         </span>
                       </div>
