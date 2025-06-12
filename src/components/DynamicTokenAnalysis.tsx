@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -53,7 +52,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
     <TooltipProvider>
       <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2 text-shadow-lg">
+          <CardTitle className="text-white flex items-center gap-2">
             <span className="text-yellow-400">
               {selectedToken?.icon}
             </span>
@@ -75,7 +74,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <span className="text-2xl font-bold text-white">
+              <span className="text-white font-bold text-lg">
                 ${currentPrice.toFixed(2)}
               </span>
             </div>
@@ -92,7 +91,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <span className="text-lg font-bold text-green-400">
+              <span className="text-white font-bold text-lg">
                 {selectedToken?.prediction}
               </span>
             </div>
@@ -109,9 +108,9 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <Badge className={`${analysis.momentum > 0 ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`}>
+              <span className={`font-bold text-lg ${analysis.momentum > 0 ? 'text-green-400' : 'text-red-400'}`}>
                 {analysis.momentum.toFixed(1)}
-              </Badge>
+              </span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -126,9 +125,9 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <Badge variant="outline" className="text-yellow-400 border-yellow-400 bg-yellow-400/10">
+              <span className="text-white font-bold text-lg">
                 {analysis.volatility.toFixed(1)}%
-              </Badge>
+              </span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -143,7 +142,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <span className="text-green-400 font-medium">
+              <span className="text-white font-bold text-lg">
                 ${analysis.supportLevel.toFixed(2)}
               </span>
             </div>
@@ -160,7 +159,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <span className="text-red-400 font-medium">
+              <span className="text-white font-bold text-lg">
                 ${analysis.resistanceLevel.toFixed(2)}
               </span>
             </div>
@@ -177,9 +176,9 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold text-lg px-3 py-1">
+              <span className="text-white font-bold text-lg">
                 {selectedToken?.score}/10
-              </Badge>
+              </span>
             </div>
 
             <div className="flex items-center gap-2 mt-4">
