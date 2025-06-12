@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Brain } from "lucide-react";
+import { BicepsFlexed } from "lucide-react";
 
 interface IndexHeaderProps {
   selectedCrypto: string;
@@ -23,7 +23,7 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
   return (
     <div className="text-center mb-8">
       <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
-        <Brain className="h-12 w-12 text-blue-400" />
+        <BicepsFlexed className="h-12 w-12 text-blue-400" />
         PumpParade
         <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold">PRO</Badge>
         <Link to="/subscribe">
