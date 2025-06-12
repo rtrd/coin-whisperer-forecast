@@ -426,15 +426,6 @@ const TokenDetail = () => {
           </CardContent>
         </Card>
 
-        {/* Dynamic Prediction Adjuster - Now locked */}
-        <div className="mb-8">
-          <LockedDynamicPrediction
-            selectedCrypto={tokenId || 'bitcoin'}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-          />
-        </div>
-
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Column - Chart and Analysis */}
