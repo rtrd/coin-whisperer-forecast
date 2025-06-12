@@ -1,4 +1,3 @@
-
 export const formatPrice = (price: number) => {
   if (price < 0.01) return `$${price.toFixed(6)}`;
   if (price < 1) return `$${price.toFixed(4)}`;
@@ -21,12 +20,12 @@ export const formatMarketCap = (marketCap: number) => {
 
 export const getFilterTitle = (filter: string) => {
   switch (filter) {
-    case 'market_cap': return 'Top 10 by Market Cap';
-    case 'volume': return 'Top 10 by Volume';
-    case 'gainers': return 'Top 10 Gainers (24h)';
-    case 'losers': return 'Top 10 Losers (24h)';
-    case 'trending': return 'Trending Tokens';
-    default: return 'Top 10 Cryptocurrencies';
+    case 'market_cap': return 'Top Cryptocurrencies by Market Cap';
+    case 'volume': return 'Top Cryptocurrencies by Volume';
+    case 'gainers': return 'Top Cryptocurrencies Gainers (24h)';
+    case 'losers': return 'Top Cryptocurrencies Losers (24h)';
+    case 'trending': return 'Trending Cryptocurrencies';
+    default: return 'Top Cryptocurrencies';
   }
 };
 
