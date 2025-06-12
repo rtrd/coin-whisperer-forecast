@@ -33,9 +33,9 @@ export const TokenSection: React.FC<TokenSectionProps> = ({
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
-    <div className="bg-gray-700/50 rounded-lg p-6">
+    <div className={`bg-gray-700/50 rounded-lg transition-all duration-200 ${isExpanded ? 'p-6' : 'p-4'}`}>
       <div 
-        className="flex items-center justify-between cursor-pointer mb-6"
+        className={`flex items-center justify-between cursor-pointer ${isExpanded ? 'mb-6' : 'mb-0'}`}
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <h3 className="text-white font-medium flex items-center gap-2">
