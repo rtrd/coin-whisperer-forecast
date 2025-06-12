@@ -3,7 +3,7 @@ import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
-import { category } from "../../utils/category";
+import { category } from "../utils/Category";
 import { getAllCryptos } from "../../utils/api";
 
 const Index = () => {
