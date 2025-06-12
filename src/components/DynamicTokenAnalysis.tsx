@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -56,7 +57,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
             <span className="text-yellow-400">
               {selectedToken?.icon}
             </span>
-            Dynamic Token Analysis
+            Token Analysis
             <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
           </CardTitle>
         </CardHeader>
