@@ -53,16 +53,16 @@ export const generateMarketData = (cryptoOptions: any[], filter: string) => {
   });
 
   switch (filter) {
-    // case 'market_cap':
-    //   return dataWithMarketData.sort((a, b) => b.marketCap - a.marketCap).slice(0, 10);
-    // case 'volume':
-    //   return dataWithMarketData.sort((a, b) => b.volume24h - a.volume24h).slice(0, 10);
-    // case 'gainers':
-    //   return dataWithMarketData.filter(item => item.change24h > 0).sort((a, b) => b.change24h - a.change24h).slice(0, 10);
-    // case 'losers':
-    //   return dataWithMarketData.filter(item => item.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 10);
-    // case 'trending':
-    //   return dataWithMarketData.filter(item => item.category === 'Meme' || item.category === 'AI' || item.category === 'New').slice(0, 10);
+    case 'market_cap':
+      return dataWithMarketData.sort((a, b) => b.marketCap - a.marketCap).slice(0, 10);
+    case 'volume':
+      return dataWithMarketData.sort((a, b) => b.volume24h - a.volume24h).slice(0, 10);
+    case 'gainers':
+      return dataWithMarketData.filter(item => item.change24h > 0).sort((a, b) => b.change24h - a.change24h).slice(0, 10);
+    case 'losers':
+      return dataWithMarketData.filter(item => item.change24h < 0).sort((a, b) => a.change24h - b.change24h).slice(0, 10);
+    case 'trending':
+      return dataWithMarketData.sort((a, b) => b.volume24h - a.volume24h).slice(0, 10);
     default:
       return dataWithMarketData.slice(0, 10);
   }
