@@ -145,7 +145,7 @@ const Article = () => {
         </Card>
       </div>
     );
-  }
+  };
 
   const relatedArticles = getRelatedArticles();
 
@@ -178,10 +178,11 @@ const Article = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
-            {/* Article Header with Background Image */}
+            {/* Article Content with Header */}
             <Card className="bg-gray-800/50 border-gray-700 overflow-hidden">
+              {/* Article Header with Background Image */}
               <div
-                className="relative bg-cover  bg-center h-80 article_image_custom"
+                className="relative bg-cover bg-center h-80 article_image_custom"
                 style={{ backgroundImage: `url(${article.image})` }}
               >
                 <div className="absolute inset-0 bg-black/50"></div>
@@ -239,10 +240,8 @@ const Article = () => {
                   </div>
                 </CardHeader>
               </div>
-            </Card>
 
-            {/* Article Content */}
-            <Card className="bg-gray-800/50 border-gray-700">
+              {/* Article Text Content */}
               <CardContent className="p-4 md:p-8">
                 <div
                   className="prose prose-invert max-w-none text-gray-200 
