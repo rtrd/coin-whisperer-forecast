@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -277,7 +275,7 @@ export const AITradingSignals = () => {
                   {isAnalyzing && <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-gray-900 border-gray-200 bg-white shadow-none">
+                  <Badge variant="outline" className="text-white border-gray-400 bg-gray-800 hover:bg-gray-700 [text-shadow:none]">
                     {isOpen ? 'Collapse' : 'Expand'}
                   </Badge>
                   {isOpen ? (
@@ -419,4 +417,3 @@ export const AITradingSignals = () => {
     </div>
   );
 };
-
