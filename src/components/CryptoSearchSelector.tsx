@@ -46,7 +46,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
           className="w-full justify-between bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
         >
           {selectedOption ? (
-            <span className="truncate">{formatLabel(selectedOption.label)}</span>
+            <span className="truncate text-blue-400">{formatLabel(selectedOption.label)}</span>
           ) : (
             "Select cryptocurrency..."
           )}
@@ -55,10 +55,10 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="px-3 py-2 border-b border-gray-600">
+          <div className="px-3 py-2">
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
-              className="flex h-10 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-300 outline-none disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex h-10 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-300 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-blue-300"
             />
           </div>
           <CommandList className="max-h-[300px] overflow-y-auto">
@@ -79,7 +79,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   <div className="flex items-center w-full">
                     <Check
                       className={cn(
-                        "h-4 w-4 mr-3",
+                        "h-4 w-4 mr-3 text-blue-400",
                         selectedCrypto === option.value ? "opacity-100" : "opacity-0"
                       )}
                     />
