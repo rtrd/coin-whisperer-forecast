@@ -53,7 +53,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
+      <PopoverContent className="w-full p-0 bg-gray-800" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
           <div className="px-3 py-3">
             <CommandInput 
@@ -73,9 +73,9 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                     onSelectCrypto(currentValue);
                     setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected=true]:bg-gray-700"
+                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected=true]:bg-gray-700 select-none"
                 >
-                  <div className="flex items-center w-full">
+                  <div className="flex items-center w-full pointer-events-auto">
                     <Check
                       className={cn(
                         "h-4 w-4 mr-3 text-blue-400 flex-shrink-0",
@@ -83,7 +83,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                       )}
                     />
                     <span className={cn(
-                      "font-medium text-left transition-colors flex-1 text-sm",
+                      "font-medium text-left transition-colors flex-1 text-sm cursor-pointer",
                       selectedCrypto === option.value ? "text-white" : "text-gray-300 hover:text-blue-200"
                     )}>
                       {formatLabel(option.label)}
