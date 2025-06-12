@@ -394,7 +394,7 @@ export const AITradingSignals = () => {
                       }`}></div>
                       <div>
                         <span className="text-gray-200">{signal.asset}: {signal.description}</span>
-                        <div className="text-xs text-blue-300 mt-1">
+                        <div className="text-xs text-gray-300 mt-1">
                           Strength: {signal.strength}% • Timeframe: {signal.timeframe}
                         </div>
                       </div>
