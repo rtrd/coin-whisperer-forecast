@@ -23,7 +23,7 @@ const PumpFun = () => {
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
             <Rocket className="h-12 w-12 text-purple-400" />
-            Pump.fun Integration
+            Solana Memecoin Insights
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Discover and track trending meme coins and new token launches on Pump.fun

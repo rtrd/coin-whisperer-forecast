@@ -29,12 +29,12 @@ export const IndexNavigationCards = () => {
         </CardContent>
       </Card>
 
-      {/* Pump.fun Integration */}
+      {/* Solana Memecoin Insights */}
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Rocket className="h-5 w-5 text-purple-400" />
-            Pump.fun Integration
+            Solana Memecoin Insights
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -44,7 +44,7 @@ export const IndexNavigationCards = () => {
           <Link to="/pump-fun">
             <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
               <ExternalLink className="h-4 w-4 mr-2" />
-              Explore Pump.fun
+              Explore Memecoin Insights
             </Button>
           </Link>
         </CardContent>
