@@ -180,133 +180,110 @@ const TokenDetail = () => {
           </Link>
         </div>
 
-        {/* Combined Header Card - Redesigned */}
-        <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl overflow-hidden">
-          <div className="relative">
-            {/* Background Pattern/Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-pink-600/10 opacity-50" />
-            
-            <CardContent className="relative p-6 md:p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-                
-                {/* Left Column - Token Info (Takes 2 columns on large screens) */}
-                <div className="lg:col-span-2 space-y-6">
-                  <div>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-                      <div className="flex items-center gap-4">
-                        <div className="text-5xl">{selectedToken.icon}</div>
-                        <div>
-                          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{selectedToken.label}</h1>
-                          <Badge 
-                            className={`px-3 py-1 text-sm font-medium ${
-                              selectedToken.category === 'Major' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
-                              selectedToken.category === 'DeFi' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
-                              selectedToken.category === 'Meme' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
-                              selectedToken.category === 'AI' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
-                              'bg-gray-500/20 text-gray-400 border-gray-500/30'
-                            } border backdrop-blur-sm`}
-                          >
-                            {selectedToken.category}
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <p className="text-gray-300 text-lg mb-6 leading-relaxed max-w-2xl">{selectedToken.description}</p>
-                    
-                    {/* Social Links and AI Score */}
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
-                      <div className="flex items-center gap-4">
-                        {selectedToken.website && (
-                          <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
-                             className="text-gray-400 hover:text-blue-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/30">
-                            <Globe className="h-5 w-5" />
-                          </a>
-                        )}
-                        {selectedToken.twitter && (
-                          <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
-                             className="text-gray-400 hover:text-blue-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/30">
-                            <Twitter className="h-5 w-5" />
-                          </a>
-                        )}
-                      </div>
-                      
-                      {/* AI Prediction Badge */}
-                      <div className="flex items-center gap-2 bg-gradient-to-r from-green-600/20 to-emerald-600/20 px-4 py-2 rounded-lg border border-green-500/30">
-                        <Brain className="h-4 w-4 text-green-400" />
-                        <span className="text-green-400 font-medium">AI Prediction: {selectedToken.prediction}</span>
-                      </div>
-                    </div>
+        {/* Combined Header Card */}
+        <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
+          <CardContent className="p-8">
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+              {/* Left Column - Token Info */}
+              <div className="flex-1 space-y-6">
+                <div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <h1 className="text-4xl font-bold text-white">{selectedToken.label}</h1>
+                    <Badge 
+                      className={`px-3 py-1 text-sm font-medium ${
+                        selectedToken.category === 'Major' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+                        selectedToken.category === 'DeFi' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
+                        selectedToken.category === 'Meme' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                        selectedToken.category === 'AI' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
+                        'bg-gray-500/20 text-gray-400 border-gray-500/30'
+                      } border backdrop-blur-sm`}
+                    >
+                      {selectedToken.category}
+                    </Badge>
+                  </div>
+                  
+                  <p className="text-gray-300 text-lg mb-6 leading-relaxed">{selectedToken.description}</p>
+                  
+                  <div className="flex items-center gap-4">
+                    {selectedToken.website && (
+                      <a href={selectedToken.website} target="_blank" rel="noopener noreferrer" 
+                         className="text-gray-400 hover:text-blue-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/30">
+                        <Globe className="h-5 w-5" />
+                      </a>
+                    )}
+                    {selectedToken.twitter && (
+                      <a href={selectedToken.twitter} target="_blank" rel="noopener noreferrer"
+                         className="text-gray-400 hover:text-blue-400 transition-colors duration-200 p-2 rounded-lg hover:bg-gray-700/30">
+                        <Twitter className="h-5 w-5" />
+                      </a>
+                    )}
                   </div>
                 </div>
+              </div>
 
-                {/* Right Column - Current Price & Key Stats */}
-                <div className="lg:col-span-1">
-                  <div className="bg-gradient-to-br from-gray-700/40 to-gray-800/40 rounded-xl p-6 border border-gray-600/50 backdrop-blur-sm h-full">
-                    
-                    {/* Current Price - Highlighted */}
-                    <div className="text-center mb-6 pb-6 border-b border-gray-600/50">
-                      <div className="flex items-center justify-center gap-2 mb-3">
+              {/* Right Column - Market Stats with Current Price */}
+              <div className="lg:w-80">
+                <div className="bg-gradient-to-br from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/50">
+                  <h3 className="text-white font-semibold text-lg mb-6">Market Statistics</h3>
+                  
+                  {/* Current Price - Highlighted with higher hierarchy */}
+                  <div className="mb-6 pb-6 border-b border-gray-600/50">
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
                         <DollarSign className="h-5 w-5 text-blue-400" />
-                        <div className="text-gray-300 text-sm font-medium">Current Price</div>
+                        <div className="text-gray-400 text-sm font-medium">Current Price</div>
                       </div>
-                      <div className="text-4xl md:text-5xl font-bold text-white mb-3">
-                        ${currentPrice.toFixed(2)}
-                      </div>
+                      <div className="text-4xl font-bold text-white mb-2">${currentPrice.toFixed(2)}</div>
                       <div className={`flex items-center justify-center gap-2 ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {priceChange >= 0 ? <TrendingUp className="h-5 w-5" /> : <TrendingDown className="h-5 w-5" />}
-                        <span className="text-xl font-semibold">
+                        {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+                        <span className="text-lg font-semibold">
                           {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
                         </span>
                         <span className="text-gray-400 text-sm">24h</span>
                       </div>
                     </div>
-                    
-                    {/* Key Market Stats */}
-                    <div className="space-y-4">
-                      <h3 className="text-white font-semibold text-lg mb-4 text-center">Market Overview</h3>
-                      
-                      <div className="grid grid-cols-1 gap-4">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <BarChart3 className="h-4 w-4 text-blue-400" />
-                            <span className="text-gray-400 text-sm">Market Cap</span>
-                          </div>
-                          <span className="text-white font-semibold">${(marketData.marketCap / 1000000000).toFixed(2)}B</span>
-                        </div>
-                        
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <Activity className="h-4 w-4 text-green-400" />
-                            <span className="text-gray-400 text-sm">24h Volume</span>
-                          </div>
-                          <span className="text-white font-semibold">${(marketData.volume24h / 1000000).toFixed(2)}M</span>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <Clock className="h-4 w-4 text-purple-400" />
-                            <span className="text-gray-400 text-sm">7d Change</span>
-                          </div>
-                          <span className={`font-semibold ${marketData.priceChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {marketData.priceChange7d >= 0 ? '+' : ''}{marketData.priceChange7d.toFixed(2)}%
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center gap-2">
-                            <TrendingUp className="h-4 w-4 text-emerald-400" />
-                            <span className="text-gray-400 text-sm">All Time High</span>
-                          </div>
-                          <span className="text-white font-semibold">${marketData.allTimeHigh.toFixed(2)}</span>
-                        </div>
+                  </div>
+                  
+                  {/* Other Market Stats */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <BarChart3 className="h-4 w-4 text-blue-400" />
+                        <div className="text-gray-400 text-sm">Market Cap</div>
                       </div>
+                      <div className="text-white font-semibold">${(marketData.marketCap / 1000000000).toFixed(2)}B</div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Activity className="h-4 w-4 text-green-400" />
+                        <div className="text-gray-400 text-sm">24h Volume</div>
+                      </div>
+                      <div className="text-white font-semibold">${(marketData.volume24h / 1000000).toFixed(2)}M</div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <Clock className="h-4 w-4 text-purple-400" />
+                        <div className="text-gray-400 text-sm">7d Change</div>
+                      </div>
+                      <div className={`font-semibold ${marketData.priceChange7d >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {marketData.priceChange7d >= 0 ? '+' : ''}{marketData.priceChange7d.toFixed(2)}%
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <TrendingUp className="h-4 w-4 text-emerald-400" />
+                        <div className="text-gray-400 text-sm">All Time High</div>
+                      </div>
+                      <div className="text-white font-semibold">${marketData.allTimeHigh.toFixed(2)}</div>
                     </div>
                   </div>
                 </div>
               </div>
-            </CardContent>
-          </div>
+            </div>
+          </CardContent>
         </Card>
 
         {/* AI Analysis Controls */}
