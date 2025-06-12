@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
-import { Filter, TrendingUp, TrendingDown, X } from "lucide-react";
+import { Filter, TrendingUp, TrendingDown, X, ChevronDown, ChevronUp } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -124,8 +125,13 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
                   <Badge className="bg-blue-600">{activeFiltersCount}</Badge>
                 )}
               </div>
-              <Button variant="ghost" size="sm" className="text-gray-400">
+              <Button variant="ghost" size="sm" className="text-gray-400 flex items-center gap-1">
                 {isOpen ? "Hide Filters" : "Show Filters"}
+                {isOpen ? (
+                  <ChevronUp className="h-4 w-4" />
+                ) : (
+                  <ChevronDown className="h-4 w-4" />
+                )}
               </Button>
             </CardTitle>
           </CardHeader>
