@@ -190,6 +190,11 @@ export const PumpFunIntegration = () => {
                     variant={viewMode === "list" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setViewMode("list")}
+                    className={`${
+                      viewMode === "list" 
+                        ? "" 
+                        : "text-muted-foreground border-border bg-muted/30 hover:bg-muted/50 hover:text-foreground"
+                    }`}
                   >
                     <LayoutList className="h-4 w-4" />
                   </Button>
@@ -197,6 +202,11 @@ export const PumpFunIntegration = () => {
                     variant={viewMode === "grid" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setViewMode("grid")}
+                    className={`${
+                      viewMode === "grid" 
+                        ? "" 
+                        : "text-muted-foreground border-border bg-muted/30 hover:bg-muted/50 hover:text-foreground"
+                    }`}
                   >
                     <LayoutGrid className="h-4 w-4" />
                   </Button>

@@ -49,7 +49,11 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
                 variant={viewMode === "list" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setViewMode("list")}
-                className="text-white"
+                className={`${
+                  viewMode === "list" 
+                    ? "text-white" 
+                    : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
+                }`}
               >
                 <LayoutList className="h-4 w-4" />
               </Button>
@@ -57,7 +61,11 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
                 variant={viewMode === "grid" ? "default" : "outline"}
                 size="sm"
                 onClick={() => setViewMode("grid")}
-                className="text-white"
+                className={`${
+                  viewMode === "grid" 
+                    ? "text-white" 
+                    : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
+                }`}
               >
                 <LayoutGrid className="h-4 w-4" />
               </Button>
