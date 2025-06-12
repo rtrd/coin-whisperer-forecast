@@ -72,7 +72,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                     onSelectCrypto(currentValue);
                     setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700"
+                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected]:bg-gray-700"
                 >
                   <div className="flex items-center w-full">
                     <Check
@@ -82,7 +82,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                       )}
                     />
                     <span className={cn(
-                      "font-medium text-left transition-colors",
+                      "font-medium text-left transition-colors cursor-pointer",
                       selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
                     )}>
                       {formatLabel(option.label)}
