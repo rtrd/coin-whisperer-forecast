@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BarChart3, ExternalLink } from "lucide-react";
+import { BarChart3, ExternalLink, Target, Activity, Brain } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
@@ -17,6 +17,7 @@ interface IndexMainContentProps {
   currentPrice: number;
   priceChange: number;
   onClearPrediction?: () => void;
+  showPrediction?: boolean;
 }
 
 export const IndexMainContent: React.FC<IndexMainContentProps> = ({
@@ -27,7 +28,8 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
   cryptoOptions,
   currentPrice,
   priceChange,
-  onClearPrediction
+  onClearPrediction,
+  showPrediction
 }) => {
   return (
     <div className="lg:col-span-3 space-y-6">
@@ -46,14 +48,25 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
             )}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           <PriceChart 
             data={cryptoData} 
-            prediction={prediction?.predictions || null}
+            prediction={showPrediction ? prediction?.predictions || null : null}
             isLoading={dataLoading}
             crypto={selectedCrypto}
             onClearPrediction={onClearPrediction}
           />
+
+          {/* AI Analysis Controls Section - Add this if it doesn't exist in Index page */}
+          {showPrediction && prediction && (
+            <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
+              <div className="flex items-center gap-2 mb-4">
+                <Target className="h-4 w-4 text-green-400" />
+                <span className="text-white font-medium">AI Prediction Results</span>
+              </div>
+              <PredictionCard prediction={prediction} crypto={selectedCrypto} />
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -86,11 +99,6 @@ export const IndexMainContent: React.FC<IndexMainContentProps> = ({
           </div>
         </CardContent>
       </Card>
-
-      {/* Prediction Results */}
-      {prediction && (
-        <PredictionCard prediction={prediction} crypto={selectedCrypto} />
-      )}
     </div>
   );
 };

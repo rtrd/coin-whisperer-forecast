@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -453,14 +454,16 @@ const TokenDetail = () => {
                     </Button>
                   </div>
                 </div>
+
+                {/* Prediction Results - Now inside the AI Analysis Controls box */}
+                {showPrediction && prediction && (
+                  <div className="mt-6 pt-6 border-t border-gray-600/50">
+                    <PredictionCard prediction={prediction} crypto={tokenId || 'bitcoin'} />
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
-
-          {/* Prediction Results */}
-          {showPrediction && prediction && (
-            <PredictionCard prediction={prediction} crypto={tokenId || 'bitcoin'} />
-          )}
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
