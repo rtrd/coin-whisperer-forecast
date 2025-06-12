@@ -1,3 +1,4 @@
+
 import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -62,14 +63,21 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
         </div>
       </TableCell>
       <TableCell>
-        <div
-          className={`flex items-center gap-1 ${
-            token.predictionPercentage >= 0 ? "text-green-400" : "text-red-400"
-          }`}
-        >
-          {token.predictionPercentage >= 0 ? "+" : ""}
-          {token.predictionPercentage.toFixed(2)}%
-        </div>
+        {isUnlocked ? (
+          <div
+            className={`flex items-center gap-1 ${
+              token.predictionPercentage >= 0 ? "text-green-400" : "text-red-400"
+            }`}
+          >
+            {token.predictionPercentage >= 0 ? "+" : ""}
+            {token.predictionPercentage.toFixed(2)}%
+          </div>
+        ) : (
+          <div className="flex items-center gap-1">
+            <Lock className="h-3 w-3 text-yellow-400" />
+            <span className="text-yellow-400 text-xs">Premium</span>
+          </div>
+        )}
       </TableCell>
       <TableCell>
         {isUnlocked ? (
