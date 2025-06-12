@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,6 +27,13 @@ const AIPrediction = () => {
     try {
       setIsLoading(true);
       const data = await getAllCryptos();
+      
+      // Ensure data is an array
+      if (!Array.isArray(data)) {
+        console.error("API response is not an array:", data);
+        throw new Error("Invalid API response format");
+      }
+
       const updatedTokens = addCategoryToTokens(data, category);
       
       // Transform the API data to match the CryptoOption interface

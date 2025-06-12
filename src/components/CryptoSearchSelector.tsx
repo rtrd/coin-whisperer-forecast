@@ -79,12 +79,12 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   <div className="flex items-center w-full">
                     <Check
                       className={cn(
-                        "h-4 w-4 mr-3 text-blue-400",
+                        "h-4 w-4 mr-3 text-blue-400 flex-shrink-0",
                         selectedCrypto === option.value ? "opacity-100" : "opacity-0"
                       )}
                     />
                     <span className={cn(
-                      "font-medium text-left transition-colors",
+                      "font-medium text-left transition-colors flex-1 text-sm",
                       selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
                     )}>
                       {formatLabel(option.label)}
