@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -163,6 +164,11 @@ const TokenDetail = () => {
           currentPrice={currentPrice}
           priceChange={priceChange}
         />
+
+        {/* Ad Banner - Moved here */}
+        <div className="flex justify-center mb-8">
+          <AdBanner width={728} height={90} position="horizontal" />
+        </div>
 
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
