@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@/components/ui/table";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Rocket, TrendingUp, TrendingDown, ExternalLink, ChevronDown, ChevronUp, Sparkles, LayoutList, LayoutGrid } from "lucide-react";
+import { Rocket, TrendingUp, TrendingDown, ChevronDown, ChevronUp, Sparkles, LayoutList, LayoutGrid } from "lucide-react";
+import { TokenSection } from "./pump/TokenSection";
 
 interface PumpToken {
   name: string;
@@ -54,134 +55,6 @@ export const PumpFunIntegration = () => {
     setTopLosers(mockTopLosers);
     setNewLaunches(mockNewLaunches);
   }, []);
-
-  const formatNumber = (num: number) => {
-    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
-    return num.toString();
-  };
-
-  const renderTokenGrid = (tokens: PumpToken[], changeColorClass: string) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 px-2">
-      {tokens.map((token, index) => (
-        <div key={index} className="bg-gray-700/50 border border-gray-600 rounded-lg p-3 space-y-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">{token.icon}</span>
-              <div>
-                <div className="text-white font-bold text-sm">{token.symbol}</div>
-                <div className="text-gray-400 text-xs">{token.name}</div>
-              </div>
-            </div>
-            <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
-              {token.pumpScore}
-            </Badge>
-          </div>
-          
-          <div className="space-y-1 text-xs">
-            <div className="flex justify-between">
-              <span className="text-gray-400">Price:</span>
-              <span className="text-white">${token.price.toFixed(4)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">24h:</span>
-              <span className={`${changeColorClass} font-bold`}>
-                {token.change24h >= 0 ? '+' : ''}{token.change24h}%
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Volume:</span>
-              <span className="text-white">${formatNumber(token.volume)}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-400">Market Cap:</span>
-              <span className="text-white">${formatNumber(token.marketCap)}</span>
-            </div>
-          </div>
-
-          <Button 
-            className="w-full mt-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-            size="sm"
-          >
-            <ExternalLink className="h-3 w-3 mr-1" />
-            Trade on Pump.fun
-          </Button>
-        </div>
-      ))}
-    </div>
-  );
-
-  const renderTokenList = (tokens: PumpToken[], changeColorClass: string) => (
-    <div className="overflow-x-auto">
-      <Table className="w-full table-fixed">
-        <TableHeader>
-          <TableRow className="border-gray-700 h-14">
-            <TableHead className="text-gray-300 w-12 px-2">#</TableHead>
-            <TableHead className="text-gray-300 w-48 px-2">Token</TableHead>
-            <TableHead className="text-gray-300 w-32 px-2">Price</TableHead>
-            <TableHead className="text-gray-300 w-32 px-2">24h Change</TableHead>
-            <TableHead className="text-gray-300 w-28 px-2">Pump Score</TableHead>
-            <TableHead className="text-gray-300 w-40 px-2">Trading Volume</TableHead>
-            <TableHead className="text-gray-300 w-32 px-2">Market Cap</TableHead>
-            <TableHead className="text-gray-300 w-28 px-2">Action</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {tokens.map((token, index) => (
-            <TableRow key={index} className="border-gray-700 hover:bg-gray-700/50">
-              <TableCell className="text-gray-300 text-sm font-medium px-2">
-                #{index + 1}
-              </TableCell>
-              <TableCell className="px-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">{token.icon}</span>
-                  <div>
-                    <div className="text-white font-bold text-sm">{token.symbol}</div>
-                    <div className="text-gray-400 text-xs">{token.name}</div>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell className="text-white font-mono text-sm px-2">
-                ${token.price.toFixed(4)}
-              </TableCell>
-              <TableCell className="px-2">
-                <div className={`flex items-center gap-1 ${changeColorClass}`}>
-                  {token.change24h >= 0 ? (
-                    <TrendingUp className="h-3 w-3" />
-                  ) : (
-                    <TrendingDown className="h-3 w-3" />
-                  )}
-                  <span className="font-mono text-sm">
-                    {token.change24h >= 0 ? "+" : ""}{token.change24h}%
-                  </span>
-                </div>
-              </TableCell>
-              <TableCell className="px-2">
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
-                  {token.pumpScore}
-                </Badge>
-              </TableCell>
-              <TableCell className="text-gray-300 font-mono text-sm px-2">
-                ${formatNumber(token.volume)}
-              </TableCell>
-              <TableCell className="text-gray-300 font-mono text-sm px-2">
-                ${formatNumber(token.marketCap)}
-              </TableCell>
-              <TableCell className="px-2">
-                <Button 
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                  size="sm"
-                >
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  Trade
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
 
   return (
     <div className="mb-6">
@@ -239,29 +112,29 @@ export const PumpFunIntegration = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-700/50 rounded-lg p-4">
-                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
-                  <TrendingUp className="h-4 w-4 text-green-400" />
-                  Top Performers
-                </h3>
-                {viewMode === "grid" ? renderTokenGrid(topPerformers, 'text-green-400') : renderTokenList(topPerformers, 'text-green-400')}
-              </div>
+              <TokenSection
+                title="Top Performers"
+                icon={<TrendingUp className="h-4 w-4 text-green-400" />}
+                tokens={topPerformers}
+                changeColorClass="text-green-400"
+                viewMode={viewMode}
+              />
 
-              <div className="bg-gray-700/50 rounded-lg p-4">
-                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
-                  <TrendingDown className="h-4 w-4 text-red-400" />
-                  Top Losers
-                </h3>
-                {viewMode === "grid" ? renderTokenGrid(topLosers, 'text-red-400') : renderTokenList(topLosers, 'text-red-400')}
-              </div>
+              <TokenSection
+                title="Top Losers"
+                icon={<TrendingDown className="h-4 w-4 text-red-400" />}
+                tokens={topLosers}
+                changeColorClass="text-red-400"
+                viewMode={viewMode}
+              />
 
-              <div className="bg-gray-700/50 rounded-lg p-4">
-                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
-                  <Sparkles className="h-4 w-4 text-yellow-400" />
-                  New Launches
-                </h3>
-                {viewMode === "grid" ? renderTokenGrid(newLaunches, 'text-green-400') : renderTokenList(newLaunches, 'text-green-400')}
-              </div>
+              <TokenSection
+                title="New Launches"
+                icon={<Sparkles className="h-4 w-4 text-yellow-400" />}
+                tokens={newLaunches}
+                changeColorClass="text-green-400"
+                viewMode={viewMode}
+              />
             </CardContent>
           </CollapsibleContent>
         </Card>
