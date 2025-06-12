@@ -36,11 +36,6 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
     return label;
   };
 
-  const handleSelect = (optionValue: string) => {
-    onSelectCrypto(optionValue);
-    setOpen(false);
-  };
-
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -60,7 +55,7 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
       </PopoverTrigger>
       <PopoverContent className="w-full p-0 bg-gray-800 border-gray-600" style={{ width: 'var(--radix-popover-trigger-width)' }}>
         <Command className="bg-gray-800">
-          <div className="px-3 py-3 border-b border-gray-600">
+          <div className="px-3 py-3">
             <CommandInput 
               placeholder="Search cryptocurrencies..." 
               className="flex h-12 w-full rounded-md bg-transparent py-3 text-sm text-white placeholder:text-gray-400 outline-none disabled:cursor-not-allowed disabled:opacity-50 [&_.lucide-search]:text-blue-300"
@@ -74,22 +69,27 @@ export const CryptoSearchSelector: React.FC<CryptoSearchSelectorProps> = ({
                   key={option.value}
                   value={option.value}
                   onSelect={(currentValue) => {
-                    handleSelect(currentValue);
+                    if (currentValue !== selectedCrypto) {
+                      onSelectCrypto(currentValue);
+                    }
+                    setOpen(false);
                   }}
-                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700 data-[selected]:bg-gray-700"
+                  className="text-white hover:bg-gray-700 cursor-pointer px-3 py-2 aria-selected:bg-gray-700"
                 >
-                  <Check
-                    className={cn(
-                      "h-4 w-4 mr-3 text-blue-400",
-                      selectedCrypto === option.value ? "opacity-100" : "opacity-0"
-                    )}
-                  />
-                  <span className={cn(
-                    "font-medium text-left transition-colors cursor-pointer",
-                    selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
-                  )}>
-                    {formatLabel(option.label)}
-                  </span>
+                  <div className="flex items-center w-full">
+                    <Check
+                      className={cn(
+                        "h-4 w-4 mr-3 text-blue-400",
+                        selectedCrypto === option.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    <span className={cn(
+                      "font-medium text-left transition-colors",
+                      selectedCrypto === option.value ? "text-blue-200" : "text-gray-300 hover:text-blue-200"
+                    )}>
+                      {formatLabel(option.label)}
+                    </span>
+                  </div>
                 </CommandItem>
               ))}
             </CommandGroup>
