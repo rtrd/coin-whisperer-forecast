@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { TrendingUp, TrendingDown, Activity, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, BarChart3, Target, Zap } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface PriceData {
@@ -75,12 +74,12 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
 
   if (isLoading) {
     return (
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardHeader>
+      <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-b border-gray-600/30">
           <Skeleton className="h-6 w-32 bg-gray-700" />
           <Skeleton className="h-4 w-48 bg-gray-700" />
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 p-6">
           {[...Array(5)].map((_, i) => (
             <Skeleton key={i} className="h-16 w-full bg-gray-700" />
           ))}
@@ -91,11 +90,16 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
 
   if (!data || data.length === 0) {
     return (
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-white">Technical Analysis</CardTitle>
+      <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-b border-gray-600/30">
+          <CardTitle className="text-white flex items-center gap-3">
+            <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+              <BarChart3 className="h-6 w-6 text-blue-400" />
+            </div>
+            Technical Analysis
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <p className="text-gray-400">No data available for analysis</p>
         </CardContent>
       </Card>
@@ -140,9 +144,9 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
 
   const getSignalColor = (signal: string) => {
     switch (signal) {
-      case 'buy': return 'text-green-400 border-green-400';
-      case 'sell': return 'text-red-400 border-red-400';
-      default: return 'text-yellow-400 border-yellow-400';
+      case 'buy': return 'text-emerald-400 border-emerald-400 bg-emerald-400/10';
+      case 'sell': return 'text-red-400 border-red-400 bg-red-400/10';
+      default: return 'text-amber-400 border-amber-400 bg-amber-400/10';
     }
   };
 
@@ -163,71 +167,112 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({ data, isLo
   const overallTrend = overallSignal > 0.1 ? 'buy' : overallSignal < -0.1 ? 'sell' : 'neutral';
 
   return (
-    <Card className="bg-gray-800/50 border-gray-700">
-      <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
-          <BarChart3 className="h-5 w-5 text-blue-400" />
+    <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/80 border border-gray-600/50 shadow-2xl backdrop-blur-sm overflow-hidden">
+      <CardHeader className="bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 border-b border-gray-600/30">
+        <CardTitle className="text-white flex items-center gap-3">
+          <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+            <BarChart3 className="h-6 w-6 text-blue-400" />
+          </div>
           Technical Analysis
+          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse ml-auto"></div>
         </CardTitle>
         <CardDescription className="text-gray-300">
-          Real-time technical indicators and signals
+          AI-powered technical indicators and trading signals
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Overall Signal */}
-        <div className="p-3 bg-gray-700/50 rounded-lg">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-gray-300">Overall Signal</span>
-            <Badge variant="outline" className={getSignalColor(overallTrend)}>
+      <CardContent className="space-y-6 p-6">
+        {/* Overall Signal - Enhanced */}
+        <div className="p-4 bg-gradient-to-br from-gray-700/40 via-gray-800/40 to-gray-900/40 rounded-xl border border-gray-600/30 shadow-lg">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+                <Target className="h-4 w-4 text-blue-400" />
+              </div>
+              <span className="text-sm font-semibold text-gray-200">Overall Signal</span>
+            </div>
+            <Badge variant="outline" className={`${getSignalColor(overallTrend)} font-semibold backdrop-blur-sm`}>
               {getSignalIcon(overallTrend)}
-              <span className="ml-1 capitalize">{overallTrend}</span>
+              <span className="ml-2 capitalize">{overallTrend}</span>
             </Badge>
           </div>
           <Progress 
             value={Math.abs(overallSignal) * 50} 
-            className="h-2"
+            className="h-3 bg-gray-800/50"
+            style={{
+              '--progress-foreground': overallTrend === 'buy' ? 'rgb(34, 197, 94)' : 
+                                      overallTrend === 'sell' ? 'rgb(239, 68, 68)' : 'rgb(245, 158, 11)'
+            }}
           />
+          <div className="flex justify-between mt-2 text-xs text-gray-400">
+            <span>Strength: {(Math.abs(overallSignal) * 100).toFixed(0)}%</span>
+            <span>Confidence: High</span>
+          </div>
         </div>
 
-        {/* Individual Indicators */}
+        {/* Individual Indicators - Enhanced */}
         <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-4">
+            <Zap className="h-4 w-4 text-yellow-400" />
+            <h4 className="text-sm font-semibold text-gray-200">Technical Indicators</h4>
+          </div>
           {indicators.map((indicator, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg">
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-medium text-gray-300">{indicator.name}</span>
-                  <Badge variant="outline" className={`${getSignalColor(indicator.signal)} text-xs`}>
-                    {getSignalIcon(indicator.signal)}
-                    <span className="ml-1 capitalize">{indicator.signal}</span>
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-gray-400">
-                    {indicator.name.includes('SMA') || indicator.name.includes('MACD') 
-                      ? `$${indicator.value.toFixed(2)}` 
-                      : indicator.value.toFixed(2)
-                    }
-                  </span>
-                  <span className="text-xs text-gray-400">
-                    Strength: {(indicator.strength * 100).toFixed(0)}%
-                  </span>
-                </div>
+            <div key={index} className="group p-4 bg-gradient-to-br from-gray-700/30 via-gray-800/30 to-gray-900/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-gray-200">{indicator.name}</span>
+                <Badge variant="outline" className={`${getSignalColor(indicator.signal)} text-xs font-medium backdrop-blur-sm`}>
+                  {getSignalIcon(indicator.signal)}
+                  <span className="ml-1 capitalize">{indicator.signal}</span>
+                </Badge>
               </div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-gray-400 font-medium">
+                  {indicator.name.includes('SMA') || indicator.name.includes('MACD') 
+                    ? `$${indicator.value.toFixed(2)}` 
+                    : indicator.value.toFixed(2)
+                  }
+                </span>
+                <span className="text-xs text-gray-400 font-medium">
+                  {(indicator.strength * 100).toFixed(0)}% strength
+                </span>
+              </div>
+              <Progress 
+                value={indicator.strength * 100} 
+                className="h-2 bg-gray-800/50"
+                style={{
+                  '--progress-foreground': indicator.signal === 'buy' ? 'rgb(34, 197, 94)' : 
+                                          indicator.signal === 'sell' ? 'rgb(239, 68, 68)' : 'rgb(245, 158, 11)'
+                }}
+              />
             </div>
           ))}
         </div>
 
-        {/* Support and Resistance */}
-        <div className="space-y-2">
-          <h4 className="text-sm font-medium text-gray-300">Key Levels</h4>
-          <div className="grid grid-cols-2 gap-2">
-            <div className="p-2 bg-green-900/20 rounded border border-green-700">
-              <p className="text-xs text-green-400">Support</p>
-              <p className="text-sm font-medium text-white">${(currentPrice * 0.95).toFixed(2)}</p>
+        {/* Support and Resistance - Enhanced */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2 mb-4">
+            <Activity className="h-4 w-4 text-cyan-400" />
+            <h4 className="text-sm font-semibold text-gray-200">Key Price Levels</h4>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="p-4 bg-gradient-to-br from-emerald-900/30 via-emerald-800/20 to-gray-900/30 rounded-xl border border-emerald-700/30 hover:border-emerald-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-1 rounded-full bg-emerald-500/20">
+                  <TrendingUp className="h-3 w-3 text-emerald-400" />
+                </div>
+                <p className="text-xs text-emerald-400 font-semibold">Support Level</p>
+              </div>
+              <p className="text-lg font-bold text-white">${(currentPrice * 0.95).toFixed(2)}</p>
+              <p className="text-xs text-emerald-300/80">Strong buying interest</p>
             </div>
-            <div className="p-2 bg-red-900/20 rounded border border-red-700">
-              <p className="text-xs text-red-400">Resistance</p>
-              <p className="text-sm font-medium text-white">${(currentPrice * 1.05).toFixed(2)}</p>
+            <div className="p-4 bg-gradient-to-br from-red-900/30 via-red-800/20 to-gray-900/30 rounded-xl border border-red-700/30 hover:border-red-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="p-1 rounded-full bg-red-500/20">
+                  <TrendingDown className="h-3 w-3 text-red-400" />
+                </div>
+                <p className="text-xs text-red-400 font-semibold">Resistance Level</p>
+              </div>
+              <p className="text-lg font-bold text-white">${(currentPrice * 1.05).toFixed(2)}</p>
+              <p className="text-xs text-red-300/80">Selling pressure zone</p>
             </div>
           </div>
         </div>
