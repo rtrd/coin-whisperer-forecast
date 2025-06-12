@@ -182,8 +182,8 @@ const TokenDetail = () => {
           </Link>
         </div>
 
-        {/* Combined Header Card */}
-        <Card className="mb-8 bg-gradient-to-br from-gray-800/60 to-gray-900/60 border border-gray-600/50 shadow-2xl backdrop-blur-sm">
+        {/* Combined Header Card - Updated to match homepage sections */}
+        <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
           <CardContent className="p-8">
             <div className="space-y-8">
               {/* Token Info Section */}
@@ -246,7 +246,7 @@ const TokenDetail = () => {
               </div>
 
               {/* Market Statistics - Enhanced Design */}
-              <div className="bg-gradient-to-br from-gray-700/40 via-gray-800/40 to-gray-900/40 rounded-2xl p-6 border border-gray-600/40 backdrop-blur-sm shadow-xl">
+              <div className="bg-gray-700/30 rounded-2xl p-6 border border-gray-600/30 backdrop-blur-sm shadow-xl">
                 <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
                   <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
                     <BarChart3 className="h-6 w-6 text-blue-400" />
