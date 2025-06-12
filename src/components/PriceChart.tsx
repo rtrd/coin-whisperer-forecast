@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 import { Skeleton } from "@/components/ui/skeleton";
@@ -229,7 +230,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 dataKey="date" 
                 stroke="#9CA3AF"
                 fontSize={window.innerWidth < 768 ? 10 : 12}
-                interval={window.innerWidth < 768 ? Math.ceil(chartData.length / 4) : Math.ceil(chartData.length / 6)}
+                interval={window.innerWidth < 768 ? Math.ceil(chartData.length / 8) : Math.ceil(chartData.length / 12)}
                 angle={window.innerWidth < 768 ? -45 : -30}
                 textAnchor="end"
                 height={60}
