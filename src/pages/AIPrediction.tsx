@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Target, ArrowLeft } from "lucide-react";
+import { Brain, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndependentPredictionWidget } from "@/components/IndependentPredictionWidget";
@@ -42,8 +42,8 @@ const AIPrediction = () => {
 
         <div className="text-center mb-8">
           <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
-            <Target className="h-12 w-12 text-blue-400" />
-            Smart Price Predictions
+            <Brain className="h-12 w-12 text-blue-400" />
+            AI Prediction Analysis
           </h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             Advanced cryptocurrency predictions using machine learning algorithms and market sentiment analysis
