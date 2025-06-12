@@ -31,6 +31,7 @@ import { LockedDynamicPrediction } from "@/components/LockedDynamicPrediction";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
+import Footer from "@/components/Footer";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { toast } from "sonner";
@@ -285,11 +286,6 @@ const TokenDetail = () => {
           </CardContent>
         </Card>
 
-        {/* Ad Banner */}
-        <div className="flex justify-center mb-8">
-          <AdBanner width={728} height={90} position="horizontal" />
-        </div>
-
         {/* AI Analysis Controls */}
         <Card className="mb-8 bg-gray-800/50 border-gray-700">
           <CardHeader>
@@ -445,6 +441,14 @@ const TokenDetail = () => {
             </Card>
           </div>
         </div>
+
+        {/* Ad Banner - Moved to bottom */}
+        <div className="flex justify-center my-8">
+          <AdBanner width={728} height={90} position="horizontal" />
+        </div>
+
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );
