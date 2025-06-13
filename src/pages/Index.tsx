@@ -36,13 +36,15 @@ const Index = () => {
     }));
   }
 
-  // Enhanced function to remove duplicates based on token ID
+  // Enhanced function to remove duplicates based on token ID or value
   const removeDuplicates = (tokens) => {
     const uniqueTokens = new Map();
     
     tokens.forEach((token) => {
-      if (!uniqueTokens.has(token.id)) {
-        uniqueTokens.set(token.id, token);
+      // Use either 'id' field (from API) or 'value' field (from hardcoded data) as the key
+      const key = token.id || token.value;
+      if (key && !uniqueTokens.has(key)) {
+        uniqueTokens.set(key, token);
       }
     });
     

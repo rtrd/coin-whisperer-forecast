@@ -1,4 +1,3 @@
-
 import { FilterType } from "./MarketDataFilters";
 
 interface MarketData {
@@ -16,7 +15,7 @@ interface MarketData {
 }
 
 export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterType): MarketData[] => {
-  // Generate expanded base data with more tokens to ensure 12 items per filter
+  // Generate expanded base data with correct CoinGecko IDs and no duplicates
   const baseTokens = [
     {
       value: "bitcoin",
@@ -97,7 +96,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 69
     },
     {
-      value: "matic",
+      value: "matic-network",
       label: "Polygon",
       name: "Polygon MATIC",
       image: "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png",
@@ -110,7 +109,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 64
     },
     {
-      value: "ada",
+      value: "cardano",
       label: "Cardano",
       name: "Cardano ADA", 
       image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
@@ -123,7 +122,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 67
     },
     {
-      value: "avax",
+      value: "avalanche-2",
       label: "Avalanche",
       name: "Avalanche AVAX",
       image: "https://assets.coingecko.com/coins/images/12559/large/avalanche-avax-logo.png",
@@ -136,7 +135,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 68
     },
     {
-      value: "dot",
+      value: "polkadot",
       label: "Polkadot",
       name: "Polkadot DOT",
       image: "https://assets.coingecko.com/coins/images/12171/large/polkadot.png",
@@ -149,7 +148,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 70
     },
     {
-      value: "xlm",
+      value: "stellar",
       label: "Stellar",
       name: "Stellar XLM",
       image: "https://assets.coingecko.com/coins/images/100/large/stellar.png",
@@ -162,7 +161,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 63
     },
     {
-      value: "algo",
+      value: "algorand",
       label: "Algorand",
       name: "Algorand ALGO",
       image: "https://assets.coingecko.com/coins/images/4380/large/download.png",
@@ -202,72 +201,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 38
     },
     {
-      value: "polygon-old",
-      label: "Polygon",
-      name: "Polygon MATIC",
-      image: "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png", 
-      price: 0.82,
-      change24h: -4.25,
-      volume24h: 380000000,
-      marketCap: 8000000000,
-      category: "L2",
-      predictionPercentage: -3.2,
-      aiScore: 58
-    },
-    {
-      value: "avalanche-old",
-      label: "Avalanche", 
-      name: "Avalanche AVAX",
-      image: "https://assets.coingecko.com/coins/images/12559/large/avalanche-avax-logo.png",
-      price: 36.25,
-      change24h: -3.65,
-      volume24h: 520000000,
-      marketCap: 14000000000,
-      category: "Layer 1 (L1)",
-      predictionPercentage: -2.8,
-      aiScore: 62
-    },
-    {
-      value: "polkadot-old",
-      label: "Polkadot",
-      name: "Polkadot DOT",
-      image: "https://assets.coingecko.com/coins/images/12171/large/polkadot.png",
-      price: 5.85,
-      change24h: -2.95,
-      volume24h: 195000000,
-      marketCap: 8200000000,
-      category: "Layer 1 (L1)",
-      predictionPercentage: -1.2,
-      aiScore: 68
-    },
-    {
-      value: "uniswap-old",
-      label: "Uniswap",
-      name: "Uniswap UNI",
-      image: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png",
-      price: 6.45,
-      change24h: -1.85,
-      volume24h: 285000000,
-      marketCap: 3900000000,
-      category: "DeFi",
-      predictionPercentage: 2.1,
-      aiScore: 69
-    },
-    {
-      value: "cardano-old",
-      label: "Cardano",
-      name: "Cardano ADA", 
-      image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
-      price: 0.485,
-      change24h: -2.15,
-      volume24h: 450000000,
-      marketCap: 17000000000,
-      category: "Layer 1 (L1)",
-      predictionPercentage: -1.5,
-      aiScore: 65
-    },
-    {
-      value: "xrp",
+      value: "ripple",
       label: "XRP",
       name: "XRP XRP",
       image: "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png",
@@ -280,20 +214,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 59
     },
     {
-      value: "ltc-old",
-      label: "Litecoin", 
-      name: "Litecoin LTC",
-      image: "https://assets.coingecko.com/coins/images/2/large/litecoin.png",
-      price: 70.15,
-      change24h: -1.95,
-      volume24h: 520000000,
-      marketCap: 5200000000,
-      category: "Payment Token",
-      predictionPercentage: -0.8,
-      aiScore: 66
-    },
-    {
-      value: "bnb",
+      value: "binancecoin",
       label: "BNB",
       name: "BNB BNB",
       image: "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
@@ -306,7 +227,7 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 72
     },
     {
-      value: "trx",
+      value: "tron",
       label: "TRON",
       name: "TRON TRX",
       image: "https://assets.coingecko.com/coins/images/1094/large/tron-logo.png",
@@ -319,17 +240,69 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 54
     },
     {
-      value: "link-old",
-      label: "Chainlink",
-      name: "Chainlink LINK",
-      image: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png",
-      price: 13.95,
+      value: "aave",
+      label: "Aave",
+      name: "Aave AAVE",
+      image: "https://assets.coingecko.com/coins/images/12645/large/aave-token-round.png",
+      price: 85.45,
       change24h: -1.25,
-      volume24h: 580000000,
-      marketCap: 8200000000,
+      volume24h: 180000000,
+      marketCap: 1200000000,
       category: "DeFi",
       predictionPercentage: -0.5,
       aiScore: 73
+    },
+    {
+      value: "compound-governance-token",
+      label: "Compound",
+      name: "Compound COMP",
+      image: "https://assets.coingecko.com/coins/images/10775/large/COMP.png",
+      price: 45.25,
+      change24h: -2.85,
+      volume24h: 65000000,
+      marketCap: 280000000,
+      category: "DeFi",
+      predictionPercentage: -1.8,
+      aiScore: 68
+    },
+    {
+      value: "maker",
+      label: "MakerDAO",
+      name: "MakerDAO MKR",
+      image: "https://assets.coingecko.com/coins/images/1364/large/Mark_Maker.png",
+      price: 1200.85,
+      change24h: -0.95,
+      volume24h: 45000000,
+      marketCap: 1100000000,
+      category: "DeFi",
+      predictionPercentage: -0.2,
+      aiScore: 71
+    },
+    {
+      value: "fetch-ai",
+      label: "Fetch.ai",
+      name: "Fetch.ai FET",
+      image: "https://assets.coingecko.com/coins/images/5681/large/Fetch.jpg",
+      price: 0.45,
+      change24h: 6.85,
+      volume24h: 125000000,
+      marketCap: 380000000,
+      category: "AI",
+      predictionPercentage: 8.2,
+      aiScore: 76
+    },
+    {
+      value: "render-token",
+      label: "Render",
+      name: "Render RNDR",
+      image: "https://assets.coingecko.com/coins/images/11636/large/rndr.png",
+      price: 2.85,
+      change24h: 7.25,
+      volume24h: 95000000,
+      marketCap: 1100000000,
+      category: "AI",
+      predictionPercentage: 9.5,
+      aiScore: 79
     }
   ];
 
