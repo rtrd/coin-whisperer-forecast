@@ -1,44 +1,24 @@
+
 import React from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import {
-  ArrowLeft,
-  Calendar,
-  User,
-  Clock,
-  Share2,
-  BookmarkPlus,
-  Tag,
-} from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { ArticleIndex } from "@/components/ArticleIndex";
 import Footer from "@/components/Footer";
+import { ArticleHeader } from "@/components/ArticleHeader";
+import { ArticleContent } from "@/components/ArticleContent";
+import { RelatedArticles } from "@/components/RelatedArticles";
+import { ArticleNotFound } from "@/components/ArticleNotFound";
+import { formatArticleForDisplay, getRelatedArticles } from "@/utils/articleUtils";
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
   debugger;
   const location = useLocation();
-
-  const formatArticleForDisplay = (article: any) => {
-    // Extract WordPress tags from the API response
-    const wordPressTags = article._embedded?.['wp:term']?.[1]?.map((tag: any) => tag.name) || [];
-    
-    return {
-      id: article.id,
-      title: article.title,
-      content: article.content,
-      author: article.author || "Unknown",
-      date: article.date,
-      category: article.category || "General",
-      readTime: article.readTime || "4 min read",
-      image: article.image || "https://via.placeholder.com/800x400",
-      tags: wordPressTags.length > 0 ? wordPressTags : ["crypto", "analysis", "market"], // fallback to default tags if no WordPress tags
-    };
-  };
 
   const articles = Array.isArray(location.state?.article)
     ? location.state.article.map(formatArticleForDisplay)
@@ -116,41 +96,11 @@ const Article = () => {
     },
   ];
 
-  // Filter related articles by matching tags
-  const getRelatedArticles = () => {
-    if (!article) return [];
-    
-    const currentTags = article.tags || [];
-    return allArticles
-      .filter((a) => a.id !== article.id)
-      .filter((a) => {
-        const articleTags = a.tags || [];
-        return currentTags.some(tag => articleTags.includes(tag));
-      })
-      .slice(0, 4);
-  };
-
   if (!article) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center px-4">
-        <Card className="bg-gray-800/50 border-gray-700 w-full max-w-md">
-          <CardContent className="p-8 text-center">
-            <h1 className="text-2xl font-bold text-white mb-4 text-shadow-lg">
-              Article Not Found
-            </h1>
-            <Link to="/">
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  };
+    return <ArticleNotFound />;
+  }
 
-  const relatedArticles = getRelatedArticles();
+  const relatedArticles = getRelatedArticles(article, allArticles);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -183,161 +133,12 @@ const Article = () => {
           <div className="lg:col-span-3 space-y-8">
             {/* Article Content with Header */}
             <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
-              {/* Article Header with Background Image */}
-              <div
-                className="relative bg-cover bg-center h-80 article_image_custom rounded-t-lg"
-                style={{ backgroundImage: `url(${article.image})` }}
-              >
-                <div className="absolute inset-0 bg-black/70 rounded-t-lg"></div>
-                <CardHeader className="relative z-10 h-full flex flex-col justify-end">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Badge className="bg-blue-600">{article.category}</Badge>
-                  </div>
-                  <CardTitle
-                    className="text-3xl md:text-4xl text-white mb-4"
-                    style={{ textShadow: "0 0 10px rgba(0, 0, 0, 0.3)" }}
-                  >
-                    {article.title}
-                  </CardTitle>
-
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-gray-200 gap-4">
-                    <div className="flex flex-wrap items-center gap-4 md:gap-6">
-                      <div className="flex items-center gap-2">
-                        <User className="h-4 w-4" />
-                        <span className="text-sm md:text-base">
-                          {article.author}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4" />
-                        <span className="text-sm md:text-base">
-                          {new Date(article.date).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4" />
-                        <span className="text-sm md:text-base">
-                          {article.readTime}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="bg-gray-700/80 border-gray-600 text-white hover:bg-gray-600"
-                      >
-                        <Share2 className="h-4 w-4 mr-2" />
-                        Share
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="bg-gray-700/80 border-gray-600 text-white hover:bg-gray-600"
-                      >
-                        <BookmarkPlus className="h-4 w-4 mr-2" />
-                        Save
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
-              </div>
-
-              {/* Article Text Content */}
-              <CardContent className="p-4 md:p-8">
-                <div
-                  className="prose prose-invert max-w-none text-gray-200 
-                  prose-headings:text-shadow-lg prose-h1:text-4xl prose-h1:font-bold prose-h1:mb-6 prose-h1:text-white
-                  prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-white
-                  prose-h3:text-xl prose-h3:font-medium prose-h3:mb-3 prose-h3:mt-6 prose-h3:text-gray-100
-                  prose-h4:text-lg prose-h4:font-medium prose-h4:mb-2 prose-h4:mt-4 prose-h4:text-gray-200
-                  prose-p:mb-8 prose-p:leading-relaxed prose-p:text-gray-200
-                  prose-ul:mb-6 prose-li:mb-2"
-                  dangerouslySetInnerHTML={{ __html: article.content }}
-                />
-
-                {/* Article Tags */}
-                <div className="border-t border-gray-600 pt-6 mt-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Tag className="h-4 w-4 text-blue-400" />
-                    <span className="text-white font-medium">Tags:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {article.tags.map((tag: string, index: number) => (
-                      <Badge
-                        key={index}
-                        variant="outline" 
-                        className="bg-gray-700/50 border-gray-600 text-gray-300 hover:bg-gray-600/50"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
+              <ArticleHeader article={article} />
+              <ArticleContent content={article.content} tags={article.tags} />
             </Card>
 
             {/* Related Articles */}
-            {relatedArticles.length > 0 && (
-              <Card className="bg-gray-800/50 border-gray-700">
-                <CardHeader>
-                  <CardTitle
-                    className="text-white"
-                    style={{ textShadow: "0 0 10px rgba(0, 0, 0, 0.3)" }}
-                  >
-                    Related Articles
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {relatedArticles.map((relatedArticle) => (
-                      <Link
-                        key={relatedArticle.id}
-                        to={`/article/${relatedArticle.id}`}
-                        state={{ article: relatedArticle }}
-                        className="block group"
-                      >
-                        <div className="bg-gray-700/50 rounded-lg overflow-hidden hover:bg-gray-700/70 transition-colors">
-                          <div
-                            className="aspect-video bg-cover bg-center rounded-t-lg"
-                            style={{
-                              backgroundImage: `url(${relatedArticle.image})`,
-                            }}
-                          >
-                            <div className="h-full bg-gradient-to-t from-black/60 to-transparent flex items-end p-3 rounded-t-lg">
-                              <Badge className="bg-blue-600 text-xs">
-                                {relatedArticle.category}
-                              </Badge>
-                            </div>
-                          </div>
-                          <div className="p-4">
-                            <h3 className="text-white font-semibold mb-2 text-shadow-lg group-hover:text-blue-400 transition-colors line-clamp-2">
-                              {relatedArticle.title}
-                            </h3>
-                            <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-                              <span>{relatedArticle.author}</span>
-                              <span>{relatedArticle.readTime}</span>
-                            </div>
-                            <div className="flex flex-wrap gap-1">
-                              {relatedArticle.tags?.slice(0, 2).map((tag: string, index: number) => (
-                                <Badge
-                                  key={index}
-                                  variant="outline"
-                                  className="text-xs bg-gray-600/50 border-gray-500 text-gray-300"
-                                >
-                                  {tag}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
+            <RelatedArticles articles={relatedArticles} />
           </div>
 
           {/* Sticky Sidebar */}
