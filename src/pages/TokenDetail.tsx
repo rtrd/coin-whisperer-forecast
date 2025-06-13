@@ -37,6 +37,7 @@ import { ModelTypeTooltip } from "@/components/ModelTypeTooltip";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { toast } from "sonner";
+import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
 
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
@@ -61,50 +62,8 @@ const TokenDetail = () => {
   const [isMarketDataInitialized, setIsMarketDataInitialized] = useState(false);
 
   // Map URL token IDs to CoinGecko IDs and get full token info
-  const getTokenInfo = (urlTokenId: string) => {
-    const tokenMap: { [key: string]: any } = {
-      'bitcoin': { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', icon: '₿', category: 'Layer 1 (L1)', website: 'https://bitcoin.org', twitter: 'https://twitter.com/bitcoin', description: 'The first and largest cryptocurrency by market cap' },
-      'btc': { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', icon: '₿', category: 'Layer 1 (L1)', website: 'https://bitcoin.org', twitter: 'https://twitter.com/bitcoin', description: 'The first and largest cryptocurrency by market cap' },
-      'ethereum': { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: 'Ξ', category: 'Layer 1 (L1)', website: 'https://ethereum.org', twitter: 'https://twitter.com/ethereum', description: 'Smart contract platform and second-largest cryptocurrency' },
-      'eth': { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: 'Ξ', category: 'Layer 1 (L1)', website: 'https://ethereum.org', twitter: 'https://twitter.com/ethereum', description: 'Smart contract platform and second-largest cryptocurrency' },
-      'binancecoin': { id: 'binancecoin', symbol: 'BNB', name: 'BNB', icon: '🔶', category: 'Layer 1 (L1)', website: 'https://www.bnbchain.org', twitter: 'https://twitter.com/bnbchain', description: 'Native token of the Binance ecosystem' },
-      'bnb': { id: 'binancecoin', symbol: 'BNB', name: 'BNB', icon: '🔶', category: 'Layer 1 (L1)', website: 'https://www.bnbchain.org', twitter: 'https://twitter.com/bnbchain', description: 'Native token of the Binance ecosystem' },
-      'solana': { id: 'solana', symbol: 'SOL', name: 'Solana', icon: '◎', category: 'Layer 1 (L1)', website: 'https://solana.com', twitter: 'https://twitter.com/solana', description: 'High-performance blockchain for decentralized apps' },
-      'sol': { id: 'solana', symbol: 'SOL', name: 'Solana', icon: '◎', category: 'Layer 1 (L1)', website: 'https://solana.com', twitter: 'https://twitter.com/solana', description: 'High-performance blockchain for decentralized apps' },
-      'cardano': { id: 'cardano', symbol: 'ADA', name: 'Cardano', icon: '₳', category: 'Layer 1 (L1)', website: 'https://cardano.org', twitter: 'https://twitter.com/cardano', description: 'Proof-of-stake blockchain platform' },
-      'ada': { id: 'cardano', symbol: 'ADA', name: 'Cardano', icon: '₳', category: 'Layer 1 (L1)', website: 'https://cardano.org', twitter: 'https://twitter.com/cardano', description: 'Proof-of-stake blockchain platform' },
-      'ripple': { id: 'ripple', symbol: 'XRP', name: 'XRP', icon: '◉', category: 'Payment Token', website: 'https://ripple.com', twitter: 'https://twitter.com/ripple', description: 'Digital payment protocol for financial institutions' },
-      'xrp': { id: 'ripple', symbol: 'XRP', name: 'XRP', icon: '◉', category: 'Payment Token', website: 'https://ripple.com', twitter: 'https://twitter.com/ripple', description: 'Digital payment protocol for financial institutions' },
-      'dogecoin': { id: 'dogecoin', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕', category: 'Meme Coin', website: 'https://dogecoin.com', twitter: 'https://twitter.com/dogecoin', description: 'The original meme cryptocurrency' },
-      'doge': { id: 'dogecoin', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕', category: 'Meme Coin', website: 'https://dogecoin.com', twitter: 'https://twitter.com/dogecoin', description: 'The original meme cryptocurrency' },
-      'shiba-inu': { id: 'shiba-inu', symbol: 'SHIB', name: 'Shiba Inu', icon: '🐕‍🦺', category: 'Meme Coin', website: 'https://shibatoken.com', twitter: 'https://twitter.com/shibtoken', description: 'Community-driven meme token' },
-      'shib': { id: 'shiba-inu', symbol: 'SHIB', name: 'Shiba Inu', icon: '🐕‍🦺', category: 'Meme Coin', website: 'https://shibatoken.com', twitter: 'https://twitter.com/shibtoken', description: 'Community-driven meme token' },
-      'pepe': { id: 'pepe', symbol: 'PEPE', name: 'Pepe', icon: '🐸', category: 'Meme Coin', website: 'https://pepe.vip', twitter: 'https://twitter.com/pepecoineth', description: 'Meme token based on the Pepe the Frog internet meme' },
-      'bonk': { id: 'bonk', symbol: 'BONK', name: 'Bonk', icon: '🔨', category: 'Meme Coin', website: 'https://bonkcoin.com', twitter: 'https://twitter.com/bonk_inu', description: 'Solana-based community meme coin' },
-      'uniswap': { id: 'uniswap', symbol: 'UNI', name: 'Uniswap', icon: '🦄', category: 'DeFi', website: 'https://uniswap.org', twitter: 'https://twitter.com/uniswap', description: 'Leading decentralized exchange protocol' },
-      'uni': { id: 'uniswap', symbol: 'UNI', name: 'Uniswap', icon: '🦄', category: 'DeFi', website: 'https://uniswap.org', twitter: 'https://twitter.com/uniswap', description: 'Leading decentralized exchange protocol' },
-      'aave': { id: 'aave', symbol: 'AAVE', name: 'Aave', icon: '👻', category: 'DeFi', website: 'https://aave.com', twitter: 'https://twitter.com/aaveaave', description: 'Decentralized lending and borrowing protocol' },
-      'fetch-ai': { id: 'fetch-ai', symbol: 'FET', name: 'Fetch.ai', icon: '🤖', category: 'AI', website: 'https://fetch.ai', twitter: 'https://twitter.com/fetch_ai', description: 'Decentralized machine learning platform' },
-      'fet': { id: 'fetch-ai', symbol: 'FET', name: 'Fetch.ai', icon: '🤖', category: 'AI', website: 'https://fetch.ai', twitter: 'https://twitter.com/fetch_ai', description: 'Decentralized machine learning platform' },
-      'render-token': { id: 'render-token', symbol: 'RNDR', name: 'Render', icon: '🎨', category: 'AI', website: 'https://rendertoken.com', twitter: 'https://twitter.com/rendertoken', description: 'Distributed GPU rendering network' },
-      'rndr': { id: 'render-token', symbol: 'RNDR', name: 'Render', icon: '🎨', category: 'AI', website: 'https://rendertoken.com', twitter: 'https://twitter.com/rendertoken', description: 'Distributed GPU rendering network' },
-      'polygon': { id: 'matic-network', symbol: 'MATIC', name: 'Polygon', icon: '🔷', category: 'L2', website: 'https://polygon.technology', twitter: 'https://twitter.com/0xpolygon', description: 'Ethereum scaling and infrastructure development' },
-      'matic': { id: 'matic-network', symbol: 'MATIC', name: 'Polygon', icon: '🔷', category: 'L2', website: 'https://polygon.technology', twitter: 'https://twitter.com/0xpolygon', description: 'Ethereum scaling and infrastructure development' },
-      'avalanche-2': { id: 'avalanche-2', symbol: 'AVAX', name: 'Avalanche', icon: '🔺', category: 'Layer 1 (L1)', website: 'https://avax.network', twitter: 'https://twitter.com/avalancheavax', description: 'Highly scalable smart contracts platform' },
-      'avax': { id: 'avalanche-2', symbol: 'AVAX', name: 'Avalanche', icon: '🔺', category: 'Layer 1 (L1)', website: 'https://avax.network', twitter: 'https://twitter.com/avalancheavax', description: 'Highly scalable smart contracts platform' },
-      'chainlink': { id: 'chainlink', symbol: 'LINK', name: 'Chainlink', icon: '🔗', category: 'DeFi', website: 'https://chain.link', twitter: 'https://twitter.com/chainlink', description: 'Decentralized oracle network' },
-      'link': { id: 'chainlink', symbol: 'LINK', name: 'Chainlink', icon: '🔗', category: 'DeFi', website: 'https://chain.link', twitter: 'https://twitter.com/chainlink', description: 'Decentralized oracle network' },
-      'polkadot': { id: 'polkadot', symbol: 'DOT', name: 'Polkadot', icon: '⚫', category: 'Layer 1 (L1)', website: 'https://polkadot.network', twitter: 'https://twitter.com/polkadot', description: 'Multi-chain interoperability protocol' },
-      'dot': { id: 'polkadot', symbol: 'DOT', name: 'Polkadot', icon: '⚫', category: 'Layer 1 (L1)', website: 'https://polkadot.network', twitter: 'https://twitter.com/polkadot', description: 'Multi-chain interoperability protocol' },
-      'litecoin': { id: 'litecoin', symbol: 'LTC', name: 'Litecoin', icon: 'Ł', category: 'Payment Token', website: 'https://litecoin.org', twitter: 'https://twitter.com/litecoin', description: 'Peer-to-peer digital currency' },
-      'ltc': { id: 'litecoin', symbol: 'LTC', name: 'Litecoin', icon: 'Ł', category: 'Payment Token', website: 'https://litecoin.org', twitter: 'https://twitter.com/litecoin', description: 'Peer-to-peer digital currency' }
-    };
-
-    return tokenMap[urlTokenId?.toLowerCase()] || tokenMap['bitcoin'];
-  };
-
   const selectedToken = getTokenInfo(tokenId || 'bitcoin');
-  const cryptoId = selectedToken.id;
+  const cryptoId = getCoinGeckoId(tokenId || 'bitcoin');
 
   const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(cryptoId, timeframe);
   const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
@@ -219,10 +178,11 @@ const TokenDetail = () => {
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
             <h1 className="text-2xl font-bold text-white mb-4">Token Not Found</h1>
+            <p className="text-gray-300 mb-4">The token "{tokenId}" could not be found.</p>
             <Link to="/">
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Back
+                Back to Home
               </Button>
             </Link>
           </CardContent>
