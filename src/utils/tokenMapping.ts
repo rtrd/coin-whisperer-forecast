@@ -1,4 +1,3 @@
-
 // Comprehensive token mapping for CoinGecko IDs to URL-friendly token IDs
 const TOKEN_URL_MAP: { [key: string]: string } = {
   'bitcoin': 'bitcoin',
@@ -22,7 +21,6 @@ const TOKEN_URL_MAP: { [key: string]: string } = {
   'litecoin': 'litecoin',
   'tron': 'tron',
   'nexo': 'nexo',
-  'chainlink': 'link',
   'stellar': 'xlm',
   'monero': 'xmr',
   'ethereum-classic': 'etc',
