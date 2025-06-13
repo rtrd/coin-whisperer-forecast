@@ -1,22 +1,23 @@
-
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { useTokenInfo } from '@/hooks/useTokenInfo';
+import { getCoinGeckoId } from '@/utils/tokenMapping';
 
 interface TokenAnalysisProps {
   selectedCrypto: string;
   currentPrice: number;
   priceChange: number;
-  cryptoOptions: any[];
+  cryptoOptions?: any[];
 }
 
 export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
   selectedCrypto,
   currentPrice,
   priceChange,
-  cryptoOptions
+  cryptoOptions = []
 }) => {
   const [analysis, setAnalysis] = useState({
     momentum: 0,
@@ -29,17 +30,46 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
   const updateIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastUpdateRef = useRef<number>(0);
 
-  const selectedToken = useMemo(() => 
-    cryptoOptions.find(c => c.value === selectedCrypto), 
-    [cryptoOptions, selectedCrypto]
-  );
+  // Get the proper CoinGecko ID for API calls
+  const coinGeckoId = useMemo(() => getCoinGeckoId(selectedCrypto), [selectedCrypto]);
+  
+  // Fetch token info from API
+  const { data: tokenInfo, isLoading: tokenInfoLoading, error: tokenInfoError } = useTokenInfo(coinGeckoId);
+
+  // Fallback to cryptoOptions for backward compatibility
+  const selectedToken = useMemo(() => {
+    if (tokenInfo) {
+      return {
+        value: tokenInfo.id,
+        label: `${tokenInfo.name} (${tokenInfo.symbol})`,
+        symbol: tokenInfo.symbol,
+        name: tokenInfo.name,
+        icon: tokenInfo.symbol === 'BTC' ? '₿' : 
+              tokenInfo.symbol === 'ETH' ? 'Ξ' : 
+              tokenInfo.symbol === 'XRP' ? '◉' : 
+              tokenInfo.symbol === 'DOGE' ? '🐕' : '🪙',
+        score: Math.random() * 3 + 7, // Generate a score between 7-10
+        prediction: `${(Math.random() * 20 - 10).toFixed(1)}%`,
+        category: tokenInfo.categories?.[0] || 'Cryptocurrency'
+      };
+    }
+    
+    // Fallback to cryptoOptions
+    return cryptoOptions.find(c => c.value === selectedCrypto);
+  }, [tokenInfo, cryptoOptions, selectedCrypto]);
 
   const updateAnalysis = useCallback(() => {
-    if (!selectedToken || currentPrice <= 0) return;
+    if (!selectedToken) return;
+    
+    // Use API price if available, otherwise use prop
+    const effectivePrice = tokenInfo?.current_price || currentPrice;
+    const effectivePriceChange = tokenInfo?.price_change_percentage_24h || priceChange;
+    
+    if (effectivePrice <= 0) return;
     
     // Prevent too frequent updates
     const now = Date.now();
-    if (now - lastUpdateRef.current < 5000) return; // Minimum 5 seconds between updates
+    if (now - lastUpdateRef.current < 5000) return;
     
     lastUpdateRef.current = now;
     const baseScore = selectedToken?.score || 5;
@@ -48,10 +78,10 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
       momentum: (Math.random() * 200 - 100),
       volatility: Math.random() * 100,
       marketSentiment: baseScore > 7 ? 'bullish' : baseScore < 4 ? 'bearish' : 'neutral',
-      supportLevel: currentPrice * (0.92 + Math.random() * 0.06),
-      resistanceLevel: currentPrice * (1.02 + Math.random() * 0.06)
+      supportLevel: effectivePrice * (0.92 + Math.random() * 0.06),
+      resistanceLevel: effectivePrice * (1.02 + Math.random() * 0.06)
     });
-  }, [selectedToken, currentPrice]);
+  }, [selectedToken, tokenInfo, currentPrice, priceChange]);
 
   useEffect(() => {
     // Clear existing interval
@@ -65,7 +95,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
     }, 1000);
 
     // Set up interval for periodic updates
-    updateIntervalRef.current = setInterval(updateAnalysis, 30000); // Update every 30 seconds
+    updateIntervalRef.current = setInterval(updateAnalysis, 30000);
 
     return () => {
       clearTimeout(timeoutId);
@@ -73,9 +103,10 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
         clearInterval(updateIntervalRef.current);
       }
     };
-  }, [selectedCrypto, selectedToken]); // Removed updateAnalysis from dependencies to prevent recreation
+  }, [selectedCrypto, selectedToken]);
 
-  if (!selectedToken || currentPrice <= 0) {
+  // Show loading state while fetching token info
+  if (tokenInfoLoading) {
     return (
       <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
         <CardHeader>
@@ -87,6 +118,37 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
       </Card>
     );
   }
+
+  // Show error state if token info failed to load
+  if (tokenInfoError) {
+    return (
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-white">Token Analysis</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-red-400">Error loading token data: {tokenInfoError.message}</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!selectedToken) {
+    return (
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-white">Token Analysis</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-400">Token not found</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Use API data when available
+  const displayPrice = tokenInfo?.current_price || currentPrice;
+  const displayPriceChange = tokenInfo?.price_change_percentage_24h || priceChange;
 
   return (
     <TooltipProvider>
@@ -110,12 +172,12 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                     <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
                   <TooltipContent className="bg-gray-700 border-gray-600">
-                    <p className="text-gray-100">Real-time market price from multiple exchanges</p>
+                    <p className="text-gray-100">Real-time market price from CoinGecko API</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                ${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                ${displayPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </span>
             </div>
 
@@ -200,7 +262,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                ${analysis.resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                ${analysis.resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximunFractionDigits: 6 })}
               </span>
             </div>
 
@@ -217,18 +279,18 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                {selectedToken?.score}/10
+                {selectedToken?.score?.toFixed(1) || '0.0'}/10
               </span>
             </div>
 
             <div className="flex items-center gap-2 mt-4">
-              {priceChange >= 0 ? (
+              {displayPriceChange >= 0 ? (
                 <TrendingUp className="h-4 w-4 text-green-400" />
               ) : (
                 <TrendingDown className="h-4 w-4 text-red-400" />
               )}
-              <span className={`text-sm ${priceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}% (24h)
+              <span className={`text-sm ${displayPriceChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {displayPriceChange >= 0 ? '+' : ''}{displayPriceChange.toFixed(2)}% (24h)
               </span>
               <Badge className={`ml-auto ${
                 analysis.marketSentiment === 'bullish' ? 'bg-green-600 text-white' :

@@ -1,5 +1,5 @@
-
 import { CryptoToken } from '@/types/crypto';
+import { TokenInfo } from '@/hooks/useTokenInfo';
 
 const API_KEY = import.meta.env.VITE_TOKEN_KEY;
 
@@ -31,6 +31,50 @@ class ApiService {
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.error("API fetch error:", error);
+      throw error;
+    }
+  }
+
+  async getTokenInfo(tokenId: string): Promise<TokenInfo> {
+    try {
+      console.log(`Fetching token info for: ${tokenId}`);
+      
+      const response = await fetch(`${this.baseUrl}/coins/${tokenId}`, {
+        headers: {
+          accept: 'application/json',
+          'key': API_KEY || ''
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error(`Token '${tokenId}' not found`);
+        }
+        throw new Error(`API error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log(`Successfully fetched token info for ${tokenId}:`, data);
+      
+      return {
+        id: data.id,
+        symbol: data.symbol?.toUpperCase() || tokenId.toUpperCase(),
+        name: data.name || tokenId,
+        description: data.description?.en,
+        image: data.image?.large || data.image?.small,
+        current_price: data.market_data?.current_price?.usd,
+        market_cap: data.market_data?.market_cap?.usd,
+        market_cap_rank: data.market_cap_rank,
+        price_change_percentage_24h: data.market_data?.price_change_percentage_24h,
+        total_volume: data.market_data?.total_volume?.usd,
+        categories: data.categories,
+        links: {
+          homepage: data.links?.homepage?.filter(Boolean),
+          twitter_screen_name: data.links?.twitter_screen_name
+        }
+      };
+    } catch (error) {
+      console.error(`Token info fetch error for ${tokenId}:`, error);
       throw error;
     }
   }
