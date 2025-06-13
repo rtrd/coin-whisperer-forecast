@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, HelpCircle } from "lucide-react";
@@ -26,6 +26,9 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
     resistanceLevel: 0
   });
 
+  const updateIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const lastUpdateRef = useRef<number>(0);
+
   const selectedToken = useMemo(() => 
     cryptoOptions.find(c => c.value === selectedCrypto), 
     [cryptoOptions, selectedCrypto]
@@ -34,6 +37,11 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
   const updateAnalysis = useCallback(() => {
     if (!selectedToken || currentPrice <= 0) return;
     
+    // Prevent too frequent updates
+    const now = Date.now();
+    if (now - lastUpdateRef.current < 5000) return; // Minimum 5 seconds between updates
+    
+    lastUpdateRef.current = now;
     const baseScore = selectedToken?.score || 5;
     
     setAnalysis({
@@ -46,10 +54,26 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
   }, [selectedToken, currentPrice]);
 
   useEffect(() => {
-    updateAnalysis();
-    const interval = setInterval(updateAnalysis, 30000); // Update every 30 seconds instead of 10
-    return () => clearInterval(interval);
-  }, [updateAnalysis]);
+    // Clear existing interval
+    if (updateIntervalRef.current) {
+      clearInterval(updateIntervalRef.current);
+    }
+
+    // Initial update with delay to prevent rapid firing
+    const timeoutId = setTimeout(() => {
+      updateAnalysis();
+    }, 1000);
+
+    // Set up interval for periodic updates
+    updateIntervalRef.current = setInterval(updateAnalysis, 30000); // Update every 30 seconds
+
+    return () => {
+      clearTimeout(timeoutId);
+      if (updateIntervalRef.current) {
+        clearInterval(updateIntervalRef.current);
+      }
+    };
+  }, [selectedCrypto, selectedToken]); // Removed updateAnalysis from dependencies to prevent recreation
 
   if (!selectedToken || currentPrice <= 0) {
     return (
@@ -91,7 +115,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                ${currentPrice.toFixed(2)}
+                ${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </span>
             </div>
 
@@ -159,7 +183,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                ${analysis.supportLevel.toFixed(2)}
+                ${analysis.supportLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </span>
             </div>
 
@@ -176,7 +200,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                ${analysis.resistanceLevel.toFixed(2)}
+                ${analysis.resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </span>
             </div>
 

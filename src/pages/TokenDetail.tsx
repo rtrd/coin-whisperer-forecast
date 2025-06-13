@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,7 +44,9 @@ const TokenDetail = () => {
   const [predictionDays, setPredictionDays] = useState(7);
   const [modelType, setModelType] = useState('advanced');
   const [showPrediction, setShowPrediction] = useState(false);
-  const [marketData, setMarketData] = useState({
+  
+  // Use ref to ensure market data stability
+  const marketDataRef = useRef({
     marketCap: 0,
     volume24h: 0,
     circulatingSupply: 0,
@@ -54,6 +56,9 @@ const TokenDetail = () => {
     priceChange7d: 0,
     priceChange30d: 0
   });
+  
+  const [marketData, setMarketData] = useState(marketDataRef.current);
+  const [isMarketDataInitialized, setIsMarketDataInitialized] = useState(false);
 
   // Map URL token IDs to CoinGecko IDs and get full token info
   const getTokenInfo = (urlTokenId: string) => {
@@ -153,8 +158,8 @@ const TokenDetail = () => {
   ];
 
   useEffect(() => {
-    // Generate random market data based on the specific token
-    if (cryptoData && cryptoData.length > 0) {
+    // Only generate market data once when crypto data is first loaded
+    if (cryptoData && cryptoData.length > 0 && !isMarketDataInitialized) {
       const currentPrice = cryptoData[cryptoData.length - 1].price;
       
       // Generate different market data based on token type
@@ -166,7 +171,7 @@ const TokenDetail = () => {
         return Math.random() * 500000000 + 100000000;
       };
 
-      setMarketData({
+      const newMarketData = {
         marketCap: currentPrice * getMarketCapMultiplier(),
         volume24h: currentPrice * (Math.random() * 50000000 + 10000000),
         circulatingSupply: Math.random() * 1000000000 + 100000000,
@@ -175,9 +180,18 @@ const TokenDetail = () => {
         allTimeLow: currentPrice * (Math.random() * 0.5 + 0.1),
         priceChange7d: (Math.random() - 0.5) * 40,
         priceChange30d: (Math.random() - 0.5) * 80
-      });
+      };
+
+      marketDataRef.current = newMarketData;
+      setMarketData(newMarketData);
+      setIsMarketDataInitialized(true);
     }
-  }, [cryptoData, selectedToken]);
+  }, [cryptoData, selectedToken, isMarketDataInitialized]);
+
+  // Reset market data initialization when token changes
+  useEffect(() => {
+    setIsMarketDataInitialized(false);
+  }, [cryptoId]);
 
   const handlePredict = async () => {
     if (!cryptoData) {
