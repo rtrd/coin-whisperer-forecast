@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { getAllCryptos } from '../../utils/api';
 import { category } from '../../utils/Category';
@@ -34,12 +33,14 @@ export const useCryptoFilters = () => {
   const getCryptos = async () => {
     try {
       const data = await getAllCryptos();
-      const uniqueData = removeDuplicates(data);
+      // Ensure data is an array before processing
+      const cryptoArray = Array.isArray(data) ? data : [];
+      const uniqueData = removeDuplicates(cryptoArray);
       const updatedTokens = addCategoryToTokens(uniqueData, category);
 
       setFilteredCryptos(updatedTokens);
       setAllCryptosData(updatedTokens);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching coins:", error.message);
       return [];
     }
