@@ -75,20 +75,20 @@ export const ArticleIndex: React.FC<ArticleIndexProps> = ({ content }) => {
       </CardHeader>
       <CardContent className="pt-0">
         <div className="space-y-1">
-          {headings.map((heading, index) => (
+          {headings.map((heading) => (
             <button
               key={heading.id}
               onClick={() => handleHeadingClick(heading.id)}
               className={`
-                block w-full text-left text-sm hover:text-blue-400 transition-colors cursor-pointer
-                ${heading.level === 1 ? 'text-white font-semibold' : ''}
-                ${heading.level === 2 ? 'text-gray-200 pl-3' : ''}
-                ${heading.level === 3 ? 'text-gray-300 pl-6' : ''}
-                ${heading.level === 4 ? 'text-gray-400 pl-9' : ''}
-                hover:bg-gray-700/30 rounded px-2 py-1
+                block w-full text-left text-sm text-white hover:text-blue-400 transition-colors cursor-pointer
+                ${heading.level === 1 ? 'font-semibold' : ''}
+                ${heading.level === 2 ? 'pl-3' : ''}
+                ${heading.level === 3 ? 'pl-6' : ''}
+                ${heading.level === 4 ? 'pl-9' : ''}
+                hover:bg-gray-700/30 rounded px-2 py-1 flex items-center
               `}
             >
-              <span className="text-blue-400 font-medium mr-2">{index + 1}.</span>
+              <span className="text-blue-400 font-medium mr-2">•</span>
               {heading.text}
             </button>
           ))}
