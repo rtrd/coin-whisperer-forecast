@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,12 +8,12 @@ import { CryptoFilters } from "@/components/CryptoFilters";
 import { useLocation } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
-import { generateMarketData } from "./../components/MarketDataUtils";
+import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import {
   MarketDataFilters,
   FilterType,
-} from "./../components/MarketDataFilters";
+} from "@/components/MarketDataFilters";
 
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
