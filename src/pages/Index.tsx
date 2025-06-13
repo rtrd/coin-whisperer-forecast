@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from "react";
 import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
@@ -37,16 +36,17 @@ const Index = () => {
     }));
   }
 
-  // Function to remove duplicates based on token ID
+  // Enhanced function to remove duplicates based on token ID
   const removeDuplicates = (tokens) => {
-    const seen = new Set();
-    return tokens.filter((token) => {
-      if (seen.has(token.id)) {
-        return false;
+    const uniqueTokens = new Map();
+    
+    tokens.forEach((token) => {
+      if (!uniqueTokens.has(token.id)) {
+        uniqueTokens.set(token.id, token);
       }
-      seen.add(token.id);
-      return true;
     });
+    
+    return Array.from(uniqueTokens.values());
   };
 
   const getCryptos = async () => {
@@ -72,7 +72,7 @@ const Index = () => {
   }, []);
 
   const handleFilterChange = (filters: any) => {
-    let filtered = AllCryptosData;
+    let filtered = [...AllCryptosData];
 
     // Apply search filter
     if (filters.searchTerm && filters.searchTerm.trim() !== "") {
@@ -151,7 +151,7 @@ const Index = () => {
     ) {
       switch (filters) {
         case "volume":
-          sorted.sort((a, b) => (a.total_volume || 0) - (b.total_volume || 0));
+          sorted.sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
           break;
         case "gainers":
           sorted = sorted
@@ -163,12 +163,15 @@ const Index = () => {
             .filter((item) => item.price_change_24h < 0)
             .sort((a, b) => a.price_change_24h - b.price_change_24h);
           break;
-        case "marketCap":
-          sorted.sort((a, b) => (a.market_cap || 0) - (b.market_cap || 0));
+        case "market_cap":
+          sorted.sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
           break;
       }
 
-      setFilteredCryptos(sorted);
+      // Remove duplicates again after sorting
+      const uniqueSorted = removeDuplicates(sorted);
+      setFilteredCryptos(uniqueSorted);
+      return;
     }
 
     if (filters.sortBy !== undefined && filters.sortBy !== "") {
@@ -199,36 +202,38 @@ const Index = () => {
           break;
         case "price":
           sorted.sort(
-            (a, b) => (a.current_price || 0) - (b.current_price || 0)
+            (a, b) => (b.current_price || 0) - (a.current_price || 0)
           );
           break;
         case "change24h":
           sorted.sort(
-            (a, b) => (a.price_change_24h || 0) - (b.price_change_24h || 0)
+            (a, b) => (b.price_change_24h || 0) - (a.price_change_24h || 0)
           );
           break;
         case "volume":
-          sorted.sort((a, b) => (a.total_volume || 0) - (b.total_volume || 0));
+          sorted.sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
           break;
         case "gainers":
-          sorted
-            .filter((item) => item.change24h > 0)
-            .sort((a, b) => b.change24h - a.change24h)
+          sorted = sorted
+            .filter((item) => item.price_change_24h > 0)
+            .sort((a, b) => b.price_change_24h - a.price_change_24h)
             .slice(0, 10);
           break;
         case "losers":
-          sorted
-            .filter((item) => item.change24h < 0)
-            .sort((a, b) => a.change24h - b.change24h)
+          sorted = sorted
+            .filter((item) => item.price_change_24h < 0)
+            .sort((a, b) => a.price_change_24h - b.price_change_24h)
             .slice(0, 10);
           break;
         case "marketCap":
-          sorted.sort((a, b) => (a.market_cap || 0) - (b.market_cap || 0));
+          sorted.sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
           break;
       }
-
-      setFilteredCryptos(sorted);
     }
+
+    // Final duplicate removal before setting state
+    const finalUnique = removeDuplicates(sorted);
+    setFilteredCryptos(finalUnique);
   };
 
   const handlePredict = async () => {
