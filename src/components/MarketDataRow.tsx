@@ -1,4 +1,3 @@
-
 import React, { memo } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
@@ -54,7 +53,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(({
       
       <TableCell className="w-32 px-2 py-3">
         <div className={`flex items-center gap-1 ${
-          token.change24h >= 0 ? "text-green-400" : "text-re<-400"
+          token.change24h >= 0 ? "text-green-400" : "text-red-400"
         }`}>
           {token.change24h >= 0 ? (
             <TrendingUp className="h-4 w-4" />
