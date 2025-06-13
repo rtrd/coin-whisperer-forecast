@@ -33,15 +33,15 @@ const MarketMovers = () => {
 
   const formatPrice = (price: number) => {
     if (price < 0.001) {
-      return price.toFixed(8);
+      return price.toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
     } else if (price < 1) {
-      return price.toFixed(4);
+      return price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
     }
-    return price.toFixed(2);
+    return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
   const formatChange = (change: number) => {
-    return `${change > 0 ? '+' : ''}${change.toFixed(1)}%`;
+    return `${change > 0 ? '+' : ''}${change.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
   };
 
   return (
@@ -70,7 +70,7 @@ const MarketMovers = () => {
                     {formatChange(crypto.predictedChange)}
                   </div>
                   <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
-                    Score: {crypto.score}
+                    Score: {crypto.score.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </Badge>
                 </div>
               </div>
@@ -103,7 +103,7 @@ const MarketMovers = () => {
                     {formatChange(crypto.predictedChange)}
                   </div>
                   <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400">
-                    Score: {crypto.score}
+                    Score: {crypto.score.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </Badge>
                 </div>
               </div>

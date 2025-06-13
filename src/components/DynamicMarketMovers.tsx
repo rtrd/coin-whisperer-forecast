@@ -70,21 +70,21 @@ export const DynamicMarketMovers = () => {
 
   const formatPrice = (price: number) => {
     if (price < 0.001) {
-      return price.toFixed(8);
+      return price.toLocaleString('en-US', { minimumFractionDigits: 8, maximumFractionDigits: 8 });
     } else if (price < 1) {
-      return price.toFixed(4);
+      return price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
     }
-    return price.toFixed(2);
+    return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
   const formatChange = (change: number) => {
-    return `${change > 0 ? '+' : ''}${change.toFixed(1)}%`;
+    return `${change > 0 ? '+' : ''}${change.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}%`;
   };
 
   const formatVolume = (volume: number) => {
-    if (volume >= 1e9) return `$${(volume / 1e9).toFixed(1)}B`;
-    if (volume >= 1e6) return `$${(volume / 1e6).toFixed(1)}M`;
-    return `$${(volume / 1e3).toFixed(1)}K`;
+    if (volume >= 1e9) return `$${(volume / 1e9).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}B`;
+    if (volume >= 1e6) return `$${(volume / 1e6).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}M`;
+    return `$${(volume / 1e3).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}K`;
   };
 
   return (
@@ -114,7 +114,7 @@ export const DynamicMarketMovers = () => {
                     {formatChange(crypto.predictedChange)}
                   </div>
                   <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-0.5 py-0 h-3 text-xs">
-                    {crypto.score.toFixed(1)}
+                    {crypto.score.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </Badge>
                 </div>
               </div>
@@ -148,7 +148,7 @@ export const DynamicMarketMovers = () => {
                     {formatChange(crypto.predictedChange)}
                   </div>
                   <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-0.5 py-0 h-3 text-xs">
-                    {crypto.score.toFixed(1)}
+                    {crypto.score.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </Badge>
                 </div>
               </div>
@@ -182,7 +182,7 @@ export const DynamicMarketMovers = () => {
                     {formatVolume(crypto.volume24h || 0)}
                   </div>
                   <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400 px-0.5 py-0 h-3 text-xs">
-                    {crypto.score.toFixed(1)}
+                    {crypto.score.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   </Badge>
                 </div>
               </div>

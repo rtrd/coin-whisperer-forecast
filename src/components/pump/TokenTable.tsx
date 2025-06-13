@@ -23,9 +23,9 @@ interface TokenTableProps {
 
 export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass }) => {
   const formatNumber = (num: number) => {
-    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
-    return num.toString();
+    if (num >= 1e6) return `${(num / 1e6).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}M`;
+    if (num >= 1e3) return `${(num / 1e3).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}K`;
+    return num.toLocaleString('en-US');
   };
 
   return (
@@ -59,7 +59,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
                 </div>
               </TableCell>
               <TableCell className="text-white font-mono text-sm px-2">
-                ${token.price.toFixed(4)}
+                ${token.price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}
               </TableCell>
               <TableCell className="px-2">
                 <div className={`flex items-center gap-1 ${changeColorClass}`}>
@@ -69,7 +69,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
                     <TrendingDown className="h-3 w-3" />
                   )}
                   <span className="font-mono text-sm">
-                    {token.change24h >= 0 ? "+" : ""}{token.change24h}%
+                    {token.change24h >= 0 ? "+" : ""}{token.change24h.toLocaleString('en-US')}%
                   </span>
                 </div>
               </TableCell>

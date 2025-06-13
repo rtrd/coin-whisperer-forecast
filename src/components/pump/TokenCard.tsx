@@ -22,9 +22,9 @@ interface TokenCardProps {
 
 export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass }) => {
   const formatNumber = (num: number) => {
-    if (num >= 1e6) return `${(num / 1e6).toFixed(1)}M`;
-    if (num >= 1e3) return `${(num / 1e3).toFixed(1)}K`;
-    return num.toString();
+    if (num >= 1e6) return `${(num / 1e6).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}M`;
+    if (num >= 1e3) return `${(num / 1e3).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}K`;
+    return num.toLocaleString('en-US');
   };
 
   return (
@@ -46,12 +46,12 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass })
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="space-y-1">
             <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
-            <div className="text-white font-mono font-medium">${token.price.toFixed(4)}</div>
+            <div className="text-white font-mono font-medium">${token.price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
           </div>
           <div className="space-y-1">
             <div className="text-gray-400 text-xs uppercase tracking-wide">24h Change</div>
             <div className={`${changeColorClass} font-bold font-mono`}>
-              {token.change24h >= 0 ? '+' : ''}{token.change24h}%
+              {token.change24h >= 0 ? '+' : ''}{token.change24h.toLocaleString('en-US')}%
             </div>
           </div>
         </div>
