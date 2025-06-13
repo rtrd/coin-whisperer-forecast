@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, HelpCircle } from "lucide-react";
@@ -12,7 +12,7 @@ interface TokenAnalysisProps {
   cryptoOptions: any[];
 }
 
-export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
+export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
   selectedCrypto,
   currentPrice,
   priceChange,
@@ -26,28 +26,43 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
     resistanceLevel: 0
   });
 
+  const selectedToken = useMemo(() => 
+    cryptoOptions.find(c => c.value === selectedCrypto), 
+    [cryptoOptions, selectedCrypto]
+  );
+
+  const updateAnalysis = useCallback(() => {
+    if (!selectedToken || currentPrice <= 0) return;
+    
+    const baseScore = selectedToken?.score || 5;
+    
+    setAnalysis({
+      momentum: (Math.random() * 200 - 100),
+      volatility: Math.random() * 100,
+      marketSentiment: baseScore > 7 ? 'bullish' : baseScore < 4 ? 'bearish' : 'neutral',
+      supportLevel: currentPrice * (0.92 + Math.random() * 0.06),
+      resistanceLevel: currentPrice * (1.02 + Math.random() * 0.06)
+    });
+  }, [selectedToken, currentPrice]);
+
   useEffect(() => {
-    // Simulate dynamic analysis updates
-    const updateAnalysis = () => {
-      const selectedToken = cryptoOptions.find(c => c.value === selectedCrypto);
-      const baseScore = selectedToken?.score || 5;
-      
-      setAnalysis({
-        momentum: (Math.random() * 200 - 100), // -100 to 100
-        volatility: Math.random() * 100,
-        marketSentiment: baseScore > 7 ? 'bullish' : baseScore < 4 ? 'bearish' : 'neutral',
-        supportLevel: currentPrice * (0.92 + Math.random() * 0.06),
-        resistanceLevel: currentPrice * (1.02 + Math.random() * 0.06)
-      });
-    };
-
     updateAnalysis();
-    const interval = setInterval(updateAnalysis, 10000); // Update every 10 seconds
-
+    const interval = setInterval(updateAnalysis, 30000); // Update every 30 seconds instead of 10
     return () => clearInterval(interval);
-  }, [selectedCrypto, currentPrice, cryptoOptions]);
+  }, [updateAnalysis]);
 
-  const selectedToken = cryptoOptions.find(c => c.value === selectedCrypto);
+  if (!selectedToken || currentPrice <= 0) {
+    return (
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-white">Token Analysis</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-gray-400">Loading token data...</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <TooltipProvider>
@@ -203,4 +218,6 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = ({
       </Card>
     </TooltipProvider>
   );
-};
+});
+
+DynamicTokenAnalysis.displayName = 'DynamicTokenAnalysis';

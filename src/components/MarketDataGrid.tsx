@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -58,7 +59,11 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
                     to={`/token/${tokenUrlId}`}
                     className="flex items-center gap-2 hover:text-blue-400 transition-colors min-w-0"
                   >
-                    <img src={token.image} alt={token.label} width={24} height={24} className="shrink-0" />
+                    <img 
+                      src={token.image} 
+                      alt={token.label} 
+                      className="w-6 h-6 object-contain rounded-full flex-shrink-0"
+                    />
                     <div className="min-w-0">
                       <div className="text-white font-bold text-base truncate">
                         {token.name.split(" ")[0]}

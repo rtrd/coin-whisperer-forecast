@@ -60,7 +60,11 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
           className="flex items-center gap-2 hover:text-blue-400 transition-colors"
         >
           <span className="text-lg">
-            <img src={token.image} alt={token.label} width={30} height={30} />
+            <img 
+              src={token.image} 
+              alt={token.label} 
+              className="w-8 h-8 object-contain rounded-full flex-shrink-0"
+            />
           </span>
           <div>
             <div className="text-white font-medium">

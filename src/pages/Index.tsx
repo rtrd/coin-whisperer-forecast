@@ -37,11 +37,25 @@ const Index = () => {
     }));
   }
 
+  // Function to remove duplicates based on token ID
+  const removeDuplicates = (tokens) => {
+    const seen = new Set();
+    return tokens.filter((token) => {
+      if (seen.has(token.id)) {
+        return false;
+      }
+      seen.add(token.id);
+      return true;
+    });
+  };
+
   const getCryptos = async () => {
     try {
       const data = await getAllCryptos();
-
-      const updatedTokens = addCategoryToTokens(data, category);
+      
+      // Remove duplicates before adding categories
+      const uniqueData = removeDuplicates(data);
+      const updatedTokens = addCategoryToTokens(uniqueData, category);
 
       setFilteredCryptos(updatedTokens);
       setAllCryptosData(updatedTokens);
@@ -70,14 +84,6 @@ const Index = () => {
           crypto.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
       );
     }
-
-    //Apply prediction range filter
-    // if (filters.predictionRange && (filters.predictionRange[0] > -100 || filters.predictionRange[1] < 100)){
-    //      filtered = filtered.filter(crypto => {
-    //   const predictionValue = parseFloat(crypto.prediction.replace('%', '').replace('+', ''));
-    //   return predictionValue >= filters.predictionRange[0] && predictionValue <= filters.predictionRange[1];
-    // });
-    // }
 
     // Apply category filter
     if (filters.category && filters.category !== "all") {
@@ -135,7 +141,6 @@ const Index = () => {
       );
     }
 
-    debugger;
     // Sorting
     let sorted = [...filtered];
     if (

@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Lock, Mail, Crown, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { ComingSoonPlaceholder } from './ComingSoonPlaceholder';
 
 interface SignupLockProps {
   children: React.ReactNode;
@@ -43,12 +44,12 @@ export const SignupLock: React.FC<SignupLockProps> = ({
     setIsUnlocked(true);
     setIsLoading(false);
     
-    toast.success("Email sent! AI content unlocked successfully!");
+    toast.success("Thank you for signing up! Our AI features are coming soon.");
     setEmail('');
   };
 
   if (isUnlocked) {
-    return <>{children}</>;
+    return <ComingSoonPlaceholder title={title} description={description} />;
   }
 
   return (
@@ -97,7 +98,7 @@ export const SignupLock: React.FC<SignupLockProps> = ({
                 ) : (
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
-                    Unlock AI Analysis
+                    Sign Up for Updates
                   </div>
                 )}
               </Button>
