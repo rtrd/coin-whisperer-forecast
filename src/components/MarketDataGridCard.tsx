@@ -1,20 +1,21 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown, Lock, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
+import { MarketData } from "@/types/crypto";
 
 interface MarketDataGridCardProps {
-  token: any;
+  token: MarketData;
   index: number;
   isUnlocked: boolean;
   tokenUrlId: string;
 }
 
-export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = ({
+export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(({
   token,
   index,
   isUnlocked,
@@ -134,4 +135,6 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = ({
       </div>
     </div>
   );
-};
+});
+
+MarketDataGridCard.displayName = 'MarketDataGridCard';

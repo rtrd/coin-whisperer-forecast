@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, memo, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,27 +10,35 @@ import { MarketDataFilters, FilterType } from "./MarketDataFilters";
 import { MarketDataTable } from "./MarketDataTable";
 import { MarketDataGrid } from "./MarketDataGrid";
 import { generateMarketData, getFilterTitle } from "./MarketDataUtils";
+import { CryptoToken } from "@/types/crypto";
 
 interface MarketDataWidgetProps {
-  cryptoOptions: any[];
-  AllCryptosData: any;
+  cryptoOptions: CryptoToken[];
+  AllCryptosData: CryptoToken[];
   onMarketDataFilter: (filter: any) => void;
 }
 
-export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
+export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(({
   cryptoOptions,
   AllCryptosData,
   onMarketDataFilter,
 }) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
-  const [isUnlocked] = useState(() => {
+  
+  const isUnlocked = useMemo(() => {
     return localStorage.getItem("ai-content-unlocked") === "true";
-  });
+  }, []);
 
-  const marketData = generateMarketData(cryptoOptions, activeFilter);
+  const marketData = useMemo(() => 
+    generateMarketData(cryptoOptions, activeFilter), 
+    [cryptoOptions, activeFilter]
+  );
 
-  console.log("Market data", marketData);
+  const filterTitle = useMemo(() => 
+    getFilterTitle(activeFilter), 
+    [activeFilter]
+  );
 
   return (
     <TooltipProvider>
@@ -39,9 +47,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <BarChart3 className="h-5 w-5 text-blue-400" />
-              <CardTitle className="text-white">
-                {getFilterTitle(activeFilter)}
-              </CardTitle>
+              <CardTitle className="text-white">{filterTitle}</CardTitle>
               <Badge className="bg-green-600">Live Data</Badge>
             </div>
             <div className="flex items-center gap-2">
@@ -105,4 +111,6 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = ({
       </Card>
     </TooltipProvider>
   );
-};
+});
+
+MarketDataWidget.displayName = 'MarketDataWidget';

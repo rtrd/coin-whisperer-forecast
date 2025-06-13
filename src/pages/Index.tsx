@@ -27,43 +27,51 @@ const Index = () => {
   const {
     filteredCryptos,
     allCryptosData,
-    handleFilterChange
+    handleFilterChange,
+    isLoading: filtersLoading,
+    error: filtersError
   } = useCryptoFilters();
 
   const handlePredict = async () => {
-    if (!cryptoData) {
+    if (!cryptoData?.length) {
       toast.error("No data available for prediction");
       return;
     }
 
-    await generatePrediction(cryptoData, selectedCrypto, predictionDays);
-    toast.success("Prediction generated successfully!");
+    try {
+      await generatePrediction(cryptoData, selectedCrypto, predictionDays);
+      toast.success("Prediction generated successfully!");
+    } catch (error) {
+      toast.error("Failed to generate prediction");
+    }
   };
 
   useEffect(() => {
     if (dataError) {
       toast.error("Failed to fetch crypto data");
     }
-  }, [dataError]);
+    if (filtersError) {
+      toast.error(filtersError);
+    }
+  }, [dataError, filtersError]);
 
-  const currentPrice =
-    cryptoData && cryptoData.length > 0
-      ? cryptoData[cryptoData.length - 1]?.price
-      : 0;
-  const previousPrice =
-    cryptoData && cryptoData.length > 1
-      ? cryptoData[cryptoData.length - 2]?.price
-      : 0;
-  const priceChange =
-    currentPrice && previousPrice
-      ? ((currentPrice - previousPrice) / previousPrice) * 100
-      : 0;
+  const currentPrice = cryptoData?.length 
+    ? cryptoData[cryptoData.length - 1]?.price || 0
+    : 0;
+    
+  const previousPrice = cryptoData?.length > 1
+    ? cryptoData[cryptoData.length - 2]?.price || 0
+    : 0;
+    
+  const priceChange = currentPrice && previousPrice
+    ? ((currentPrice - previousPrice) / previousPrice) * 100
+    : 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <IndexContent
         selectedCrypto={selectedCrypto}
-        cryptoOptions={[]}
+        cryptoOptions={filteredCryptos}
         currentPrice={currentPrice}
         priceChange={priceChange}
         filteredCryptos={filteredCryptos}

@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { memo } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, Lock } from "lucide-react";
@@ -7,15 +7,16 @@ import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
+import { MarketData } from "@/types/crypto";
 
 interface MarketDataRowProps {
-  token: any;
+  token: MarketData;
   index: number;
   isUnlocked: boolean;
   activeFilter: string;
 }
 
-export const MarketDataRow: React.FC<MarketDataRowProps> = ({
+export const MarketDataRow: React.FC<MarketDataRowProps> = memo(({
   token,
   index,
   isUnlocked,
@@ -53,7 +54,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
       
       <TableCell className="w-32 px-2 py-3">
         <div className={`flex items-center gap-1 ${
-          token.change24h >= 0 ? "text-green-400" : "text-red-400"
+          token.change24h >= 0 ? "text-green-400" : "text-re<-400"
         }`}>
           {token.change24h >= 0 ? (
             <TrendingUp className="h-4 w-4" />
@@ -115,4 +116,6 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
       </TableCell>
     </TableRow>
   );
-};
+});
+
+MarketDataRow.displayName = 'MarketDataRow';

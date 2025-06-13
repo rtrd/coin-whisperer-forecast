@@ -1,24 +1,26 @@
-import { useState, useEffect } from 'react';
-import { getAllCryptos } from '../../utils/api';
+
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { apiService } from '@/services/apiService';
+import { CryptoToken, CryptoFilters, CryptoCategory } from '@/types/crypto';
 import { category } from '../../utils/Category';
 
 export const useCryptoFilters = () => {
-  const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
-  const [allCryptosData, setAllCryptosData] = useState<any[]>([]);
+  const [filteredCryptos, setFilteredCryptos] = useState<CryptoToken[]>([]);
+  const [allCryptosData, setAllCryptosData] = useState<CryptoToken[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const addCategoryToTokens = (tokens: any[], categories: any[]) => {
-    const categoryMap = Object.fromEntries(
-      categories.map((c) => [c.id, c.category])
-    );
+  const addCategoryToTokens = useCallback((tokens: CryptoToken[], categories: CryptoCategory[]): CryptoToken[] => {
+    const categoryMap = new Map(categories.map((c) => [c.id, c.category]));
 
     return tokens.map((token) => ({
       ...token,
-      category: categoryMap[token.id] || "Unknown",
+      category: categoryMap.get(token.id) || "Unknown",
     }));
-  };
+  }, []);
 
-  const removeDuplicates = (tokens: any[]) => {
-    const uniqueTokens = new Map();
+  const removeDuplicates = useCallback((tokens: CryptoToken[]): CryptoToken[] => {
+    const uniqueTokens = new Map<string, CryptoToken>();
     
     tokens.forEach((token) => {
       const key = token.id || token.value;
@@ -28,12 +30,14 @@ export const useCryptoFilters = () => {
     });
     
     return Array.from(uniqueTokens.values());
-  };
+  }, []);
 
-  const getCryptos = async () => {
+  const getCryptos = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    
     try {
-      const data = await getAllCryptos();
-      // Ensure data is an array before processing
+      const data = await apiService.getAllCryptos();
       const cryptoArray = Array.isArray(data) ? data : [];
       const uniqueData = removeDuplicates(cryptoArray);
       const updatedTokens = addCategoryToTokens(uniqueData, category);
@@ -41,22 +45,49 @@ export const useCryptoFilters = () => {
       setFilteredCryptos(updatedTokens);
       setAllCryptosData(updatedTokens);
     } catch (error: any) {
-      console.error("Error fetching coins:", error.message);
-      return [];
+      const errorMessage = error.message || 'Failed to fetch crypto data';
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [addCategoryToTokens, removeDuplicates]);
 
-  const handleFilterChange = (filters: any) => {
+  const applySorting = useCallback((data: CryptoToken[], sortType: string): CryptoToken[] => {
+    switch (sortType) {
+      case "volume":
+        return [...data].sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
+      case "gainers":
+        return data
+          .filter((item) => item.price_change_24h > 0)
+          .sort((a, b) => b.price_change_24h - a.price_change_24h);
+      case "losers":
+        return data
+          .filter((item) => item.price_change_24h < 0)
+          .sort((a, b) => a.price_change_24h - b.price_change_24h);
+      case "market_cap":
+        return [...data].sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
+      default:
+        return data;
+    }
+  }, []);
+
+  const handleFilterChange = useCallback((filters: CryptoFilters | string) => {
     let filtered = [...allCryptosData];
 
+    if (typeof filters === 'string') {
+      const sorted = applySorting(filtered, filters);
+      const uniqueSorted = removeDuplicates(sorted);
+      setFilteredCryptos(uniqueSorted);
+      return;
+    }
+
     // Apply search filter
-    if (filters.searchTerm && filters.searchTerm.trim() !== "") {
+    if (filters.searchTerm?.trim()) {
+      const searchTerm = filters.searchTerm.toLowerCase();
       filtered = filtered.filter(
         (crypto) =>
-          crypto.symbol
-            .toLowerCase()
-            .includes(filters.searchTerm.toLowerCase()) ||
-          crypto.name.toLowerCase().includes(filters.searchTerm.toLowerCase())
+          crypto.symbol?.toLowerCase().includes(searchTerm) ||
+          crypto.name?.toLowerCase().includes(searchTerm)
       );
     }
 
@@ -68,109 +99,57 @@ export const useCryptoFilters = () => {
     }
 
     // Apply price range filter
-    if (
-      filters.priceRange &&
-      (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000000)
-    ) {
+    if (filters.priceRange && (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000000)) {
       filtered = filtered.filter(
         (crypto) =>
-          crypto.current_price >= filters.priceRange[0] &&
-          crypto.current_price <= filters.priceRange[1]
+          crypto.current_price >= filters.priceRange![0] &&
+          crypto.current_price <= filters.priceRange![1]
       );
     }
 
     // Apply 24h change range filter
-    if (
-      filters.change24hRange &&
-      (filters.change24hRange[0] > -50 || filters.change24hRange[1] < 50)
-    ) {
+    if (filters.change24hRange && (filters.change24hRange[0] > -50 || filters.change24hRange[1] < 50)) {
       filtered = filtered.filter(
         (crypto) =>
-          crypto.price_change_24h >= filters.change24hRange[0] &&
-          crypto.price_change_24h <= filters.change24hRange[1]
+          crypto.price_change_24h >= filters.change24hRange![0] &&
+          crypto.price_change_24h <= filters.change24hRange![1]
       );
     }
 
     // Apply volume range filter
-    if (
-      filters.volumeRange &&
-      (filters.volumeRange[0] > 0 || filters.volumeRange[1] < 1000000000)
-    ) {
+    if (filters.volumeRange && (filters.volumeRange[0] > 0 || filters.volumeRange[1] < 1000000000)) {
       filtered = filtered.filter(
         (crypto) =>
-          crypto.total_volume >= filters.volumeRange[0] &&
-          crypto.total_volume <= filters.volumeRange[1]
+          crypto.total_volume >= filters.volumeRange![0] &&
+          crypto.total_volume <= filters.volumeRange![1]
       );
     }
 
     // Apply market cap range filter
-    if (
-      filters.marketCapRange &&
-      (filters.marketCapRange[0] > 0 ||
-        filters.marketCapRange[1] < 1000000000000)
-    ) {
+    if (filters.marketCapRange && (filters.marketCapRange[0] > 0 || filters.marketCapRange[1] < 1000000000000)) {
       filtered = filtered.filter(
         (crypto) =>
-          crypto.market_cap >= filters.marketCapRange[0] &&
-          crypto.market_cap <= filters.marketCapRange[1]
+          crypto.market_cap >= filters.marketCapRange![0] &&
+          crypto.market_cap <= filters.marketCapRange![1]
       );
     }
 
     // Handle sorting
-    const applySorting = (data: any[], sortType: string) => {
-      switch (sortType) {
-        case "volume":
-          return data.sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
-        case "gainers":
-          return data
-            .filter((item) => item.price_change_24h > 0)
-            .sort((a, b) => b.price_change_24h - a.price_change_24h);
-        case "losers":
-          return data
-            .filter((item) => item.price_change_24h < 0)
-            .sort((a, b) => a.price_change_24h - b.price_change_24h);
-        case "market_cap":
-          return data.sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
-        default:
-          return data;
-      }
-    };
-
-    if (
-      filters === "gainers" ||
-      filters === "losers" ||
-      filters === "volume" ||
-      filters === "market_cap"
-    ) {
-      const sorted = applySorting([...filtered], filters);
-      const uniqueSorted = removeDuplicates(sorted);
-      setFilteredCryptos(uniqueSorted);
-      return;
-    }
-
-    if (filters.sortBy !== undefined && filters.sortBy !== "") {
+    if (filters.sortBy) {
       let sorted = [...filtered];
       
       switch (filters.sortBy) {
         case "name":
-          sorted.sort((a, b) =>
-            (a.label || a.name).localeCompare(b.label || b.name)
-          );
+          sorted.sort((a, b) => (a.label || a.name).localeCompare(b.label || b.name));
           break;
         case "category":
-          sorted.sort((a, b) =>
-            (a.category || "").localeCompare(b.category || "")
-          );
+          sorted.sort((a, b) => (a.category || "").localeCompare(b.category || ""));
           break;
         case "price":
-          sorted.sort(
-            (a, b) => (b.current_price || 0) - (a.current_price || 0)
-          );
+          sorted.sort((a, b) => (b.current_price || 0) - (a.current_price || 0));
           break;
         case "change24h":
-          sorted.sort(
-            (a, b) => (b.price_change_24h || 0) - (a.price_change_24h || 0)
-          );
+          sorted.sort((a, b) => (b.price_change_24h || 0) - (a.price_change_24h || 0));
           break;
         case "volume":
           sorted.sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
@@ -185,15 +164,18 @@ export const useCryptoFilters = () => {
 
     const finalUnique = removeDuplicates(filtered);
     setFilteredCryptos(finalUnique);
-  };
+  }, [allCryptosData, applySorting, removeDuplicates]);
 
   useEffect(() => {
     getCryptos();
-  }, []);
+  }, [getCryptos]);
 
-  return {
+  return useMemo(() => ({
     filteredCryptos,
     allCryptosData,
-    handleFilterChange
-  };
+    handleFilterChange,
+    isLoading,
+    error,
+    refetch: getCryptos
+  }), [filteredCryptos, allCryptosData, handleFilterChange, isLoading, error, getCryptos]);
 };
