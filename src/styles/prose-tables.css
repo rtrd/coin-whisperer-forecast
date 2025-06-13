@@ -1,0 +1,53 @@
+
+/* Table styling for article content */
+.prose table {
+  width: 100% !important;
+  margin: 2rem 0 !important;
+  border-collapse: collapse !important;
+  background: rgba(31, 41, 55, 0.5) !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  border: 1px solid #374151 !important;
+}
+
+.prose table thead {
+  background: rgba(59, 130, 246, 0.2) !important;
+}
+
+.prose table th {
+  padding: 1rem !important;
+  text-align: left !important;
+  font-weight: 600 !important;
+  color: white !important;
+  border-bottom: 2px solid #3b82f6 !important;
+  border-right: 1px solid #374151 !important;
+}
+
+.prose table th:last-child {
+  border-right: none !important;
+}
+
+.prose table td {
+  padding: 0.75rem 1rem !important;
+  color: #e5e7eb !important;
+  border-bottom: 1px solid #374151 !important;
+  border-right: 1px solid #374151 !important;
+}
+
+.prose table td:last-child {
+  border-right: none !important;
+}
+
+.prose table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+.prose table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+.prose table caption {
+  margin-bottom: 1rem !important;
+  color: #9ca3af !important;
+  font-style: italic !important;
+}

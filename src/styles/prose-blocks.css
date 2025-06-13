@@ -1,0 +1,27 @@
+
+/* Blockquotes and special content blocks */
+.prose blockquote {
+  border-left: 4px solid #3b82f6 !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+  padding: 1rem 1.5rem 1rem 3rem !important;
+  margin: 1.5rem 0 !important;
+  border-radius: 0.375rem !important;
+  font-style: italic !important;
+  color: #e5e7eb !important;
+  position: relative !important;
+}
+
+.prose blockquote::before {
+  content: '"' !important;
+  font-size: 3rem !important;
+  color: #3b82f6 !important;
+  position: absolute !important;
+  top: -0.5rem !important;
+  left: 0.5rem !important;
+  opacity: 0.3 !important;
+}
+
+.prose blockquote p {
+  margin-bottom: 0 !important;
+  color: #e5e7eb !important;
+}
