@@ -20,16 +20,16 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {marketData.map((token, index) => (
-        <div key={token.value} className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 space-y-4 hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3">
+        <div key={token.value} className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
+          <div className="flex items-start justify-between mb-4">
+            <div className="flex items-center gap-3 min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span className="text-gray-400 text-sm font-medium">#{index + 1}</span>
                 <Link
                   to={`/token/${token.value}`}
-                  className="flex items-center gap-2 hover:text-blue-400 transition-colors"
+                  className="flex items-center gap-2 hover:text-blue-400 transition-colors min-w-0"
                 >
-                  <img src={token.image} alt={token.label} width={24} height={24} />
+                  <img src={token.image} alt={token.label} width={24} height={24} className="shrink-0" />
                   <div className="min-w-0">
                     <div className="text-white font-bold text-base truncate">
                       {token.name.split(" ")[0]}
@@ -43,7 +43,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             </div>
             <Badge
               variant="outline"
-              className={`text-xs shrink-0
+              className={`text-xs shrink-0 ml-2
                 ${
                   token.category === "Layer 1 (L1)"
                     ? "border-blue-500 text-blue-400"
@@ -73,7 +73,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             </Badge>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3 flex-1">
             <div className="grid grid-cols-2 gap-3 text-sm">
               <div className="space-y-1">
                 <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
@@ -147,16 +147,18 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             </div>
           </div>
 
-          <Button 
-            size="sm" 
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-            asChild
-          >
-            <Link to={`/token/${token.value}`}>
-              <ExternalLink className="h-3 w-3 mr-2" />
-              View Details
-            </Link>
-          </Button>
+          <div className="mt-4 pt-4 border-t border-gray-600/30">
+            <Button 
+              size="sm" 
+              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+              asChild
+            >
+              <Link to={`/token/${token.value}`}>
+                <ExternalLink className="h-3 w-3 mr-2" />
+                View Details
+              </Link>
+            </Button>
+          </div>
         </div>
       ))}
     </div>
