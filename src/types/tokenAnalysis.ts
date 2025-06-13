@@ -20,3 +20,10 @@ export interface TokenAnalysis {
   supportLevel: number;
   resistanceLevel: number;
 }
+
+export interface TokenAnalysisProps {
+  selectedCrypto: string;
+  currentPrice: number;
+  priceChange: number;
+  cryptoOptions?: any[];
+}

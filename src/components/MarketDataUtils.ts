@@ -1,4 +1,3 @@
-
 import { CryptoToken } from '@/types/crypto';
 
 export type FilterType = "market_cap" | "volume" | "gainers" | "losers" | "trending";
@@ -52,19 +51,27 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
     category: crypto.category || 'Cryptocurrency'
   }));
 
+  let sortedData;
   switch (activeFilter) {
     case 'gainers':
-      return marketData.sort((a, b) => b.change24h - a.change24h);
+      sortedData = marketData.sort((a, b) => b.change24h - a.change24h);
+      break;
     case 'losers':
-      return marketData.sort((a, b) => a.change24h - b.change24h);
+      sortedData = marketData.sort((a, b) => a.change24h - b.change24h);
+      break;
     case 'volume':
-      return marketData.sort((a, b) => b.volume24h - a.volume24h);
+      sortedData = marketData.sort((a, b) => b.volume24h - a.volume24h);
+      break;
     case 'trending':
-      return marketData.sort((a, b) => b.aiScore - a.aiScore);
+      sortedData = marketData.sort((a, b) => b.aiScore - a.aiScore);
+      break;
     case 'market_cap':
     default:
-      return marketData.sort((a, b) => b.marketCap - a.marketCap);
+      sortedData = marketData.sort((a, b) => b.marketCap - a.marketCap);
+      break;
   }
+  
+  return sortedData.slice(0, 10);
 };
 
 export const getFilterTitle = (activeFilter: FilterType): string => {
