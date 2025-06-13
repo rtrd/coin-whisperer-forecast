@@ -1,3 +1,4 @@
+
 import { CryptoToken } from '@/types/crypto';
 import { TokenInfo } from '@/hooks/useTokenInfo';
 
@@ -39,12 +40,19 @@ class ApiService {
     try {
       console.log(`Fetching token info for: ${tokenId}`);
       
-      const response = await fetch(`${this.baseUrl}/coins/${tokenId}`, {
-        headers: {
-          accept: 'application/json',
-          'key': API_KEY || ''
-        }
-      });
+      // First try the direct API call (will likely fail due to CORS)
+      let response;
+      try {
+        response = await fetch(`${this.baseUrl}/coins/${tokenId}`, {
+          headers: {
+            accept: 'application/json',
+            'key': API_KEY || ''
+          }
+        });
+      } catch (corsError) {
+        console.log('Direct API call failed (CORS), this is expected in browser environment');
+        throw new Error('CORS_ERROR');
+      }
 
       if (!response.ok) {
         if (response.status === 404) {

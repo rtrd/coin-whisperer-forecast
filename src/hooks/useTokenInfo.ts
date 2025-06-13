@@ -26,6 +26,13 @@ export const useTokenInfo = (tokenId: string) => {
     queryFn: () => apiService.getTokenInfo(tokenId),
     enabled: !!tokenId,
     staleTime: 300000, // 5 minutes
-    retry: 2,
+    retry: (failureCount, error) => {
+      // Don't retry CORS errors or 404s
+      if (error.message === 'CORS_ERROR' || error.message.includes('not found')) {
+        return false;
+      }
+      return failureCount < 2;
+    },
+    retryDelay: 1000,
   });
 };

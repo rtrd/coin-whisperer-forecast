@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTokenInfo } from '@/hooks/useTokenInfo';
-import { getCoinGeckoId } from '@/utils/tokenMapping';
+import { getCoinGeckoId, getTokenInfo } from '@/utils/tokenMapping';
 
 interface TokenAnalysisProps {
   selectedCrypto: string;
@@ -33,10 +34,13 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
   // Get the proper CoinGecko ID for API calls
   const coinGeckoId = useMemo(() => getCoinGeckoId(selectedCrypto), [selectedCrypto]);
   
-  // Fetch token info from API
+  // Fetch token info from API with fallback to static data
   const { data: tokenInfo, isLoading: tokenInfoLoading, error: tokenInfoError } = useTokenInfo(coinGeckoId);
 
-  // Fallback to cryptoOptions for backward compatibility
+  // Get fallback token info from static mapping
+  const fallbackToken = useMemo(() => getTokenInfo(selectedCrypto), [selectedCrypto]);
+
+  // Use API data if available, otherwise fall back to static data or cryptoOptions
   const selectedToken = useMemo(() => {
     if (tokenInfo) {
       return {
@@ -48,15 +52,29 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
               tokenInfo.symbol === 'ETH' ? 'Ξ' : 
               tokenInfo.symbol === 'XRP' ? '◉' : 
               tokenInfo.symbol === 'DOGE' ? '🐕' : '🪙',
-        score: Math.random() * 3 + 7, // Generate a score between 7-10
+        score: Math.random() * 3 + 7,
         prediction: `${(Math.random() * 20 - 10).toFixed(1)}%`,
         category: tokenInfo.categories?.[0] || 'Cryptocurrency'
       };
     }
     
-    // Fallback to cryptoOptions
+    // Fall back to static token info
+    if (fallbackToken) {
+      return {
+        value: fallbackToken.id,
+        label: `${fallbackToken.name} (${fallbackToken.symbol})`,
+        symbol: fallbackToken.symbol,
+        name: fallbackToken.name,
+        icon: fallbackToken.icon,
+        score: Math.random() * 3 + 7,
+        prediction: `${(Math.random() * 20 - 10).toFixed(1)}%`,
+        category: fallbackToken.category
+      };
+    }
+    
+    // Final fallback to cryptoOptions
     return cryptoOptions.find(c => c.value === selectedCrypto);
-  }, [tokenInfo, cryptoOptions, selectedCrypto]);
+  }, [tokenInfo, fallbackToken, cryptoOptions, selectedCrypto]);
 
   const updateAnalysis = useCallback(() => {
     if (!selectedToken) return;
@@ -105,8 +123,8 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
     };
   }, [selectedCrypto, selectedToken]);
 
-  // Show loading state while fetching token info
-  if (tokenInfoLoading) {
+  // Show loading state only if we don't have fallback data
+  if (tokenInfoLoading && !fallbackToken) {
     return (
       <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
         <CardHeader>
@@ -114,20 +132,6 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
         </CardHeader>
         <CardContent>
           <p className="text-gray-400">Loading token data...</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Show error state if token info failed to load
-  if (tokenInfoError) {
-    return (
-      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl">
-        <CardHeader>
-          <CardTitle className="text-white">Token Analysis</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-red-400">Error loading token data: {tokenInfoError.message}</p>
         </CardContent>
       </Card>
     );
@@ -146,7 +150,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
     );
   }
 
-  // Use API data when available
+  // Use API data when available, otherwise use props
   const displayPrice = tokenInfo?.current_price || currentPrice;
   const displayPriceChange = tokenInfo?.price_change_percentage_24h || priceChange;
 
@@ -164,6 +168,13 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
+            {/* Show data source indicator */}
+            {tokenInfoError && (
+              <div className="text-xs text-yellow-400 bg-yellow-900/20 px-2 py-1 rounded">
+                Using cached data (API unavailable)
+              </div>
+            )}
+
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-gray-100 font-medium">Current Price</span>
@@ -172,7 +183,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                     <HelpCircle className="h-3 w-3 text-gray-300" />
                   </TooltipTrigger>
                   <TooltipContent className="bg-gray-700 border-gray-600">
-                    <p className="text-gray-100">Real-time market price from CoinGecko API</p>
+                    <p className="text-gray-100">{tokenInfo ? 'Real-time market price from CoinGecko API' : 'Simulated price data'}</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -262,7 +273,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(({
                 </Tooltip>
               </div>
               <span className="text-white font-bold text-lg">
-                ${analysis.resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximunFractionDigits: 6 })}
+                ${analysis.resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </span>
             </div>
 
