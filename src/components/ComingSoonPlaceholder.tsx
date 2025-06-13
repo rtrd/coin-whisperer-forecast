@@ -24,15 +24,15 @@ export const ComingSoonPlaceholder: React.FC<ComingSoonPlaceholderProps> = ({
         </div>
         <CardTitle className="text-white text-xl">{title}</CardTitle>
         {description && (
-          <p className="text-gray-300 text-sm mt-2">{description}</p>
+          <p className="text-gray-200 text-sm mt-2">{description}</p>
         )}
       </CardHeader>
       <CardContent className="text-center">
         <div className="flex items-center justify-center gap-2 mb-4">
-          <Clock className="h-5 w-5 text-purple-400" />
-          <span className="text-purple-300 font-semibold">COMING SOON</span>
+          <Clock className="h-5 w-5 text-purple-300" />
+          <span className="text-purple-200 font-semibold">COMING SOON</span>
         </div>
-        <p className="text-gray-400 text-sm">
+        <p className="text-gray-200 text-sm">
           We're working hard to bring you the most advanced AI-powered cryptocurrency analysis tools. 
           Stay tuned for exciting updates!
         </p>
