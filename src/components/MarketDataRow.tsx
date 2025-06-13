@@ -13,12 +13,41 @@ interface MarketDataRowProps {
   activeFilter: string;
 }
 
+// Map CoinGecko IDs to URL-friendly token IDs
+const getTokenUrlId = (coinGeckoId: string) => {
+  const urlMap: { [key: string]: string } = {
+    'bitcoin': 'bitcoin',
+    'ethereum': 'ethereum', 
+    'binancecoin': 'bnb',
+    'solana': 'solana',
+    'cardano': 'cardano',
+    'ripple': 'xrp',
+    'dogecoin': 'doge',
+    'shiba-inu': 'shib',
+    'pepe': 'pepe',
+    'bonk': 'bonk',
+    'uniswap': 'uniswap',
+    'aave': 'aave',
+    'fetch-ai': 'fetch-ai',
+    'render-token': 'render-token',
+    'matic-network': 'polygon',
+    'avalanche-2': 'avalanche-2',
+    'chainlink': 'chainlink',
+    'polkadot': 'polkadot',
+    'litecoin': 'litecoin'
+  };
+  
+  return urlMap[coinGeckoId] || coinGeckoId;
+};
+
 export const MarketDataRow: React.FC<MarketDataRowProps> = ({
   token,
   index,
   isUnlocked,
   activeFilter,
 }) => {
+  const tokenUrlId = getTokenUrlId(token.value);
+
   return (
     <TableRow
       key={token.value}
@@ -27,7 +56,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = ({
       <TableCell className="text-gray-300 font-medium w-12 px-2 py-3">{index + 1}</TableCell>
       <TableCell className="w-48 px-2 py-3">
         <Link
-          to={`/token/${token.value}`}
+          to={`/token/${tokenUrlId}`}
           className="flex items-center gap-2 hover:text-blue-400 transition-colors"
         >
           <span className="text-lg">

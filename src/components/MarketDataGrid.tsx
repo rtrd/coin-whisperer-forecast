@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -12,6 +11,33 @@ interface MarketDataGridProps {
   activeFilter: string;
 }
 
+// Map CoinGecko IDs to URL-friendly token IDs
+const getTokenUrlId = (coinGeckoId: string) => {
+  const urlMap: { [key: string]: string } = {
+    'bitcoin': 'bitcoin',
+    'ethereum': 'ethereum', 
+    'binancecoin': 'bnb',
+    'solana': 'solana',
+    'cardano': 'cardano',
+    'ripple': 'xrp',
+    'dogecoin': 'doge',
+    'shiba-inu': 'shib',
+    'pepe': 'pepe',
+    'bonk': 'bonk',
+    'uniswap': 'uniswap',
+    'aave': 'aave',
+    'fetch-ai': 'fetch-ai',
+    'render-token': 'render-token',
+    'matic-network': 'polygon',
+    'avalanche-2': 'avalanche-2',
+    'chainlink': 'chainlink',
+    'polkadot': 'polkadot',
+    'litecoin': 'litecoin'
+  };
+  
+  return urlMap[coinGeckoId] || coinGeckoId;
+};
+
 export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   marketData,
   isUnlocked,
@@ -19,148 +45,152 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {marketData.map((token, index) => (
-        <div key={token.value} className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3 min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <span className="text-gray-400 text-sm font-medium">#{index + 1}</span>
-                <Link
-                  to={`/token/${token.value}`}
-                  className="flex items-center gap-2 hover:text-blue-400 transition-colors min-w-0"
-                >
-                  <img src={token.image} alt={token.label} width={24} height={24} className="shrink-0" />
-                  <div className="min-w-0">
-                    <div className="text-white font-bold text-base truncate">
-                      {token.name.split(" ")[0]}
+      {marketData.map((token, index) => {
+        const tokenUrlId = getTokenUrlId(token.value);
+        
+        return (
+          <div key={token.value} className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-gray-400 text-sm font-medium">#{index + 1}</span>
+                  <Link
+                    to={`/token/${tokenUrlId}`}
+                    className="flex items-center gap-2 hover:text-blue-400 transition-colors min-w-0"
+                  >
+                    <img src={token.image} alt={token.label} width={24} height={24} className="shrink-0" />
+                    <div className="min-w-0">
+                      <div className="text-white font-bold text-base truncate">
+                        {token.name.split(" ")[0]}
+                      </div>
+                      <div className="text-gray-400 text-sm truncate">
+                        {token.name.split(" ")[1]}
+                      </div>
                     </div>
-                    <div className="text-gray-400 text-sm truncate">
-                      {token.name.split(" ")[1]}
-                    </div>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               </div>
+              <Badge
+                variant="outline"
+                className={`text-xs shrink-0 ml-2
+                  ${
+                    token.category === "Layer 1 (L1)"
+                      ? "border-blue-500 text-blue-400"
+                      : token.category === "DeFi"
+                      ? "border-green-500 text-green-400"
+                      : token.category === "Meme Coin"
+                      ? "border-purple-500 text-purple-400"
+                      : token.category === "AI"
+                      ? "border-cyan-500 text-cyan-400"
+                      : token.category === "Gaming"
+                      ? "border-orange-500 text-orange-400"
+                      : token.category === "New"
+                      ? "border-yellow-500 text-yellow-400"
+                      : token.category === "L2"
+                      ? "border-indigo-500 text-indigo-400"
+                      : token.category === "Privacy"
+                      ? "border-gray-500 text-gray-400"
+                      : token.category === "Stablecoin"
+                      ? "border-gray-500 text-gray-400"
+                      : token.category === "Payment Token"
+                      ? "border-emerald-500 text-emerald-400"
+                      : "border-red-500 text-red-400"
+                  }
+                `}
+              >
+                {token.category}
+              </Badge>
             </div>
-            <Badge
-              variant="outline"
-              className={`text-xs shrink-0 ml-2
-                ${
-                  token.category === "Layer 1 (L1)"
-                    ? "border-blue-500 text-blue-400"
-                    : token.category === "DeFi"
-                    ? "border-green-500 text-green-400"
-                    : token.category === "Meme Coin"
-                    ? "border-purple-500 text-purple-400"
-                    : token.category === "AI"
-                    ? "border-cyan-500 text-cyan-400"
-                    : token.category === "Gaming"
-                    ? "border-orange-500 text-orange-400"
-                    : token.category === "New"
-                    ? "border-yellow-500 text-yellow-400"
-                    : token.category === "L2"
-                    ? "border-indigo-500 text-indigo-400"
-                    : token.category === "Privacy"
-                    ? "border-gray-500 text-gray-400"
-                    : token.category === "Stablecoin"
-                    ? "border-gray-500 text-gray-400"
-                    : token.category === "Payment Token"
-                    ? "border-emerald-500 text-emerald-400"
-                    : "border-red-500 text-red-400"
-                }
-              `}
-            >
-              {token.category}
-            </Badge>
-          </div>
 
-          <div className="space-y-3 flex-1">
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="space-y-1">
-                <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
-                <div className="text-white font-mono font-medium">{formatPrice(token.price)}</div>
+            <div className="space-y-3 flex-1">
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="space-y-1">
+                  <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
+                  <div className="text-white font-mono font-medium">{formatPrice(token.price)}</div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-gray-400 text-xs uppercase tracking-wide">24h Change</div>
+                  <div className={`flex items-center gap-1 font-bold font-mono ${
+                    token.change24h >= 0 ? "text-green-400" : "text-red-400"
+                  }`}>
+                    {token.change24h >= 0 ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
+                    {token.change24h >= 0 ? "+" : ""}
+                    {token.change24h.toFixed(2)}%
+                  </div>
+                </div>
               </div>
-              <div className="space-y-1">
-                <div className="text-gray-400 text-xs uppercase tracking-wide">24h Change</div>
-                <div className={`flex items-center gap-1 font-bold font-mono ${
-                  token.change24h >= 0 ? "text-green-400" : "text-red-400"
-                }`}>
-                  {token.change24h >= 0 ? (
-                    <TrendingUp className="h-3 w-3" />
+
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="space-y-1">
+                  <div className="text-gray-400 text-xs uppercase tracking-wide">Prediction %</div>
+                  {isUnlocked ? (
+                    <div className={`font-mono font-medium ${
+                      token.predictionPercentage >= 0 ? "text-green-400" : "text-red-400"
+                    }`}>
+                      {token.predictionPercentage >= 0 ? "+" : ""}
+                      {token.predictionPercentage.toFixed(2)}%
+                    </div>
                   ) : (
-                    <TrendingDown className="h-3 w-3" />
+                    <div className="flex items-center gap-1">
+                      <Lock className="h-3 w-3 text-yellow-400" />
+                      <span className="text-yellow-400 text-xs">Premium</span>
+                    </div>
                   )}
-                  {token.change24h >= 0 ? "+" : ""}
-                  {token.change24h.toFixed(2)}%
+                </div>
+                <div className="space-y-1">
+                  <div className="text-gray-400 text-xs uppercase tracking-wide">AI Score</div>
+                  {isUnlocked ? (
+                    <div className={`font-mono font-medium ${
+                      token.aiScore >= 80
+                        ? "text-green-400"
+                        : token.aiScore >= 60
+                        ? "text-yellow-400"
+                        : token.aiScore >= 40 
+                        ? "text-orange-400"
+                        : "text-red-400"
+                    }`}>
+                      {token.aiScore.toFixed(0)}/100
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1">
+                      <Lock className="h-3 w-3 text-yellow-400" />
+                      <span className="text-yellow-400 text-xs">Premium</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="space-y-1">
+                  <div className="text-gray-400 text-xs uppercase tracking-wide">Volume</div>
+                  <div className="text-gray-300 font-mono">{formatVolume(token.volume24h)}</div>
+                </div>
+                <div className="space-y-1">
+                  <div className="text-gray-400 text-xs uppercase tracking-wide">Market Cap</div>
+                  <div className="text-gray-300 font-mono">{formatMarketCap(token.marketCap)}</div>
                 </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="space-y-1">
-                <div className="text-gray-400 text-xs uppercase tracking-wide">Prediction %</div>
-                {isUnlocked ? (
-                  <div className={`font-mono font-medium ${
-                    token.predictionPercentage >= 0 ? "text-green-400" : "text-red-400"
-                  }`}>
-                    {token.predictionPercentage >= 0 ? "+" : ""}
-                    {token.predictionPercentage.toFixed(2)}%
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-1">
-                    <Lock className="h-3 w-3 text-yellow-400" />
-                    <span className="text-yellow-400 text-xs">Premium</span>
-                  </div>
-                )}
-              </div>
-              <div className="space-y-1">
-                <div className="text-gray-400 text-xs uppercase tracking-wide">AI Score</div>
-                {isUnlocked ? (
-                  <div className={`font-mono font-medium ${
-                    token.aiScore >= 80
-                      ? "text-green-400"
-                      : token.aiScore >= 60
-                      ? "text-yellow-400"
-                      : token.aiScore >= 40 
-                      ? "text-orange-400"
-                      : "text-red-400"
-                  }`}>
-                    {token.aiScore.toFixed(0)}/100
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-1">
-                    <Lock className="h-3 w-3 text-yellow-400" />
-                    <span className="text-yellow-400 text-xs">Premium</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="space-y-1">
-                <div className="text-gray-400 text-xs uppercase tracking-wide">Volume</div>
-                <div className="text-gray-300 font-mono">{formatVolume(token.volume24h)}</div>
-              </div>
-              <div className="space-y-1">
-                <div className="text-gray-400 text-xs uppercase tracking-wide">Market Cap</div>
-                <div className="text-gray-300 font-mono">{formatMarketCap(token.marketCap)}</div>
-              </div>
+            <div className="mt-4 pt-4 border-t border-gray-600/30">
+              <Button 
+                size="sm" 
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+                asChild
+              >
+                <Link to={`/token/${tokenUrlId}`}>
+                  <ExternalLink className="h-3 w-3 mr-2" />
+                  View Details
+                </Link>
+              </Button>
             </div>
           </div>
-
-          <div className="mt-4 pt-4 border-t border-gray-600/30">
-            <Button 
-              size="sm" 
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
-              asChild
-            >
-              <Link to={`/token/${token.value}`}>
-                <ExternalLink className="h-3 w-3 mr-2" />
-                View Details
-              </Link>
-            </Button>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

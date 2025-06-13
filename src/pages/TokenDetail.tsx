@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,24 +55,69 @@ const TokenDetail = () => {
     priceChange30d: 0
   });
 
-  const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(tokenId || 'bitcoin', timeframe);
+  // Map URL token IDs to CoinGecko IDs and get full token info
+  const getTokenInfo = (urlTokenId: string) => {
+    const tokenMap: { [key: string]: any } = {
+      'bitcoin': { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', icon: '₿', category: 'Layer 1 (L1)', website: 'https://bitcoin.org', twitter: 'https://twitter.com/bitcoin', description: 'The first and largest cryptocurrency by market cap' },
+      'btc': { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', icon: '₿', category: 'Layer 1 (L1)', website: 'https://bitcoin.org', twitter: 'https://twitter.com/bitcoin', description: 'The first and largest cryptocurrency by market cap' },
+      'ethereum': { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: 'Ξ', category: 'Layer 1 (L1)', website: 'https://ethereum.org', twitter: 'https://twitter.com/ethereum', description: 'Smart contract platform and second-largest cryptocurrency' },
+      'eth': { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: 'Ξ', category: 'Layer 1 (L1)', website: 'https://ethereum.org', twitter: 'https://twitter.com/ethereum', description: 'Smart contract platform and second-largest cryptocurrency' },
+      'binancecoin': { id: 'binancecoin', symbol: 'BNB', name: 'BNB', icon: '🔶', category: 'Layer 1 (L1)', website: 'https://www.bnbchain.org', twitter: 'https://twitter.com/bnbchain', description: 'Native token of the Binance ecosystem' },
+      'bnb': { id: 'binancecoin', symbol: 'BNB', name: 'BNB', icon: '🔶', category: 'Layer 1 (L1)', website: 'https://www.bnbchain.org', twitter: 'https://twitter.com/bnbchain', description: 'Native token of the Binance ecosystem' },
+      'solana': { id: 'solana', symbol: 'SOL', name: 'Solana', icon: '◎', category: 'Layer 1 (L1)', website: 'https://solana.com', twitter: 'https://twitter.com/solana', description: 'High-performance blockchain for decentralized apps' },
+      'sol': { id: 'solana', symbol: 'SOL', name: 'Solana', icon: '◎', category: 'Layer 1 (L1)', website: 'https://solana.com', twitter: 'https://twitter.com/solana', description: 'High-performance blockchain for decentralized apps' },
+      'cardano': { id: 'cardano', symbol: 'ADA', name: 'Cardano', icon: '₳', category: 'Layer 1 (L1)', website: 'https://cardano.org', twitter: 'https://twitter.com/cardano', description: 'Proof-of-stake blockchain platform' },
+      'ada': { id: 'cardano', symbol: 'ADA', name: 'Cardano', icon: '₳', category: 'Layer 1 (L1)', website: 'https://cardano.org', twitter: 'https://twitter.com/cardano', description: 'Proof-of-stake blockchain platform' },
+      'ripple': { id: 'ripple', symbol: 'XRP', name: 'XRP', icon: '◉', category: 'Payment Token', website: 'https://ripple.com', twitter: 'https://twitter.com/ripple', description: 'Digital payment protocol for financial institutions' },
+      'xrp': { id: 'ripple', symbol: 'XRP', name: 'XRP', icon: '◉', category: 'Payment Token', website: 'https://ripple.com', twitter: 'https://twitter.com/ripple', description: 'Digital payment protocol for financial institutions' },
+      'dogecoin': { id: 'dogecoin', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕', category: 'Meme Coin', website: 'https://dogecoin.com', twitter: 'https://twitter.com/dogecoin', description: 'The original meme cryptocurrency' },
+      'doge': { id: 'dogecoin', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕', category: 'Meme Coin', website: 'https://dogecoin.com', twitter: 'https://twitter.com/dogecoin', description: 'The original meme cryptocurrency' },
+      'shiba-inu': { id: 'shiba-inu', symbol: 'SHIB', name: 'Shiba Inu', icon: '🐕‍🦺', category: 'Meme Coin', website: 'https://shibatoken.com', twitter: 'https://twitter.com/shibtoken', description: 'Community-driven meme token' },
+      'shib': { id: 'shiba-inu', symbol: 'SHIB', name: 'Shiba Inu', icon: '🐕‍🦺', category: 'Meme Coin', website: 'https://shibatoken.com', twitter: 'https://twitter.com/shibtoken', description: 'Community-driven meme token' },
+      'pepe': { id: 'pepe', symbol: 'PEPE', name: 'Pepe', icon: '🐸', category: 'Meme Coin', website: 'https://pepe.vip', twitter: 'https://twitter.com/pepecoineth', description: 'Meme token based on the Pepe the Frog internet meme' },
+      'bonk': { id: 'bonk', symbol: 'BONK', name: 'Bonk', icon: '🔨', category: 'Meme Coin', website: 'https://bonkcoin.com', twitter: 'https://twitter.com/bonk_inu', description: 'Solana-based community meme coin' },
+      'uniswap': { id: 'uniswap', symbol: 'UNI', name: 'Uniswap', icon: '🦄', category: 'DeFi', website: 'https://uniswap.org', twitter: 'https://twitter.com/uniswap', description: 'Leading decentralized exchange protocol' },
+      'uni': { id: 'uniswap', symbol: 'UNI', name: 'Uniswap', icon: '🦄', category: 'DeFi', website: 'https://uniswap.org', twitter: 'https://twitter.com/uniswap', description: 'Leading decentralized exchange protocol' },
+      'aave': { id: 'aave', symbol: 'AAVE', name: 'Aave', icon: '👻', category: 'DeFi', website: 'https://aave.com', twitter: 'https://twitter.com/aaveaave', description: 'Decentralized lending and borrowing protocol' },
+      'fetch-ai': { id: 'fetch-ai', symbol: 'FET', name: 'Fetch.ai', icon: '🤖', category: 'AI', website: 'https://fetch.ai', twitter: 'https://twitter.com/fetch_ai', description: 'Decentralized machine learning platform' },
+      'fet': { id: 'fetch-ai', symbol: 'FET', name: 'Fetch.ai', icon: '🤖', category: 'AI', website: 'https://fetch.ai', twitter: 'https://twitter.com/fetch_ai', description: 'Decentralized machine learning platform' },
+      'render-token': { id: 'render-token', symbol: 'RNDR', name: 'Render', icon: '🎨', category: 'AI', website: 'https://rendertoken.com', twitter: 'https://twitter.com/rendertoken', description: 'Distributed GPU rendering network' },
+      'rndr': { id: 'render-token', symbol: 'RNDR', name: 'Render', icon: '🎨', category: 'AI', website: 'https://rendertoken.com', twitter: 'https://twitter.com/rendertoken', description: 'Distributed GPU rendering network' },
+      'polygon': { id: 'matic-network', symbol: 'MATIC', name: 'Polygon', icon: '🔷', category: 'L2', website: 'https://polygon.technology', twitter: 'https://twitter.com/0xpolygon', description: 'Ethereum scaling and infrastructure development' },
+      'matic': { id: 'matic-network', symbol: 'MATIC', name: 'Polygon', icon: '🔷', category: 'L2', website: 'https://polygon.technology', twitter: 'https://twitter.com/0xpolygon', description: 'Ethereum scaling and infrastructure development' },
+      'avalanche-2': { id: 'avalanche-2', symbol: 'AVAX', name: 'Avalanche', icon: '🔺', category: 'Layer 1 (L1)', website: 'https://avax.network', twitter: 'https://twitter.com/avalancheavax', description: 'Highly scalable smart contracts platform' },
+      'avax': { id: 'avalanche-2', symbol: 'AVAX', name: 'Avalanche', icon: '🔺', category: 'Layer 1 (L1)', website: 'https://avax.network', twitter: 'https://twitter.com/avalancheavax', description: 'Highly scalable smart contracts platform' },
+      'chainlink': { id: 'chainlink', symbol: 'LINK', name: 'Chainlink', icon: '🔗', category: 'DeFi', website: 'https://chain.link', twitter: 'https://twitter.com/chainlink', description: 'Decentralized oracle network' },
+      'link': { id: 'chainlink', symbol: 'LINK', name: 'Chainlink', icon: '🔗', category: 'DeFi', website: 'https://chain.link', twitter: 'https://twitter.com/chainlink', description: 'Decentralized oracle network' },
+      'polkadot': { id: 'polkadot', symbol: 'DOT', name: 'Polkadot', icon: '⚫', category: 'Layer 1 (L1)', website: 'https://polkadot.network', twitter: 'https://twitter.com/polkadot', description: 'Multi-chain interoperability protocol' },
+      'dot': { id: 'polkadot', symbol: 'DOT', name: 'Polkadot', icon: '⚫', category: 'Layer 1 (L1)', website: 'https://polkadot.network', twitter: 'https://twitter.com/polkadot', description: 'Multi-chain interoperability protocol' },
+      'litecoin': { id: 'litecoin', symbol: 'LTC', name: 'Litecoin', icon: 'Ł', category: 'Payment Token', website: 'https://litecoin.org', twitter: 'https://twitter.com/litecoin', description: 'Peer-to-peer digital currency' },
+      'ltc': { id: 'litecoin', symbol: 'LTC', name: 'Litecoin', icon: 'Ł', category: 'Payment Token', website: 'https://litecoin.org', twitter: 'https://twitter.com/litecoin', description: 'Peer-to-peer digital currency' }
+    };
+
+    return tokenMap[urlTokenId?.toLowerCase()] || tokenMap['bitcoin'];
+  };
+
+  const selectedToken = getTokenInfo(tokenId || 'bitcoin');
+  const cryptoId = selectedToken.id;
+
+  const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(cryptoId, timeframe);
   const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   const cryptoOptions = [
-    // Major Cryptocurrencies
-    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%', 
+    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Layer 1 (L1)', score: 8.5, prediction: '+12.5%', 
       description: 'The first and largest cryptocurrency by market cap', 
       website: 'https://bitcoin.org', twitter: 'https://twitter.com/bitcoin' },
-    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%',
+    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Layer 1 (L1)', score: 8.2, prediction: '+8.3%',
       description: 'Smart contract platform and second-largest cryptocurrency',
       website: 'https://ethereum.org', twitter: 'https://twitter.com/ethereum' },
-    { value: 'binancecoin', label: 'BNB (BNB)', icon: '🔶', category: 'Major', score: 7.8, prediction: '+6.1%',
+    { value: 'binancecoin', label: 'BNB (BNB)', icon: '🔶', category: 'Layer 1 (L1)', score: 7.8, prediction: '+6.1%',
       description: 'Native token of the Binance ecosystem',
       website: 'https://www.bnbchain.org', twitter: 'https://twitter.com/bnbchain' },
-    { value: 'solana', label: 'Solana (SOL)', icon: '◎', category: 'Major', score: 8.1, prediction: '+15.8%',
+    { value: 'solana', label: 'Solana (SOL)', icon: '◎', category: 'Layer 1 (L1)', score: 8.1, prediction: '+15.8%',
       description: 'High-performance blockchain for decentralized apps',
       website: 'https://solana.com', twitter: 'https://twitter.com/solana' },
-    { value: 'cardano', label: 'Cardano (ADA)', icon: '₳', category: 'Major', score: 6.9, prediction: '+3.2%',
+    { value: 'cardano', label: 'Cardano (ADA)', icon: '₳', category: 'Layer 1 (L1)', score: 6.9, prediction: '+3.2%',
       description: 'Proof-of-stake blockchain platform',
       website: 'https://cardano.org', twitter: 'https://twitter.com/cardano' },
     
@@ -86,13 +130,13 @@ const TokenDetail = () => {
       website: 'https://aave.com', twitter: 'https://twitter.com/aaveaave' },
     
     // Meme Coins
-    { value: 'dogecoin', label: 'Dogecoin (DOGE)', icon: '🐕', category: 'Meme', score: 6.1, prediction: '+18.5%',
+    { value: 'dogecoin', label: 'Dogecoin (DOGE)', icon: '🐕', category: 'Meme Coin', score: 6.1, prediction: '+18.5%',
       description: 'The original meme cryptocurrency',
       website: 'https://dogecoin.com', twitter: 'https://twitter.com/dogecoin' },
-    { value: 'shiba-inu', label: 'Shiba Inu (SHIB)', icon: '🐕‍🦺', category: 'Meme', score: 5.9, prediction: '+25.3%',
+    { value: 'shiba-inu', label: 'Shiba Inu (SHIB)', icon: '🐕‍🦺', category: 'Meme Coin', score: 5.9, prediction: '+25.3%',
       description: 'Community-driven meme token',
       website: 'https://shibatoken.com', twitter: 'https://twitter.com/shibtoken' },
-    { value: 'pepe', label: 'Pepe (PEPE)', icon: '🐸', category: 'Meme', score: 8.8, prediction: '+65.3%',
+    { value: 'pepe', label: 'Pepe (PEPE)', icon: '🐸', category: 'Meme Coin', score: 8.8, prediction: '+65.3%',
       description: 'Meme token based on the Pepe the Frog internet meme',
       website: 'https://pepe.vip', twitter: 'https://twitter.com/pepecoineth' },
     
@@ -108,14 +152,22 @@ const TokenDetail = () => {
       website: 'https://rendertoken.com', twitter: 'https://twitter.com/rendertoken' }
   ];
 
-  const selectedToken = cryptoOptions.find(c => c.value === tokenId) || cryptoOptions[0];
-
   useEffect(() => {
-    // Generate random market data
+    // Generate random market data based on the specific token
     if (cryptoData && cryptoData.length > 0) {
       const currentPrice = cryptoData[cryptoData.length - 1].price;
+      
+      // Generate different market data based on token type
+      const getMarketCapMultiplier = () => {
+        if (selectedToken.category === 'Layer 1 (L1)') return Math.random() * 800000000 + 200000000;
+        if (selectedToken.category === 'DeFi') return Math.random() * 100000000 + 50000000;
+        if (selectedToken.category === 'Meme Coin') return Math.random() * 50000000 + 10000000;
+        if (selectedToken.category === 'AI') return Math.random() * 200000000 + 100000000;
+        return Math.random() * 500000000 + 100000000;
+      };
+
       setMarketData({
-        marketCap: currentPrice * (Math.random() * 500000000 + 100000000),
+        marketCap: currentPrice * getMarketCapMultiplier(),
         volume24h: currentPrice * (Math.random() * 50000000 + 10000000),
         circulatingSupply: Math.random() * 1000000000 + 100000000,
         totalSupply: Math.random() * 1000000000 + 500000000,
@@ -125,7 +177,7 @@ const TokenDetail = () => {
         priceChange30d: (Math.random() - 0.5) * 80
       });
     }
-  }, [cryptoData]);
+  }, [cryptoData, selectedToken]);
 
   const handlePredict = async () => {
     if (!cryptoData) {
@@ -133,7 +185,7 @@ const TokenDetail = () => {
       return;
     }
     
-    await generatePrediction(cryptoData, tokenId || 'bitcoin', predictionDays);
+    await generatePrediction(cryptoData, cryptoId, predictionDays);
     setShowPrediction(true);
     toast.success("Prediction generated successfully!");
   };
@@ -170,7 +222,7 @@ const TokenDetail = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Homepage Header */}
         <IndexHeader 
-          selectedCrypto={tokenId || 'bitcoin'}
+          selectedCrypto={cryptoId}
           cryptoOptions={cryptoOptions}
           currentPrice={currentPrice}
           priceChange={priceChange}
@@ -199,12 +251,12 @@ const TokenDetail = () => {
               <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-4">
-                    <h1 className="text-3xl lg:text-4xl font-bold text-white">{selectedToken.label}</h1>
+                    <h1 className="text-3xl lg:text-4xl font-bold text-white">{selectedToken.name} ({selectedToken.symbol})</h1>
                     <Badge 
                       className={`px-3 py-1 text-sm font-medium ${
-                        selectedToken.category === 'Major' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
+                        selectedToken.category === 'Layer 1 (L1)' ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' :
                         selectedToken.category === 'DeFi' ? 'bg-purple-500/20 text-purple-400 border-purple-500/30' :
-                        selectedToken.category === 'Meme' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
+                        selectedToken.category === 'Meme Coin' ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' :
                         selectedToken.category === 'AI' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 
                         'bg-gray-500/20 text-gray-400 border-gray-500/30'
                       } border backdrop-blur-sm`}
@@ -242,7 +294,7 @@ const TokenDetail = () => {
                       </div>
                       <div className="text-gray-300 text-sm font-medium">Current Price</div>
                     </div>
-                    <div className="text-4xl font-bold text-white mb-3">${currentPrice.toFixed(2)}</div>
+                    <div className="text-4xl font-bold text-white mb-3">${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</div>
                     <div className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl ${priceChange >= 0 ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
                       {priceChange >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
                       <span className="text-lg font-semibold">
@@ -271,7 +323,7 @@ const TokenDetail = () => {
                       </div>
                       <span className="text-gray-300 text-sm font-medium">Market Cap</span>
                     </div>
-                    <span className="text-white font-bold text-lg">${(marketData.marketCap / 1000000000).toFixed(2)}B</span>
+                    <span className="text-white font-bold text-lg">${(marketData.marketCap / 1000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}B</span>
                   </div>
                   
                   <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-green-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
@@ -281,7 +333,7 @@ const TokenDetail = () => {
                       </div>
                       <span className="text-gray-300 text-sm font-medium">24h Volume</span>
                     </div>
-                    <span className="text-white font-bold text-lg">${(marketData.volume24h / 1000000).toFixed(2)}M</span>
+                    <span className="text-white font-bold text-lg">${(marketData.volume24h / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M</span>
                   </div>
 
                   <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-purple-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
@@ -315,7 +367,7 @@ const TokenDetail = () => {
                       </div>
                       <span className="text-gray-300 text-sm font-medium">All Time High</span>
                     </div>
-                    <span className="text-white font-bold text-lg">${marketData.allTimeHigh.toFixed(2)}</span>
+                    <span className="text-white font-bold text-lg">${marketData.allTimeHigh.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</span>
                   </div>
 
                   <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-red-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
@@ -325,7 +377,7 @@ const TokenDetail = () => {
                       </div>
                       <span className="text-gray-300 text-sm font-medium">All Time Low</span>
                     </div>
-                    <span className="text-white font-bold text-lg">${marketData.allTimeLow.toFixed(2)}</span>
+                    <span className="text-white font-bold text-lg">${marketData.allTimeLow.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</span>
                   </div>
 
                   <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-cyan-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
@@ -335,7 +387,7 @@ const TokenDetail = () => {
                       </div>
                       <span className="text-gray-300 text-sm font-medium">Circulating</span>
                     </div>
-                    <span className="text-white font-bold text-lg">{(marketData.circulatingSupply / 1000000).toFixed(2)}M</span>
+                    <span className="text-white font-bold text-lg">{(marketData.circulatingSupply / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M</span>
                   </div>
 
                   <div className="bg-gradient-to-br from-gray-600/30 to-gray-700/30 rounded-xl p-4 border border-gray-500/20 hover:border-yellow-500/30 transition-all duration-200 hover:shadow-lg hover:scale-105">
@@ -345,7 +397,7 @@ const TokenDetail = () => {
                       </div>
                       <span className="text-gray-300 text-sm font-medium">Total Supply</span>
                     </div>
-                    <span className="text-white font-bold text-lg">{(marketData.totalSupply / 1000000).toFixed(2)}M</span>
+                    <span className="text-white font-bold text-lg">{(marketData.totalSupply / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M</span>
                   </div>
                 </div>
               </div>
@@ -374,7 +426,7 @@ const TokenDetail = () => {
                 data={cryptoData} 
                 prediction={showPrediction ? prediction?.predictions || null : null}
                 isLoading={dataLoading}
-                crypto={tokenId || 'bitcoin'}
+                crypto={cryptoId}
                 onClearPrediction={handleClearPrediction}
               />
 
@@ -458,7 +510,7 @@ const TokenDetail = () => {
                 {/* Prediction Results - Now inside the AI Analysis Controls box */}
                 {showPrediction && prediction && (
                   <div className="mt-6 pt-6 border-t border-gray-600/50">
-                    <PredictionCard prediction={prediction} crypto={tokenId || 'bitcoin'} />
+                    <PredictionCard prediction={prediction} crypto={cryptoId} />
                   </div>
                 )}
               </div>
@@ -485,7 +537,7 @@ const TokenDetail = () => {
                 </TabsContent>
                 
                 <TabsContent value="sentiment">
-                  <LockedSentimentAnalysis crypto={tokenId || 'bitcoin'} />
+                  <LockedSentimentAnalysis crypto={cryptoId} />
                 </TabsContent>
               </Tabs>
             </div>
@@ -497,7 +549,7 @@ const TokenDetail = () => {
 
               {/* Dynamic Token Analysis */}
               <DynamicTokenAnalysis
-                selectedCrypto={tokenId || 'bitcoin'}
+                selectedCrypto={cryptoId}
                 currentPrice={currentPrice}
                 priceChange={priceChange}
                 cryptoOptions={cryptoOptions}
