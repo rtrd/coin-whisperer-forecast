@@ -10,10 +10,7 @@ import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
 import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
-import {
-  MarketDataFilters,
-  FilterType,
-} from "@/components/MarketDataFilters";
+import { MarketDataFilters, FilterType } from "@/components/MarketDataFilters";
 
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
@@ -23,8 +20,22 @@ const AllTokens = () => {
   const { AllCryptosData } = location.state || { AllCryptosData: [] };
 
   const cryptoOptions = [
-    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
-    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' }
+    {
+      value: "bitcoin",
+      label: "Bitcoin (BTC)",
+      icon: "₿",
+      category: "Major",
+      score: 8.5,
+      prediction: "+12.5%",
+    },
+    {
+      value: "ethereum",
+      label: "Ethereum (ETH)",
+      icon: "Ξ",
+      category: "Major",
+      score: 8.2,
+      prediction: "+8.3%",
+    },
   ];
 
   useEffect(() => {
@@ -113,25 +124,31 @@ const AllTokens = () => {
 
     if (filters.sortBy !== undefined && filters.sortBy !== "") {
       switch (filters.sortBy) {
-        case "score":
-          filtered.sort((a, b) => b.score - a.score);
-          break;
-        case "prediction":
-          filtered.sort((a, b) => {
-            const aPred = parseFloat(
-              a.prediction.replace("%", "").replace("+", "")
-            );
-            const bPred = parseFloat(
-              b.prediction.replace("%", "").replace("+", "")
-            );
-            return bPred - aPred;
-          });
-          break;
         case "name":
-          filtered.sort((a, b) => a.label.localeCompare(b.label));
+          sorted.sort((a, b) =>
+            (a.label || a.name).localeCompare(b.label || b.name)
+          );
           break;
         case "category":
-          filtered.sort((a, b) => a.category.localeCompare(b.category));
+          sorted.sort((a, b) =>
+            (a.category || "").localeCompare(b.category || "")
+          );
+          break;
+        case "price":
+          sorted.sort(
+            (a, b) => (b.current_price || 0) - (a.current_price || 0)
+          );
+          break;
+        case "change24h":
+          sorted.sort(
+            (a, b) => (b.price_change_24h || 0) - (a.price_change_24h || 0)
+          );
+          break;
+        case "volume":
+          sorted.sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
+          break;
+        case "marketCap":
+          sorted.sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
           break;
       }
 
@@ -143,7 +160,7 @@ const AllTokens = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
         {/* Homepage Header */}
-        <IndexHeader 
+        <IndexHeader
           selectedCrypto="bitcoin"
           cryptoOptions={cryptoOptions}
           currentPrice={50000}
@@ -229,7 +246,7 @@ const AllTokens = () => {
           </CardContent>
         </Card>
       </div>
-      
+
       <Footer />
     </div>
   );

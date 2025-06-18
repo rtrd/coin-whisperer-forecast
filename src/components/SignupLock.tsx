@@ -1,13 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Lock, Mail, Crown, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
-import { ComingSoonPlaceholder } from './ComingSoonPlaceholder';
-
+import { ComingSoonPlaceholder } from "./ComingSoonPlaceholder";
 interface SignupLockProps {
   children: React.ReactNode;
   title: string;
@@ -19,13 +17,36 @@ export const SignupLock: React.FC<SignupLockProps> = ({
   children,
   title,
   description,
-  skeletonData
+  skeletonData,
 }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(() => {
-    return localStorage.getItem('ai-content-unlocked') === 'true';
+    return localStorage.getItem("ai-content-unlocked") === "true";
   });
   const [isLoading, setIsLoading] = useState(false);
+  const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+  const saveEmail = async (email: string) => {
+    try {
+      debugger;
+      const response = await fetch(`${SERVER_URL}/save-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to save email");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error: any) {
+      throw new Error(error.message || "Failed to save email");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,17 +56,21 @@ export const SignupLock: React.FC<SignupLockProps> = ({
     }
 
     setIsLoading(true);
-    
-    // Simulate email sending
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Unlock content
-    localStorage.setItem('ai-content-unlocked', 'true');
-    setIsUnlocked(true);
-    setIsLoading(false);
-    
-    toast.success("Thank you for signing up! Our AI features are coming soon.");
-    setEmail('');
+
+    try {
+      await saveEmail(email); // <-- Call the API here
+      // Unlock content
+      localStorage.setItem("ai-content-unlocked", "true");
+      setIsUnlocked(true);
+      toast.success(
+        "Thank you for signing up! Our AI features are coming soon."
+      );
+      setEmail("");
+    } catch (err: any) {
+      toast.error(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   if (isUnlocked) {
@@ -58,7 +83,7 @@ export const SignupLock: React.FC<SignupLockProps> = ({
       <div className="blur-sm pointer-events-none select-none rounded-lg overflow-hidden">
         {skeletonData || children}
       </div>
-      
+
       {/* Overlay with signup form - dark glow instead of white */}
       <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm flex items-center justify-center p-4 rounded-lg shadow-2xl shadow-black/50">
         <Card className="w-full max-w-md bg-gray-800/90 border-gray-700 shadow-2xl">
@@ -84,8 +109,8 @@ export const SignupLock: React.FC<SignupLockProps> = ({
                   required
                 />
               </div>
-              
-              <Button 
+
+              <Button
                 type="submit"
                 disabled={isLoading}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"

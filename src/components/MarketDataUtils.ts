@@ -50,28 +50,8 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
     aiScore: Math.random() * 100,
     category: crypto.category || 'Cryptocurrency'
   }));
-
-  let sortedData;
-  switch (activeFilter) {
-    case 'gainers':
-      sortedData = marketData.sort((a, b) => b.change24h - a.change24h);
-      break;
-    case 'losers':
-      sortedData = marketData.sort((a, b) => a.change24h - b.change24h);
-      break;
-    case 'volume':
-      sortedData = marketData.sort((a, b) => b.volume24h - a.volume24h);
-      break;
-    case 'trending':
-      sortedData = marketData.sort((a, b) => b.aiScore - a.aiScore);
-      break;
-    case 'market_cap':
-    default:
-      sortedData = marketData.sort((a, b) => b.marketCap - a.marketCap);
-      break;
-  }
   
-  return sortedData.slice(0, 10);
+   return marketData.slice(0, 12);
 };
 
 export const getFilterTitle = (activeFilter: FilterType): string => {

@@ -28,7 +28,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
         <div className="aspect-video bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
           <div className="absolute inset-0 bg-black/20">
             {" "}
-            <img src={article.image} width={250} height={250} />
+            <img src={article.image} />
           </div>
           <div className="absolute bottom-2 left-2">
             <Badge className="bg-black/50 text-white text-xs">
