@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,7 +17,9 @@ interface RelatedArticlesProps {
   articles: RelatedArticle[];
 }
 
-export const RelatedArticles: React.FC<RelatedArticlesProps> = ({ articles }) => {
+export const RelatedArticles: React.FC<RelatedArticlesProps> = ({
+  articles,
+}) => {
   if (articles.length === 0) return null;
 
   return (
@@ -62,15 +63,17 @@ export const RelatedArticles: React.FC<RelatedArticlesProps> = ({ articles }) =>
                     <span>{relatedArticle.readTime}</span>
                   </div>
                   <div className="flex flex-wrap gap-1">
-                    {relatedArticle.tags?.slice(0, 2).map((tag: string, index: number) => (
-                      <Badge
-                        key={index}
-                        variant="outline"
-                        className="text-xs bg-gray-600/50 border-gray-500 text-gray-300"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
+                    {relatedArticle.tags
+                      ?.slice(0, 2)
+                      .map((tag: string, index: number) => (
+                        <Badge
+                          key={index}
+                          variant="outline"
+                          className="text-xs bg-gray-600/50 border-gray-500 text-gray-300"
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
                   </div>
                 </div>
               </div>

@@ -14,7 +14,8 @@ class ApiService {
         order: 'market_cap_desc',
         per_page: '200',
         page: '1',
-        sparkline: 'false'
+        sparkline: 'false',
+        price_change_percentage: '24h,7d,30d'
       });
 
       const response = await fetch(`${this.baseUrl}/coins/markets?${queryParams.toString()}`, {
@@ -87,21 +88,47 @@ class ApiService {
     }
   }
 
-  async getWordPressPost<T>(): Promise<T> {
-    try {
-      const response = await fetch("https://blog.pumpparade.com//wp-json/wp/v2/posts");
-
-      if (!response.ok) {
-        throw new Error(`WordPress API error! status: ${response.status}`);
-      }
-
-      const data: T = await response.json();
-      return data;
-    } catch (error) {
-      console.error("WordPress fetch error:", error);    
-      throw error;
+  async getWordPressPost<T = any[]>(): Promise<T> {
+  try {
+    const postsResponse = await fetch("https://blog.pumpparade.com/wp-json/wp/v2/posts");
+    if (!postsResponse.ok) {
+      throw new Error(`WordPress API error! status: ${postsResponse.status}`);
     }
+
+    const posts = await postsResponse.json();
+
+    // Collect all unique tag IDs from posts
+    const allTagIds = Array.from(
+      new Set(posts.flatMap((post: any) => post.tags))
+    );
+
+    let tagMap: Record<number, string> = {};
+
+    if (allTagIds.length > 0) {
+      const tagsUrl = `https://blog.pumpparade.com/wp-json/wp/v2/tags?include=${allTagIds.join(",")}`;
+      const tagsResponse = await fetch(tagsUrl);
+      const tags = await tagsResponse.json();
+      tagMap = tags.reduce((acc: Record<number, string>, tag: any) => {
+        acc[tag.id] = tag.name;
+        return acc;
+      }, {});
+    }
+
+    // Attach tag names to each post
+    const postsWithTagNames = posts.map((post: any) => ({
+      ...post,
+      tagNames: post.tags.map((tagId: number) => tagMap[tagId] || "")
+    }));
+
+    return postsWithTagNames as T;
+
+  } catch (error) {
+    console.error("WordPress fetch error:", error);
+    throw error;
   }
 }
+
+}
+
 
 export const apiService = new ApiService();

@@ -20,6 +20,7 @@ const WordPressIntegration = () => {
         "https://via.placeholder.com/300";
       const url = post.link;
       const content = post.content?.rendered || ""; // full HTML content
+      const tagname = post.tagNames?.filter((t: string) => t)?.join(", ") || "";
 
       return {
         id: post.id,
@@ -32,6 +33,7 @@ const WordPressIntegration = () => {
         image,
         url,
         content,
+        tagname,
       };
     });
   };
