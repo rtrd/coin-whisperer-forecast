@@ -57,7 +57,7 @@ const WordPressIntegration = () => {
 
   return (
     <Link to="/blog" className="block">
-      <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl hover:bg-gray-800/70 hover:scale-105 hover:shadow-3xl transition-all duration-300 cursor-pointer">
+      <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl hover:bg-gray-800/70 transition-colors cursor-pointer">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-white flex items-center gap-2">
