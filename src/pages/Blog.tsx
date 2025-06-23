@@ -180,10 +180,10 @@ const Blog = () => {
           </div>
           
           {trendingArticles.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto">
               {/* #1 Trending - 30% bigger, takes more space */}
-              <div className="lg:col-span-2">
-                <div className="relative">
+              <div className="lg:col-span-2 h-full">
+                <div className="relative h-full">
                   <div className="absolute -top-2 -left-2 z-10">
                     <Badge className="bg-yellow-600 text-black font-bold text-sm px-3 py-1">
                       #1
@@ -199,9 +199,9 @@ const Blog = () => {
               </div>
               
               {/* #2-#5 Trending - smaller cards in sidebar */}
-              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
                 {trendingArticles.slice(1, 5).map((article, index) => (
-                  <div key={article.id} className="relative">
+                  <div key={article.id} className="relative h-full">
                     <div className="absolute -top-2 -left-2 z-10">
                       <Badge className="bg-gray-600 text-white font-bold text-sm px-2 py-1">
                         #{index + 2}
