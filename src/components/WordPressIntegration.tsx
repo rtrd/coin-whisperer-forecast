@@ -1,7 +1,10 @@
+
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { ArticleCard } from "./ArticleCard";
 import { getWordPressPost } from "../../utils/api";
 
@@ -56,11 +59,22 @@ const WordPressIntegration = () => {
   return (
     <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
-          <ExternalLink className="h-5 w-5 text-blue-400" />
-          Latest Crypto News & Analysis
-          <Badge className="bg-blue-600">Live Feed</Badge>
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-white flex items-center gap-2">
+            <ExternalLink className="h-5 w-5 text-blue-400" />
+            Latest Crypto News & Analysis
+            <Badge className="bg-blue-600">Live Feed</Badge>
+          </CardTitle>
+          <Link to="/blog">
+            <Button 
+              variant="outline"
+              className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+            >
+              View All Articles
+              <ArrowRight className="h-4 w-4 ml-2" />
+            </Button>
+          </Link>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
