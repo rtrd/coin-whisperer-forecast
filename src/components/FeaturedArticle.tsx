@@ -15,11 +15,21 @@ interface FeaturedArticleProps {
     category: string;
     readTime: string;
     image: string;
+    content?: string;
     tags?: string[];
   };
 }
 
 export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => {
+  // Get preview text from excerpt or content
+  const getPreviewText = () => {
+    const text = article.excerpt || article.content || "";
+    const cleanText = text.replace(/<[^>]+>/g, "").trim();
+    const words = cleanText.split(" ");
+    const wordLimit = 40;
+    return words.slice(0, wordLimit).join(" ") + (words.length > wordLimit ? "..." : "");
+  };
+
   return (
     <Link to={`/article/${article.id}`} state={{ article }} className="block">
       <Card className="bg-gray-800/50 border-gray-700 overflow-hidden hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
@@ -49,8 +59,8 @@ export const FeaturedArticle: React.FC<FeaturedArticleProps> = ({ article }) => 
               </h2>
             </div>
 
-            <p className="text-gray-300 text-lg mb-6 line-clamp-3">
-              {article.excerpt}
+            <p className="text-gray-300 text-lg mb-6 line-clamp-4 leading-relaxed">
+              {getPreviewText()}
             </p>
 
             <div className="flex items-center justify-between text-sm text-gray-400">

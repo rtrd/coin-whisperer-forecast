@@ -41,7 +41,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     let wordLimit = 25;
     
     if (compact) wordLimit = 15;
-    if (highlighted) wordLimit = 35;
+    if (highlighted) wordLimit = 50; // Increased from 35 to 50 for more text
     if (horizontal) wordLimit = 12;
     
     return words.slice(0, wordLimit).join(" ") + (words.length > wordLimit ? "..." : "");
@@ -149,7 +149,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         className="group cursor-pointer block h-full"
       >
         <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20 h-full flex flex-col">
-          <div className="aspect-[3/2] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+          <div className="aspect-[4/3] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
             <img 
               src={article.image} 
               alt={article.title}
@@ -168,11 +168,11 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           </div>
 
           <div className="p-4 flex-1 flex flex-col">
-            <h3 className="text-gray-100 font-bold text-base mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
+            <h3 className="text-gray-100 font-bold text-lg mb-3 line-clamp-2 group-hover:text-yellow-400 transition-colors leading-tight">
               {article.title}
             </h3>
 
-            <p className="text-gray-300 text-sm mb-3 flex-1 leading-relaxed line-clamp-3">
+            <p className="text-gray-300 text-sm mb-4 flex-1 leading-relaxed line-clamp-4">
               {getPreviewText()}
             </p>
 
