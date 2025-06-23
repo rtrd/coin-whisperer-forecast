@@ -34,11 +34,6 @@ export const HighlightedArticleCard: React.FC<HighlightedArticleCardProps> = ({ 
             alt={article.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute top-2 left-2">
-            <Badge className="bg-yellow-600 text-black font-bold text-xs">
-              Trending #1
-            </Badge>
-          </div>
           <div className="absolute bottom-2 left-2">
             <Badge className="bg-black/50 text-white text-xs">
               {article.category}
@@ -47,11 +42,11 @@ export const HighlightedArticleCard: React.FC<HighlightedArticleCardProps> = ({ 
         </div>
 
         <div className="p-4 flex-1 flex flex-col">
-          <h3 className="text-gray-100 font-bold text-lg mb-3 line-clamp-2 group-hover:text-yellow-400 transition-colors leading-tight">
+          <h3 className="text-gray-100 font-bold text-lg mb-4 line-clamp-2 group-hover:text-yellow-400 transition-colors leading-tight">
             {article.title}
           </h3>
 
-          <p className="text-gray-300 text-sm mb-4 flex-1 leading-relaxed line-clamp-4">
+          <p className="text-gray-300 text-sm mb-4 flex-1 leading-relaxed line-clamp-6">
             {getPreviewText(article, "blog", false, true, false)}
           </p>
 

@@ -14,7 +14,7 @@ export const getPreviewText = (
   let wordLimit = 25;
   
   if (compact) wordLimit = 15;
-  if (highlighted) wordLimit = 50;
+  if (highlighted) wordLimit = 80; // Increased from 50 to 80 for more description
   if (horizontal) wordLimit = 12;
   
   return words.slice(0, wordLimit).join(" ") + (words.length > wordLimit ? "..." : "");
