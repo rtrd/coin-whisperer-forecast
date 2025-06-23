@@ -56,9 +56,16 @@ const Blog = () => {
                       "https://via.placeholder.com/800x400";
           const content = post.content?.rendered || "";
           
-          // Extract category from WordPress categories
+          // Extract category from WordPress categories with proper fallback
           const wpCategories = post._embedded?.["wp:term"]?.[0] || [];
-          const categoryName = wpCategories.find((cat: any) => cat.taxonomy === "category")?.name || "General";
+          let categoryName = "General";
+          
+          if (wpCategories.length > 0) {
+            const category = wpCategories.find((cat: any) => cat.taxonomy === "category" && cat.name !== "Uncategorized");
+            if (category) {
+              categoryName = category.name;
+            }
+          }
 
           return formatArticleForDisplay({
             id: post.id,
@@ -77,15 +84,31 @@ const Blog = () => {
 
         setArticles(formattedArticles);
         
-        // Group articles by category
+        // Group articles by category, excluding "General" and empty categories
         const categoryGroups: { [key: string]: any[] } = {};
         formattedArticles.forEach(article => {
           const category = article.category;
-          if (!categoryGroups[category]) {
-            categoryGroups[category] = [];
+          if (category && category !== "General" && category !== "Uncategorized") {
+            if (!categoryGroups[category]) {
+              categoryGroups[category] = [];
+            }
+            categoryGroups[category].push(article);
           }
-          categoryGroups[category].push(article);
         });
+
+        // If no specific categories found, use placeholder categories with actual articles
+        if (Object.keys(categoryGroups).length === 0) {
+          const placeholderCategories = ["Trading", "DeFi", "Bitcoin", "Ethereum", "Altcoins", "NFTs"];
+          placeholderCategories.forEach((category, index) => {
+            const categoryArticles = formattedArticles.slice(index * 3, (index + 1) * 3);
+            if (categoryArticles.length > 0) {
+              categoryGroups[category] = categoryArticles.map(article => ({
+                ...article,
+                category: category
+              }));
+            }
+          });
+        }
         
         setCategories(categoryGroups);
       }
@@ -99,7 +122,7 @@ const Blog = () => {
   // Mock data for demonstration - in real implementation, these would come from analytics
   const featuredArticle = articles[0] || null;
   const trendingArticles = articles.slice(1, 7);
-  const latestArticles = articles.slice(0, 12);
+  const latestArticles = articles.slice(0, 8);
 
   if (loading) {
     return (
@@ -155,7 +178,7 @@ const Blog = () => {
             <TrendingUp className="h-6 w-6 text-red-400" />
             <h2 className="text-2xl font-bold text-white">Trending This Week</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {trendingArticles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
@@ -168,20 +191,21 @@ const Blog = () => {
             <Clock className="h-6 w-6 text-blue-400" />
             <h2 className="text-2xl font-bold text-white">Latest Articles</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {latestArticles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
         </div>
 
-        {/* Category Sections */}
-        <div className="space-y-12">
+        {/* Category Sections - Vertical Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Object.entries(categories).map(([categoryName, categoryArticles]) => (
             <CategorySection
               key={categoryName}
               categoryName={categoryName}
               articles={categoryArticles}
+              isVertical={true}
             />
           ))}
         </div>
