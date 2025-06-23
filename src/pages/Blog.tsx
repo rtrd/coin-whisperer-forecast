@@ -11,6 +11,7 @@ import { CategorySection } from "@/components/CategorySection";
 import { getWordPressPost } from "../../utils/api";
 import { formatArticleForDisplay } from "@/utils/articleUtils";
 import { ArrowLeft, TrendingUp, Clock, Star, Hash } from "lucide-react";
+import { User } from "lucide-react";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
@@ -94,20 +95,6 @@ const Blog = () => {
             categoryGroups[category].push(article);
           }
         });
-
-        // If no specific categories found, use placeholder categories with actual articles
-        if (Object.keys(categoryGroups).length === 0) {
-          const placeholderCategories = ["Trading", "DeFi", "Bitcoin", "Ethereum", "Altcoins", "NFTs"];
-          placeholderCategories.forEach((category, index) => {
-            const categoryArticles = formattedArticles.slice(index * 3, (index + 1) * 3);
-            if (categoryArticles.length > 0) {
-              categoryGroups[category] = categoryArticles.map(article => ({
-                ...article,
-                category: category
-              }));
-            }
-          });
-        }
         
         setCategories(categoryGroups);
       }
@@ -120,7 +107,7 @@ const Blog = () => {
 
   // Mock data for demonstration - in real implementation, these would come from analytics
   const featuredArticle = articles[0] || null;
-  const trendingArticles = articles.slice(1, 4); // Only take 3 articles for trending
+  const trendingArticles = articles.slice(1, 5); // Get exactly 4 articles for ranking
   const latestArticles = articles.slice(0, 8);
 
   if (loading) {
@@ -171,22 +158,70 @@ const Blog = () => {
           </div>
         )}
 
-        {/* Trending Articles */}
+        {/* Trending Articles - Ranking Style */}
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-6">
             <TrendingUp className="h-6 w-6 text-red-400" />
-            <h2 className="text-2xl font-bold text-white">Trending This Week</h2>
+            <h2 className="text-2xl font-bold text-white">Trending This Week - Top 4</h2>
           </div>
           
           {trendingArticles.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="space-y-4">
               {trendingArticles.slice(0, 4).map((article, index) => (
-                <ArticleCard 
-                  key={article.id} 
-                  article={article} 
-                  variant="blog"
-                  highlighted={index === 0}
-                />
+                <div key={article.id} className="flex items-center gap-4">
+                  {/* Ranking Number */}
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">#{index + 1}</span>
+                  </div>
+                  
+                  {/* Article Card */}
+                  <div className="flex-1">
+                    <Link
+                      to={`/article/${article.id}`}
+                      state={{ article }}
+                      className="group cursor-pointer block"
+                    >
+                      <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-red-500 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 flex h-24">
+                        {/* Image */}
+                        <div className="w-32 bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+                          <img 
+                            src={article.image} 
+                            alt={article.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 p-4 flex flex-col justify-between">
+                          <div>
+                            <h4 className="text-gray-100 font-semibold text-sm mb-1 line-clamp-1 group-hover:text-red-400 transition-colors">
+                              {article.title}
+                            </h4>
+                            <p className="text-gray-400 text-xs line-clamp-1">
+                              {article.excerpt}
+                            </p>
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-xs text-gray-500">
+                            <div className="flex items-center gap-3">
+                              <Badge className="bg-black/30 text-white text-xs px-2 py-1 h-5">
+                                {article.category}
+                              </Badge>
+                              <div className="flex items-center gap-1">
+                                <User className="h-3 w-3" />
+                                <span>{article.author}</span>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-1 text-red-400">
+                              <Clock className="h-3 w-3" />
+                              <span>{article.readTime}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
               ))}
             </div>
           )}
