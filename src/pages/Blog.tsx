@@ -179,9 +179,9 @@ const Blog = () => {
           </div>
           
           {trendingArticles.length > 0 && (
-            <div className="space-y-6">
-              {/* First trending article - highlighted */}
-              <div className="mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* First trending article - slightly highlighted, takes 2 columns */}
+              <div className="lg:col-span-2">
                 <ArticleCard 
                   key={trendingArticles[0].id} 
                   article={trendingArticles[0]} 
@@ -190,10 +190,10 @@ const Blog = () => {
                 />
               </div>
               
-              {/* Rest of trending articles */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {trendingArticles.slice(1).map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="blog" />
+              {/* Rest of trending articles in sidebar */}
+              <div className="space-y-4">
+                {trendingArticles.slice(1, 5).map((article) => (
+                  <ArticleCard key={article.id} article={article} variant="blog" compact={true} />
                 ))}
               </div>
             </div>

@@ -107,7 +107,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         state={{ article }}
         className="group cursor-pointer block"
       >
-        <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-20">
+        <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-28">
           {/* Image - 30% */}
           <div className="w-[30%] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
             <img 
@@ -118,17 +118,17 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           </div>
 
           {/* Content - 70% */}
-          <div className="w-[70%] p-2 flex flex-col justify-between">
+          <div className="w-[70%] p-3 flex flex-col justify-between">
             <div className="flex-1">
-              <h4 className="text-gray-100 font-medium text-xs mb-1 line-clamp-2 group-hover:text-blue-400 transition-colors leading-tight">
+              <h4 className="text-gray-100 font-medium text-sm mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors leading-tight">
                 {article.title}
               </h4>
-              <p className="text-gray-400 text-xs line-clamp-1 leading-tight">
+              <p className="text-gray-400 text-xs line-clamp-2 leading-tight">
                 {getPreviewText()}
               </p>
             </div>
             
-            <div className="flex items-center justify-between text-xs text-gray-500 mt-1">
+            <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
               <Badge className="bg-black/30 text-white text-xs px-1 py-0 h-4">
                 {article.category}
               </Badge>
@@ -140,7 +140,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     );
   }
 
-  // Highlighted card (for first trending article)
+  // Highlighted card (for first trending article) - made smaller
   if (highlighted) {
     return (
       <Link
@@ -148,48 +148,48 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         state={{ article }}
         className="group cursor-pointer block"
       >
-        <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20 max-w-2xl">
-          <div className="aspect-[3/2] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+        <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20">
+          <div className="aspect-[2/1] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
             <img 
               src={article.image} 
               alt={article.title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute top-3 left-3">
-              <Badge className="bg-yellow-600 text-black font-bold text-sm">
+            <div className="absolute top-2 left-2">
+              <Badge className="bg-yellow-600 text-black font-bold text-xs">
                 Trending #1
               </Badge>
             </div>
-            <div className="absolute bottom-3 left-3">
-              <Badge className="bg-black/50 text-white text-sm">
+            <div className="absolute bottom-2 left-2">
+              <Badge className="bg-black/50 text-white text-xs">
                 {article.category}
               </Badge>
             </div>
           </div>
 
-          <div className="p-6">
-            <h3 className="text-gray-100 font-bold text-lg mb-3 line-clamp-2 group-hover:text-yellow-400 transition-colors">
+          <div className="p-4">
+            <h3 className="text-gray-100 font-bold text-base mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
               {article.title}
             </h3>
 
-            <p className="text-gray-300 text-sm mb-4 line-clamp-3 leading-relaxed">
+            <p className="text-gray-300 text-sm mb-3 line-clamp-2 leading-relaxed">
               {getPreviewText()}
             </p>
 
             <div className="flex items-center justify-between text-sm text-gray-400">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
-                  <User className="h-4 w-4" />
-                  <span>{article.author}</span>
+                  <User className="h-3 w-3" />
+                  <span className="text-xs">{article.author}</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Calendar className="h-4 w-4" />
-                  <span>{new Date(article.date).toLocaleDateString()}</span>
+                  <Calendar className="h-3 w-3" />
+                  <span className="text-xs">{new Date(article.date).toLocaleDateString()}</span>
                 </div>
               </div>
               <div className="flex items-center gap-1 text-yellow-400">
-                <Clock className="h-4 w-4" />
-                <span>{article.readTime}</span>
+                <Clock className="h-3 w-3" />
+                <span className="text-xs">{article.readTime}</span>
               </div>
             </div>
           </div>
