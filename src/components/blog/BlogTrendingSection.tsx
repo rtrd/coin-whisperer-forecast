@@ -19,14 +19,21 @@ export const BlogTrendingSection: React.FC<BlogTrendingSectionProps> = ({ trendi
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto">
-        {/* #1 Trending - 30% bigger, takes more space, no badge */}
+        {/* #1 Trending - 30% bigger, takes more space, with #1 badge */}
         <div className="lg:col-span-2 h-full">
-          <ArticleCard 
-            key={trendingArticles[0].id} 
-            article={trendingArticles[0]} 
-            variant="blog"
-            highlighted={true}
-          />
+          <div className="relative h-full">
+            <div className="absolute -top-2 -left-2 z-10">
+              <Badge className="bg-gray-600 text-white font-bold text-sm px-2 py-1">
+                #1
+              </Badge>
+            </div>
+            <ArticleCard 
+              key={trendingArticles[0].id} 
+              article={trendingArticles[0]} 
+              variant="blog"
+              highlighted={true}
+            />
+          </div>
         </div>
         
         {/* #2-#5 Trending - smaller cards in sidebar */}
