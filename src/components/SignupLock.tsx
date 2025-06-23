@@ -27,7 +27,6 @@ export const SignupLock: React.FC<SignupLockProps> = ({
   const SERVER_URL = import.meta.env.VITE_SERVER_URL;
   const saveEmail = async (email: string) => {
     try {
-      debugger;
       const response = await fetch(`${SERVER_URL}/save-email`, {
         method: "POST",
         headers: {

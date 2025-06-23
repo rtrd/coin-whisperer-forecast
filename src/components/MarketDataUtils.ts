@@ -39,6 +39,7 @@ export const formatMarketCap = (marketCap: number): string => {
 };
 
 export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: FilterType) => {
+  console.log("Generating market data :", cryptoOptions);
   const marketData = cryptoOptions.map((crypto, index) => ({
     ...crypto,
     value: crypto.id || crypto.symbol?.toLowerCase() || `token-${index}`,
@@ -48,7 +49,14 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
     marketCap: crypto.market_cap || Math.random() * 10000000000,
     predictionPercentage: (Math.random() - 0.5) * 30,
     aiScore: Math.random() * 100,
-    category: crypto.category || 'Cryptocurrency'
+    category: crypto.category || 'Cryptocurrency',
+    pricechange_24h: crypto.price_change_24h,
+    price_change_percentage_7d_in_currency: crypto.price_change_percentage_7d_in_currency,
+    price_change_percentage_24h: crypto.price_change_percentage_24h,
+    price_change_percentage_24h_in_currency: crypto.price_change_percentage_24h_in_currency,
+    price_change_percentage_30d_in_currency: crypto.price_change_percentage_30d_in_currency,
+    AllTimeHigh: crypto.ath || Math.random() * 1000,
+    AllTimeLow: crypto.atl || Math.random() * 10
   }));
   
    return marketData.slice(0, 12);

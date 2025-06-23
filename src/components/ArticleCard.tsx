@@ -14,6 +14,7 @@ interface ArticleCardProps {
     readTime: string;
     image: string;
     url: string;
+    tags?: string[];
   };
 }
 

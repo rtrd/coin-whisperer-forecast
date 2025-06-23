@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
@@ -13,11 +12,13 @@ import { ArticleHeader } from "@/components/ArticleHeader";
 import { ArticleContent } from "@/components/ArticleContent";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { ArticleNotFound } from "@/components/ArticleNotFound";
-import { formatArticleForDisplay, getRelatedArticles } from "@/utils/articleUtils";
+import {
+  formatArticleForDisplay,
+  getRelatedArticles,
+} from "@/utils/articleUtils";
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
-  debugger;
   const location = useLocation();
 
   const articles = Array.isArray(location.state?.article)
@@ -49,7 +50,6 @@ const Article = () => {
 
   // Mock related articles with tags for filtering
   const allArticles = [
-    ...articles,
     {
       id: 3,
       title: "Top 5 Altcoins to Watch This Week",
@@ -57,7 +57,8 @@ const Article = () => {
       date: "2024-01-13",
       category: "AI Predictions",
       readTime: "3 min read",
-      image: "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=400&h=240&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=400&h=240&fit=crop",
       content: "",
       tags: ["altcoins", "crypto", "predictions"],
     },
@@ -66,9 +67,10 @@ const Article = () => {
       title: "DeFi Protocol Analysis: Compound vs Aave",
       author: "Maria Garcia",
       date: "2024-01-12",
-      category: "DeFi Guide", 
+      category: "DeFi Guide",
       readTime: "5 min read",
-      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=240&fit=crop",
+      image:
+        "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=240&fit=crop",
       content: "",
       tags: ["defi", "analysis", "protocols"],
     },
@@ -78,8 +80,9 @@ const Article = () => {
       author: "John Doe",
       date: "2024-01-11",
       category: "Market Analysis",
-      readTime: "4 min read", 
-      image: "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&h=240&fit=crop",
+      readTime: "4 min read",
+      image:
+        "https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=400&h=240&fit=crop",
       content: "",
       tags: ["bitcoin", "analysis", "sentiment"],
     },
@@ -90,7 +93,8 @@ const Article = () => {
       date: "2024-01-10",
       category: "NFT Analysis",
       readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=400&h=240&fit=crop", 
+      image:
+        "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?w=400&h=240&fit=crop",
       content: "",
       tags: ["nft", "trends", "market"],
     },
@@ -100,7 +104,7 @@ const Article = () => {
     return <ArticleNotFound />;
   }
 
-  const relatedArticles = getRelatedArticles(article, allArticles);
+  //const relatedArticles = getRelatedArticles(article, allArticles);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -138,7 +142,7 @@ const Article = () => {
             </Card>
 
             {/* Related Articles */}
-            <RelatedArticles articles={relatedArticles} />
+            <RelatedArticles articles={allArticles} />
           </div>
 
           {/* Sticky Sidebar */}

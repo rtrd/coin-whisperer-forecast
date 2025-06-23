@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Activity, 
-  Brain, 
-  Target, 
-  AlertCircle, 
-  BarChart3, 
-  ArrowLeft
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Brain,
+  Target,
+  AlertCircle,
+  BarChart3,
+  ArrowLeft,
 } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
@@ -37,31 +43,54 @@ import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
 
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
-  const [timeframe, setTimeframe] = useState('7d');
+  const location = useLocation();
+  const tokenmarketstats = location.state?.token;
+  const [timeframe, setTimeframe] = useState("7d");
   const [predictionDays, setPredictionDays] = useState(7);
-  const [modelType, setModelType] = useState('advanced');
+  const [modelType, setModelType] = useState("advanced");
   const [showPrediction, setShowPrediction] = useState(false);
 
   // Get token info and crypto options
-  const selectedToken = getTokenInfo(tokenId || 'bitcoin');
-  const cryptoId = getCoinGeckoId(tokenId || 'bitcoin');
+  const selectedToken = getTokenInfo(tokenId || "bitcoin");
+  const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
-  const { data: cryptoData, isLoading: dataLoading, error: dataError } = useCryptoData(cryptoId, timeframe);
-  const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
+  const {
+    data: cryptoData,
+    isLoading: dataLoading,
+    error: dataError,
+  } = useCryptoData(cryptoId, timeframe);
+  const {
+    prediction,
+    isLoading: predictionLoading,
+    generatePrediction,
+  } = usePrediction();
 
-  const currentPrice = cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1]?.price : 0;
-  const previousPrice = cryptoData && cryptoData.length > 1 ? cryptoData[cryptoData.length - 2]?.price : 0;
-  const priceChange = currentPrice && previousPrice ? ((currentPrice - previousPrice) / previousPrice) * 100 : 0;
+  const currentPrice =
+    cryptoData && cryptoData.length > 0
+      ? cryptoData[cryptoData.length - 1]?.price
+      : 0;
+  const previousPrice =
+    cryptoData && cryptoData.length > 1
+      ? cryptoData[cryptoData.length - 2]?.price
+      : 0;
+  const priceChange =
+    currentPrice && previousPrice
+      ? ((currentPrice - previousPrice) / previousPrice) * 100
+      : 0;
 
-  const { marketData } = useMarketData(currentPrice, selectedToken.category, cryptoId);
+  const { marketData } = useMarketData(
+    currentPrice,
+    selectedToken.category,
+    cryptoId
+  );
 
   const handlePredict = async () => {
     if (!cryptoData) {
       toast.error("No data available for prediction");
       return;
     }
-    
+
     await generatePrediction(cryptoData, cryptoId, predictionDays);
     setShowPrediction(true);
     toast.success("Prediction generated successfully!");
@@ -77,8 +106,12 @@ const TokenDetail = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
-            <h1 className="text-2xl font-bold text-white mb-4">Token Not Found</h1>
-            <p className="text-gray-300 mb-4">The token "{tokenId}" could not be found.</p>
+            <h1 className="text-2xl font-bold text-white mb-4">
+              Token Not Found
+            </h1>
+            <p className="text-gray-300 mb-4">
+              The token "{tokenId}" could not be found.
+            </p>
             <Link to="/">
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <ArrowLeft className="h-4 w-4 mr-2" />
@@ -92,11 +125,11 @@ const TokenDetail = () => {
   }
 
   return (
-    <TokenProvider tokenId={tokenId || 'bitcoin'} cryptoOptions={cryptoOptions}>
+    <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-8">
           {/* Homepage Header */}
-          <IndexHeader 
+          <IndexHeader
             selectedCrypto={cryptoId}
             cryptoOptions={cryptoOptions}
             currentPrice={currentPrice}
@@ -111,7 +144,10 @@ const TokenDetail = () => {
           {/* Back Button */}
           <div className="mb-6">
             <Link to="/">
-              <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
+              <Button
+                variant="outline"
+                className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
+              >
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back
               </Button>
@@ -125,11 +161,16 @@ const TokenDetail = () => {
                 {/* Token Info Section */}
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
                   <TokenHeader />
-                  <TokenPriceDisplay currentPrice={currentPrice} priceChange={priceChange} />
+                  <TokenPriceDisplay
+                    currentPrice={tokenmarketstats?.current_price || 0}
+                    priceChange={
+                      tokenmarketstats?.price_change_percentage_24h || 0
+                    }
+                  />
                 </div>
 
                 {/* Market Statistics */}
-                <TokenMarketStats marketData={marketData} />
+                <TokenMarketStats marketData={tokenmarketstats} />
               </div>
             </CardContent>
           </Card>
@@ -144,16 +185,21 @@ const TokenDetail = () => {
                     <BarChart3 className="h-5 w-5 text-blue-400" />
                     Price Chart & AI Analysis
                   </span>
-                  <Badge variant="outline" className="text-green-400 border-green-400">
+                  <Badge
+                    variant="outline"
+                    className="text-green-400 border-green-400"
+                  >
                     Real-time
                   </Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Price Chart */}
-                <PriceChart 
-                  data={cryptoData} 
-                  prediction={showPrediction ? prediction?.predictions || null : null}
+                <PriceChart
+                  data={cryptoData}
+                  prediction={
+                    showPrediction ? prediction?.predictions || null : null
+                  }
                   isLoading={dataLoading}
                   crypto={cryptoId}
                   onClearPrediction={handleClearPrediction}
@@ -163,40 +209,69 @@ const TokenDetail = () => {
                 <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
                   <div className="flex items-center gap-2 mb-4">
                     <Target className="h-4 w-4 text-green-400" />
-                    <span className="text-white font-medium">AI Analysis Controls</span>
+                    <span className="text-white font-medium">
+                      AI Analysis Controls
+                    </span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 block">Time Period</label>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">
+                        Time Period
+                      </label>
                       <Select value={timeframe} onValueChange={setTimeframe}>
                         <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1d" className="text-white">1 Day</SelectItem>
-                          <SelectItem value="7d" className="text-white">7 Days</SelectItem>
-                          <SelectItem value="30d" className="text-white">30 Days</SelectItem>
-                          <SelectItem value="90d" className="text-white">90 Days</SelectItem>
+                          <SelectItem value="1d" className="text-white">
+                            1 Day
+                          </SelectItem>
+                          <SelectItem value="7d" className="text-white">
+                            7 Days
+                          </SelectItem>
+                          <SelectItem value="30d" className="text-white">
+                            30 Days
+                          </SelectItem>
+                          <SelectItem value="90d" className="text-white">
+                            90 Days
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 block">Prediction Days</label>
-                      <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                      <label className="text-sm font-medium text-gray-300 mb-2 block">
+                        Prediction Days
+                      </label>
+                      <Select
+                        value={predictionDays.toString()}
+                        onValueChange={(value) =>
+                          setPredictionDays(Number(value))
+                        }
+                      >
                         <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1" className="text-white">1 Day</SelectItem>
-                          <SelectItem value="3" className="text-white">3 Days</SelectItem>
-                          <SelectItem value="7" className="text-white">7 Days</SelectItem>
-                          <SelectItem value="14" className="text-white">14 Days</SelectItem>
-                          <SelectItem value="30" className="text-white">30 Days</SelectItem>
+                          <SelectItem value="1" className="text-white">
+                            1 Day
+                          </SelectItem>
+                          <SelectItem value="3" className="text-white">
+                            3 Days
+                          </SelectItem>
+                          <SelectItem value="7" className="text-white">
+                            7 Days
+                          </SelectItem>
+                          <SelectItem value="14" className="text-white">
+                            14 Days
+                          </SelectItem>
+                          <SelectItem value="30" className="text-white">
+                            30 Days
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div>
                       <label className="text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
                         Model Type
@@ -207,18 +282,31 @@ const TokenDetail = () => {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="basic" className="text-white">Basic LSTM</SelectItem>
-                          <SelectItem value="advanced" className="text-white">Advanced Neural</SelectItem>
-                          <SelectItem value="ensemble" className="text-white">Ensemble Model</SelectItem>
-                          <SelectItem value="transformer" className="text-white">Transformer</SelectItem>
+                          <SelectItem value="basic" className="text-white">
+                            Basic LSTM
+                          </SelectItem>
+                          <SelectItem value="advanced" className="text-white">
+                            Advanced Neural
+                          </SelectItem>
+                          <SelectItem value="ensemble" className="text-white">
+                            Ensemble Model
+                          </SelectItem>
+                          <SelectItem
+                            value="transformer"
+                            className="text-white"
+                          >
+                            Transformer
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
-                    
+
                     <div className="flex items-end">
-                      <Button 
+                      <Button
                         onClick={handlePredict}
-                        disabled={dataLoading || predictionLoading || !cryptoData}
+                        disabled={
+                          dataLoading || predictionLoading || !cryptoData
+                        }
                         className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                       >
                         {predictionLoading ? (
@@ -239,7 +327,10 @@ const TokenDetail = () => {
                   {/* Prediction Results */}
                   {showPrediction && prediction && (
                     <div className="mt-6 pt-6 border-t border-gray-600/50">
-                      <PredictionCard prediction={prediction} crypto={cryptoId} />
+                      <PredictionCard
+                        prediction={prediction}
+                        crypto={cryptoId}
+                      />
                     </div>
                   )}
                 </div>
@@ -252,18 +343,27 @@ const TokenDetail = () => {
               <div className="lg:col-span-3 space-y-6">
                 <Tabs defaultValue="technical" className="w-full">
                   <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
-                    <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
+                    <TabsTrigger
+                      value="technical"
+                      className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700"
+                    >
                       Technical Analysis
                     </TabsTrigger>
-                    <TabsTrigger value="sentiment" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
+                    <TabsTrigger
+                      value="sentiment"
+                      className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700"
+                    >
                       Market Sentiment
                     </TabsTrigger>
                   </TabsList>
-                  
+
                   <TabsContent value="technical">
-                    <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+                    <LockedTechnicalAnalysis
+                      data={cryptoData}
+                      isLoading={dataLoading}
+                    />
                   </TabsContent>
-                  
+
                   <TabsContent value="sentiment">
                     <LockedSentimentAnalysis crypto={cryptoId} />
                   </TabsContent>
@@ -289,9 +389,12 @@ const TokenDetail = () => {
                     <div className="flex items-start gap-3">
                       <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
                       <div>
-                        <p className="text-sm text-yellow-200 font-medium mb-1">Investment Disclaimer</p>
+                        <p className="text-sm text-yellow-200 font-medium mb-1">
+                          Investment Disclaimer
+                        </p>
                         <p className="text-xs text-yellow-300">
-                          This analysis is for educational purposes only. Always do your own research before investing.
+                          This analysis is for educational purposes only. Always
+                          do your own research before investing.
                         </p>
                       </div>
                     </div>

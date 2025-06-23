@@ -11,6 +11,9 @@ export interface CryptoToken {
   price_change_24h: number;
   change24h: number;
   price_change_percentage_24h: number;
+  price_change_percentage_24h_in_currency?: number;  
+  price_change_percentage_7d_in_currency?: number;    
+  price_change_percentage_30d_in_currency?: number;   
   total_volume: number;
   volume24h: number;
   market_cap: number;
@@ -19,7 +22,10 @@ export interface CryptoToken {
   predictionPercentage: number;
   aiScore: number;
   rank?: number;
+  ath?: number
+  atl?: number;
 }
+
 
 export interface CryptoCategory {
   id: string;
