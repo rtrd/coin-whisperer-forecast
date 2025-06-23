@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,6 +43,7 @@ export const CategorySection: React.FC<CategorySectionProps> = ({
               key={article.id} 
               article={article} 
               compact={isVertical}
+              variant="blog"
             />
           ))}
         </div>
