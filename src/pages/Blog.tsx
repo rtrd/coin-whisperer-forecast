@@ -179,9 +179,9 @@ const Blog = () => {
           </div>
           
           {trendingArticles.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* First trending article - double size, takes 2 columns */}
-              <div className="lg:col-span-2">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* First trending article - double width */}
+              <div className="col-span-2 lg:col-span-2">
                 <ArticleCard 
                   key={trendingArticles[0].id} 
                   article={trendingArticles[0]} 
@@ -190,11 +190,22 @@ const Blog = () => {
                 />
               </div>
               
-              {/* Rest of trending articles in 2x2 grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
-                {trendingArticles.slice(1, 3).map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="blog" compact={true} />
-                ))}
+              {/* Second article - top right */}
+              <div className="col-span-2 lg:col-span-1">
+                <ArticleCard 
+                  key={trendingArticles[1]?.id} 
+                  article={trendingArticles[1]} 
+                  variant="blog" 
+                />
+              </div>
+              
+              {/* Third article - bottom spanning 2 columns on mobile, 1 on desktop */}
+              <div className="col-span-2 lg:col-span-1">
+                <ArticleCard 
+                  key={trendingArticles[2]?.id} 
+                  article={trendingArticles[2]} 
+                  variant="blog" 
+                />
               </div>
             </div>
           )}
@@ -224,7 +235,7 @@ const Blog = () => {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {Object.entries(categories).map(([categoryName, categoryArticles]) => (
-                <div key={categoryName} className="space-y-3">
+                <div key={categoryName} className="space-y-4 min-h-[400px]">
                   <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                     <Hash className="h-4 w-4 text-blue-400" />
                     {categoryName}
@@ -232,7 +243,7 @@ const Blog = () => {
                       ({categoryArticles.length})
                     </span>
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {categoryArticles.slice(0, 4).map((article) => (
                       <ArticleCard 
                         key={article.id} 
