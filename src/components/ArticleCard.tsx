@@ -107,7 +107,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         state={{ article }}
         className="group cursor-pointer block"
       >
-        <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-36">
+        <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-28">
           {/* Image - 30% */}
           <div className="w-[30%] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
             <img 
@@ -118,9 +118,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
           </div>
 
           {/* Content - 70% */}
-          <div className="w-[70%] p-4 flex flex-col justify-between">
+          <div className="w-[70%] p-3 flex flex-col justify-between">
             <div className="flex-1">
-              <h4 className="text-gray-100 font-medium text-sm mb-3 line-clamp-2 group-hover:text-blue-400 transition-colors leading-tight">
+              <h4 className="text-gray-100 font-medium text-sm mb-2 line-clamp-2 group-hover:text-blue-400 transition-colors leading-tight">
                 {article.title}
               </h4>
               <p className="text-gray-400 text-xs line-clamp-2 leading-tight">
@@ -128,8 +128,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
               </p>
             </div>
             
-            <div className="flex items-center justify-between text-xs text-gray-500 mt-3">
-              <Badge className="bg-black/30 text-white text-xs px-2 py-1 h-5">
+            <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+              <Badge className="bg-black/30 text-white text-xs px-1 py-0 h-4">
                 {article.category}
               </Badge>
               <span className="text-xs">{article.readTime}</span>
@@ -140,7 +140,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
     );
   }
 
-  // Highlighted card (for first trending article) - same size as others now
+  // Highlighted card (for first trending article) - made smaller
   if (highlighted) {
     return (
       <Link
@@ -148,8 +148,8 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         state={{ article }}
         className="group cursor-pointer block"
       >
-        <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20 h-full">
-          <div className="aspect-[3/2] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+        <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20">
+          <div className="aspect-[2/1] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
             <img 
               src={article.image} 
               alt={article.title}
@@ -167,16 +167,16 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             </div>
           </div>
 
-          <div className="p-3 flex-1 flex flex-col">
-            <h3 className="text-gray-100 font-semibold text-sm mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
+          <div className="p-4">
+            <h3 className="text-gray-100 font-bold text-base mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
               {article.title}
             </h3>
 
-            <p className="text-gray-300 text-xs mb-3 line-clamp-2 leading-relaxed flex-1">
+            <p className="text-gray-300 text-sm mb-3 line-clamp-2 leading-relaxed">
               {getPreviewText()}
             </p>
 
-            <div className="flex items-center justify-between text-xs text-gray-400 mt-auto">
+            <div className="flex items-center justify-between text-sm text-gray-400">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <User className="h-3 w-3" />
