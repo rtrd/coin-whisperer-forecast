@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -120,7 +121,7 @@ const Blog = () => {
 
   // Mock data for demonstration - in real implementation, these would come from analytics
   const featuredArticle = articles[0] || null;
-  const trendingArticles = articles.slice(1, 7);
+  const trendingArticles = articles.slice(1, 6); // Changed to get 5 items
   const latestArticles = articles.slice(0, 8);
 
   if (loading) {
@@ -171,7 +172,7 @@ const Blog = () => {
           </div>
         )}
 
-        {/* Trending Articles */}
+        {/* Trending Articles - Ranking Structure */}
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-6">
             <TrendingUp className="h-6 w-6 text-red-400" />
@@ -179,21 +180,39 @@ const Blog = () => {
           </div>
           
           {trendingArticles.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* First trending article - slightly highlighted, takes 2 columns */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+              {/* #1 Trending - 30% bigger, takes more space */}
               <div className="lg:col-span-2">
-                <ArticleCard 
-                  key={trendingArticles[0].id} 
-                  article={trendingArticles[0]} 
-                  variant="blog"
-                  highlighted={true}
-                />
+                <div className="relative">
+                  <div className="absolute -top-2 -left-2 z-10">
+                    <Badge className="bg-yellow-600 text-black font-bold text-sm px-3 py-1">
+                      #1
+                    </Badge>
+                  </div>
+                  <ArticleCard 
+                    key={trendingArticles[0].id} 
+                    article={trendingArticles[0]} 
+                    variant="blog"
+                    highlighted={true}
+                  />
+                </div>
               </div>
               
-              {/* Rest of trending articles in sidebar */}
-              <div className="space-y-4">
-                {trendingArticles.slice(1, 5).map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="blog" compact={true} />
+              {/* #2-#5 Trending - smaller cards in sidebar */}
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {trendingArticles.slice(1, 5).map((article, index) => (
+                  <div key={article.id} className="relative">
+                    <div className="absolute -top-2 -left-2 z-10">
+                      <Badge className="bg-gray-600 text-white font-bold text-sm px-2 py-1">
+                        #{index + 2}
+                      </Badge>
+                    </div>
+                    <ArticleCard 
+                      article={article} 
+                      variant="blog" 
+                      compact={true}
+                    />
+                  </div>
                 ))}
               </div>
             </div>
