@@ -1,17 +1,13 @@
 
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { IndexHeader } from "@/components/IndexHeader";
-import Footer from "@/components/Footer";
-import { ArticleCard } from "@/components/ArticleCard";
-import { FeaturedArticle } from "@/components/FeaturedArticle";
-import { CategorySection } from "@/components/CategorySection";
+import { BlogLayout } from "@/components/blog/BlogLayout";
+import { BlogHeader } from "@/components/blog/BlogHeader";
+import { BlogFeaturedSection } from "@/components/blog/BlogFeaturedSection";
+import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
+import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
+import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { getWordPressPost } from "../../utils/api";
 import { formatArticleForDisplay } from "@/utils/articleUtils";
-import { ArrowLeft, TrendingUp, Clock, Star, Hash } from "lucide-react";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
@@ -133,143 +129,13 @@ const Blog = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      {/* Header */}
-      <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader
-          selectedCrypto="bitcoin"
-          cryptoOptions={cryptoOptions}
-          currentPrice={45000}
-          priceChange={2.5}
-        />
-      </div>
-
-      <div className="container mx-auto px-4 pb-8">
-        {/* Back Button and Page Title */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <Link to="/">
-              <Button
-                variant="outline"
-                className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Button>
-            </Link>
-            <h1 className="text-4xl font-bold text-white">Crypto Blog</h1>
-          </div>
-        </div>
-
-        {/* Featured Article */}
-        {featuredArticle && (
-          <div className="mb-12">
-            <div className="flex items-center gap-2 mb-6">
-              <Star className="h-6 w-6 text-yellow-400" />
-              <h2 className="text-2xl font-bold text-white">Featured Article</h2>
-            </div>
-            <FeaturedArticle article={featuredArticle} />
-          </div>
-        )}
-
-        {/* Trending Articles - Ranking Structure */}
-        <div className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="h-6 w-6 text-red-400" />
-            <h2 className="text-2xl font-bold text-white">Trending This Week</h2>
-          </div>
-          
-          {trendingArticles.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto">
-              {/* #1 Trending - 30% bigger, takes more space */}
-              <div className="lg:col-span-2 h-full">
-                <div className="relative h-full">
-                  <div className="absolute -top-2 -left-2 z-10">
-                    <Badge className="bg-yellow-600 text-black font-bold text-sm px-3 py-1">
-                      #1
-                    </Badge>
-                  </div>
-                  <ArticleCard 
-                    key={trendingArticles[0].id} 
-                    article={trendingArticles[0]} 
-                    variant="blog"
-                    highlighted={true}
-                  />
-                </div>
-              </div>
-              
-              {/* #2-#5 Trending - smaller cards in sidebar */}
-              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
-                {trendingArticles.slice(1, 5).map((article, index) => (
-                  <div key={article.id} className="relative h-full">
-                    <div className="absolute -top-2 -left-2 z-10">
-                      <Badge className="bg-gray-600 text-white font-bold text-sm px-2 py-1">
-                        #{index + 2}
-                      </Badge>
-                    </div>
-                    <ArticleCard 
-                      article={article} 
-                      variant="blog" 
-                      compact={true}
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Latest Articles */}
-        <div className="mb-12">
-          <div className="flex items-center gap-2 mb-6">
-            <Clock className="h-6 w-6 text-blue-400" />
-            <h2 className="text-2xl font-bold text-white">Latest Articles</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {latestArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} variant="blog" />
-            ))}
-          </div>
-        </div>
-
-        {/* Category Sections - Unified Container */}
-        <Card className="bg-gray-800/50 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2 text-2xl">
-              <Hash className="h-6 w-6 text-blue-400" />
-              Categories
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.entries(categories).map(([categoryName, categoryArticles]) => (
-                <div key={categoryName} className="space-y-3">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-                    <Hash className="h-4 w-4 text-blue-400" />
-                    {categoryName}
-                    <span className="text-gray-400 text-sm font-normal">
-                      ({categoryArticles.length})
-                    </span>
-                  </h3>
-                  <div className="space-y-3">
-                    {categoryArticles.slice(0, 4).map((article) => (
-                      <ArticleCard 
-                        key={article.id} 
-                        article={article} 
-                        variant="blog"
-                        horizontal={true}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Footer />
-    </div>
+    <BlogLayout cryptoOptions={cryptoOptions}>
+      <BlogHeader />
+      <BlogFeaturedSection featuredArticle={featuredArticle} />
+      <BlogTrendingSection trendingArticles={trendingArticles} />
+      <BlogLatestSection latestArticles={latestArticles} />
+      <BlogCategoriesSection categories={categories} />
+    </BlogLayout>
   );
 };
 
