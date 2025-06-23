@@ -15,7 +15,7 @@ import { ArrowLeft, TrendingUp, Clock, Star } from "lucide-react";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<{ [key: string]: any[] }>({});
   const [loading, setLoading] = useState(true);
 
   const cryptoOptions = [
@@ -55,7 +55,10 @@ const Blog = () => {
                       post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || 
                       "https://via.placeholder.com/800x400";
           const content = post.content?.rendered || "";
-          const tagname = post.tagNames?.filter((t: string) => t)?.join(", ") || "";
+          
+          // Extract category from WordPress categories
+          const wpCategories = post._embedded?.["wp:term"]?.[0] || [];
+          const categoryName = wpCategories.find((cat: any) => cat.taxonomy === "category")?.name || "General";
 
           return formatArticleForDisplay({
             id: post.id,
@@ -63,20 +66,28 @@ const Blog = () => {
             excerpt,
             author,
             date,
-            category: "Blog",
+            category: categoryName,
             readTime: "4 min read",
             image,
             url: post.link,
             content,
-            tagname,
+            tagname: post.tagNames?.filter((t: string) => t)?.join(", ") || "",
           });
         });
 
         setArticles(formattedArticles);
         
-        // Extract unique categories from articles
-        const uniqueCategories = [...new Set(formattedArticles.map(article => article.category))];
-        setCategories(uniqueCategories.map(cat => ({ name: cat, articles: formattedArticles.filter(a => a.category === cat) })));
+        // Group articles by category
+        const categoryGroups: { [key: string]: any[] } = {};
+        formattedArticles.forEach(article => {
+          const category = article.category;
+          if (!categoryGroups[category]) {
+            categoryGroups[category] = [];
+          }
+          categoryGroups[category].push(article);
+        });
+        
+        setCategories(categoryGroups);
       }
     } catch (error) {
       console.error("Failed to fetch blog data:", error);
@@ -144,7 +155,7 @@ const Blog = () => {
             <TrendingUp className="h-6 w-6 text-red-400" />
             <h2 className="text-2xl font-bold text-white">Trending This Week</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {trendingArticles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
@@ -166,11 +177,11 @@ const Blog = () => {
 
         {/* Category Sections */}
         <div className="space-y-12">
-          {categories.map((category) => (
+          {Object.entries(categories).map(([categoryName, categoryArticles]) => (
             <CategorySection
-              key={category.name}
-              categoryName={category.name}
-              articles={category.articles}
+              key={categoryName}
+              categoryName={categoryName}
+              articles={categoryArticles}
             />
           ))}
         </div>
