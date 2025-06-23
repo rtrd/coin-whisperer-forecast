@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,7 +10,7 @@ import { FeaturedArticle } from "@/components/FeaturedArticle";
 import { CategorySection } from "@/components/CategorySection";
 import { getWordPressPost } from "../../utils/api";
 import { formatArticleForDisplay } from "@/utils/articleUtils";
-import { ArrowLeft, TrendingUp, Clock, Star, Hash } from "lucide-react";
+import { ArrowLeft, TrendingUp, Clock, Star } from "lucide-react";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
@@ -178,9 +177,9 @@ const Blog = () => {
             <TrendingUp className="h-6 w-6 text-red-400" />
             <h2 className="text-2xl font-bold text-white">Trending This Week</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {trendingArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} variant="blog" compact={true} />
+              <ArticleCard key={article.id} article={article} variant="blog" />
             ))}
           </div>
         </div>
@@ -191,56 +190,24 @@ const Blog = () => {
             <Clock className="h-6 w-6 text-blue-400" />
             <h2 className="text-2xl font-bold text-white">Latest Articles</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {latestArticles.map((article) => (
-              <ArticleCard key={article.id} article={article} variant="blog" compact={true} />
+              <ArticleCard key={article.id} article={article} variant="blog" />
             ))}
           </div>
         </div>
 
-        {/* All Categories in One Box */}
-        <Card className="bg-gray-800/50 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2 text-2xl">
-              <Hash className="h-6 w-6 text-blue-400" />
-              Categories
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {Object.entries(categories).map(([categoryName, categoryArticles]) => (
-                <div key={categoryName} className="space-y-3">
-                  <h3 className="text-white font-semibold text-lg flex items-center gap-2">
-                    <Hash className="h-4 w-4 text-blue-400" />
-                    {categoryName}
-                    <span className="text-gray-400 text-sm font-normal">
-                      ({categoryArticles.length})
-                    </span>
-                  </h3>
-                  <div className="space-y-2">
-                    {categoryArticles.slice(0, 3).map((article) => (
-                      <ArticleCard
-                        key={article.id}
-                        article={article}
-                        variant="blog"
-                        extraCompact={true}
-                      />
-                    ))}
-                  </div>
-                  {categoryArticles.length > 3 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full bg-gray-700 border-gray-600 text-white hover:bg-gray-600 text-xs"
-                    >
-                      View All {categoryName} ({categoryArticles.length})
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        {/* Category Sections - Vertical Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {Object.entries(categories).map(([categoryName, categoryArticles]) => (
+            <CategorySection
+              key={categoryName}
+              categoryName={categoryName}
+              articles={categoryArticles}
+              isVertical={true}
+            />
+          ))}
+        </div>
       </div>
 
       <Footer />
