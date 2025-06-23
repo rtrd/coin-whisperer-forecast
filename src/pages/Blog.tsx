@@ -120,7 +120,7 @@ const Blog = () => {
 
   // Mock data for demonstration - in real implementation, these would come from analytics
   const featuredArticle = articles[0] || null;
-  const trendingArticles = articles.slice(1, 7);
+  const trendingArticles = articles.slice(1, 5); // Only take 4 articles for trending
   const latestArticles = articles.slice(0, 8);
 
   if (loading) {
@@ -179,8 +179,8 @@ const Blog = () => {
           </div>
           
           {trendingArticles.length > 0 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* First trending article - slightly highlighted, takes 2 columns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* First trending article - slightly highlighted */}
               <div className="lg:col-span-2">
                 <ArticleCard 
                   key={trendingArticles[0].id} 
@@ -190,10 +190,10 @@ const Blog = () => {
                 />
               </div>
               
-              {/* Rest of trending articles in sidebar */}
-              <div className="space-y-4">
-                {trendingArticles.slice(1, 5).map((article) => (
-                  <ArticleCard key={article.id} article={article} variant="blog" compact={true} />
+              {/* Rest of trending articles */}
+              <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {trendingArticles.slice(1, 4).map((article) => (
+                  <ArticleCard key={article.id} article={article} variant="blog" />
                 ))}
               </div>
             </div>

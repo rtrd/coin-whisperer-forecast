@@ -149,7 +149,7 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
         className="group cursor-pointer block"
       >
         <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20">
-          <div className="aspect-[2/1] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
+          <div className="aspect-[4/3] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
             <img 
               src={article.image} 
               alt={article.title}
@@ -167,16 +167,16 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({
             </div>
           </div>
 
-          <div className="p-4">
-            <h3 className="text-gray-100 font-bold text-base mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
+          <div className="p-3">
+            <h3 className="text-gray-100 font-bold text-sm mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors">
               {article.title}
             </h3>
 
-            <p className="text-gray-300 text-sm mb-3 line-clamp-2 leading-relaxed">
+            <p className="text-gray-300 text-xs mb-3 line-clamp-2 leading-relaxed">
               {getPreviewText()}
             </p>
 
-            <div className="flex items-center justify-between text-sm text-gray-400">
+            <div className="flex items-center justify-between text-xs text-gray-400">
               <div className="flex items-center gap-2">
                 <div className="flex items-center gap-1">
                   <User className="h-3 w-3" />
