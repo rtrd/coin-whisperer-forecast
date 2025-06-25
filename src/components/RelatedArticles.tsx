@@ -21,7 +21,7 @@ export const RelatedArticles: React.FC<RelatedArticlesProps> = ({
   articles,
 }) => {
   if (articles.length === 0) return null;
-
+  debugger;
   return (
     <Card className="bg-gray-800/50 border-gray-700">
       <CardHeader>
@@ -59,7 +59,7 @@ export const RelatedArticles: React.FC<RelatedArticlesProps> = ({
                     {relatedArticle.title}
                   </h3>
                   <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-                    <span>{relatedArticle.author}</span>
+                    <span>unknown</span>
                     <span>{relatedArticle.readTime}</span>
                   </div>
                   <div className="flex flex-wrap gap-1">

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { DefaultArticleCard } from "./article/DefaultArticleCard";
 import { HorizontalArticleCard } from "./article/HorizontalArticleCard";
@@ -25,12 +24,12 @@ interface ArticleCardProps {
   horizontal?: boolean;
 }
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ 
-  article, 
-  compact = false, 
+export const ArticleCard: React.FC<ArticleCardProps> = ({
+  article,
+  compact = false,
   variant = "default",
   highlighted = false,
-  horizontal = false
+  horizontal = false,
 }) => {
   // Original design for homepage
   if (variant === "default") {
