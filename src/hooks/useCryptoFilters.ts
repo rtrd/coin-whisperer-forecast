@@ -52,24 +52,32 @@ export const useCryptoFilters = () => {
     }
   }, [addCategoryToTokens, removeDuplicates]);
 
-  const applySorting = useCallback((data: CryptoToken[], sortType: string): CryptoToken[] => {
+ const applySorting = useCallback((data: CryptoToken[], sortType: string): CryptoToken[] => {
     switch (sortType) {
-      case "volume":
-        return [...data].sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
-      case "gainers":
-        return data
-          .filter((item) => item.price_change_24h > 0)
-          .sort((a, b) => b.price_change_24h - a.price_change_24h);
-      case "losers":
-        return data
-          .filter((item) => item.price_change_24h < 0)
-          .sort((a, b) => a.price_change_24h - b.price_change_24h);
-      case "market_cap":
-        return [...data].sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
-      default:
-        return data;
-    }
-  }, []);
+    case "volume":
+      return [...data].sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
+    case "gainers":
+      return data
+        .filter((item) => item.price_change_24h > 0)
+        .sort((a, b) => b.price_change_24h - a.price_change_24h);
+    case "losers":                   
+      return data
+        .filter((item) => item.price_change_24h < 0)
+        .sort((a, b) => a.price_change_24h - b.price_change_24h);
+    case "market_cap":
+      return [...data].sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
+    case "trending":
+      return [...data]
+        .map((item) => ({
+          ...item,
+          trendingScore: (item.total_volume || 0) * Math.abs(item.price_change_24h || 0),
+        }))
+        .sort((a, b) => b.trendingScore - a.trendingScore);
+    default:
+      return data;
+  }
+}, []);
+
 
   const handleFilterChange = useCallback((filters: CryptoFilters | string) => {
     let filtered = [...allCryptosData];
