@@ -17,6 +17,18 @@ const AIPricePrediction = () => {
     { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' },
   ];
 
+  // Mock data for MarketWinnersWidget
+  const mockTopGainersAndLosers = {
+    gainers: [
+      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', price_change_percentage_24h: 5.2 },
+      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', price_change_percentage_24h: 3.1 }
+    ],
+    losers: [
+      { id: 'cardano', name: 'Cardano', symbol: 'ADA', price_change_percentage_24h: -2.5 },
+      { id: 'solana', name: 'Solana', symbol: 'SOL', price_change_percentage_24h: -1.8 }
+    ]
+  };
+
   const lockedContent = (
     <div className="lg:col-span-3 space-y-8">
       {/* Page Header */}
@@ -129,7 +141,7 @@ const AIPricePrediction = () => {
           {/* Sticky Sidebar */}
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
-              <MarketWinnersWidget />
+              <MarketWinnersWidget topGainnersandLoosers={mockTopGainersAndLosers} />
               <AdBanner width={300} height={600} position="vertical" />
             </div>
           </div>
