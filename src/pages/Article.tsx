@@ -16,26 +16,35 @@ import {
   formatArticleForDisplay,
   getRelatedArticles,
 } from "@/utils/articleUtils";
-import { getAllCryptos } from "../../utils/api";
-import { getWordPressPost } from "../../utils/api";
+import { getAllCryptos, getWordPressPost } from "../../utils/api";
+import { CryptoToken } from "@/types/crypto";
 
-const CACHE_KEY = "topLoosersandGainnersCache";
-const CACHE_DURATION = 10 * 60 * 1000;
+const CACHE_KEY = "topGainersAndLosers";
+const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
   debugger;
   const { articleId } = useParams<{ articleId: string }>();
   const [articlesData, setArticlesData] = useState<any[]>([]);
-  const location = useLocation();
+  const [allArticlesData, setallArticlesData] = useState<any[]>([]);
   const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>(
     []
   );
+  const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   const articles = Array.isArray(location.state?.article)
     ? location.state.article.map(formatArticleForDisplay)
     : location.state?.article
     ? [formatArticleForDisplay(location.state.article)]
-    : [];
+    : (() => {
+        const fallbackArticle = allArticlesData.find(
+          (a) => a.id === Number(articleId)
+        );
+        return fallbackArticle
+          ? [formatArticleForDisplay(fallbackArticle)]
+          : [];
+      })();
 
   const cryptoOptions = [
     {
@@ -88,15 +97,56 @@ const Article = () => {
     }
   };
 
+  const transformArticles = (posts: any[]) => {
+    return posts.map((post) => {
+      const title = post.title?.rendered || "No Title";
+      const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
+      const date = new Date(post.date).toISOString().split("T")[0];
+      const author = post._embedded?.author?.[0]?.name || "Unknown";
+      const image =
+        post.jetpack_featured_media_url ||
+        post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+        "https://via.placeholder.com/300";
+      const url = post.link;
+      const content = post.content?.rendered || ""; // full HTML content
+      const tagname = post.tagNames?.filter((t: string) => t)?.join(", ");
+
+      return {
+        id: post.id,
+        title,
+        excerpt,
+        author,
+        date,
+        category: "Blog",
+        readTime: "4 min read",
+        image,
+        url,
+        content,
+        tagname,
+      };
+    });
+  };
+
   const getAllarticles = async () => {
-    const AllarticleData = await getWordPressPost();
-    setArticlesData(AllarticleData as any[]);
+    try {
+      const AllarticleData = await getWordPressPost();
+      if (Array.isArray(AllarticleData)) {
+        setArticlesData(AllarticleData);
+        const formattedArticles = transformArticles(AllarticleData);
+        setallArticlesData(formattedArticles);
+      } else {
+        console.error("Fetched article data is not an array:", AllarticleData);
+      }
+    } finally {
+      setLoading(false); // <-- SET LOADING FALSE AFTER FETCH
+    }
   };
 
   const article = articles.find((a) => a.id === Number(articleId));
+  console.log("article", article);
 
   //related articles with tags for filtering
-  const transformArticles = (articles: any[]): any[] => {
+  const transformallArticles = (articles: any[]): any[] => {
     return articles.map((a) => ({
       id: a.id,
       title: a.title?.rendered || "Untitled",
@@ -113,11 +163,18 @@ const Article = () => {
     }));
   };
 
+  if (loading && !article) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
+        <div className="text-white text-xl">Loading article...</div>
+      </div>
+    ); // or <LoadingSpinner />
+  }
   if (!article) {
     return <ArticleNotFound />;
   }
   const relatedArticles = getRelatedArticles(article, articlesData);
-  const transformedArticles = transformArticles(relatedArticles);
+  const transformedArticles = transformallArticles(relatedArticles);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -175,5 +232,4 @@ const Article = () => {
     </div>
   );
 };
-
 export default Article;
