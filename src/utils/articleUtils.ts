@@ -1,8 +1,28 @@
 
 export const formatArticleForDisplay = (article: any) => {
-  const tagList = article.tagname
-    ? article.tagname.split(",").map((tag: string) => tag.trim()).filter(Boolean)
-    : [];
+  const tagList: string[] = [];
+
+  // Case 1: comma-separated `tagname`
+  if (typeof article.tagname === "string") {
+    tagList.push(
+      ...article.tagname
+        .split(",")
+        .map((tag: string) => tag.trim())
+        .filter(Boolean)
+    );
+  }
+
+  // Case 2: `tags` is already an array
+  if (Array.isArray(article.tags)) {
+    tagList.push(
+      ...article.tags
+        .filter((tag: any) => typeof tag === "string")
+        .map((tag: string) => tag.trim())
+    );
+  }
+
+  // Remove duplicates and normalize (e.g. lowercase)
+  const uniqueTags = [...new Set(tagList.map((t) => t.toLowerCase()))];
 
   return {
     id: article.id,
@@ -13,34 +33,43 @@ export const formatArticleForDisplay = (article: any) => {
     category: article.category || "General",
     readTime: article.readTime || "4 min read",
     image: article.image || "https://via.placeholder.com/800x400",
-    tags: tagList.length > 0 ? tagList : ["crypto", "analysis", "market"], // fallback if no tags
+    tags: uniqueTags.length > 0 ? uniqueTags : ["crypto", "analysis", "market"], // fallback
   };
 };
 
 export const getRelatedArticles = (currentArticle: any, allArticles: any[]) => {
-  if (!currentArticle) return [];
+  if (!currentArticle || !Array.isArray(currentArticle.tags)) return [];
 
-  const currentTags = Array.isArray(currentArticle.tags)
-    ? currentArticle.tags.map((t: string) => t.toLowerCase().trim())
-    : [];
+  // Normalize current article tags
+  const currentTags = currentArticle.tags
+    .filter((t: any) => typeof t === 'string' && t.trim() !== '')
+    .map((t: string) => t.toLowerCase().trim());
 
   return allArticles
-    .filter((a) => a.id !== currentArticle.id) // Exclude self
+    .filter((a) => a.id !== currentArticle.id)
     .map((a) => {
-      const articleTags = Array.isArray(a.tags)
-        ? a.tags.map((t: string) => t.toLowerCase().trim())
+      const articleTags = Array.isArray(a.tagNames)
+        ? a.tagNames
+            .filter((t: any) => typeof t === 'string' && t.trim() !== '')
+            .map((t: string) => t.toLowerCase().trim())
         : [];
 
-      const matchCount = currentTags.filter((tag) => articleTags.includes(tag)).length;
+      // ✅ Get only tags that match current article
+      const matchedTags = articleTags.filter((tag) => currentTags.includes(tag));
+      console.log("matchedTags", matchedTags);  
 
       return {
         ...a,
-        matchCount,
+        tags: matchedTags,       // ⬅️ only keep matched tags here
+        matchCount: matchedTags.length,
       };
     })
-    .filter((a) => a.matchCount > 0) // Only keep related ones
-    .sort((a, b) => b.matchCount - a.matchCount) // Sort by relevance
-    .slice(0, 4); // Limit to 4
+    .filter((a) => a.matchCount > 0) // ⬅️ keep only those with at least one matched tag
+    .sort((a, b) => b.matchCount - a.matchCount) // optional: sort by relevance
+    .slice(0, 4); 
 };
+
+
+
 
 
