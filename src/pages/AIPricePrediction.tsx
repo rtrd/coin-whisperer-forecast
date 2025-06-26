@@ -17,6 +17,14 @@ const AIPricePrediction = () => {
     { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' },
   ];
 
+  // Mock data for MarketWinnersWidget
+  const mockMarketData = [
+    { name: 'Bitcoin', symbol: 'BTC', current_price: 45000, price_change_percentage_24h: 2.5, image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png' },
+    { name: 'Ethereum', symbol: 'ETH', current_price: 2800, price_change_percentage_24h: 1.8, image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png' },
+    { name: 'Solana', symbol: 'SOL', current_price: 95, price_change_percentage_24h: 5.2, image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png' },
+    { name: 'Cardano', symbol: 'ADA', current_price: 0.45, price_change_percentage_24h: -2.1, image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png' },
+  ];
+
   const lockedContent = (
     <div className="lg:col-span-3 space-y-8">
       {/* Page Header */}
@@ -129,7 +137,7 @@ const AIPricePrediction = () => {
           {/* Sticky Sidebar */}
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
-              <MarketWinnersWidget />
+              <MarketWinnersWidget topGainnersandLoosers={mockMarketData} />
               <AdBanner width={300} height={600} position="vertical" />
             </div>
           </div>

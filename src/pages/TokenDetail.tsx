@@ -232,7 +232,7 @@ const TokenDetail = () => {
                   <PriceChart
                     data={cryptoData}
                     isLoading={dataLoading}
-                    prediction={showPrediction ? prediction : null}
+                    prediction={showPrediction ? prediction?.predictions : null}
                     timeframe={timeframe}
                     onTimeframeChange={setTimeframe}
                   />
@@ -314,7 +314,6 @@ const TokenDetail = () => {
                     <PredictionCard
                       prediction={prediction}
                       crypto={selectedToken.name}
-                      modelType={modelType}
                     />
                   )}
                 </CardContent>
