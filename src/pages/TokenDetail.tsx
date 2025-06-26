@@ -233,8 +233,6 @@ const TokenDetail = () => {
                     data={cryptoData}
                     isLoading={dataLoading}
                     prediction={showPrediction ? prediction?.predictions : null}
-                    timeframe={timeframe}
-                    onTimeframeChange={setTimeframe}
                   />
 
                   {/* AI Prediction Controls */}
