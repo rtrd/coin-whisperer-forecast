@@ -1,3 +1,4 @@
+
 import React from "react";
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
@@ -7,7 +8,6 @@ import { AdBanner } from "@/components/AdBanner";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
 import Footer from "@/components/Footer";
-import { AITradingSignals } from "@/components/AITradingSignals";
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -45,9 +45,9 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <WordPressIntegration />
 
-      {/* AI Trading Signals - Now Unlocked and Fully Functional */}
+      {/* AI Trading Signals - Now Locked */}
       <div className="mb-8">
-        <AITradingSignals />
+        <LockedAITradingSignals />
       </div>
 
       {/* Crypto Filters - Smart Crypto Filters */}
