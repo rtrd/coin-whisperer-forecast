@@ -3,7 +3,7 @@ import React from "react";
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import WordPressIntegration from "@/components/WordPressIntegration";
-import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
+import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
@@ -45,9 +45,9 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <WordPressIntegration />
 
-      {/* AI Trading Signals - Now Locked */}
+      {/* AI Trading Signals - Restored */}
       <div className="mb-8">
-        <LockedAITradingSignals />
+        <AITradingSignals />
       </div>
 
       {/* Crypto Filters - Smart Crypto Filters */}
