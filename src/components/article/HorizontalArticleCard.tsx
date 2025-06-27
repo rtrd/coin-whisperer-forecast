@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
@@ -16,21 +15,24 @@ interface HorizontalArticleCardProps {
     image: string;
     url: string;
     content?: string;
+    tags?: string[]; // Added tags property as an optional string array
   };
 }
 
-export const HorizontalArticleCard: React.FC<HorizontalArticleCardProps> = ({ article }) => {
+export const HorizontalArticleCard: React.FC<HorizontalArticleCardProps> = ({
+  article,
+}) => {
   return (
     <Link
       to={`/article/${article.id}`}
       state={{ article }}
       className="group cursor-pointer block"
     >
-      <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-36">
+      <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-40">
         {/* Image - 30% */}
         <div className="w-[30%] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
-          <img 
-            src={article.image} 
+          <img
+            src={article.image}
             alt={article.title}
             className="w-full h-full object-cover"
           />
@@ -46,10 +48,10 @@ export const HorizontalArticleCard: React.FC<HorizontalArticleCardProps> = ({ ar
               {getPreviewText(article, "blog", false, false, true)}
             </p>
           </div>
-          
+
           <div className="flex items-center justify-between text-xs text-gray-500 mt-3">
             <Badge className="bg-black/30 text-white text-xs px-2 py-1 h-5">
-              {article.category}
+              {article.tags[0]}
             </Badge>
             <span className="text-xs">{article.readTime}</span>
           </div>

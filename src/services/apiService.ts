@@ -90,7 +90,7 @@ class ApiService {
 
   async getWordPressPost<T = any[]>(): Promise<T> {
   try {
-    const postsResponse = await fetch("https://blog.pumpparade.com/wp-json/wp/v2/posts");
+    const postsResponse = await fetch("https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed");
     if (!postsResponse.ok) {
       throw new Error(`WordPress API error! status: ${postsResponse.status}`);
     }

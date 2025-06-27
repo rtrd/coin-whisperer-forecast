@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,6 +40,7 @@ import { usePrediction } from "@/hooks/usePrediction";
 import { useMarketData } from "@/hooks/useMarketData";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
+import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
 
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
@@ -131,10 +131,7 @@ const TokenDetail = () => {
   }
 
   return (
-    <TokenProvider
-      tokenId={tokenId || "bitcoin"}
-      cryptoOptions={cryptoOptions}
-    >
+    <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-8">
           {/* Homepage Header */}
@@ -185,232 +182,8 @@ const TokenDetail = () => {
           </Card>
 
           {/* Main Content */}
-          <div className="space-y-6">
-            {/* Price Chart and AI Controls */}
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-blue-400" />
-                    Price Chart & AI Analysis
-                  </span>
-                  <Badge
-                    variant="outline"
-                    className="text-green-400 border-green-400"
-                  >
-                    Real-time
-                  </Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Price Chart */}
-                <PriceChart
-                  data={cryptoData}
-                  prediction={
-                    showPrediction ? prediction?.predictions || null : null
-                  }
-                  isLoading={dataLoading}
-                  crypto={cryptoId}
-                  onClearPrediction={handleClearPrediction}
-                />
-
-                {/* AI Analysis Controls */}
-                <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Target className="h-4 w-4 text-green-400" />
-                    <span className="text-white font-medium">
-                      AI Analysis Controls
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 block">
-                        Time Period
-                      </label>
-                      <Select value={timeframe} onValueChange={setTimeframe}>
-                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1d" className="text-white">
-                            1 Day
-                          </SelectItem>
-                          <SelectItem value="7d" className="text-white">
-                            7 Days
-                          </SelectItem>
-                          <SelectItem value="30d" className="text-white">
-                            30 Days
-                          </SelectItem>
-                          <SelectItem value="90d" className="text-white">
-                            90 Days
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 block">
-                        Prediction Days
-                      </label>
-                      <Select
-                        value={predictionDays.toString()}
-                        onValueChange={(value) =>
-                          setPredictionDays(Number(value))
-                        }
-                      >
-                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1" className="text-white">
-                            1 Day
-                          </SelectItem>
-                          <SelectItem value="3" className="text-white">
-                            3 Days
-                          </SelectItem>
-                          <SelectItem value="7" className="text-white">
-                            7 Days
-                          </SelectItem>
-                          <SelectItem value="14" className="text-white">
-                            14 Days
-                          </SelectItem>
-                          <SelectItem value="30" className="text-white">
-                            30 Days
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <label className="text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
-                        Model Type
-                        <ModelTypeTooltip modelType={modelType} />
-                      </label>
-                      <Select value={modelType} onValueChange={setModelType}>
-                        <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="basic" className="text-white">
-                            Basic LSTM
-                          </SelectItem>
-                          <SelectItem value="advanced" className="text-white">
-                            Advanced Neural
-                          </SelectItem>
-                          <SelectItem value="ensemble" className="text-white">
-                            Ensemble Model
-                          </SelectItem>
-                          <SelectItem
-                            value="transformer"
-                            className="text-white"
-                          >
-                            Transformer
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="flex items-end">
-                      <Button
-                        onClick={handlePredict}
-                        disabled={
-                          dataLoading || predictionLoading || !cryptoData
-                        }
-                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                      >
-                        {predictionLoading ? (
-                          <div className="flex items-center gap-2">
-                            <Activity className="h-4 w-4 animate-spin" />
-                            Analyzing...
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <Brain className="h-4 w-4" />
-                            Predict
-                          </div>
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Prediction Results */}
-                  {showPrediction && prediction && (
-                    <div className="mt-6 pt-6 border-t border-gray-600/50">
-                      <PredictionCard
-                        prediction={prediction}
-                        crypto={cryptoId}
-                      />
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Left Column - Analysis Tabs */}
-              <div className="lg:col-span-3 space-y-6">
-                <Tabs defaultValue="technical" className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
-                    <TabsTrigger
-                      value="technical"
-                      className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700"
-                    >
-                      Technical Analysis
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="sentiment"
-                      className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700"
-                    >
-                      Market Sentiment
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="technical">
-                    <TechnicalAnalysis
-                      data={cryptoData}
-                      isLoading={dataLoading}
-                    />
-                  </TabsContent>
-
-                  <TabsContent value="sentiment">
-                    <SentimentAnalysis crypto={cryptoId} />
-                  </TabsContent>
-                </Tabs>
-              </div>
-
-              {/* Right Column - Real-time Data */}
-              <div className="space-y-6">
-                {/* Side Ad */}
-                <AdBanner width={300} height={250} position="vertical" />
-
-                {/* Dynamic Token Analysis */}
-                <DynamicTokenAnalysis
-                  selectedCrypto={cryptoId}
-                  currentPrice={currentPrice}
-                  priceChange={priceChange}
-                  cryptoOptions={cryptoOptions}
-                />
-
-                {/* Disclaimer */}
-                <Card className="bg-yellow-900/20 border-yellow-700">
-                  <CardContent className="pt-6">
-                    <div className="flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
-                      <div>
-                        <p className="text-sm text-yellow-200 font-medium mb-1">
-                          Investment Disclaimer
-                        </p>
-                        <p className="text-xs text-yellow-300">
-                          This analysis is for educational purposes only.
-                          Always do your own research before investing.
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
+          <div className="mb-8">
+            <LockedAITradingSignals />
           </div>
 
           {/* Ad Banner - Bottom */}
