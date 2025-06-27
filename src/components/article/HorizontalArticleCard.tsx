@@ -28,7 +28,7 @@ export const HorizontalArticleCard: React.FC<HorizontalArticleCardProps> = ({
       state={{ article }}
       className="group cursor-pointer block"
     >
-      <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-36">
+      <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-40">
         {/* Image - 30% */}
         <div className="w-[30%] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
           <img

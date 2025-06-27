@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { BlogLayout } from "@/components/blog/BlogLayout";
 import { BlogHeader } from "@/components/blog/BlogHeader";
@@ -40,24 +39,30 @@ const Blog = () => {
   const fetchBlogData = async () => {
     try {
       const articleData = await getWordPressPost();
-      
+      debugger;
+      console.log("Fetched blog data:", articleData);
       if (Array.isArray(articleData)) {
-        const formattedArticles = articleData.map((post) => {
+        const formattedArticles = articleData.slice(0, 4).map((post) => {
           const title = post.title?.rendered || "No Title";
           const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
           const date = new Date(post.date).toISOString().split("T")[0];
           const author = post._embedded?.author?.[0]?.name || "Unknown";
-          const image = post.jetpack_featured_media_url || 
-                      post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || 
-                      "https://via.placeholder.com/800x400";
+          const image =
+            post.jetpack_featured_media_url ||
+            post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+            "https://via.placeholder.com/800x400";
           const content = post.content?.rendered || "";
-          
+
           // Extract category from WordPress categories with proper fallback
           const wpCategories = post._embedded?.["wp:term"]?.[0] || [];
+          //console.log(JSON.stringify(post._embedded?.["wp:term"], null, 2));
           let categoryName = "General";
-          
+
           if (wpCategories.length > 0) {
-            const category = wpCategories.find((cat: any) => cat.taxonomy === "category" && cat.name !== "Uncategorized");
+            const category = wpCategories.find(
+              (cat: any) =>
+                cat.taxonomy === "category" && cat.name !== "Uncategorized"
+            );
             if (category) {
               categoryName = category.name;
             }
@@ -79,12 +84,18 @@ const Blog = () => {
         });
 
         setArticles(formattedArticles);
-        
+
         // Group articles by category, excluding "General" and empty categories
         const categoryGroups: { [key: string]: any[] } = {};
-        formattedArticles.forEach(article => {
+        formattedArticles.forEach((article) => {
+          console.log(article);
+          debugger;
           const category = article.category;
-          if (category && category !== "General" && category !== "Uncategorized") {
+          if (
+            category &&
+            category !== "General" &&
+            category !== "Uncategorized"
+          ) {
             if (!categoryGroups[category]) {
               categoryGroups[category] = [];
             }
@@ -94,18 +105,28 @@ const Blog = () => {
 
         // If no specific categories found, use placeholder categories with actual articles
         if (Object.keys(categoryGroups).length === 0) {
-          const placeholderCategories = ["Trading", "DeFi", "Bitcoin", "Ethereum", "Altcoins", "NFTs"];
+          const placeholderCategories = [
+            "Trading",
+            "DeFi",
+            "Bitcoin",
+            "Ethereum",
+            "Altcoins",
+            "NFTs",
+          ];
           placeholderCategories.forEach((category, index) => {
-            const categoryArticles = formattedArticles.slice(index * 3, (index + 1) * 3);
+            const categoryArticles = formattedArticles.slice(
+              index * 3,
+              (index + 1) * 3
+            );
             if (categoryArticles.length > 0) {
-              categoryGroups[category] = categoryArticles.map(article => ({
+              categoryGroups[category] = categoryArticles.map((article) => ({
                 ...article,
-                category: category
+                category: category,
               }));
             }
           });
         }
-        
+
         setCategories(categoryGroups);
       }
     } catch (error) {

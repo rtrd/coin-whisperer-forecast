@@ -1,4 +1,3 @@
-
 import React from "react";
 import { TrendingUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +7,9 @@ interface BlogTrendingSectionProps {
   trendingArticles: any[];
 }
 
-export const BlogTrendingSection: React.FC<BlogTrendingSectionProps> = ({ trendingArticles }) => {
+export const BlogTrendingSection: React.FC<BlogTrendingSectionProps> = ({
+  trendingArticles,
+}) => {
   if (trendingArticles.length === 0) return null;
 
   return (
@@ -17,8 +18,8 @@ export const BlogTrendingSection: React.FC<BlogTrendingSectionProps> = ({ trendi
         <TrendingUp className="h-6 w-6 text-red-400" />
         <h2 className="text-2xl font-bold text-white">Trending Articles</h2>
       </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto">
+
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-auto items-start">
         {/* #1 Trending - 30% bigger, takes more space, with #1 badge */}
         <div className="lg:col-span-2 h-full">
           <div className="relative h-full">
@@ -27,17 +28,17 @@ export const BlogTrendingSection: React.FC<BlogTrendingSectionProps> = ({ trendi
                 #1
               </Badge>
             </div>
-            <ArticleCard 
-              key={trendingArticles[0].id} 
-              article={trendingArticles[0]} 
+            <ArticleCard
+              key={trendingArticles[0].id}
+              article={trendingArticles[0]}
               variant="blog"
               highlighted={true}
             />
           </div>
         </div>
-        
+
         {/* #2-#5 Trending - smaller cards in sidebar */}
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-full">
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-auto">
           {trendingArticles.slice(1, 5).map((article, index) => (
             <div key={article.id} className="relative h-full">
               <div className="absolute -top-2 -left-2 z-10">
@@ -45,11 +46,7 @@ export const BlogTrendingSection: React.FC<BlogTrendingSectionProps> = ({ trendi
                   #{index + 2}
                 </Badge>
               </div>
-              <ArticleCard 
-                article={article} 
-                variant="blog" 
-                compact={true}
-              />
+              <ArticleCard article={article} variant="blog" compact={true} />
             </div>
           ))}
         </div>
