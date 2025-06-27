@@ -63,7 +63,7 @@ export const MarketWinnersWidget = ({ topGainnersandLoosers }) => {
                       </span>
                       <div>
                         <div className="text-white font-medium text-sm group-hover:text-blue-400 transition-colors">
-                          {token.symbol}
+                          {token.symbol.toUpperCase()}
                         </div>
                         <div className="text-gray-400 text-xs">
                           ${token.current_price}
@@ -103,7 +103,7 @@ export const MarketWinnersWidget = ({ topGainnersandLoosers }) => {
                       </span>
                       <div>
                         <div className="text-white font-medium text-sm group-hover:text-blue-400 transition-colors">
-                          {token.symbol}
+                          {token.symbol.toUpperCase()}
                         </div>
                         <div className="text-gray-400 text-xs">
                           ${token.current_price}
