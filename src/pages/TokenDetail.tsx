@@ -75,23 +75,41 @@ const TokenDetail = () => {
   } = usePrediction();
 
   const currentPrice =
-    cryptoData && cryptoData.length > 0
+    tokenmarketstats?.current_price ||
+    (cryptoData && cryptoData.length > 0
       ? cryptoData[cryptoData.length - 1]?.price
-      : 0;
+      : 0);
   const previousPrice =
     cryptoData && cryptoData.length > 1
       ? cryptoData[cryptoData.length - 2]?.price
       : 0;
   const priceChange =
-    currentPrice && previousPrice
+    tokenmarketstats?.price_change_percentage_24h ||
+    (currentPrice && previousPrice
       ? ((currentPrice - previousPrice) / previousPrice) * 100
-      : 0;
+      : 0);
 
   const { marketData } = useMarketData(
     currentPrice,
     selectedToken?.category,
     cryptoId
   );
+
+  // Create fallback market stats if none provided
+  const displayMarketStats = tokenmarketstats || {
+    current_price: currentPrice,
+    price_change_percentage_24h: priceChange,
+    market_cap: marketData.marketCap,
+    total_volume: marketData.volume24h,
+    circulating_supply: marketData.circulatingSupply,
+    total_supply: marketData.totalSupply,
+    ath: marketData.allTimeHigh,
+    atl: marketData.allTimeLow,
+    price_change_percentage_7d_in_currency: marketData.priceChange7d,
+    price_change_percentage_30d_in_currency: marketData.priceChange30d
+  };
+
+  console.log('Display Market Stats:', displayMarketStats);
 
   const handlePredict = async () => {
     if (!cryptoData) {
@@ -170,15 +188,13 @@ const TokenDetail = () => {
                 <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
                   <TokenHeader />
                   <TokenPriceDisplay
-                    currentPrice={tokenmarketstats?.current_price || 0}
-                    priceChange={
-                      tokenmarketstats?.price_change_percentage_24h || 0
-                    }
+                    currentPrice={currentPrice}
+                    priceChange={priceChange}
                   />
                 </div>
 
                 {/* Market Statistics */}
-                <TokenMarketStats marketData={tokenmarketstats} />
+                <TokenMarketStats marketData={displayMarketStats} />
               </div>
             </CardContent>
           </Card>
@@ -230,7 +246,7 @@ const TokenDetail = () => {
                           <SelectItem value="1d">1D</SelectItem>
                           <SelectItem value="7d">7D</SelectItem>
                           <SelectItem value="30d">30D</SelectItem>
-                          <SelectItem value="30d">90D</SelectItem>
+                          <SelectItem value="90d">90D</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -272,4 +288,3 @@ const TokenDetail = () => {
 };
 
 export default TokenDetail;
-
