@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +27,7 @@ import { PredictionCard } from "@/components/PredictionCard";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
+import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
@@ -40,7 +42,6 @@ import { usePrediction } from "@/hooks/usePrediction";
 import { useMarketData } from "@/hooks/useMarketData";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
-import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
 
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
@@ -181,9 +182,83 @@ const TokenDetail = () => {
             </CardContent>
           </Card>
 
-          {/* Main Content */}
+          {/* AI Trading Signals */}
           <div className="mb-8">
-            <LockedAITradingSignals />
+            <AITradingSignals />
+          </div>
+
+          {/* Analysis Tabs */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* AI Token Analysis */}
+            <div>
+              <DynamicTokenAnalysis
+                selectedCrypto={cryptoId}
+                currentPrice={currentPrice}
+                priceChange={priceChange}
+                cryptoOptions={cryptoOptions}
+              />
+            </div>
+
+            {/* Market Sentiment */}
+            <div>
+              <SentimentAnalysis crypto={cryptoId} />
+            </div>
+          </div>
+
+          {/* Technical Analysis */}
+          <div className="mb-8">
+            <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+          </div>
+
+          {/* Price Chart and Prediction */}
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+            <div className="xl:col-span-2">
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 text-blue-400" />
+                      Price Chart
+                    </CardTitle>
+                    <div className="flex items-center gap-4">
+                      <Select value={timeframe} onValueChange={setTimeframe}>
+                        <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-700 border-gray-600">
+                          <SelectItem value="1d">1D</SelectItem>
+                          <SelectItem value="7d">7D</SelectItem>
+                          <SelectItem value="30d">30D</SelectItem>
+                          <SelectItem value="90d">90D</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <PriceChart
+                    data={cryptoData || []}
+                    isLoading={dataLoading}
+                    prediction={showPrediction ? prediction : null}
+                  />
+                </CardContent>
+              </Card>
+            </div>
+
+            <div>
+              <PredictionCard
+                selectedCrypto={cryptoId}
+                predictionDays={predictionDays}
+                modelType={modelType}
+                onPredictionDaysChange={setPredictionDays}
+                onModelTypeChange={setModelType}
+                onPredict={handlePredict}
+                onClearPrediction={handleClearPrediction}
+                prediction={prediction}
+                isLoading={predictionLoading}
+                showPrediction={showPrediction}
+              />
+            </div>
           </div>
 
           {/* Ad Banner - Bottom */}
