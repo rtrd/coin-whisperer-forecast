@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -229,7 +230,7 @@ const TokenDetail = () => {
                           <SelectItem value="1d">1D</SelectItem>
                           <SelectItem value="7d">7D</SelectItem>
                           <SelectItem value="30d">30D</SelectItem>
-                          <SelectItem value="90d">90D</SelectItem>
+                          <SelectItem value="30d">90D</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -239,25 +240,21 @@ const TokenDetail = () => {
                   <PriceChart
                     data={cryptoData || []}
                     isLoading={dataLoading}
-                    prediction={showPrediction ? prediction : null}
+                    prediction={showPrediction && prediction ? prediction.predictions : null}
+                    crypto={cryptoId}
+                    onClearPrediction={handleClearPrediction}
                   />
                 </CardContent>
               </Card>
             </div>
 
             <div>
-              <PredictionCard
-                selectedCrypto={cryptoId}
-                predictionDays={predictionDays}
-                modelType={modelType}
-                onPredictionDaysChange={setPredictionDays}
-                onModelTypeChange={setModelType}
-                onPredict={handlePredict}
-                onClearPrediction={handleClearPrediction}
-                prediction={prediction}
-                isLoading={predictionLoading}
-                showPrediction={showPrediction}
-              />
+              {prediction && (
+                <PredictionCard
+                  prediction={prediction}
+                  crypto={cryptoId}
+                />
+              )}
             </div>
           </div>
 
@@ -275,3 +272,4 @@ const TokenDetail = () => {
 };
 
 export default TokenDetail;
+
