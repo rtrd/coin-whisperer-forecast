@@ -1,355 +1,418 @@
-
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  Brain,
+  Target,
+  AlertCircle,
+  BarChart3,
+  ArrowLeft,
+  ShoppingCart,
+  Wallet,
+  Coins,
+  Star,
+  ArrowRight,
+} from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
-import { TokenSidebar } from "@/components/token/TokenSidebar";
+import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
+import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { AdBanner } from "@/components/AdBanner";
+import { IndexHeader } from "@/components/IndexHeader";
+import Footer from "@/components/Footer";
+import { ModelTypeTooltip } from "@/components/ModelTypeTooltip";
+import { TokenProvider } from "@/contexts/TokenContext";
 import { TokenHeader } from "@/components/token/TokenHeader";
 import { TokenPriceDisplay } from "@/components/token/TokenPriceDisplay";
-import { useCryptoData } from '@/hooks/useCryptoData';
-import { usePrediction } from '@/hooks/usePrediction';
-import { 
-  BarChart3, 
-  Target, 
-  Brain, 
-  X, 
-  Coins,
-  ExternalLink
-} from "lucide-react";
-import { toast } from 'sonner';
+import { TokenMarketStats } from "@/components/token/TokenMarketStats";
+import { TokenSidebar } from "@/components/token/TokenSidebar";
+import { TokenDataService } from "@/services/tokenDataService";
+import { useCryptoData } from "@/hooks/useCryptoData";
+import { usePrediction } from "@/hooks/usePrediction";
+import { useMarketData } from "@/hooks/useMarketData";
+import { toast } from "sonner";
+import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-interface OtherToken {
-  id: string;
-  symbol: string;
-  name: string;
-  price: number;
-  change24h: number;
-  icon: string;
-}
-
-export default function TokenDetail() {
+const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
+  const location = useLocation();
+  const tokenmarketstats = location.state?.token;
+  const [timeframe, setTimeframe] = useState("7d");
   const [predictionDays, setPredictionDays] = useState(7);
-  const [modelType, setModelType] = useState('lstm');
-  const [confidenceLevel, setConfidenceLevel] = useState('moderate');
-  const [currentPrice, setCurrentPrice] = useState(0);
-  const [priceChange, setPriceChange] = useState(0);
-  const [otherTokens, setOtherTokens] = useState<OtherToken[]>([]);
+  const [modelType, setModelType] = useState("advanced");
+  const [showPrediction, setShowPrediction] = useState(false);
+  const isMobile = useIsMobile();
 
-  // Hooks - Fix: Add timeframe parameter to useCryptoData
-  const { data: cryptoData, isLoading: dataLoading } = useCryptoData(tokenId || 'bitcoin', '7d');
-  const { prediction, isLoading: isGeneratingPrediction, generatePrediction } = usePrediction();
+  // Get token info and crypto options
+  const selectedToken = getTokenInfo(tokenId || "bitcoin");
+  const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
+  const cryptoOptions = TokenDataService.getCryptoOptions();
 
-  // Crypto options for fallback
-  const cryptoOptions = [
-    { value: 'bitcoin', label: 'Bitcoin (BTC)', symbol: 'BTC', name: 'Bitcoin', icon: '₿' },
-    { value: 'ethereum', label: 'Ethereum (ETH)', symbol: 'ETH', name: 'Ethereum', icon: 'Ξ' },
-    { value: 'ripple', label: 'XRP (XRP)', symbol: 'XRP', name: 'XRP', icon: '◉' },
-    { value: 'dogecoin', label: 'Dogecoin (DOGE)', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕' }
-  ];
+  const formattedTokenName = tokenId
+    ?.split(" ")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 
-  useEffect(() => {
-    if (cryptoData && cryptoData.length > 0) {
-      const latestData = cryptoData[cryptoData.length - 1];
-      setCurrentPrice(latestData.price);
-      
-      if (cryptoData.length > 1) {
-        const previousData = cryptoData[cryptoData.length - 2];
-        const change = ((latestData.price - previousData.price) / previousData.price) * 100;
-        setPriceChange(change);
-      }
-    }
-  }, [cryptoData]);
+  const {
+    data: cryptoData,
+    isLoading: dataLoading,
+    error: dataError,
+  } = useCryptoData(cryptoId, timeframe);
+  const {
+    prediction,
+    isLoading: predictionLoading,
+    generatePrediction,
+  } = usePrediction();
 
-  useEffect(() => {
-    // Generate other tokens data
-    const generateOtherTokens = () => {
-      const tokens = [
-        { id: 'bitcoin', symbol: 'BTC', name: 'Bitcoin', icon: '₿' },
-        { id: 'ethereum', symbol: 'ETH', name: 'Ethereum', icon: 'Ξ' },
-        { id: 'ripple', symbol: 'XRP', name: 'XRP', icon: '◉' },
-        { id: 'dogecoin', symbol: 'DOGE', name: 'Dogecoin', icon: '🐕' },
-        { id: 'cardano', symbol: 'ADA', name: 'Cardano', icon: '🔷' },
-        { id: 'solana', symbol: 'SOL', name: 'Solana', icon: '🌞' }
-      ].filter(token => token.id !== tokenId);
+  const currentPrice =
+    tokenmarketstats?.current_price ||
+    (cryptoData && cryptoData.length > 0
+      ? cryptoData[cryptoData.length - 1]?.price
+      : 0);
+  const previousPrice =
+    cryptoData && cryptoData.length > 1
+      ? cryptoData[cryptoData.length - 2]?.price
+      : 0;
+  const priceChange =
+    tokenmarketstats?.price_change_percentage_24h ||
+    (currentPrice && previousPrice
+      ? ((currentPrice - previousPrice) / previousPrice) * 100
+      : 0);
 
-      const tokensWithPrices = tokens.map(token => ({
-        ...token,
-        price: Math.random() * 100 + 10,
-        change24h: (Math.random() - 0.5) * 20
-      }));
+  const { marketData } = useMarketData(
+    currentPrice,
+    selectedToken?.category,
+    cryptoId
+  );
 
-      setOtherTokens(tokensWithPrices);
-    };
+  // Create fallback market stats if none provided
+  const displayMarketStats = tokenmarketstats || {
+    current_price: currentPrice,
+    price_change_percentage_24h: priceChange,
+    market_cap: marketData.marketCap,
+    total_volume: marketData.volume24h,
+    circulating_supply: marketData.circulatingSupply,
+    total_supply: marketData.totalSupply,
+    ath: marketData.allTimeHigh,
+    atl: marketData.allTimeLow,
+    price_change_percentage_7d_in_currency: marketData.priceChange7d,
+    price_change_percentage_30d_in_currency: marketData.priceChange30d
+  };
 
-    generateOtherTokens();
-  }, [tokenId]);
-
-  const handleGeneratePrediction = async () => {
-    if (!cryptoData || cryptoData.length === 0) {
-      toast.error('No data available for prediction');
+  const handlePredict = async () => {
+    if (!cryptoData) {
+      toast.error("No data available for prediction");
       return;
     }
 
-    try {
-      await generatePrediction(cryptoData, tokenId || 'bitcoin', predictionDays);
-      toast.success('AI prediction generated successfully!');
-    } catch (error) {
-      console.error('Prediction error:', error);
-      toast.error('Failed to generate prediction');
-    }
+    await generatePrediction(cryptoData, cryptoId, predictionDays);
+    setShowPrediction(true);
+    toast.success("Prediction generated successfully!");
   };
 
   const handleClearPrediction = () => {
-    // Clear prediction logic would go here
-    toast.info('Prediction cleared');
+    setShowPrediction(false);
+    toast.success("Prediction cleared from chart");
   };
 
-  if (!tokenId) {
-    return <div>Token not found</div>;
+  const handleBuy = () => {
+    toast.success("Redirecting to buy...", {
+      description: "This would redirect to a trading platform"
+    });
+  };
+
+  const handleSell = () => {
+    toast.success("Redirecting to sell...", {
+      description: "This would redirect to a trading platform"
+    });
+  };
+
+  if (!selectedToken) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
+        <Card className="bg-gray-800/50 border-gray-700">
+          <CardContent className="p-8 text-center">
+            <h1 className="text-2xl font-bold text-white mb-4">
+              Token Not Found
+            </h1>
+            <p className="text-gray-300 mb-4">
+              The token "{tokenId}" could not be found.
+            </p>
+            <Link to="/">
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white">
-      {/* Header */}
-      <div className="border-b border-gray-700/50 bg-gray-900/50 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              CryptoPredictAI
+    <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header with Back Button */}
+          <div className="mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
             </Link>
-            <nav className="hidden md:flex space-x-6">
-              <Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link>
-              <Link to="/tokens" className="text-gray-300 hover:text-white transition-colors">Tokens</Link>
-              <Link to="/pump" className="text-gray-300 hover:text-white transition-colors">Pump.fun</Link>
-            </nav>
           </div>
-        </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          {/* Homepage Header */}
+          <IndexHeader
+            selectedCrypto={cryptoId}
+            cryptoOptions={cryptoOptions}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+          />
+
           {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Token Header - Fix: Remove tokenId prop */}
-            <TokenHeader />
+          <div className="space-y-6">
+            {/* Token Info Card - Full Width */}
+            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+              <CardContent className="p-8">
+                <div className="space-y-8">
+                  {/* Token Info Section */}
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+                    <TokenHeader />
+                    <TokenPriceDisplay
+                      currentPrice={currentPrice}
+                      priceChange={priceChange}
+                    />
+                  </div>
 
-            {/* Token Price Display - Fix: Remove tokenId prop */}
-            <TokenPriceDisplay 
-              currentPrice={currentPrice}
-              priceChange={priceChange}
-            />
-
-            {/* Chart and AI Prediction */}
-            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center justify-between">
-                  <span className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-blue-400" />
-                    Price Chart & AI Prediction
-                  </span>
-                  {cryptoData && (
-                    <Badge variant="outline" className="text-green-400 border-green-400">
-                      Live Data
-                    </Badge>
-                  )}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* AI Prediction Engine */}
-                <div className="bg-gradient-to-r from-purple-900/30 to-blue-900/30 rounded-xl p-6 border border-purple-500/20">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Brain className="h-5 w-5 text-purple-400" />
-                    <span className="text-white font-semibold text-lg">AI Prediction Engine</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-300">
-                        Prediction Days
-                      </label>
-                      <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                        <SelectTrigger className="bg-gray-800/70 border-gray-600/50 hover:border-purple-400/70 focus:border-purple-400 text-white transition-all duration-200 shadow-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl">
-                          <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">7 Days</SelectItem>
-                          <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">14 Days</SelectItem>
-                          <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">30 Days</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-300">
-                        Model Type
-                      </label>
-                      <Select value={modelType} onValueChange={setModelType}>
-                        <SelectTrigger className="bg-gray-800/70 border-gray-600/50 hover:border-purple-400/70 focus:border-purple-400 text-white transition-all duration-200 shadow-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl">
-                          <SelectItem value="lstm" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">LSTM Neural Network</SelectItem>
-                          <SelectItem value="transformer" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Transformer</SelectItem>
-                          <SelectItem value="ensemble" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Ensemble Model</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="block text-sm font-medium text-gray-300">
-                        Confidence Level
-                      </label>
-                      <Select value={confidenceLevel} onValueChange={setConfidenceLevel}>
-                        <SelectTrigger className="bg-gray-800/70 border-gray-600/50 hover:border-purple-400/70 focus:border-purple-400 text-white transition-all duration-200 shadow-sm">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl">
-                          <SelectItem value="conservative" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Conservative (80%)</SelectItem>
-                          <SelectItem value="moderate" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Moderate (90%)</SelectItem>
-                          <SelectItem value="aggressive" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Aggressive (95%)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button
-                      onClick={handleGeneratePrediction}
-                      disabled={isGeneratingPrediction || !cryptoData}
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg transition-all duration-200 hover:shadow-purple-500/25 hover:scale-105"
-                    >
-                      {isGeneratingPrediction ? (
-                        <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                          Generating...
-                        </>
-                      ) : (
-                        <>
-                          <Target className="h-4 w-4 mr-2" />
-                          Generate AI Prediction
-                        </>
-                      )}
-                    </Button>
-                    
-                    {prediction && (
-                      <Button
-                        onClick={handleClearPrediction}
-                        variant="outline"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200 hover:border-gray-500"
-                      >
-                        <X className="h-4 w-4 mr-2" />
-                        Clear Prediction
-                      </Button>
-                    )}
-                  </div>
+                  {/* Market Statistics */}
+                  <TokenMarketStats marketData={displayMarketStats} />
                 </div>
-
-                {/* Price Chart */}
-                <PriceChart 
-                  data={cryptoData} 
-                  prediction={prediction?.predictions || null}
-                  isLoading={dataLoading}
-                  crypto={tokenId}
-                  onClearPrediction={handleClearPrediction}
-                />
-
-                {/* Prediction Results */}
-                {prediction && (
-                  <div className="bg-gray-700/30 rounded-lg p-4 border border-gray-600/50">
-                    <div className="flex items-center gap-2 mb-4">
-                      <Target className="h-4 w-4 text-green-400" />
-                      <span className="text-white font-medium">AI Prediction Results</span>
-                    </div>
-                    <PredictionCard prediction={prediction} crypto={tokenId} />
-                  </div>
-                )}
               </CardContent>
             </Card>
 
-            {/* Other Tokens Section */}
-            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Coins className="h-5 w-5 text-yellow-400" />
-                  Other Tokens
-                </CardTitle>
-                <Link to="/tokens">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-blue-500/50 text-blue-300 hover:bg-gradient-to-r hover:from-blue-600/30 hover:to-purple-600/30 hover:border-blue-400 transition-all duration-200"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    View All Tokens
-                  </Button>
-                </Link>
-              </CardHeader>
-              <CardContent>
-                {/* Mobile: Horizontal Scroll */}
-                <div className="md:hidden">
-                  <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
-                    {otherTokens.map((token, index) => (
-                      <Link 
-                        key={index} 
-                        to={`/token/${token.id}`}
-                        className="block min-w-[240px] group"
-                      >
-                        <div className="bg-gradient-to-br from-gray-700/60 to-gray-800/60 border border-gray-600/40 rounded-xl p-4 hover:border-blue-400/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 group-hover:transform group-hover:scale-[1.02] backdrop-blur-sm">
-                          <div className="flex items-center gap-3 mb-3">
-                            <div className="text-2xl bg-gray-800/50 rounded-lg p-2 group-hover:bg-gray-700/50 transition-colors">{token.icon}</div>
-                            <div className="min-w-0 flex-1">
-                              <div className="text-white font-semibold text-sm truncate">{token.symbol}</div>
-                              <div className="text-gray-400 text-xs truncate">{token.name}</div>
-                            </div>
-                          </div>
-                          <div className="grid grid-cols-2 gap-2 text-xs">
-                            <div className="bg-gray-800/30 rounded-lg p-2">
-                              <div className="text-gray-400 mb-1">Price</div>
-                              <div className="text-white font-mono font-semibold">${token.price.toFixed(4)}</div>
-                            </div>
-                            <div className="bg-gray-800/30 rounded-lg p-2">
-                              <div className="text-gray-400 mb-1">24h</div>
-                              <div className={`font-bold ${token.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(2)}%
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
-                    ))}
+            {/* Ad Banner Before Price Chart - Centered */}
+            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+              <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
+            </div>
+
+              {/* Price Chart */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 text-blue-400" />
+                      Price Chart & AI Prediction
+                    </CardTitle>
+                    <div className="flex items-center gap-4">
+                      <Select value={timeframe} onValueChange={setTimeframe}>
+                        <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
+                          <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-700 border-gray-600">
+                        <SelectItem value="1d">1D</SelectItem>
+                        <SelectItem value="7d">7D</SelectItem>
+                        <SelectItem value="30d">30D</SelectItem>
+                        <SelectItem value="90d">90D</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
+                  
+                  {/* Enhanced AI Prediction Controls */}
+                  <div className="bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-xl p-6 mt-4 border border-gray-600/30 backdrop-blur-sm">
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-xl bg-purple-500/20 border border-purple-500/30">
+                        <Brain className="h-5 w-5 text-purple-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">AI Prediction Engine</h3>
+                        <p className="text-gray-300 text-sm">Generate advanced price forecasts</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex flex-wrap items-center gap-3 ml-auto">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-300 font-medium">Timeframe:</span>
+                        <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                          <SelectTrigger className="w-28 bg-gray-600/50 border-gray-500/50 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-600 border-gray-500">
+                            <SelectItem value="7">7 Days</SelectItem>
+                            <SelectItem value="14">14 Days</SelectItem>
+                            <SelectItem value="30">30 Days</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-300 font-medium">Model:</span>
+                        <Select value={modelType} onValueChange={setModelType}>
+                          <SelectTrigger className="w-32 bg-gray-600/50 border-gray-500/50 text-white">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-600 border-gray-500">
+                            <SelectItem value="basic">Basic</SelectItem>
+                            <SelectItem value="advanced">Advanced</SelectItem>
+                            <SelectItem value="expert">Expert</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <ModelTypeTooltip modelType={modelType} />
+                      </div>
+                      
+                      <Button
+                        onClick={handlePredict}
+                        disabled={predictionLoading}
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg"
+                      >
+                        {predictionLoading ? (
+                          <>
+                            <Activity className="h-4 w-4 mr-2 animate-spin" />
+                            Generating...
+                          </>
+                        ) : (
+                          <>
+                            <Target className="h-4 w-4 mr-2" />
+                            Generate
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <PriceChart
+                  data={cryptoData || []}
+                  isLoading={dataLoading}
+                  prediction={showPrediction && prediction ? prediction.predictions : null}
+                  crypto={cryptoId}
+                  onClearPrediction={handleClearPrediction}
+                />
+              </CardContent>
+            </Card>
 
-                {/* Desktop: Compact Grid */}
-                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-                  {otherTokens.map((token, index) => (
+            {/* Ad Banner After Price Chart - Centered */}
+            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+              <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
+            </div>
+          </div>
+
+          {/* Market Analysis and Sidebar Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
+            {/* Market Analysis - 3/4 width */}
+            <div className="lg:col-span-3 space-y-6">
+              {/* Market Analysis - Combined Sentiment and Technical */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+                <CardHeader>
+                  <CardTitle className="text-white">Market Analysis</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Tabs defaultValue="sentiment" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 bg-gray-700 border-gray-600">
+                      <TabsTrigger value="sentiment" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600">
+                        Sentiment Analysis
+                      </TabsTrigger>
+                      <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600">
+                        Technical Analysis
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="sentiment" className="mt-6">
+                      <SentimentAnalysis crypto={cryptoId} />
+                    </TabsContent>
+                    
+                    <TabsContent value="technical" className="mt-6">
+                      <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+
+              {/* AI Prediction Results */}
+              {prediction && (
+                <div className="flex justify-center">
+                  <div className="w-full max-w-md">
+                    <PredictionCard
+                      prediction={prediction}
+                      crypto={cryptoId}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Sidebar - 1/4 width */}
+            <div className="lg:col-span-1">
+              <TokenSidebar 
+                currentTokenId={tokenId || "bitcoin"} 
+                selectedCrypto={cryptoId}
+                currentPrice={currentPrice}
+                priceChange={priceChange}
+                cryptoOptions={cryptoOptions}
+              />
+            </div>
+          </div>
+
+          {/* Other Tokens Section */}
+          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl mt-6">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Coins className="h-5 w-5 text-yellow-400" />
+                Other Tokens
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {isMobile ? (
+                /* Mobile: Horizontal scroll */
+                <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2">
+                  {cryptoOptions
+                    .filter(token => token.value !== tokenId)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 8)
+                    .map((token) => (
                     <Link 
-                      key={index} 
-                      to={`/token/${token.id}`}
-                      className="block group"
+                      key={token.value} 
+                      to={`/token/${token.value}`}
+                      className="flex-shrink-0 w-28"
                     >
-                      <div className="bg-gradient-to-br from-gray-700/60 to-gray-800/60 border border-gray-600/40 rounded-xl p-4 hover:border-blue-400/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 group-hover:transform group-hover:scale-[1.02] backdrop-blur-sm">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="text-xl bg-gray-800/50 rounded-lg p-2 group-hover:bg-gray-700/50 transition-colors">{token.icon}</div>
-                          <div className="min-w-0 flex-1">
-                            <div className="text-white font-semibold text-sm truncate">{token.symbol}</div>
-                            <div className="text-gray-400 text-xs truncate">{token.name}</div>
+                      <div className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50 hover:bg-gray-700/30 transition-colors h-full">
+                        <div className="flex flex-col items-center text-center space-y-1.5">
+                          <span className="text-lg">{token.icon}</span>
+                          <div>
+                            <div className="text-white text-xs font-medium">{token.symbol}</div>
+                            <div className="text-gray-400 text-[10px] truncate">{token.name}</div>
                           </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className="bg-gray-800/30 rounded-lg p-2">
-                            <div className="text-gray-400 text-xs mb-1">Price</div>
-                            <div className="text-white font-mono font-semibold">${token.price.toFixed(4)}</div>
-                          </div>
-                          <div className="bg-gray-800/30 rounded-lg p-2">
-                            <div className="text-gray-400 text-xs mb-1">24h</div>
-                            <div className={`font-bold ${token.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                              {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(2)}%
+                          <div className="text-center">
+                            <div className={`text-[10px] font-medium ${
+                              token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                              {token.prediction}
+                            </div>
+                            <div className="flex items-center justify-center gap-1">
+                              <Star className="h-2.5 w-2.5 text-yellow-400" />
+                              <span className="text-gray-400 text-[10px]">{token.score}</span>
                             </div>
                           </div>
                         </div>
@@ -357,22 +420,92 @@ export default function TokenDetail() {
                     </Link>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              ) : (
+                /* Desktop: Grid */
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                  {cryptoOptions
+                    .filter(token => token.value !== tokenId)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 6)
+                    .map((token) => (
+                    <Link 
+                      key={token.value} 
+                      to={`/token/${token.value}`}
+                      className="block"
+                    >
+                      <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-700/30 transition-colors">
+                        <div className="flex flex-col items-center text-center space-y-2">
+                          <span className="text-2xl">{token.icon}</span>
+                          <div>
+                            <div className="text-white text-sm font-medium">{token.symbol}</div>
+                            <div className="text-gray-400 text-xs">{token.name}</div>
+                          </div>
+                          <div className="text-center">
+                            <div className={`text-xs font-medium ${
+                              token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                              {token.prediction}
+                            </div>
+                            <div className="flex items-center justify-center gap-1">
+                              <Star className="h-3 w-3 text-yellow-400" />
+                              <span className="text-gray-400 text-xs">{token.score}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+              <div className="mt-6 text-center">
+                <Link to="/all-tokens">
+                  <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
+                    View All Tokens
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
 
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <TokenSidebar 
-              currentTokenId={tokenId}
-              selectedCrypto={tokenId}
-              currentPrice={currentPrice}
-              priceChange={priceChange}
-              cryptoOptions={cryptoOptions}
-            />
+          {/* Footer */}
+          <div className="mt-12">
+            <Footer />
+          </div>
+        </div>
+        
+        {/* Sticky Buy/Sell Buttons */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="bg-gray-800/95 backdrop-blur-sm border border-gray-600/50 rounded-2xl p-4 shadow-2xl">
+            <div className="flex items-center gap-4">
+              <div className="text-center">
+                <div className="text-white text-sm font-medium mb-1">{selectedToken.name}</div>
+                <div className="text-gray-300 text-xs">
+                  ${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleBuy}
+                  className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  BUY
+                </Button>
+                <Button
+                  onClick={handleSell}
+                  className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  <Wallet className="h-4 w-4 mr-2" />
+                  SELL
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </TokenProvider>
   );
-}
+};
+
+export default TokenDetail;
