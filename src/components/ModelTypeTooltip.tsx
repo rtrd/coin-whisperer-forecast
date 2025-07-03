@@ -4,10 +4,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Info, Brain, Zap, Target, Layers } from "lucide-react";
 
 interface ModelTypeTooltipProps {
-  modelType: string;
+  modelType?: string;
 }
 
-export const ModelTypeTooltip: React.FC<ModelTypeTooltipProps> = ({ modelType }) => {
+export const ModelTypeTooltip: React.FC<ModelTypeTooltipProps> = ({ modelType = 'advanced' }) => {
   const getModelInfo = (type: string) => {
     switch (type) {
       case 'basic':
