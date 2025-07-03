@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -171,119 +170,116 @@ const TokenDetail = () => {
             </Link>
           </div>
 
-          {/* Main Content Layout */}
-          <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
-            {/* Left Column - Main Content */}
-            <div className="xl:col-span-3 space-y-6">
-              {/* Token Info Card */}
-              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
-                <CardContent className="p-8">
-                  <div className="space-y-8">
-                    {/* Token Info Section */}
-                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-                      <TokenHeader />
-                      <TokenPriceDisplay
-                        currentPrice={currentPrice}
-                        priceChange={priceChange}
-                      />
-                    </div>
-
-                    {/* Market Statistics */}
-                    <TokenMarketStats marketData={displayMarketStats} />
+          {/* Full Width Content */}
+          <div className="space-y-6">
+            {/* Token Info Card - Full Width */}
+            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+              <CardContent className="p-8">
+                <div className="space-y-8">
+                  {/* Token Info Section */}
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+                    <TokenHeader />
+                    <TokenPriceDisplay
+                      currentPrice={currentPrice}
+                      priceChange={priceChange}
+                    />
                   </div>
-                </CardContent>
-              </Card>
 
-              {/* Price Chart */}
-              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <BarChart3 className="h-5 w-5 text-blue-400" />
-                      Price Chart & AI Prediction
-                    </CardTitle>
-                    <div className="flex items-center gap-4">
-                      <Select value={timeframe} onValueChange={setTimeframe}>
-                        <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-700 border-gray-600">
-                          <SelectItem value="1d">1D</SelectItem>
-                          <SelectItem value="7d">7D</SelectItem>
-                          <SelectItem value="30d">30D</SelectItem>
-                          <SelectItem value="90d">90D</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  
-                  {/* AI Prediction Controls */}
-                  <div className="flex items-center gap-4 mt-4 p-4 bg-gray-700/30 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <Brain className="h-4 w-4 text-purple-400" />
-                      <span className="text-sm text-gray-300">AI Prediction</span>
-                    </div>
-                    <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                      <SelectTrigger className="w-24 bg-gray-600 border-gray-500 text-white">
+                  {/* Market Statistics */}
+                  <TokenMarketStats marketData={displayMarketStats} />
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Price Chart - Full Width */}
+            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5 text-blue-400" />
+                    Price Chart & AI Prediction
+                  </CardTitle>
+                  <div className="flex items-center gap-4">
+                    <Select value={timeframe} onValueChange={setTimeframe}>
+                      <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-600 border-gray-500">
-                        <SelectItem value="7">7 Days</SelectItem>
-                        <SelectItem value="14">14 Days</SelectItem>
-                        <SelectItem value="30">30 Days</SelectItem>
+                      <SelectContent className="bg-gray-700 border-gray-600">
+                        <SelectItem value="1d">1D</SelectItem>
+                        <SelectItem value="7d">7D</SelectItem>
+                        <SelectItem value="30d">30D</SelectItem>
+                        <SelectItem value="90d">90D</SelectItem>
                       </SelectContent>
                     </Select>
-                    <Select value={modelType} onValueChange={setModelType}>
-                      <SelectTrigger className="w-32 bg-gray-600 border-gray-500 text-white">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-gray-600 border-gray-500">
-                        <SelectItem value="basic">Basic</SelectItem>
-                        <SelectItem value="advanced">Advanced</SelectItem>
-                        <SelectItem value="expert">Expert</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <ModelTypeTooltip />
-                    <Button
-                      onClick={handlePredict}
-                      disabled={predictionLoading}
-                      className="bg-purple-600 hover:bg-purple-700 text-white"
-                    >
-                      {predictionLoading ? (
-                        <>
-                          <Activity className="h-4 w-4 mr-2 animate-spin" />
-                          Generating...
-                        </>
-                      ) : (
-                        <>
-                          <Target className="h-4 w-4 mr-2" />
-                          Generate Prediction
-                        </>
-                      )}
-                    </Button>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <PriceChart
-                    data={cryptoData || []}
-                    isLoading={dataLoading}
-                    prediction={showPrediction && prediction ? prediction.predictions : null}
-                    crypto={cryptoId}
-                    onClearPrediction={handleClearPrediction}
-                  />
-                </CardContent>
-              </Card>
+                </div>
+                
+                {/* AI Prediction Controls */}
+                <div className="flex items-center gap-4 mt-4 p-4 bg-gray-700/30 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <Brain className="h-4 w-4 text-purple-400" />
+                    <span className="text-sm text-gray-300">AI Prediction</span>
+                  </div>
+                  <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                    <SelectTrigger className="w-24 bg-gray-600 border-gray-500 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-600 border-gray-500">
+                      <SelectItem value="7">7 Days</SelectItem>
+                      <SelectItem value="14">14 Days</SelectItem>
+                      <SelectItem value="30">30 Days</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <Select value={modelType} onValueChange={setModelType}>
+                    <SelectTrigger className="w-32 bg-gray-600 border-gray-500 text-white">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-gray-600 border-gray-500">
+                      <SelectItem value="basic">Basic</SelectItem>
+                      <SelectItem value="advanced">Advanced</SelectItem>
+                      <SelectItem value="expert">Expert</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <ModelTypeTooltip />
+                  <Button
+                    onClick={handlePredict}
+                    disabled={predictionLoading}
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                  >
+                    {predictionLoading ? (
+                      <>
+                        <Activity className="h-4 w-4 mr-2 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <Target className="h-4 w-4 mr-2" />
+                        Generate Prediction
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <PriceChart
+                  data={cryptoData || []}
+                  isLoading={dataLoading}
+                  prediction={showPrediction && prediction ? prediction.predictions : null}
+                  crypto={cryptoId}
+                  onClearPrediction={handleClearPrediction}
+                />
+              </CardContent>
+            </Card>
 
-              {/* Market Sentiment and Technical Analysis - Side by Side */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <SentimentAnalysis crypto={cryptoId} />
-                <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
-              </div>
-            </div>
-
-            {/* Right Sidebar */}
-            <div className="xl:col-span-1 space-y-6">
-              {/* Token Analysis Card */}
+            {/* Analysis Grid - Market Sentiment, Technical Analysis, Token Analysis, and Ad Space */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
+              {/* Market Sentiment */}
+              <SentimentAnalysis crypto={cryptoId} />
+              
+              {/* Technical Analysis */}
+              <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+              
+              {/* Token Analysis */}
               <DynamicTokenAnalysis
                 selectedCrypto={cryptoId}
                 currentPrice={currentPrice}
@@ -291,19 +287,21 @@ const TokenDetail = () => {
                 cryptoOptions={cryptoOptions}
               />
 
-              {/* AI Prediction Results */}
-              {prediction && (
+              {/* Ad Space */}
+              <div className="flex justify-center items-start">
+                <AdBanner width={300} height={250} position="vertical" />
+              </div>
+            </div>
+
+            {/* AI Prediction Results - Full Width if exists */}
+            {prediction && (
+              <div className="max-w-md mx-auto">
                 <PredictionCard
                   prediction={prediction}
                   crypto={cryptoId}
                 />
-              )}
-
-              {/* Ad Space */}
-              <div className="flex justify-center">
-                <AdBanner width={300} height={250} position="vertical" />
               </div>
-            </div>
+            )}
           </div>
 
           {/* Footer */}
