@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,8 +40,8 @@ export default function TokenDetail() {
   const [priceChange, setPriceChange] = useState(0);
   const [otherTokens, setOtherTokens] = useState<OtherToken[]>([]);
 
-  // Hooks
-  const { data: cryptoData, isLoading: dataLoading } = useCryptoData(tokenId || 'bitcoin');
+  // Hooks - Fix: Add timeframe parameter to useCryptoData
+  const { data: cryptoData, isLoading: dataLoading } = useCryptoData(tokenId || 'bitcoin', '7d');
   const { prediction, isLoading: isGeneratingPrediction, generatePrediction } = usePrediction();
 
   // Crypto options for fallback
@@ -134,14 +135,13 @@ export default function TokenDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
-            {/* Token Header */}
-            <TokenHeader tokenId={tokenId} />
+            {/* Token Header - Fix: Remove tokenId prop */}
+            <TokenHeader />
 
-            {/* Token Price Display */}
+            {/* Token Price Display - Fix: Remove tokenId prop */}
             <TokenPriceDisplay 
               currentPrice={currentPrice}
               priceChange={priceChange}
-              tokenId={tokenId}
             />
 
             {/* Chart and AI Prediction */}
@@ -173,13 +173,13 @@ export default function TokenDetail() {
                         Prediction Days
                       </label>
                       <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                        <SelectTrigger className="bg-gray-800/70 border-gray-600 hover:border-purple-400 focus:border-purple-400 text-white transition-colors">
+                        <SelectTrigger className="bg-gray-800/70 border-gray-600/50 hover:border-purple-400/70 focus:border-purple-400 text-white transition-all duration-200 shadow-sm">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600">
-                          <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700">7 Days</SelectItem>
-                          <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700">14 Days</SelectItem>
-                          <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700">30 Days</SelectItem>
+                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl">
+                          <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">7 Days</SelectItem>
+                          <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">14 Days</SelectItem>
+                          <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">30 Days</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -189,13 +189,13 @@ export default function TokenDetail() {
                         Model Type
                       </label>
                       <Select value={modelType} onValueChange={setModelType}>
-                        <SelectTrigger className="bg-gray-800/70 border-gray-600 hover:border-purple-400 focus:border-purple-400 text-white transition-colors">
+                        <SelectTrigger className="bg-gray-800/70 border-gray-600/50 hover:border-purple-400/70 focus:border-purple-400 text-white transition-all duration-200 shadow-sm">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600">
-                          <SelectItem value="lstm" className="text-white hover:bg-gray-700 focus:bg-gray-700">LSTM Neural Network</SelectItem>
-                          <SelectItem value="transformer" className="text-white hover:bg-gray-700 focus:bg-gray-700">Transformer</SelectItem>
-                          <SelectItem value="ensemble" className="text-white hover:bg-gray-700 focus:bg-gray-700">Ensemble Model</SelectItem>
+                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl">
+                          <SelectItem value="lstm" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">LSTM Neural Network</SelectItem>
+                          <SelectItem value="transformer" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Transformer</SelectItem>
+                          <SelectItem value="ensemble" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Ensemble Model</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -205,13 +205,13 @@ export default function TokenDetail() {
                         Confidence Level
                       </label>
                       <Select value={confidenceLevel} onValueChange={setConfidenceLevel}>
-                        <SelectTrigger className="bg-gray-800/70 border-gray-600 hover:border-purple-400 focus:border-purple-400 text-white transition-colors">
+                        <SelectTrigger className="bg-gray-800/70 border-gray-600/50 hover:border-purple-400/70 focus:border-purple-400 text-white transition-all duration-200 shadow-sm">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600">
-                          <SelectItem value="conservative" className="text-white hover:bg-gray-700 focus:bg-gray-700">Conservative (80%)</SelectItem>
-                          <SelectItem value="moderate" className="text-white hover:bg-gray-700 focus:bg-gray-700">Moderate (90%)</SelectItem>
-                          <SelectItem value="aggressive" className="text-white hover:bg-gray-700 focus:bg-gray-700">Aggressive (95%)</SelectItem>
+                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl">
+                          <SelectItem value="conservative" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Conservative (80%)</SelectItem>
+                          <SelectItem value="moderate" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Moderate (90%)</SelectItem>
+                          <SelectItem value="aggressive" className="text-white hover:bg-gray-700 focus:bg-gray-700 cursor-pointer">Aggressive (95%)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -221,7 +221,7 @@ export default function TokenDetail() {
                     <Button
                       onClick={handleGeneratePrediction}
                       disabled={isGeneratingPrediction || !cryptoData}
-                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg transition-all duration-200 hover:shadow-purple-500/25"
+                      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg transition-all duration-200 hover:shadow-purple-500/25 hover:scale-105"
                     >
                       {isGeneratingPrediction ? (
                         <>
@@ -240,7 +240,7 @@ export default function TokenDetail() {
                       <Button
                         onClick={handleClearPrediction}
                         variant="outline"
-                        className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                        className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white transition-all duration-200 hover:border-gray-500"
                       >
                         <X className="h-4 w-4 mr-2" />
                         Clear Prediction
@@ -292,28 +292,28 @@ export default function TokenDetail() {
               <CardContent>
                 {/* Mobile: Horizontal Scroll */}
                 <div className="md:hidden">
-                  <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                  <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
                     {otherTokens.map((token, index) => (
                       <Link 
                         key={index} 
                         to={`/token/${token.id}`}
-                        className="block min-w-[280px] group"
+                        className="block min-w-[240px] group"
                       >
-                        <div className="bg-gradient-to-br from-gray-700/50 to-gray-800/50 border border-gray-600/30 rounded-xl p-4 hover:border-blue-400/50 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10 group-hover:transform group-hover:scale-[1.02]">
+                        <div className="bg-gradient-to-br from-gray-700/60 to-gray-800/60 border border-gray-600/40 rounded-xl p-4 hover:border-blue-400/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 group-hover:transform group-hover:scale-[1.02] backdrop-blur-sm">
                           <div className="flex items-center gap-3 mb-3">
-                            <div className="text-2xl">{token.icon}</div>
-                            <div>
-                              <div className="text-white font-semibold">{token.symbol}</div>
-                              <div className="text-gray-400 text-sm">{token.name}</div>
+                            <div className="text-2xl bg-gray-800/50 rounded-lg p-2 group-hover:bg-gray-700/50 transition-colors">{token.icon}</div>
+                            <div className="min-w-0 flex-1">
+                              <div className="text-white font-semibold text-sm truncate">{token.symbol}</div>
+                              <div className="text-gray-400 text-xs truncate">{token.name}</div>
                             </div>
                           </div>
-                          <div className="grid grid-cols-2 gap-2 text-sm">
-                            <div>
-                              <div className="text-gray-400">Price</div>
-                              <div className="text-white font-mono">${token.price.toFixed(4)}</div>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div className="bg-gray-800/30 rounded-lg p-2">
+                              <div className="text-gray-400 mb-1">Price</div>
+                              <div className="text-white font-mono font-semibold">${token.price.toFixed(4)}</div>
                             </div>
-                            <div>
-                              <div className="text-gray-400">24h</div>
+                            <div className="bg-gray-800/30 rounded-lg p-2">
+                              <div className="text-gray-400 mb-1">24h</div>
                               <div className={`font-bold ${token.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                                 {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(2)}%
                               </div>
@@ -325,29 +325,29 @@ export default function TokenDetail() {
                   </div>
                 </div>
 
-                {/* Desktop: Grid */}
-                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {/* Desktop: Compact Grid */}
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {otherTokens.map((token, index) => (
                     <Link 
                       key={index} 
                       to={`/token/${token.id}`}
                       className="block group"
                     >
-                      <div className="bg-gradient-to-br from-gray-700/50 to-gray-800/50 border border-gray-600/30 rounded-xl p-4 hover:border-blue-400/50 transition-all duration-200 hover:shadow-lg hover:shadow-blue-500/10 group-hover:transform group-hover:scale-[1.02]">
+                      <div className="bg-gradient-to-br from-gray-700/60 to-gray-800/60 border border-gray-600/40 rounded-xl p-4 hover:border-blue-400/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 group-hover:transform group-hover:scale-[1.02] backdrop-blur-sm">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="text-2xl">{token.icon}</div>
+                          <div className="text-xl bg-gray-800/50 rounded-lg p-2 group-hover:bg-gray-700/50 transition-colors">{token.icon}</div>
                           <div className="min-w-0 flex-1">
-                            <div className="text-white font-semibold truncate">{token.symbol}</div>
-                            <div className="text-gray-400 text-sm truncate">{token.name}</div>
+                            <div className="text-white font-semibold text-sm truncate">{token.symbol}</div>
+                            <div className="text-gray-400 text-xs truncate">{token.name}</div>
                           </div>
                         </div>
-                        <div className="grid grid-cols-2 gap-2 text-sm">
-                          <div>
-                            <div className="text-gray-400">Price</div>
-                            <div className="text-white font-mono">${token.price.toFixed(4)}</div>
+                        <div className="grid grid-cols-2 gap-2 text-xs">
+                          <div className="bg-gray-800/30 rounded-lg p-2">
+                            <div className="text-gray-400 text-xs mb-1">Price</div>
+                            <div className="text-white font-mono font-semibold">${token.price.toFixed(4)}</div>
                           </div>
-                          <div>
-                            <div className="text-gray-400">24h</div>
+                          <div className="bg-gray-800/30 rounded-lg p-2">
+                            <div className="text-gray-400 text-xs mb-1">24h</div>
                             <div className={`font-bold ${token.change24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(2)}%
                             </div>
