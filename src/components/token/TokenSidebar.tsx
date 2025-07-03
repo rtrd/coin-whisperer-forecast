@@ -112,8 +112,11 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
         <CardContent className="p-0">
           {currentArticle ? (
             <div className="relative group">
-              {/* Article Image */}
-              <div className="relative h-48 overflow-hidden rounded-t-lg">
+              {/* Article Image - Clickable */}
+              <div 
+                className="relative h-48 overflow-hidden rounded-t-lg cursor-pointer"
+                onClick={() => window.open(currentArticle.url, '_blank')}
+              >
                 <img 
                   src={currentArticle.image} 
                   alt={currentArticle.title}
@@ -127,16 +130,22 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={prevArticle}
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        prevArticle();
+                      }}
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                      onClick={nextArticle}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        nextArticle();
+                      }}
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
@@ -153,25 +162,20 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
               
               {/* Article Content */}
               <div className="p-4">
-                <h4 className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in">
+                {/* Clickable Headline */}
+                <h4 
+                  className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in cursor-pointer hover:text-blue-400 transition-colors"
+                  onClick={() => window.open(currentArticle.url, '_blank')}
+                >
                   {currentArticle.title}
                 </h4>
                 <p className="text-gray-400 text-xs line-clamp-3 mb-3 animate-fade-in">
                   {currentArticle.excerpt}
                 </p>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center justify-between">
                   <span className="text-gray-500 text-xs">{currentArticle.readTime}</span>
                   <span className="text-gray-500 text-xs">{currentArticle.date}</span>
                 </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
-                  onClick={() => window.open(currentArticle.url, '_blank')}
-                >
-                  Read Article
-                  <ExternalLink className="h-3 w-3 ml-2" />
-                </Button>
               </div>
               
               {/* Dots indicator */}
@@ -194,16 +198,6 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
               <p>Loading articles...</p>
             </div>
           )}
-          
-          {/* View All Button */}
-          <div className="p-4 border-t border-gray-700/50">
-            <Link to="/blog">
-              <Button variant="outline" className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
-                View All Articles
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            </Link>
-          </div>
         </CardContent>
       </Card>
 
