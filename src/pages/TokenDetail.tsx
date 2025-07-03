@@ -108,8 +108,10 @@ const TokenDetail = () => {
     toast.success("Prediction cleared from chart");
   };
 
+  console.log("cryptoData.00000", cryptoData);
   useEffect(() => {
     const loadIndicators = async () => {
+      debugger;
       const technicalData = await fetchTechnicalIndicators(tokenId);
       settechnicalAnaylysisData(technicalData);
       console.log("Price Data", technicalData);
