@@ -12,10 +12,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar";
-import {
   TrendingUp,
   TrendingDown,
   Activity,
@@ -26,7 +22,6 @@ import {
   ArrowLeft,
   ShoppingCart,
   Wallet,
-  Menu,
 } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
@@ -165,36 +160,29 @@ const TokenDetail = () => {
   }
 
   return (
-    <SidebarProvider>
-      <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
-        <div className="min-h-screen flex w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-          <div className="flex-1 flex flex-col">
-            {/* Header with Sidebar Toggle */}
-            <header className="bg-gray-800/50 border-b border-gray-700 p-4">
-              <div className="flex items-center gap-4">
-                <SidebarTrigger className="text-white hover:bg-gray-700 p-2 rounded-lg">
-                  <Menu className="h-5 w-5" />
-                </SidebarTrigger>
-                <Link to="/">
-                  <Button
-                    variant="outline"
-                    className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
-                  >
-                    <ArrowLeft className="h-4 w-4 mr-2" />
-                    Back
-                  </Button>
-                </Link>
-              </div>
-            </header>
+    <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        <div className="container mx-auto px-4 py-8">
+          {/* Header with Back Button */}
+          <div className="mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+            </Link>
+          </div>
 
-            <div className="container mx-auto px-4 py-8 flex-1">
-              {/* Homepage Header */}
-              <IndexHeader
-                selectedCrypto={cryptoId}
-                cryptoOptions={cryptoOptions}
-                currentPrice={currentPrice}
-                priceChange={priceChange}
-              />
+          {/* Homepage Header */}
+          <IndexHeader
+            selectedCrypto={cryptoId}
+            cryptoOptions={cryptoOptions}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+          />
 
               {/* Main Content */}
               <div className="space-y-6">
@@ -316,32 +304,40 @@ const TokenDetail = () => {
                 </Card>
 
                 {/* Market Sentiment and Technical Analysis - Side by Side */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <SentimentAnalysis crypto={cryptoId} />
-                  <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
-                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                  <div className="lg:col-span-3 space-y-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                      <SentimentAnalysis crypto={cryptoId} />
+                      <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+                    </div>
+                    {/* AI Prediction Results */}
+                    {prediction && (
+                      <div className="flex justify-center">
+                        <div className="w-full max-w-md">
+                          <PredictionCard
+                            prediction={prediction}
+                            crypto={cryptoId}
+                          />
+                        </div>
+                      </div>
+                    )}
 
-                {/* AI Prediction Results */}
-                {prediction && (
-                  <div className="flex justify-center">
-                    <div className="w-full max-w-md">
-                      <PredictionCard
-                        prediction={prediction}
-                        crypto={cryptoId}
-                      />
+                    {/* Token Analysis Section */}
+                    <div className="flex justify-center">
+                      <div className="w-full max-w-md">
+                        <DynamicTokenAnalysis
+                          selectedCrypto={cryptoId}
+                          currentPrice={currentPrice}
+                          priceChange={priceChange}
+                          cryptoOptions={cryptoOptions}
+                        />
+                      </div>
                     </div>
                   </div>
-                )}
-
-                {/* Token Analysis Section - Moved to Bottom */}
-                <div className="flex justify-center">
-                  <div className="w-full max-w-md">
-                    <DynamicTokenAnalysis
-                      selectedCrypto={cryptoId}
-                      currentPrice={currentPrice}
-                      priceChange={priceChange}
-                      cryptoOptions={cryptoOptions}
-                    />
+                  
+                  {/* Sidebar */}
+                  <div className="lg:col-span-1">
+                    <TokenSidebar currentTokenId={tokenId || "bitcoin"} />
                   </div>
                 </div>
               </div>
@@ -381,12 +377,8 @@ const TokenDetail = () => {
                 </div>
               </div>
             </div>
-          </div>
-          
-          <TokenSidebar currentTokenId={tokenId || "bitcoin"} />
         </div>
       </TokenProvider>
-    </SidebarProvider>
   );
 };
 
