@@ -22,6 +22,9 @@ import {
   ArrowLeft,
   ShoppingCart,
   Wallet,
+  Coins,
+  Star,
+  ArrowRight,
 } from "lucide-react";
 import { PriceChart } from "@/components/PriceChart";
 import { PredictionCard } from "@/components/PredictionCard";
@@ -369,6 +372,60 @@ const TokenDetail = () => {
               />
             </div>
           </div>
+
+          {/* Other Tokens Section */}
+          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl mt-6">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Coins className="h-5 w-5 text-yellow-400" />
+                Other Tokens
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+                {cryptoOptions
+                  .filter(token => token.value !== tokenId)
+                  .sort(() => Math.random() - 0.5)
+                  .slice(0, 6)
+                  .map((token) => (
+                  <Link 
+                    key={token.value} 
+                    to={`/token/${token.value}`}
+                    className="block"
+                  >
+                    <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-700/30 transition-colors">
+                      <div className="flex flex-col items-center text-center space-y-2">
+                        <span className="text-2xl">{token.icon}</span>
+                        <div>
+                          <div className="text-white text-sm font-medium">{token.symbol}</div>
+                          <div className="text-gray-400 text-xs">{token.name}</div>
+                        </div>
+                        <div className="text-center">
+                          <div className={`text-xs font-medium ${
+                            token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
+                          }`}>
+                            {token.prediction}
+                          </div>
+                          <div className="flex items-center justify-center gap-1">
+                            <Star className="h-3 w-3 text-yellow-400" />
+                            <span className="text-gray-400 text-xs">{token.score}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-6 text-center">
+                <Link to="/all-tokens">
+                  <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
+                    View All Tokens
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Footer */}
           <div className="mt-12">

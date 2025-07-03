@@ -10,11 +10,7 @@ import { TokenDataService } from "@/services/tokenDataService";
 import { 
   ExternalLink, 
   ArrowRight, 
-  TrendingUp, 
-  TrendingDown,
-  Coins,
   FileText,
-  Star,
   BarChart3
 } from "lucide-react";
 import { getWordPressPost } from "../../../utils/api";
@@ -29,13 +25,6 @@ interface TokenSidebarProps {
 
 export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, priceChange, cryptoOptions }: TokenSidebarProps) {
   const [articles, setArticles] = useState<any[]>([]);
-  const tokenCryptoOptions = TokenDataService.getCryptoOptions();
-  
-  // Get random tokens excluding current one
-  const otherTokens = tokenCryptoOptions
-    .filter(token => token.value !== currentTokenId)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 6);
 
   useEffect(() => {
     fetchArticles();
@@ -128,53 +117,6 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
         </CardContent>
       </Card>
 
-      {/* More Tokens Section */}
-      <Card className="bg-gray-800/50 border-gray-700">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-white flex items-center gap-2 text-lg">
-            <Coins className="h-5 w-5 text-yellow-400" />
-            Other Tokens
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {otherTokens.map((token) => (
-            <Link 
-              key={token.value} 
-              to={`/token/${token.value}`}
-              className="block"
-            >
-              <div className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50 hover:bg-gray-700/30 transition-colors">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{token.icon}</span>
-                    <div>
-                      <div className="text-white text-sm font-medium">{token.symbol}</div>
-                      <div className="text-gray-400 text-xs">{token.name}</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className={`text-xs font-medium ${
-                      token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
-                    }`}>
-                      {token.prediction}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-3 w-3 text-yellow-400" />
-                      <span className="text-gray-400 text-xs">{token.score}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
-          <Link to="/all-tokens">
-            <Button variant="outline" className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
-              View All Tokens
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </Link>
-        </CardContent>
-      </Card>
     </div>
   );
 }
