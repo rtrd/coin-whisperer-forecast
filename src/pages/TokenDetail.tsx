@@ -243,7 +243,7 @@ const TokenDetail = () => {
                         <SelectItem value="expert">Expert</SelectItem>
                       </SelectContent>
                     </Select>
-                    <ModelTypeTooltip />
+                    <ModelTypeTooltip modelType={modelType} />
                     <Button
                       onClick={handlePredict}
                       disabled={predictionLoading}
