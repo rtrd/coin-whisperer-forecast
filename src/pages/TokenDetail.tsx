@@ -225,14 +225,13 @@ const TokenDetail = () => {
                     </CardTitle>
                     <div className="flex items-center gap-4">
                       <Select value={timeframe} onValueChange={setTimeframe}>
-                        <SelectTrigger className="w-24 bg-gray-700/80 border-gray-600/50 text-white hover:bg-gray-600/80 transition-colors shadow-lg">
+                        <SelectTrigger className="w-32 bg-gray-700/80 border-gray-600/50 text-white hover:bg-gray-600/80 transition-colors shadow-lg">
                           <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-800 border-gray-600 text-white">
-                        <SelectItem value="1d" className="text-white hover:bg-gray-700 focus:bg-gray-700">1D</SelectItem>
-                        <SelectItem value="7d" className="text-white hover:bg-gray-700 focus:bg-gray-700">7D</SelectItem>
-                        <SelectItem value="30d" className="text-white hover:bg-gray-700 focus:bg-gray-700">30D</SelectItem>
-                        <SelectItem value="90d" className="text-white hover:bg-gray-700 focus:bg-gray-700">90D</SelectItem>
+                      <SelectContent className="bg-gray-800 border-gray-600 shadow-xl backdrop-blur-sm">
+                        <SelectItem value="7d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">7 Days</SelectItem>
+                        <SelectItem value="30d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">30 Days</SelectItem>
+                        <SelectItem value="90d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">90 Days</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -255,13 +254,13 @@ const TokenDetail = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-300 font-medium">Timeframe:</span>
                         <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                          <SelectTrigger className="w-28 bg-gray-600/70 border-gray-500/60 text-white hover:bg-gray-600/90 transition-colors shadow-lg backdrop-blur-sm">
+                          <SelectTrigger className="w-32 bg-gray-600/70 border-gray-500/60 text-white hover:bg-gray-600/90 transition-colors shadow-lg backdrop-blur-sm">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-800 backdrop-blur-sm border-gray-600 shadow-xl text-white">
-                            <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700">7 Days</SelectItem>
-                            <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700">14 Days</SelectItem>
-                            <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700">30 Days</SelectItem>
+                          <SelectContent className="bg-gray-800 backdrop-blur-sm border-gray-600 shadow-xl">
+                            <SelectItem value="7" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">7 Days</SelectItem>
+                            <SelectItem value="14" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">14 Days</SelectItem>
+                            <SelectItem value="30" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">30 Days</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -272,10 +271,10 @@ const TokenDetail = () => {
                           <SelectTrigger className="w-40 bg-gray-600/70 border-gray-500/60 text-white hover:bg-gray-600/90 transition-colors shadow-lg backdrop-blur-sm">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-800 backdrop-blur-sm border-gray-600 shadow-xl text-white">
-                            <SelectItem value="technical" className="text-white hover:bg-gray-700 focus:bg-gray-700">Technical Analysis</SelectItem>
-                            <SelectItem value="sentiment" className="text-white hover:bg-gray-700 focus:bg-gray-700">Sentiment Analysis</SelectItem>
-                            <SelectItem value="mixed" className="text-white hover:bg-gray-700 focus:bg-gray-700">Mixed</SelectItem>
+                          <SelectContent className="bg-gray-800 backdrop-blur-sm border-gray-600 shadow-xl">
+                            <SelectItem value="technical" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">Technical Analysis</SelectItem>
+                            <SelectItem value="sentiment" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">Sentiment Analysis</SelectItem>
+                            <SelectItem value="mixed" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">Mixed</SelectItem>
                           </SelectContent>
                         </Select>
                         <ModelTypeTooltip modelType={modelType} />
