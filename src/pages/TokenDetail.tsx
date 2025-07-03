@@ -27,6 +27,7 @@ import { PredictionCard } from "@/components/PredictionCard";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
+import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
@@ -196,6 +197,11 @@ const TokenDetail = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* AI Trading Signals */}
+          <div className="mb-8">
+            <AITradingSignals />
+          </div>
 
           {/* Analysis Tabs */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
