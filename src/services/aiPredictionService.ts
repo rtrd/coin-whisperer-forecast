@@ -20,10 +20,9 @@ export const generateAIPrediction = async (
     ((currentPrice - prices[0]) / prices[0]) * 100 : 0;
   
   let aiPrediction: AIPredictionResponse;
-  
   try {
     // Use Supabase Edge Function instead of direct API call
-    const response = await fetch('/api/openrouter-proxy', {
+    const response = await fetch('api/openrouter-proxy', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,7 +40,7 @@ export const generateAIPrediction = async (
     if (!response.ok) {
       throw new Error(`Proxy API error: ${response.status}`);
     }
-
+    debugger;
     aiPrediction = await response.json();
     console.log('AI Prediction received:', aiPrediction);
 
@@ -110,3 +109,79 @@ export const generateAIPrediction = async (
     factors
   };
 };
+
+
+export const fetchSentimentData = async (topic = 'bitcoin') => {
+  try {
+    const url = `https://lunarcrush.com/api4/public/topic/${encodeURIComponent(topic)}/v1`;
+    const response = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_LUNAR_API}`
+      }
+    });
+    const json = await response.json();
+    return json;
+  } catch (err) {
+    console.error('Error fetching LunarCrush data:', err);
+    return null;
+  }
+};
+
+
+export const fetchTechnicalIndicators = async (
+  topic = "bitcoin"
+) => {
+  try {
+    const res = await fetch(
+      `https://lunarcrush.com/api4/public/coins/${topic}/time-series/v2`,
+      {
+        headers: {
+          Authorization: `Bearer ${import.meta.env.VITE_LUNAR_API}`,
+        },
+      }
+    );
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} – ensure your token and permissions`);
+    }
+    const json = await res.json();
+    const prices: number[] = json.data
+    .map((d: any) => d.close)
+    .filter((val: number | undefined) => typeof val === "number");;
+
+    if (prices.length === 0){
+      console.warn("LunarCrush returned no price data, falling back to CoinGecko");
+
+      const coinGeckoId = topic.toLowerCase(); // assuming topic is valid CoinGecko ID
+      const geckoUrl = `https://api.coingecko.com/api/v3/coins/${topic}/market_chart?vs_currency=usd&days=2`;
+
+      const geckoRes = await fetch(geckoUrl);
+      const geckoData = await geckoRes.json();
+
+      const gekoprice = geckoData.prices.map((p: number[]) => p[1]);
+        return gekoprice;
+      }
+  
+      // const currentPrice = prices.at(-1)!;
+      // const rsi = calculateRSI(prices);
+      return json.data;
+   
+
+    
+  } catch (err) {
+    console.error("Failed to fetch indicators from LunarCrush:", err);
+    return [];
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
