@@ -1,0 +1,64 @@
+
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
+import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { PredictionCard } from "@/components/PredictionCard";
+
+interface TokenDetailAnalysisProps {
+  cryptoId: string;
+  cryptoData: any[] | undefined;
+  dataLoading: boolean;
+  prediction: any;
+}
+
+export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
+  cryptoId,
+  cryptoData,
+  dataLoading,
+  prediction
+}) => {
+  return (
+    <div className="space-y-6">
+      {/* Market Analysis - Combined Sentiment and Technical */}
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+        <CardHeader>
+          <CardTitle className="text-white">Market Analysis</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Tabs defaultValue="sentiment" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 bg-gray-700 border-gray-600">
+              <TabsTrigger value="sentiment" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600">
+                Sentiment Analysis
+              </TabsTrigger>
+              <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600">
+                Technical Analysis
+              </TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="sentiment" className="mt-6">
+              <SentimentAnalysis crypto={cryptoId} />
+            </TabsContent>
+            
+            <TabsContent value="technical" className="mt-6">
+              <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+      </Card>
+
+      {/* AI Prediction Results */}
+      {prediction && (
+        <div className="flex justify-center">
+          <div className="w-full max-w-md">
+            <PredictionCard
+              prediction={prediction}
+              crypto={cryptoId}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
