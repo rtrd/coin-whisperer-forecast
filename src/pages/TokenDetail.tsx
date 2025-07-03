@@ -225,7 +225,7 @@ const TokenDetail = () => {
                     </CardTitle>
                     <div className="flex items-center gap-4">
                       <Select value={timeframe} onValueChange={setTimeframe}>
-                        <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
+                        <SelectTrigger className="w-24 bg-gray-700/80 border-gray-600/50 text-white hover:bg-gray-600/80 transition-colors shadow-lg">
                           <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-gray-700 border-gray-600">
@@ -255,13 +255,13 @@ const TokenDetail = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-300 font-medium">Timeframe:</span>
                         <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                          <SelectTrigger className="w-28 bg-gray-600/50 border-gray-500/50 text-white">
+                          <SelectTrigger className="w-28 bg-gray-600/70 border-gray-500/60 text-white hover:bg-gray-600/90 transition-colors shadow-lg backdrop-blur-sm">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-600 border-gray-500">
-                            <SelectItem value="7">7 Days</SelectItem>
-                            <SelectItem value="14">14 Days</SelectItem>
-                            <SelectItem value="30">30 Days</SelectItem>
+                          <SelectContent className="bg-gray-600/95 backdrop-blur-sm border-gray-500/70 shadow-xl">
+                            <SelectItem value="7" className="hover:bg-gray-500/50">7 Days</SelectItem>
+                            <SelectItem value="14" className="hover:bg-gray-500/50">14 Days</SelectItem>
+                            <SelectItem value="30" className="hover:bg-gray-500/50">30 Days</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -269,13 +269,13 @@ const TokenDetail = () => {
                       <div className="flex items-center gap-2">
                         <span className="text-sm text-gray-300 font-medium">Model:</span>
                         <Select value={modelType} onValueChange={setModelType}>
-                          <SelectTrigger className="w-32 bg-gray-600/50 border-gray-500/50 text-white">
+                          <SelectTrigger className="w-32 bg-gray-600/70 border-gray-500/60 text-white hover:bg-gray-600/90 transition-colors shadow-lg backdrop-blur-sm">
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-gray-600 border-gray-500">
-                            <SelectItem value="basic">Basic</SelectItem>
-                            <SelectItem value="advanced">Advanced</SelectItem>
-                            <SelectItem value="expert">Expert</SelectItem>
+                          <SelectContent className="bg-gray-600/95 backdrop-blur-sm border-gray-500/70 shadow-xl">
+                            <SelectItem value="basic" className="hover:bg-gray-500/50">Basic</SelectItem>
+                            <SelectItem value="advanced" className="hover:bg-gray-500/50">Advanced</SelectItem>
+                            <SelectItem value="expert" className="hover:bg-gray-500/50">Expert</SelectItem>
                           </SelectContent>
                         </Select>
                         <ModelTypeTooltip modelType={modelType} />
@@ -284,7 +284,7 @@ const TokenDetail = () => {
                       <Button
                         onClick={handlePredict}
                         disabled={predictionLoading}
-                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg"
+                        className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:transform-none disabled:hover:scale-100"
                       >
                         {predictionLoading ? (
                           <>
@@ -378,15 +378,23 @@ const TokenDetail = () => {
           {/* Other Tokens Section */}
           <Card className="bg-gray-800/50 border-gray-700 shadow-2xl mt-6">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Coins className="h-5 w-5 text-yellow-400" />
-                Other Tokens
-              </CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Coins className="h-5 w-5 text-yellow-400" />
+                  Other Tokens
+                </CardTitle>
+                <Link to="/all-tokens">
+                  <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50 transition-all duration-200 shadow-lg hover:shadow-xl">
+                    View All Tokens
+                    <ArrowRight className="h-4 w-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             </CardHeader>
             <CardContent>
               {isMobile ? (
                 /* Mobile: Horizontal scroll */
-                <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2">
+                <div className="flex gap-4 overflow-x-auto pb-4 -mx-2 px-2">
                   {cryptoOptions
                     .filter(token => token.value !== tokenId)
                     .sort(() => Math.random() - 0.5)
@@ -395,24 +403,24 @@ const TokenDetail = () => {
                     <Link 
                       key={token.value} 
                       to={`/token/${token.value}`}
-                      className="flex-shrink-0 w-28"
+                      className="flex-shrink-0 w-32"
                     >
-                      <div className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50 hover:bg-gray-700/30 transition-colors h-full">
-                        <div className="flex flex-col items-center text-center space-y-1.5">
-                          <span className="text-lg">{token.icon}</span>
+                      <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-xl p-4 border border-gray-700/50 hover:border-gray-600/70 hover:bg-gradient-to-br hover:from-gray-700/70 hover:to-gray-800/70 transition-all duration-300 h-full shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <div className="flex flex-col items-center text-center space-y-2">
+                          <span className="text-xl">{token.icon}</span>
                           <div>
-                            <div className="text-white text-xs font-medium">{token.symbol}</div>
+                            <div className="text-white text-xs font-bold">{token.symbol}</div>
                             <div className="text-gray-400 text-[10px] truncate">{token.name}</div>
                           </div>
                           <div className="text-center">
-                            <div className={`text-[10px] font-medium ${
+                            <div className={`text-[10px] font-bold ${
                               token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
                             }`}>
                               {token.prediction}
                             </div>
                             <div className="flex items-center justify-center gap-1">
                               <Star className="h-2.5 w-2.5 text-yellow-400" />
-                              <span className="text-gray-400 text-[10px]">{token.score}</span>
+                              <span className="text-gray-400 text-[10px] font-medium">{token.score}</span>
                             </div>
                           </div>
                         </div>
@@ -422,7 +430,7 @@ const TokenDetail = () => {
                 </div>
               ) : (
                 /* Desktop: Grid */
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
                   {cryptoOptions
                     .filter(token => token.value !== tokenId)
                     .sort(() => Math.random() - 0.5)
@@ -433,22 +441,22 @@ const TokenDetail = () => {
                       to={`/token/${token.value}`}
                       className="block"
                     >
-                      <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-700/30 transition-colors">
-                        <div className="flex flex-col items-center text-center space-y-2">
-                          <span className="text-2xl">{token.icon}</span>
+                      <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-xl p-5 border border-gray-700/50 hover:border-gray-600/70 hover:bg-gradient-to-br hover:from-gray-700/70 hover:to-gray-800/70 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                        <div className="flex flex-col items-center text-center space-y-3">
+                          <span className="text-3xl">{token.icon}</span>
                           <div>
-                            <div className="text-white text-sm font-medium">{token.symbol}</div>
+                            <div className="text-white text-sm font-bold">{token.symbol}</div>
                             <div className="text-gray-400 text-xs">{token.name}</div>
                           </div>
                           <div className="text-center">
-                            <div className={`text-xs font-medium ${
+                            <div className={`text-sm font-bold ${
                               token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
                             }`}>
                               {token.prediction}
                             </div>
-                            <div className="flex items-center justify-center gap-1">
+                            <div className="flex items-center justify-center gap-1 mt-1">
                               <Star className="h-3 w-3 text-yellow-400" />
-                              <span className="text-gray-400 text-xs">{token.score}</span>
+                              <span className="text-gray-400 text-xs font-medium">{token.score}</span>
                             </div>
                           </div>
                         </div>
@@ -457,14 +465,6 @@ const TokenDetail = () => {
                   ))}
                 </div>
               )}
-              <div className="mt-6 text-center">
-                <Link to="/all-tokens">
-                  <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
-                    View All Tokens
-                    <ArrowRight className="h-4 w-4 ml-2" />
-                  </Button>
-                </Link>
-              </div>
             </CardContent>
           </Card>
 
