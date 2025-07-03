@@ -11,7 +11,9 @@ import {
   ExternalLink, 
   ArrowRight, 
   FileText,
-  BarChart3
+  BarChart3,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 import { getWordPressPost } from "../../../utils/api";
 
@@ -25,26 +27,37 @@ interface TokenSidebarProps {
 
 export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, priceChange, cryptoOptions }: TokenSidebarProps) {
   const [articles, setArticles] = useState<any[]>([]);
-
+  const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  
   useEffect(() => {
     fetchArticles();
   }, []);
+
+  // Auto-rotate articles every 5 seconds
+  useEffect(() => {
+    if (articles.length > 1) {
+      const interval = setInterval(() => {
+        setCurrentArticleIndex((prev) => (prev + 1) % articles.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [articles.length]);
 
   const fetchArticles = async () => {
     try {
       const articleData = await getWordPressPost();
       if (Array.isArray(articleData)) {
-        const formattedArticles = articleData.slice(0, 4).map((post: any) => ({
+        const formattedArticles = articleData.slice(0, 6).map((post: any) => ({
           id: post.id,
           title: post.title?.rendered || "No Title",
-          excerpt: post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "",
+          excerpt: post.excerpt?.rendered?.replace(/<[^>]+>/g, "").slice(0, 120) + "..." || "",
           author: post._embedded?.author?.[0]?.name || "Unknown",
           date: new Date(post.date).toISOString().split("T")[0],
           category: "Blog",
           readTime: "4 min read",
           image: post.jetpack_featured_media_url || 
                  post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || 
-                 "https://via.placeholder.com/300",
+                 "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
           url: post.link,
         }));
         setArticles(formattedArticles);
@@ -53,6 +66,16 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
       console.error("Error fetching articles:", error);
     }
   };
+
+  const nextArticle = () => {
+    setCurrentArticleIndex((prev) => (prev + 1) % articles.length);
+  };
+
+  const prevArticle = () => {
+    setCurrentArticleIndex((prev) => (prev - 1 + articles.length) % articles.length);
+  };
+
+  const currentArticle = articles[currentArticleIndex];
 
   return (
     <div className="space-y-6">
@@ -86,34 +109,101 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
             Latest Articles
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          {articles.map((article) => (
-            <div key={article.id} className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50">
-              <h4 className="text-white text-sm font-medium line-clamp-2 mb-2">
-                {article.title}
-              </h4>
-              <p className="text-gray-400 text-xs line-clamp-2 mb-2">
-                {article.excerpt}
-              </p>
-              <div className="flex items-center justify-between">
-                <span className="text-gray-500 text-xs">{article.readTime}</span>
+        <CardContent className="p-0">
+          {currentArticle ? (
+            <div className="relative group">
+              {/* Article Image */}
+              <div className="relative h-48 overflow-hidden rounded-t-lg">
+                <img 
+                  src={currentArticle.image} 
+                  alt={currentArticle.title}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" />
+                
+                {/* Navigation Arrows */}
+                {articles.length > 1 && (
+                  <>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={prevArticle}
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={nextArticle}
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
+                
+                {/* Article counter */}
+                {articles.length > 1 && (
+                  <div className="absolute top-2 right-2 bg-gray-900/70 text-white text-xs px-2 py-1 rounded">
+                    {currentArticleIndex + 1} / {articles.length}
+                  </div>
+                )}
+              </div>
+              
+              {/* Article Content */}
+              <div className="p-4">
+                <h4 className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in">
+                  {currentArticle.title}
+                </h4>
+                <p className="text-gray-400 text-xs line-clamp-3 mb-3 animate-fade-in">
+                  {currentArticle.excerpt}
+                </p>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-gray-500 text-xs">{currentArticle.readTime}</span>
+                  <span className="text-gray-500 text-xs">{currentArticle.date}</span>
+                </div>
                 <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="text-blue-400 hover:text-blue-300 h-6 px-2"
-                  onClick={() => window.open(article.url, '_blank')}
+                  variant="outline" 
+                  size="sm"
+                  className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
+                  onClick={() => window.open(currentArticle.url, '_blank')}
                 >
-                  <ExternalLink className="h-3 w-3" />
+                  Read Article
+                  <ExternalLink className="h-3 w-3 ml-2" />
                 </Button>
               </div>
+              
+              {/* Dots indicator */}
+              {articles.length > 1 && (
+                <div className="flex justify-center space-x-1 pb-4">
+                  {articles.map((_, index) => (
+                    <button
+                      key={index}
+                      className={`w-2 h-2 rounded-full transition-colors ${
+                        index === currentArticleIndex ? 'bg-blue-400' : 'bg-gray-600'
+                      }`}
+                      onClick={() => setCurrentArticleIndex(index)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          ))}
-          <Link to="/blog">
-            <Button variant="outline" className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
-              View All Articles
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </Link>
+          ) : (
+            <div className="p-4 text-center text-gray-400">
+              <p>Loading articles...</p>
+            </div>
+          )}
+          
+          {/* View All Button */}
+          <div className="p-4 border-t border-gray-700/50">
+            <Link to="/blog">
+              <Button variant="outline" className="w-full bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
+                View All Articles
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </CardContent>
       </Card>
 
