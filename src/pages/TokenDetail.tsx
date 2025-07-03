@@ -27,7 +27,6 @@ import { PredictionCard } from "@/components/PredictionCard";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
-import { AITradingSignals } from "@/components/AITradingSignals";
 import { AdBanner } from "@/components/AdBanner";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
@@ -108,8 +107,6 @@ const TokenDetail = () => {
     price_change_percentage_30d_in_currency: marketData.priceChange30d
   };
 
-  console.log('Display Market Stats:', displayMarketStats);
-
   const handlePredict = async () => {
     if (!cryptoData) {
       toast.error("No data available for prediction");
@@ -161,11 +158,6 @@ const TokenDetail = () => {
             priceChange={priceChange}
           />
 
-          {/* Ad Banner */}
-          <div className="flex justify-center mb-8">
-            <AdBanner width={728} height={90} position="horizontal" />
-          </div>
-
           {/* Back Button */}
           <div className="mb-6">
             <Link to="/">
@@ -179,62 +171,36 @@ const TokenDetail = () => {
             </Link>
           </div>
 
-          {/* Token Header Card */}
-          <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
-            <CardContent className="p-8">
-              <div className="space-y-8">
-                {/* Token Info Section */}
-                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-                  <TokenHeader />
-                  <TokenPriceDisplay
-                    currentPrice={currentPrice}
-                    priceChange={priceChange}
-                  />
-                </div>
+          {/* Main Content Layout */}
+          <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            {/* Left Column - Main Content */}
+            <div className="xl:col-span-3 space-y-6">
+              {/* Token Info Card */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="space-y-8">
+                    {/* Token Info Section */}
+                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+                      <TokenHeader />
+                      <TokenPriceDisplay
+                        currentPrice={currentPrice}
+                        priceChange={priceChange}
+                      />
+                    </div>
 
-                {/* Market Statistics */}
-                <TokenMarketStats marketData={displayMarketStats} />
-              </div>
-            </CardContent>
-          </Card>
+                    {/* Market Statistics */}
+                    <TokenMarketStats marketData={displayMarketStats} />
+                  </div>
+                </CardContent>
+              </Card>
 
-          {/* AI Trading Signals */}
-          <div className="mb-8">
-            <AITradingSignals />
-          </div>
-
-          {/* Analysis Tabs */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* AI Token Analysis */}
-            <div>
-              <DynamicTokenAnalysis
-                selectedCrypto={cryptoId}
-                currentPrice={currentPrice}
-                priceChange={priceChange}
-                cryptoOptions={cryptoOptions}
-              />
-            </div>
-
-            {/* Market Sentiment */}
-            <div>
-              <SentimentAnalysis crypto={cryptoId} />
-            </div>
-          </div>
-
-          {/* Technical Analysis */}
-          <div className="mb-8">
-            <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
-          </div>
-
-          {/* Price Chart and Prediction */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
-            <div className="xl:col-span-2">
+              {/* Price Chart */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-white flex items-center gap-2">
                       <BarChart3 className="h-5 w-5 text-blue-400" />
-                      Price Chart
+                      Price Chart & AI Prediction
                     </CardTitle>
                     <div className="flex items-center gap-4">
                       <Select value={timeframe} onValueChange={setTimeframe}>
@@ -250,6 +216,52 @@ const TokenDetail = () => {
                       </Select>
                     </div>
                   </div>
+                  
+                  {/* AI Prediction Controls */}
+                  <div className="flex items-center gap-4 mt-4 p-4 bg-gray-700/30 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <Brain className="h-4 w-4 text-purple-400" />
+                      <span className="text-sm text-gray-300">AI Prediction</span>
+                    </div>
+                    <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                      <SelectTrigger className="w-24 bg-gray-600 border-gray-500 text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-600 border-gray-500">
+                        <SelectItem value="7">7 Days</SelectItem>
+                        <SelectItem value="14">14 Days</SelectItem>
+                        <SelectItem value="30">30 Days</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <Select value={modelType} onValueChange={setModelType}>
+                      <SelectTrigger className="w-32 bg-gray-600 border-gray-500 text-white">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-600 border-gray-500">
+                        <SelectItem value="basic">Basic</SelectItem>
+                        <SelectItem value="advanced">Advanced</SelectItem>
+                        <SelectItem value="expert">Expert</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <ModelTypeTooltip modelType={modelType} />
+                    <Button
+                      onClick={handlePredict}
+                      disabled={predictionLoading}
+                      className="bg-purple-600 hover:bg-purple-700 text-white"
+                    >
+                      {predictionLoading ? (
+                        <>
+                          <Activity className="h-4 w-4 mr-2 animate-spin" />
+                          Generating...
+                        </>
+                      ) : (
+                        <>
+                          <Target className="h-4 w-4 mr-2" />
+                          Generate Prediction
+                        </>
+                      )}
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <PriceChart
@@ -261,25 +273,43 @@ const TokenDetail = () => {
                   />
                 </CardContent>
               </Card>
+
+              {/* Market Sentiment and Technical Analysis - Side by Side */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <SentimentAnalysis crypto={cryptoId} />
+                <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+              </div>
             </div>
 
-            <div>
+            {/* Right Sidebar */}
+            <div className="xl:col-span-1 space-y-6">
+              {/* Token Analysis Card */}
+              <DynamicTokenAnalysis
+                selectedCrypto={cryptoId}
+                currentPrice={currentPrice}
+                priceChange={priceChange}
+                cryptoOptions={cryptoOptions}
+              />
+
+              {/* AI Prediction Results */}
               {prediction && (
                 <PredictionCard
                   prediction={prediction}
                   crypto={cryptoId}
                 />
               )}
+
+              {/* Ad Space */}
+              <div className="flex justify-center">
+                <AdBanner width={300} height={250} position="vertical" />
+              </div>
             </div>
           </div>
 
-          {/* Ad Banner - Bottom */}
-          <div className="flex justify-center my-8">
-            <AdBanner width={728} height={90} position="horizontal" />
-          </div>
-
           {/* Footer */}
-          <Footer />
+          <div className="mt-12">
+            <Footer />
+          </div>
         </div>
       </div>
     </TokenProvider>
