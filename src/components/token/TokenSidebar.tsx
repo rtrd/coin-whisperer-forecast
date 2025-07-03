@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -79,7 +80,7 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
 
   return (
     <div className="space-y-6">
-      {/* Token Analysis */}
+      {/* Token Analysis - Reformatted */}
       <Card className="bg-gray-800/50 border-gray-700">
         <CardHeader className="pb-4">
           <CardTitle className="text-white flex items-center gap-2 text-lg">
@@ -87,7 +88,7 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
             Token Analysis
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-0">
           <DynamicTokenAnalysis
             selectedCrypto={selectedCrypto}
             currentPrice={currentPrice}
@@ -96,9 +97,10 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
           />
         </CardContent>
       </Card>
-      {/* Ad Banner */}
-      <div className="w-full min-h-[200px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
-        <AdBanner width={280} height={200} position="vertical" className="w-full h-full" />
+
+      {/* Ad Banner - Centered */}
+      <div className="w-full min-h-[200px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+        <AdBanner width={280} height={200} position="vertical" className="max-w-full h-full" />
       </div>
 
       {/* Articles Section */}

@@ -210,9 +210,9 @@ const TokenDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Ad Banner Before Price Chart */}
-            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
-              <AdBanner width={728} height={120} position="horizontal" className="w-full h-full" />
+            {/* Ad Banner Before Price Chart - Centered */}
+            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+              <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
             </div>
 
               {/* Price Chart */}
@@ -313,9 +313,9 @@ const TokenDetail = () => {
               </CardContent>
             </Card>
 
-            {/* Ad Banner After Price Chart */}
-            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
-              <AdBanner width={728} height={120} position="horizontal" className="w-full h-full" />
+            {/* Ad Banner After Price Chart - Centered */}
+            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+              <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
             </div>
           </div>
 
