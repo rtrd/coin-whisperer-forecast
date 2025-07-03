@@ -45,6 +45,7 @@ import { usePrediction } from "@/hooks/usePrediction";
 import { useMarketData } from "@/hooks/useMarketData";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
@@ -54,6 +55,7 @@ const TokenDetail = () => {
   const [predictionDays, setPredictionDays] = useState(7);
   const [modelType, setModelType] = useState("advanced");
   const [showPrediction, setShowPrediction] = useState(false);
+  const isMobile = useIsMobile();
 
   // Get token info and crypto options
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
@@ -382,40 +384,79 @@ const TokenDetail = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-                {cryptoOptions
-                  .filter(token => token.value !== tokenId)
-                  .sort(() => Math.random() - 0.5)
-                  .slice(0, 6)
-                  .map((token) => (
-                  <Link 
-                    key={token.value} 
-                    to={`/token/${token.value}`}
-                    className="block"
-                  >
-                    <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-700/30 transition-colors">
-                      <div className="flex flex-col items-center text-center space-y-2">
-                        <span className="text-2xl">{token.icon}</span>
-                        <div>
-                          <div className="text-white text-sm font-medium">{token.symbol}</div>
-                          <div className="text-gray-400 text-xs">{token.name}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className={`text-xs font-medium ${
-                            token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
-                          }`}>
-                            {token.prediction}
+              {isMobile ? (
+                /* Mobile: Horizontal scroll */
+                <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2">
+                  {cryptoOptions
+                    .filter(token => token.value !== tokenId)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 8)
+                    .map((token) => (
+                    <Link 
+                      key={token.value} 
+                      to={`/token/${token.value}`}
+                      className="flex-shrink-0 w-28"
+                    >
+                      <div className="bg-gray-800/30 rounded-lg p-3 border border-gray-700/50 hover:bg-gray-700/30 transition-colors h-full">
+                        <div className="flex flex-col items-center text-center space-y-1.5">
+                          <span className="text-lg">{token.icon}</span>
+                          <div>
+                            <div className="text-white text-xs font-medium">{token.symbol}</div>
+                            <div className="text-gray-400 text-[10px] truncate">{token.name}</div>
                           </div>
-                          <div className="flex items-center justify-center gap-1">
-                            <Star className="h-3 w-3 text-yellow-400" />
-                            <span className="text-gray-400 text-xs">{token.score}</span>
+                          <div className="text-center">
+                            <div className={`text-[10px] font-medium ${
+                              token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                              {token.prediction}
+                            </div>
+                            <div className="flex items-center justify-center gap-1">
+                              <Star className="h-2.5 w-2.5 text-yellow-400" />
+                              <span className="text-gray-400 text-[10px]">{token.score}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                /* Desktop: Grid */
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+                  {cryptoOptions
+                    .filter(token => token.value !== tokenId)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 6)
+                    .map((token) => (
+                    <Link 
+                      key={token.value} 
+                      to={`/token/${token.value}`}
+                      className="block"
+                    >
+                      <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 hover:bg-gray-700/30 transition-colors">
+                        <div className="flex flex-col items-center text-center space-y-2">
+                          <span className="text-2xl">{token.icon}</span>
+                          <div>
+                            <div className="text-white text-sm font-medium">{token.symbol}</div>
+                            <div className="text-gray-400 text-xs">{token.name}</div>
+                          </div>
+                          <div className="text-center">
+                            <div className={`text-xs font-medium ${
+                              token.prediction.startsWith('+') ? 'text-green-400' : 'text-red-400'
+                            }`}>
+                              {token.prediction}
+                            </div>
+                            <div className="flex items-center justify-center gap-1">
+                              <Star className="h-3 w-3 text-yellow-400" />
+                              <span className="text-gray-400 text-xs">{token.score}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
               <div className="mt-6 text-center">
                 <Link to="/all-tokens">
                   <Button variant="outline" className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50">
