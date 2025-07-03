@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -224,19 +225,16 @@ const TokenDetail = () => {
                     Price Chart
                   </CardTitle>
                   <div className="flex items-center gap-4">
-                    <div className="flex flex-col gap-2">
-                      <label className="text-sm font-medium text-gray-200">Timeframe</label>
-                      <Select value={timeframe} onValueChange={setTimeframe}>
-                        <SelectTrigger className="w-36 bg-gray-700/80 border-gray-600/50 text-white hover:bg-gray-600/80 transition-colors shadow-lg">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-600 shadow-xl backdrop-blur-sm z-50">
-                          <SelectItem value="7d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">7 Days</SelectItem>
-                          <SelectItem value="30d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">30 Days</SelectItem>
-                          <SelectItem value="90d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">90 Days</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <Select value={timeframe} onValueChange={setTimeframe}>
+                      <SelectTrigger className="w-36 bg-gray-700/80 border-gray-600/50 text-white hover:bg-gray-600/80 transition-colors shadow-lg">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-gray-800 border-gray-600 shadow-xl backdrop-blur-sm z-50">
+                        <SelectItem value="7d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">7 Days</SelectItem>
+                        <SelectItem value="30d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">30 Days</SelectItem>
+                        <SelectItem value="90d" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white">90 Days</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
                 </div>
               </CardHeader>
@@ -249,7 +247,7 @@ const TokenDetail = () => {
                   onClearPrediction={handleClearPrediction}
                 />
 
-                {/* AI Prediction Engine - Compact Version */}
+                {/* AI Prediction Engine - Inside chart container */}
                 <div className="bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-xl p-6 border border-gray-600/30 backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="p-3 rounded-xl bg-purple-500/20 border border-purple-500/30">
@@ -274,8 +272,8 @@ const TokenDetail = () => {
                         </SelectTrigger>
                         <SelectContent className="bg-gray-800 backdrop-blur-sm border-gray-600 shadow-xl rounded-xl z-50">
                           <SelectItem value="7" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white rounded-lg">7 Days</SelectItem>
-                          <SelectItem value="14" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white rounded-lg">14 Days</SelectItem>
                           <SelectItem value="30" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white rounded-lg">30 Days</SelectItem>
+                          <SelectItem value="90" className="text-white hover:bg-gray-700/80 focus:bg-gray-700/80 focus:text-white rounded-lg">90 Days</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -478,6 +476,11 @@ const TokenDetail = () => {
               )}
             </CardContent>
           </Card>
+
+          {/* Ad Banner Before Footer */}
+          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
+            <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
+          </div>
 
           {/* Footer */}
           <div className="mt-12">
