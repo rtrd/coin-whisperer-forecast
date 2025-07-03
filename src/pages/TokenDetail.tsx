@@ -184,201 +184,216 @@ const TokenDetail = () => {
             priceChange={priceChange}
           />
 
-              {/* Main Content */}
-              <div className="space-y-6">
-                {/* Token Info Card */}
-                <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
-                  <CardContent className="p-8">
-                    <div className="space-y-8">
-                      {/* Token Info Section */}
-                      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-                        <TokenHeader />
-                        <TokenPriceDisplay
-                          currentPrice={currentPrice}
-                          priceChange={priceChange}
-                        />
-                      </div>
-
-                      {/* Market Statistics */}
-                      <TokenMarketStats marketData={displayMarketStats} />
+          {/* Main Content Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            {/* Main Content - 3/4 width */}
+            <div className="lg:col-span-3 space-y-6">
+              {/* Token Info Card */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="space-y-8">
+                    {/* Token Info Section */}
+                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
+                      <TokenHeader />
+                      <TokenPriceDisplay
+                        currentPrice={currentPrice}
+                        priceChange={priceChange}
+                      />
                     </div>
-                  </CardContent>
-                </Card>
 
-                {/* Price Chart */}
-                <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-                  <CardHeader className="pb-4">
-                    <div className="flex items-center justify-between">
-                      <CardTitle className="text-white flex items-center gap-2">
-                        <BarChart3 className="h-5 w-5 text-blue-400" />
-                        Price Chart & AI Prediction
-                      </CardTitle>
-                      <div className="flex items-center gap-4">
-                        <Select value={timeframe} onValueChange={setTimeframe}>
-                          <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-gray-700 border-gray-600">
-                            <SelectItem value="1d">1D</SelectItem>
-                            <SelectItem value="7d">7D</SelectItem>
-                            <SelectItem value="30d">30D</SelectItem>
-                            <SelectItem value="90d">90D</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    
-                    {/* Enhanced AI Prediction Controls */}
-                    <div className="bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-xl p-6 mt-4 border border-gray-600/30 backdrop-blur-sm">
-                      <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 rounded-xl bg-purple-500/20 border border-purple-500/30">
-                            <Brain className="h-5 w-5 text-purple-400" />
-                          </div>
-                          <div>
-                            <h3 className="text-white font-semibold">AI Prediction Engine</h3>
-                            <p className="text-gray-300 text-sm">Generate advanced price forecasts</p>
-                          </div>
-                        </div>
-                        
-                        <div className="flex flex-wrap items-center gap-3 ml-auto">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-300 font-medium">Timeframe:</span>
-                            <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                              <SelectTrigger className="w-28 bg-gray-600/50 border-gray-500/50 text-white">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent className="bg-gray-600 border-gray-500">
-                                <SelectItem value="7">7 Days</SelectItem>
-                                <SelectItem value="14">14 Days</SelectItem>
-                                <SelectItem value="30">30 Days</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-300 font-medium">Model:</span>
-                            <Select value={modelType} onValueChange={setModelType}>
-                              <SelectTrigger className="w-32 bg-gray-600/50 border-gray-500/50 text-white">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent className="bg-gray-600 border-gray-500">
-                                <SelectItem value="basic">Basic</SelectItem>
-                                <SelectItem value="advanced">Advanced</SelectItem>
-                                <SelectItem value="expert">Expert</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <ModelTypeTooltip modelType={modelType} />
-                          </div>
-                          
-                          <Button
-                            onClick={handlePredict}
-                            disabled={predictionLoading}
-                            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg"
-                          >
-                            {predictionLoading ? (
-                              <>
-                                <Activity className="h-4 w-4 mr-2 animate-spin" />
-                                Generating...
-                              </>
-                            ) : (
-                              <>
-                                <Target className="h-4 w-4 mr-2" />
-                                Generate
-                              </>
-                            )}
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <PriceChart
-                      data={cryptoData || []}
-                      isLoading={dataLoading}
-                      prediction={showPrediction && prediction ? prediction.predictions : null}
-                      crypto={cryptoId}
-                      onClearPrediction={handleClearPrediction}
-                    />
-                  </CardContent>
-                </Card>
+                    {/* Market Statistics */}
+                    <TokenMarketStats marketData={displayMarketStats} />
+                  </div>
+                </CardContent>
+              </Card>
 
-                {/* Market Sentiment and Technical Analysis - Side by Side */}
-                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-                  <div className="lg:col-span-3 space-y-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <SentimentAnalysis crypto={cryptoId} />
-                      <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
-                    </div>
-                    {/* AI Prediction Results */}
-                    {prediction && (
-                      <div className="flex justify-center">
-                        <div className="w-full max-w-md">
-                          <PredictionCard
-                            prediction={prediction}
-                            crypto={cryptoId}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Token Analysis Section */}
-                    <div className="flex justify-center">
-                      <div className="w-full max-w-md">
-                        <DynamicTokenAnalysis
-                          selectedCrypto={cryptoId}
-                          currentPrice={currentPrice}
-                          priceChange={priceChange}
-                          cryptoOptions={cryptoOptions}
-                        />
-                      </div>
+              {/* Price Chart */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-white flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 text-blue-400" />
+                      Price Chart & AI Prediction
+                    </CardTitle>
+                    <div className="flex items-center gap-4">
+                      <Select value={timeframe} onValueChange={setTimeframe}>
+                        <SelectTrigger className="w-24 bg-gray-700 border-gray-600 text-white">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-gray-700 border-gray-600">
+                          <SelectItem value="1d">1D</SelectItem>
+                          <SelectItem value="7d">7D</SelectItem>
+                          <SelectItem value="30d">30D</SelectItem>
+                          <SelectItem value="90d">90D</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
                   
-                  {/* Sidebar */}
-                  <div className="lg:col-span-1">
-                    <TokenSidebar currentTokenId={tokenId || "bitcoin"} />
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="mt-12">
-                <Footer />
-              </div>
-            </div>
-            
-            {/* Sticky Buy/Sell Buttons */}
-            <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
-              <div className="bg-gray-800/95 backdrop-blur-sm border border-gray-600/50 rounded-2xl p-4 shadow-2xl">
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <div className="text-white text-sm font-medium mb-1">{selectedToken.name}</div>
-                    <div className="text-gray-300 text-xs">
-                      ${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                  {/* Enhanced AI Prediction Controls */}
+                  <div className="bg-gradient-to-r from-gray-700/30 to-gray-800/30 rounded-xl p-6 mt-4 border border-gray-600/30 backdrop-blur-sm">
+                    <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-xl bg-purple-500/20 border border-purple-500/30">
+                          <Brain className="h-5 w-5 text-purple-400" />
+                        </div>
+                        <div>
+                          <h3 className="text-white font-semibold">AI Prediction Engine</h3>
+                          <p className="text-gray-300 text-sm">Generate advanced price forecasts</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-wrap items-center gap-3 ml-auto">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-300 font-medium">Timeframe:</span>
+                          <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                            <SelectTrigger className="w-28 bg-gray-600/50 border-gray-500/50 text-white">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent className="bg-gray-600 border-gray-500">
+                              <SelectItem value="7">7 Days</SelectItem>
+                              <SelectItem value="14">14 Days</SelectItem>
+                              <SelectItem value="30">30 Days</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-300 font-medium">Model:</span>
+                          <Select value={modelType} onValueChange={setModelType}>
+                            <SelectTrigger className="w-32 bg-gray-600/50 border-gray-500/50 text-white">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent className="bg-gray-600 border-gray-500">
+                              <SelectItem value="basic">Basic</SelectItem>
+                              <SelectItem value="advanced">Advanced</SelectItem>
+                              <SelectItem value="expert">Expert</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <ModelTypeTooltip modelType={modelType} />
+                        </div>
+                        
+                        <Button
+                          onClick={handlePredict}
+                          disabled={predictionLoading}
+                          className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0 shadow-lg"
+                        >
+                          {predictionLoading ? (
+                            <>
+                              <Activity className="h-4 w-4 mr-2 animate-spin" />
+                              Generating...
+                            </>
+                          ) : (
+                            <>
+                              <Target className="h-4 w-4 mr-2" />
+                              Generate
+                            </>
+                          )}
+                        </Button>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-3">
-                    <Button
-                      onClick={handleBuy}
-                      className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
-                    >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      BUY
-                    </Button>
-                    <Button
-                      onClick={handleSell}
-                      className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
-                    >
-                      <Wallet className="h-4 w-4 mr-2" />
-                      SELL
-                    </Button>
+                </CardHeader>
+                <CardContent>
+                  <PriceChart
+                    data={cryptoData || []}
+                    isLoading={dataLoading}
+                    prediction={showPrediction && prediction ? prediction.predictions : null}
+                    crypto={cryptoId}
+                    onClearPrediction={handleClearPrediction}
+                  />
+                </CardContent>
+              </Card>
+
+              {/* Market Analysis - Combined Sentiment and Technical */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+                <CardHeader>
+                  <CardTitle className="text-white">Market Analysis</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Tabs defaultValue="sentiment" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 bg-gray-700 border-gray-600">
+                      <TabsTrigger value="sentiment" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600">
+                        Sentiment Analysis
+                      </TabsTrigger>
+                      <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600">
+                        Technical Analysis
+                      </TabsTrigger>
+                    </TabsList>
+                    
+                    <TabsContent value="sentiment" className="mt-6">
+                      <SentimentAnalysis crypto={cryptoId} />
+                    </TabsContent>
+                    
+                    <TabsContent value="technical" className="mt-6">
+                      <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+
+              {/* AI Prediction Results */}
+              {prediction && (
+                <div className="flex justify-center">
+                  <div className="w-full max-w-md">
+                    <PredictionCard
+                      prediction={prediction}
+                      crypto={cryptoId}
+                    />
                   </div>
                 </div>
+              )}
+            </div>
+            
+            {/* Sidebar - 1/4 width */}
+            <div className="lg:col-span-1">
+              <TokenSidebar 
+                currentTokenId={tokenId || "bitcoin"} 
+                selectedCrypto={cryptoId}
+                currentPrice={currentPrice}
+                priceChange={priceChange}
+                cryptoOptions={cryptoOptions}
+              />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-12">
+            <Footer />
+          </div>
+        </div>
+        
+        {/* Sticky Buy/Sell Buttons */}
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="bg-gray-800/95 backdrop-blur-sm border border-gray-600/50 rounded-2xl p-4 shadow-2xl">
+            <div className="flex items-center gap-4">
+              <div className="text-center">
+                <div className="text-white text-sm font-medium mb-1">{selectedToken.name}</div>
+                <div className="text-gray-300 text-xs">
+                  ${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+                </div>
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleBuy}
+                  className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  BUY
+                </Button>
+                <Button
+                  onClick={handleSell}
+                  className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
+                >
+                  <Wallet className="h-4 w-4 mr-2" />
+                  SELL
+                </Button>
               </div>
             </div>
+          </div>
         </div>
-      </TokenProvider>
+      </div>
+    </TokenProvider>
   );
 };
 

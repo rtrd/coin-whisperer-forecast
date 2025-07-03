@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AdBanner } from "@/components/AdBanner";
 import { ArticleCard } from "@/components/ArticleCard";
+import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { TokenDataService } from "@/services/tokenDataService";
 import { 
   ExternalLink, 
@@ -13,20 +14,25 @@ import {
   TrendingDown,
   Coins,
   FileText,
-  Star
+  Star,
+  BarChart3
 } from "lucide-react";
 import { getWordPressPost } from "../../../utils/api";
 
 interface TokenSidebarProps {
   currentTokenId: string;
+  selectedCrypto: string;
+  currentPrice: number;
+  priceChange: number;
+  cryptoOptions: any[];
 }
 
-export function TokenSidebar({ currentTokenId }: TokenSidebarProps) {
+export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, priceChange, cryptoOptions }: TokenSidebarProps) {
   const [articles, setArticles] = useState<any[]>([]);
-  const cryptoOptions = TokenDataService.getCryptoOptions();
+  const tokenCryptoOptions = TokenDataService.getCryptoOptions();
   
   // Get random tokens excluding current one
-  const otherTokens = cryptoOptions
+  const otherTokens = tokenCryptoOptions
     .filter(token => token.value !== currentTokenId)
     .sort(() => Math.random() - 0.5)
     .slice(0, 6);
@@ -61,6 +67,23 @@ export function TokenSidebar({ currentTokenId }: TokenSidebarProps) {
 
   return (
     <div className="space-y-6">
+      {/* Token Analysis */}
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-white flex items-center gap-2 text-lg">
+            <BarChart3 className="h-5 w-5 text-purple-400" />
+            Token Analysis
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <DynamicTokenAnalysis
+            selectedCrypto={selectedCrypto}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+            cryptoOptions={cryptoOptions}
+          />
+        </CardContent>
+      </Card>
       {/* Ad Banner */}
       <div className="w-full min-h-[200px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
         <AdBanner width={280} height={200} position="vertical" className="w-full h-full" />
