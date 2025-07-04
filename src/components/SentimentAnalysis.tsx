@@ -1,12 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Heart, MessageCircle, TrendingUp, Users, Globe, Zap, Brain } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  TrendingUp,
+  Users,
+  Globe,
+  Zap,
+  Brain,
+} from "lucide-react";
+import { fetchSentimentData } from "@/services/aiPredictionService";
 
 interface SentimentData {
   score: number;
-  label: 'Very Bearish' | 'Bearish' | 'Neutral' | 'Bullish' | 'Very Bullish';
+  label: "Very Bearish" | "Bearish" | "Neutral" | "Bullish" | "Very Bullish";
   sources: {
     name: string;
     sentiment: number;
@@ -18,7 +33,9 @@ interface SentimentAnalysisProps {
   crypto: string;
 }
 
-export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) => {
+export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
+  crypto,
+}) => {
   const [sentiment, setSentiment] = useState<SentimentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,11 +44,11 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
     const generateSentimentData = (): SentimentData => {
       const score = Math.random() * 100;
       const getSentimentLabel = (score: number) => {
-        if (score < 20) return 'Very Bearish';
-        if (score < 40) return 'Bearish';
-        if (score < 60) return 'Neutral';
-        if (score < 80) return 'Bullish';
-        return 'Very Bullish';
+        if (score < 20) return "Very Bearish";
+        if (score < 40) return "Bearish";
+        if (score < 60) return "Neutral";
+        if (score < 80) return "Bullish";
+        return "Very Bullish";
       };
 
       return {
@@ -39,43 +56,92 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
         label: getSentimentLabel(score),
         sources: [
           {
-            name: 'Twitter/X',
+            name: "Twitter/X",
             sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 10000) + 1000
+            mentions: Math.floor(Math.random() * 10000) + 1000,
           },
           {
-            name: 'Reddit',
+            name: "Reddit",
             sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 5000) + 500
+            mentions: Math.floor(Math.random() * 5000) + 500,
           },
           {
-            name: 'News Media',
+            name: "News Media",
             sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 1000) + 100
+            mentions: Math.floor(Math.random() * 1000) + 100,
           },
           {
-            name: 'Crypto Forums',
+            name: "Crypto Forums",
             sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 2000) + 200
-          }
-        ]
+            mentions: Math.floor(Math.random() * 2000) + 200,
+          },
+        ],
+      };
+    };
+    const transformApiDataToSentiment = (apiData: any): SentimentData => {
+      // Map the API source keys to your desired display names
+      const sourceNameMap: Record<string, string> = {
+        tweet: "Twitter/X",
+        "reddit-post": "Reddit",
+        news: "News Media",
+        "youtube-video": "Crypto Forums", // You can customize this label
+      };
+
+      const sources = Object.keys(apiData.types_sentiment)
+        .filter((key) => sourceNameMap[key]) // only include mapped sources
+        .map((key) => ({
+          name: sourceNameMap[key],
+          sentiment: apiData.types_sentiment[key],
+          mentions: apiData.types_interactions[key] || 0,
+        }));
+
+      // Calculate overall average sentiment score
+      const totalScore = sources.reduce(
+        (sum, source) => sum + source.sentiment,
+        0
+      );
+      const avgScore = sources.length ? totalScore / sources.length : 0;
+
+      // Determine sentiment label from score
+      const label =
+        avgScore >= 85
+          ? "Very Bullish"
+          : avgScore >= 70
+          ? "Bullish"
+          : avgScore >= 50
+          ? "Neutral"
+          : avgScore >= 30
+          ? "Bearish"
+          : "Very Bearish";
+
+      return {
+        score: avgScore,
+        label,
+        sources,
       };
     };
 
     setIsLoading(true);
     // Simulate API call delay
-    setTimeout(() => {
-      setSentiment(generateSentimentData());
+    setTimeout(async () => {
+      const res = await fetchSentimentData(crypto);
+
+      const result = transformApiDataToSentiment(res.data);
+      setSentiment(result);
+
+      console.log("Fetched sentiment data:", result);
+      setSentiment(result);
       setIsLoading(false);
     }, 1500);
   }, [crypto]);
 
   const getSentimentColor = (score: number) => {
-    if (score < 20) return 'text-red-500 border-red-500 bg-red-500/10';
-    if (score < 40) return 'text-red-400 border-red-400 bg-red-400/10';
-    if (score < 60) return 'text-amber-400 border-amber-400 bg-amber-400/10';
-    if (score < 80) return 'text-emerald-400 border-emerald-400 bg-emerald-400/10';
-    return 'text-emerald-500 border-emerald-500 bg-emerald-500/10';
+    if (score < 20) return "text-red-500 border-red-500 bg-red-500/10";
+    if (score < 40) return "text-red-400 border-red-400 bg-red-400/10";
+    if (score < 60) return "text-amber-400 border-amber-400 bg-amber-400/10";
+    if (score < 80)
+      return "text-emerald-400 border-emerald-400 bg-emerald-400/10";
+    return "text-emerald-500 border-emerald-500 bg-emerald-500/10";
   };
 
   const getSentimentIcon = (score: number) => {
@@ -86,10 +152,14 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
 
   const getSourceIcon = (source: string) => {
     switch (source) {
-      case 'Twitter/X': return <MessageCircle className="h-4 w-4 text-blue-400" />;
-      case 'Reddit': return <Users className="h-4 w-4 text-orange-400" />;
-      case 'News Media': return <Globe className="h-4 w-4 text-purple-400" />;
-      default: return <MessageCircle className="h-4 w-4 text-gray-400" />;
+      case "Twitter/X":
+        return <MessageCircle className="h-4 w-4 text-blue-400" />;
+      case "Reddit":
+        return <Users className="h-4 w-4 text-orange-400" />;
+      case "News Media":
+        return <Globe className="h-4 w-4 text-purple-400" />;
+      default:
+        return <MessageCircle className="h-4 w-4 text-gray-400" />;
     }
   };
 
@@ -161,7 +231,12 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
             <div className="p-2 rounded-full bg-pink-500/20">
               {getSentimentIcon(sentiment.score)}
             </div>
-            <Badge variant="outline" className={`${getSentimentColor(sentiment.score)} font-semibold text-sm backdrop-blur-sm`}>
+            <Badge
+              variant="outline"
+              className={`${getSentimentColor(
+                sentiment.score
+              )} font-semibold text-sm backdrop-blur-sm`}
+            >
               {sentiment.label}
             </Badge>
           </div>
@@ -169,11 +244,19 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
             <div className="text-4xl font-bold text-white">
               {sentiment.score.toFixed(0)}/100
             </div>
-            <div className="text-sm text-gray-400 font-medium">Market Mood Index</div>
+            <div className="text-sm text-gray-400 font-medium">
+              Market Mood Index
+            </div>
           </div>
-          <Progress 
-            value={sentiment.score} 
-            className={`h-4 ${sentiment.score > 60 ? '[&>div]:bg-emerald-400' : sentiment.score < 40 ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
+          <Progress
+            value={sentiment.score}
+            className={`h-4 ${
+              sentiment.score > 60
+                ? "[&>div]:bg-emerald-400"
+                : sentiment.score < 40
+                ? "[&>div]:bg-red-400"
+                : "[&>div]:bg-amber-400"
+            }`}
           />
         </div>
 
@@ -181,30 +264,48 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-4">
             <Brain className="h-4 w-4 text-purple-400" />
-            <h4 className="text-sm font-semibold text-gray-200">Sentiment by Source</h4>
+            <h4 className="text-sm font-semibold text-gray-200">
+              Sentiment by Source
+            </h4>
           </div>
           <div className="space-y-3">
             {sentiment.sources.map((source, index) => (
-              <div key={index} className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]">
+              <div
+                key={index}
+                className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+              >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-1.5 rounded-lg bg-gray-600/30">
                       {getSourceIcon(source.name)}
                     </div>
-                    <span className="text-sm font-medium text-gray-200">{source.name}</span>
+                    <span className="text-sm font-medium text-gray-200">
+                      {source.name}
+                    </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-xs text-gray-400 font-medium">
                       {source.mentions.toLocaleString()} mentions
                     </span>
-                    <Badge variant="outline" className={`${getSentimentColor(source.sentiment)} text-xs font-medium backdrop-blur-sm`}>
+                    <Badge
+                      variant="outline"
+                      className={`${getSentimentColor(
+                        source.sentiment
+                      )} text-xs font-medium backdrop-blur-sm`}
+                    >
                       {source.sentiment.toFixed(0)}
                     </Badge>
                   </div>
                 </div>
-                <Progress 
-                  value={source.sentiment} 
-                  className={`h-2.5 ${source.sentiment > 60 ? '[&>div]:bg-emerald-400' : source.sentiment < 40 ? '[&>div]:bg-red-400' : '[&>div]:bg-amber-400'}`}
+                <Progress
+                  value={source.sentiment}
+                  className={`h-2.5 ${
+                    source.sentiment > 60
+                      ? "[&>div]:bg-emerald-400"
+                      : source.sentiment < 40
+                      ? "[&>div]:bg-red-400"
+                      : "[&>div]:bg-amber-400"
+                  }`}
                 />
               </div>
             ))}
@@ -218,11 +319,15 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
               <div className="p-1 rounded-full bg-blue-500/20">
                 <Heart className="h-3 w-3 text-blue-400" />
               </div>
-              <p className="text-xs text-blue-400 font-semibold">Fear & Greed</p>
+              <p className="text-xs text-blue-400 font-semibold">
+                Fear & Greed
+              </p>
             </div>
-            <p className="text-xl font-bold text-white mb-1">{(sentiment.score * 0.8 + 10).toFixed(0)}</p>
+            <p className="text-xl font-bold text-white mb-1">
+              {(sentiment.score * 0.8 + 10).toFixed(0)}
+            </p>
             <p className="text-xs text-blue-300/80">
-              {sentiment.score > 50 ? 'Greed Dominates' : 'Fear Prevails'}
+              {sentiment.score > 50 ? "Greed Dominates" : "Fear Prevails"}
             </p>
           </div>
           <div className="p-4 bg-purple-900/20 rounded-xl border border-purple-700/30 hover:border-purple-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
@@ -230,10 +335,14 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
               <div className="p-1 rounded-full bg-purple-500/20">
                 <Zap className="h-3 w-3 text-purple-400" />
               </div>
-              <p className="text-xs text-purple-400 font-semibold">Social Volume</p>
+              <p className="text-xs text-purple-400 font-semibold">
+                Social Volume
+              </p>
             </div>
             <p className="text-xl font-bold text-white mb-1">
-              {sentiment.sources.reduce((acc, s) => acc + s.mentions, 0).toLocaleString()}
+              {sentiment.sources
+                .reduce((acc, s) => acc + s.mentions, 0)
+                .toLocaleString()}
             </p>
             <p className="text-xs text-purple-300/80">24h mentions</p>
           </div>
@@ -243,19 +352,35 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({ crypto }) 
         <div className="space-y-3">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="h-4 w-4 text-emerald-400" />
-            <h4 className="text-sm font-semibold text-gray-200">Recent Trends</h4>
+            <h4 className="text-sm font-semibold text-gray-200">
+              Recent Trends
+            </h4>
           </div>
           <div className="space-y-3">
             <div className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
-              <span className="text-sm text-gray-300 font-medium">vs Yesterday</span>
-              <span className={`text-sm font-bold ${sentiment.score > 50 ? 'text-emerald-400' : 'text-red-400'}`}>
-                {sentiment.score > 50 ? '+' : ''}{(sentiment.score - 50).toFixed(1)}%
+              <span className="text-sm text-gray-300 font-medium">
+                vs Yesterday
+              </span>
+              <span
+                className={`text-sm font-bold ${
+                  sentiment.score > 50 ? "text-emerald-400" : "text-red-400"
+                }`}
+              >
+                {sentiment.score > 50 ? "+" : ""}
+                {(sentiment.score - 50).toFixed(1)}%
               </span>
             </div>
             <div className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
-              <span className="text-sm text-gray-300 font-medium">vs Last Week</span>
-              <span className={`text-sm font-bold ${sentiment.score > 45 ? 'text-emerald-400' : 'text-red-400'}`}>
-                {sentiment.score > 45 ? '+' : ''}{(sentiment.score - 45).toFixed(1)}%
+              <span className="text-sm text-gray-300 font-medium">
+                vs Last Week
+              </span>
+              <span
+                className={`text-sm font-bold ${
+                  sentiment.score > 45 ? "text-emerald-400" : "text-red-400"
+                }`}
+              >
+                {sentiment.score > 45 ? "+" : ""}
+                {(sentiment.score - 45).toFixed(1)}%
               </span>
             </div>
           </div>
