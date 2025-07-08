@@ -39,10 +39,9 @@ const Blog = () => {
   const fetchBlogData = async () => {
     try {
       const articleData = await getWordPressPost();
-      debugger;
       console.log("Fetched blog data:", articleData);
       if (Array.isArray(articleData)) {
-        const formattedArticles = articleData.slice(0, 4).map((post) => {
+        const formattedArticles = articleData.map((post) => {
           const title = post.title?.rendered || "No Title";
           const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
           const date = new Date(post.date).toISOString().split("T")[0];
@@ -89,7 +88,6 @@ const Blog = () => {
         const categoryGroups: { [key: string]: any[] } = {};
         formattedArticles.forEach((article) => {
           console.log(article);
-          debugger;
           const category = article.category;
           if (
             category &&
@@ -138,8 +136,10 @@ const Blog = () => {
 
   // Mock data for demonstration - in real implementation, these would come from analytics
   const featuredArticle = articles[0] || null;
-  const trendingArticles = articles.slice(1, 6); // Changed to get 5 items
+  const trendingArticles = articles.slice(0, 5); // Changed to get 5 items
   const latestArticles = articles.slice(0, 8);
+  console.log("Article:", articles.length);
+  console.log("Trending Articles:", trendingArticles.length);
 
   if (loading) {
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,9 @@ import { usePrediction } from "@/hooks/usePrediction";
 import { useMarketData } from "@/hooks/useMarketData";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
-
+import { getAllCryptos } from "../../utils/api";
+import { CryptoToken } from "@/types/crypto";
+import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -46,6 +48,13 @@ const TokenDetail = () => {
     isLoading: predictionLoading,
     generatePrediction,
   } = usePrediction();
+  const {
+    filteredCryptos,
+    allCryptosData,
+    handleFilterChange,
+    isLoading: filtersLoading,
+    error: filtersError,
+  } = useCryptoFilters();
 
   const currentPrice =
     tokenmarketstats?.current_price ||
@@ -79,7 +88,7 @@ const TokenDetail = () => {
     ath: marketData.allTimeHigh,
     atl: marketData.allTimeLow,
     price_change_percentage_7d_in_currency: marketData.priceChange7d,
-    price_change_percentage_30d_in_currency: marketData.priceChange30d
+    price_change_percentage_30d_in_currency: marketData.priceChange30d,
   };
 
   const handlePredict = async () => {
@@ -173,7 +182,12 @@ const TokenDetail = () => {
 
             {/* Ad Banner After Price Chart - Centered */}
             <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-              <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
+              <AdBanner
+                width={728}
+                height={120}
+                position="horizontal"
+                className="max-w-full h-full"
+              />
             </div>
           </div>
 
@@ -188,11 +202,11 @@ const TokenDetail = () => {
                 prediction={prediction}
               />
             </div>
-            
+
             {/* Sidebar - 1/4 width */}
             <div className="lg:col-span-1">
-              <TokenSidebar 
-                currentTokenId={tokenId || "bitcoin"} 
+              <TokenSidebar
+                currentTokenId={tokenId || "bitcoin"}
                 selectedCrypto={cryptoId}
                 currentPrice={currentPrice}
                 priceChange={priceChange}
@@ -205,13 +219,18 @@ const TokenDetail = () => {
           <div className="mt-6">
             <TokenDetailOtherTokens
               tokenId={tokenId || "bitcoin"}
-              cryptoOptions={cryptoOptions}
+              cryptoOptions={allCryptosData || []}
             />
           </div>
 
           {/* Ad Banner Before Footer */}
           <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-            <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
+            <AdBanner
+              width={728}
+              height={120}
+              position="horizontal"
+              className="max-w-full h-full"
+            />
           </div>
 
           {/* Footer */}
@@ -219,7 +238,7 @@ const TokenDetail = () => {
             <Footer />
           </div>
         </div>
-        
+
         {/* Sticky Buy/Sell Buttons */}
         <TokenDetailActions
           selectedToken={selectedToken}

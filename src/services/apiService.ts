@@ -90,12 +90,13 @@ class ApiService {
 
   async getWordPressPost<T = any[]>(): Promise<T> {
   try {
-    const postsResponse = await fetch("https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed");
+    const postsResponse = await fetch("https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed&per_page=100");
     if (!postsResponse.ok) {
       throw new Error(`WordPress API error! status: ${postsResponse.status}`);
     }
 
     const posts = await postsResponse.json();
+    console.log("Fetched posts:", posts);
 
     // Collect all unique tag IDs from posts
     const allTagIds = Array.from(

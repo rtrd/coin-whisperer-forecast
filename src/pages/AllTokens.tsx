@@ -15,7 +15,6 @@ import { MarketDataFilters, FilterType } from "@/components/MarketDataFilters";
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
   const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
-
   const location = useLocation();
   const { AllCryptosData } = location.state || { AllCryptosData: [] };
 

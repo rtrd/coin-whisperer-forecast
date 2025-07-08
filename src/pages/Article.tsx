@@ -23,7 +23,6 @@ const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
-  debugger;
   const { articleId } = useParams<{ articleId: string }>();
   const [articlesData, setArticlesData] = useState<any[]>([]);
   const [allArticlesData, setallArticlesData] = useState<any[]>([]);
