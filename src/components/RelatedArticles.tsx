@@ -21,7 +21,6 @@ export const RelatedArticles: React.FC<RelatedArticlesProps> = ({
   articles,
 }) => {
   if (articles.length === 0) return null;
-  debugger;
   return (
     <Card className="bg-gray-800/50 border-gray-700">
       <CardHeader>
