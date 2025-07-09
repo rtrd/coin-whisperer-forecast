@@ -37,8 +37,8 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         priceChange={priceChange}
       />
 
-      {/* Google Ad - Header 728x90 */}
-      <div className="hidden md:flex justify-center mb-6 md:mb-8">
+      {/* Google Ad - Below Headline */}
+      <div className="flex justify-center mb-6 md:mb-8">
         <div id='div-gpt-ad-1752049298270-0' style={{minWidth: '728px', minHeight: '90px'}}>
           <script 
             dangerouslySetInnerHTML={{
