@@ -17,6 +17,7 @@ import TechnicalAnalysisPage from "./pages/TechnicalAnalysisPage";
 import SentimentAnalysisPage from "./pages/SentimentAnalysisPage";
 import RealTimeData from "./pages/RealTimeData";
 import PortfolioTracking from "./pages/PortfolioTracking";
+import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="/sentiment-analysis" element={<SentimentAnalysisPage />} />
           <Route path="/real-time-data" element={<RealTimeData />} />
           <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
+          <Route path="/moti-meter" element={<MotiMeter />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
