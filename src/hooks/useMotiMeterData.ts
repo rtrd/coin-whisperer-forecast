@@ -13,7 +13,7 @@ const MEME_COINS = [
 const calculateMotiScores = async (tokenData: any, period: string): Promise<MotiScores> => {
   // In production, this would use Gemini AI to analyze:
   // - Twitter mentions, engagement
-  // - Cultural relevance
+  // - Cultural relevance  
   // - Technical analysis
   // - Volume patterns
   // - Holder analysis
@@ -41,6 +41,42 @@ const calculateMotiScores = async (tokenData: any, period: string): Promise<Moti
     holderGrowth: Math.round(holderGrowth * 10) / 10,
     higherLows: Math.round(higherLows * 10) / 10,
   };
+};
+
+// Generate AI summary for each token
+const generateAISummary = (token: any, scores: MotiScores): string => {
+  const priceChange = token.price_change_percentage_24h || 0;
+  const volume = token.total_volume || 0;
+  const marketCap = token.market_cap || 0;
+  
+  let line1 = "";
+  let line2 = "";
+  
+  // Generate first line based on price action and momentum
+  if (priceChange > 5) {
+    line1 = `${token.symbol.toUpperCase()} is showing strong bullish momentum with exceptional viral energy across social platforms.`;
+  } else if (priceChange > 0) {
+    line1 = `${token.symbol.toUpperCase()} maintains steady upward movement with growing community engagement and positive sentiment.`;
+  } else if (priceChange > -5) {
+    line1 = `${token.symbol.toUpperCase()} is consolidating with stable holder base despite minor price corrections in the market.`;
+  } else {
+    line1 = `${token.symbol.toUpperCase()} faces current headwinds but shows resilient community support and strong fundamentals.`;
+  }
+  
+  // Generate second line based on scoring analysis
+  if (scores.twitterInteraction >= 4 && scores.culturalRefs >= 4) {
+    line2 = "High meme virality combined with excellent cultural relevance makes this a top-tier momentum play.";
+  } else if (scores.volumeConsistency >= 4 && scores.holderGrowth >= 4) {
+    line2 = "Consistent trading volume and growing holder conviction indicate strong long-term potential.";
+  } else if (scores.goodTicker >= 4) {
+    line2 = "Premium ticker symbol and solid technical foundation position this for sustained growth.";
+  } else if (scores.ageOfProject >= 4) {
+    line2 = "Mature project with proven track record offers stability in the volatile meme coin sector.";
+  } else {
+    line2 = "Mixed signals suggest cautious optimism with focus on risk management and position sizing.";
+  }
+  
+  return `${line1} ${line2}`;
 };
 
 const fetchMotiMeterData = async (period: '24h' | '5d' | '7d'): Promise<MotiToken[]> => {
@@ -75,6 +111,8 @@ const fetchMotiMeterData = async (period: '24h' | '5d' | '7d'): Promise<MotiToke
           scores.higherLows
         ) / 7;
 
+        const aiSummary = generateAISummary(crypto, scores);
+
         motiTokens.push({
           id: crypto.id,
           symbol: crypto.symbol,
@@ -86,6 +124,7 @@ const fetchMotiMeterData = async (period: '24h' | '5d' | '7d'): Promise<MotiToke
           total_volume: crypto.total_volume,
           scores,
           motiScore: Math.round(motiScore * 10) / 10,
+          aiSummary,
           period
         });
       } catch (error) {

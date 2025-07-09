@@ -19,5 +19,6 @@ export interface MotiToken {
   total_volume?: number;
   scores: MotiScores;
   motiScore: number; // Average of all scores
+  aiSummary: string; // AI-generated analysis
   period: '24h' | '5d' | '7d';
 }

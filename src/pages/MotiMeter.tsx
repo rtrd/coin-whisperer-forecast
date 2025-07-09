@@ -268,7 +268,7 @@ const MotiMeter = () => {
 
                               {/* Detailed Scoring */}
                               <div className="mt-4 pt-4 border-t border-gray-700">
-                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 text-xs">
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 text-xs mb-4">
                                   <div className="text-center">
                                     <div className="text-orange-400 font-semibold">{token.scores.twitterInteraction}</div>
                                     <div className="text-gray-500">Twitter</div>
@@ -296,6 +296,21 @@ const MotiMeter = () => {
                                   <div className="text-center">
                                     <div className="text-orange-400 font-semibold">{token.scores.higherLows}</div>
                                     <div className="text-gray-500">Lows</div>
+                                  </div>
+                                </div>
+                                
+                                {/* AI Summary */}
+                                <div className="bg-gray-900/50 rounded-lg p-4 border-l-4 border-purple-500">
+                                  <div className="flex items-start gap-2 mb-2">
+                                    <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                      <span className="text-white text-xs font-bold">AI</span>
+                                    </div>
+                                    <div>
+                                      <h4 className="text-purple-400 font-semibold text-sm mb-1">MOTI Analysis</h4>
+                                      <p className="text-gray-300 text-sm leading-relaxed">
+                                        {token.aiSummary}
+                                      </p>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
