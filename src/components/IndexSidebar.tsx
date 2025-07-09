@@ -50,7 +50,7 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
         </TabsList>
         
         <TabsContent value="technical">
-          <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+          <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} technicalIndicator={cryptoData || []} />
         </TabsContent>
         
         <TabsContent value="sentiment">
