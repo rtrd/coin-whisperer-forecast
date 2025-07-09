@@ -37,9 +37,15 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         priceChange={priceChange}
       />
 
-      {/* Ad Banner 728x90 - Hidden on mobile */}
+      {/* Google Ad - Header 728x90 */}
       <div className="hidden md:flex justify-center mb-6 md:mb-8">
-        <AdBanner width={728} height={90} position="horizontal" />
+        <div id='div-gpt-ad-1752049298270-0' style={{minWidth: '728px', minHeight: '90px'}}>
+          <script 
+            dangerouslySetInnerHTML={{
+              __html: `googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752049298270-0'); });`
+            }}
+          />
+        </div>
       </div>
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
