@@ -9,6 +9,7 @@ import { MotiToken } from "@/types/motiMeter";
 import { IndexHeader } from "@/components/IndexHeader";
 import { AdBanner } from "@/components/AdBanner";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
+import WordPressIntegration from "@/components/WordPressIntegration";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 
@@ -319,10 +320,10 @@ const MotiMeter = () => {
                                     
                                     <div className="flex items-center gap-3">
                                       <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                                        <span className="text-white font-bold">DEX</span>
+                                        <span className="text-white font-bold">$</span>
                                       </div>
                                       <div>
-                                        <h3 className="text-lg font-semibold text-white">Trade Meme Coins</h3>
+                                        <h3 className="text-lg font-semibold text-white">Trade {token.symbol?.toUpperCase() || 'MEME'}</h3>
                                         <p className="text-gray-400 text-sm">Zero fees • Best rates</p>
                                       </div>
                                     </div>
@@ -337,7 +338,7 @@ const MotiMeter = () => {
                                         Trading Fees
                                       </div>
                                       <div className="text-sm text-green-400">
-                                        +Rewards
+                                        100% Cashback for crypto fees
                                       </div>
                                     </div>
                                     
@@ -372,41 +373,17 @@ const MotiMeter = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
-                <Card className="bg-gray-800/50 border-gray-700">
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-2">
-                      <BarChart3 className="h-5 w-5 text-purple-400" />
-                      MOTI Index
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between text-gray-300">
-                        <span>Twitter Interaction</span>
-                        <span className="text-orange-400">Viral energy</span>
-                      </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>Good Ticker</span>
-                        <span className="text-orange-400">Memorable</span>
-                      </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>Cultural References</span>
-                        <span className="text-orange-400">Trendy</span>
-                      </div>
-                      <div className="flex justify-between text-gray-300">
-                        <span>Age & Maturity</span>
-                        <span className="text-orange-400">Seasoned</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-                
                 <AdBanner width={300} height={600} position="vertical" />
                 
                 <MarketWinnersWidget topGainnersandLoosers={topGainersAndLosers} />
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Trending Articles Widget */}
+        <div className="container mx-auto px-4 py-8">
+          <WordPressIntegration />
         </div>
 
         <Footer />
