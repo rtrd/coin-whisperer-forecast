@@ -1,4 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
+
+declare global {
+  interface Window {
+    googletag: any;
+  }
+}
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import WordPressIntegration from "@/components/WordPressIntegration";
@@ -28,6 +34,13 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   AllCryptosData,
   handleFilterChange,
 }) => {
+  useEffect(() => {
+    // Ensure googletag is available and display the ad
+    if (window.googletag && window.googletag.display) {
+      window.googletag.display('div-gpt-ad-1752049298270-0');
+    }
+  }, []);
+
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
       <IndexHeader
@@ -39,13 +52,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
 
       {/* Google Ad - Below Headline */}
       <div className="flex justify-center mb-6 md:mb-8">
-        <div id='div-gpt-ad-1752049298270-0' style={{minWidth: '728px', minHeight: '90px'}}>
-          <script 
-            dangerouslySetInnerHTML={{
-              __html: `googletag.cmd.push(function() { googletag.display('div-gpt-ad-1752049298270-0'); });`
-            }}
-          />
-        </div>
+        <div id='div-gpt-ad-1752049298270-0' style={{minWidth: '728px', minHeight: '90px'}}></div>
       </div>
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
