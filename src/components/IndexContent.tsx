@@ -14,6 +14,7 @@ import { CryptoFilters } from "@/components/CryptoFilters";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
 import Footer from "@/components/Footer";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
+import { MarketPulseWidget } from "@/components/MarketPulseWidget";
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -57,6 +58,9 @@ export const IndexContent: React.FC<IndexContentProps> = ({
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <WordPressIntegration />
+
+      {/* Market Pulse Dashboard - Space Mission Control */}
+      <MarketPulseWidget cryptoData={filteredCryptos} />
 
       {/* AI Trading Signals - Restored */}
       <div className="mb-8">
