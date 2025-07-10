@@ -115,9 +115,9 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                     <SelectValue className="text-white" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 border-purple-500/60 shadow-2xl z-[100]">
-                    <SelectItem value="7" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">7 Days</SelectItem>
-                    <SelectItem value="30" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">30 Days</SelectItem>
-                    <SelectItem value="90" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">90 Days</SelectItem>
+                    <SelectItem value="7" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium">7 Days</SelectItem>
+                    <SelectItem value="30" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium">30 Days</SelectItem>
+                    <SelectItem value="90" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium">90 Days</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -129,13 +129,13 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                     <SelectValue className="text-white" />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 border-purple-500/60 shadow-2xl z-[100]">
-                    <SelectItem value="technical" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">
+                    <SelectItem value="technical" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium">
                       Technical
                     </SelectItem>
-                    <SelectItem value="sentiment" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">
+                    <SelectItem value="sentiment" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium">
                       Sentiment
                     </SelectItem>
-                    <SelectItem value="hybrid" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">
+                    <SelectItem value="hybrid" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium">
                       Hybrid
                     </SelectItem>
                   </SelectContent>
@@ -179,7 +179,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                 {/* Header */}
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse shadow-lg"></div>
-                  <span className="text-purple-300 font-bold text-lg">Active Prediction:</span>
+                  <span className="text-purple-300 font-bold text-lg">Active Prediction</span>
                 </div>
 
                 {/* AI Generated Overview */}
