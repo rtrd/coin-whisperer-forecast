@@ -73,7 +73,7 @@ export const SignupLock: React.FC<SignupLockProps> = ({
   };
 
   if (isUnlocked) {
-    return <ComingSoonPlaceholder title={title} description={description} />;
+    return <>{children}</>;
   }
 
   return (
