@@ -201,23 +201,8 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                   </p>
                 </div>
 
-                {/* Market Trend */}
-                <div className="flex justify-center mb-5">
-                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between min-w-64">
-                    <span className="text-gray-400 font-medium">Market Trend</span>
-                    <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
-                      prediction.trend === 'bullish' ? 'text-green-400 border-green-400 bg-green-500/10' :
-                      prediction.trend === 'bearish' ? 'text-red-400 border-red-400 bg-red-500/10' :
-                      'text-yellow-400 border-yellow-400 bg-yellow-500/10'
-                    }`}>
-                      {prediction.trend === 'bullish' ? '↗' : prediction.trend === 'bearish' ? '↘' : '→'}
-                      <span className="capitalize font-medium">{prediction.trend}</span>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Organized Data Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
+                <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
                   <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                     <div className="text-gray-400 text-sm font-medium mb-1">Asset</div>
                     <div className="text-white font-bold text-lg uppercase tracking-wide">{cryptoId}</div>
@@ -231,6 +216,18 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                   <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                     <div className="text-gray-400 text-sm font-medium mb-1">Model</div>
                     <div className="text-purple-400 font-bold text-lg capitalize">{modelType}</div>
+                  </div>
+                  
+                  <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                    <div className="text-gray-400 text-sm font-medium mb-1">Trend</div>
+                    <div className={`flex items-center justify-center gap-1 px-2 py-1 rounded-full border text-sm font-medium ${
+                      prediction.trend === 'bullish' ? 'text-green-400 border-green-400 bg-green-500/10' :
+                      prediction.trend === 'bearish' ? 'text-red-400 border-red-400 bg-red-500/10' :
+                      'text-yellow-400 border-yellow-400 bg-yellow-500/10'
+                    }`}>
+                      {prediction.trend === 'bullish' ? '↗' : prediction.trend === 'bearish' ? '↘' : '→'}
+                      <span className="capitalize">{prediction.trend}</span>
+                    </div>
                   </div>
                   
                   <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
