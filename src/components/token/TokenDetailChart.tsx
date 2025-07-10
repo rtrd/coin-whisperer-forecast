@@ -95,44 +95,44 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
         />
 
         {/* AI Prediction Engine Controls - Below Chart */}
-        <div className="bg-gradient-to-r from-gray-800/60 to-gray-700/60 backdrop-blur-sm border border-gray-600/50 rounded-xl p-5 shadow-lg">
+        <div className="bg-gradient-to-r from-gray-800/60 via-purple-900/20 to-gray-700/60 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 shadow-lg">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-8 h-8 bg-blue-500/20 rounded-lg">
-                <Brain className="h-5 w-5 text-blue-400" />
+              <div className="flex items-center justify-center w-10 h-10 bg-purple-500/20 rounded-lg border border-purple-500/30">
+                <Brain className="h-6 w-6 text-purple-400" />
               </div>
-              <span className="text-white font-semibold text-lg">AI Price Prediction</span>
+              <span className="text-white font-semibold text-xl">AI Price Prediction</span>
             </div>
             
-            <div className="flex items-center gap-4 flex-wrap">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-300">Days:</span>
+            <div className="flex items-center gap-5 flex-wrap">
+              <div className="flex items-center gap-3">
+                <span className="text-base font-medium text-gray-200">Timeline:</span>
                 <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                  <SelectTrigger className="w-28 h-11 bg-gray-700/80 border-gray-600/60 text-white text-sm font-medium hover:bg-gray-600/80 transition-colors">
+                  <SelectTrigger className="w-32 h-12 bg-gray-700/80 border-purple-500/40 text-white text-base font-medium hover:bg-gray-600/80 hover:border-purple-400/60 transition-colors">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-600 shadow-xl z-50">
-                    <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">7 days</SelectItem>
-                    <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">14 days</SelectItem>
-                    <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">30 days</SelectItem>
+                  <SelectContent className="bg-gray-800 border-purple-500/50 shadow-xl z-50">
+                    <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">7 Days</SelectItem>
+                    <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">30 Days</SelectItem>
+                    <SelectItem value="90" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">90 Days</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-300">Model:</span>
+              <div className="flex items-center gap-3">
+                <span className="text-base font-medium text-gray-200">Model:</span>
                 <Select value={modelType} onValueChange={setModelType}>
-                  <SelectTrigger className="w-40 h-11 bg-gray-700/80 border-gray-600/60 text-white text-sm font-medium hover:bg-gray-600/80 transition-colors">
+                  <SelectTrigger className="w-44 h-12 bg-gray-700/80 border-purple-500/40 text-white text-base font-medium hover:bg-gray-600/80 hover:border-purple-400/60 transition-colors">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-600 shadow-xl z-50">
-                    <SelectItem value="technical" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">
+                  <SelectContent className="bg-gray-800 border-purple-500/50 shadow-xl z-50">
+                    <SelectItem value="technical" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">
                       Technical
                     </SelectItem>
-                    <SelectItem value="sentiment" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">
+                    <SelectItem value="sentiment" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">
                       Sentiment
                     </SelectItem>
-                    <SelectItem value="hybrid" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">
+                    <SelectItem value="hybrid" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">
                       Hybrid
                     </SelectItem>
                   </SelectContent>
@@ -143,16 +143,16 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
               <Button 
                 onClick={handlePredict}
                 disabled={predictionLoading || !cryptoData}
-                className="h-11 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+                className="h-12 px-8 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium text-base shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
               >
                 {predictionLoading ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
                     Analyzing
                   </>
                 ) : (
                   <>
-                    <Brain className="h-4 w-4 mr-2" />
+                    <Brain className="h-5 w-5 mr-2" />
                     Generate Prediction
                   </>
                 )}
@@ -162,7 +162,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                 <Button 
                   onClick={handleClearPrediction}
                   variant="outline"
-                  className="h-11 px-6 border-gray-500 text-gray-300 hover:bg-gray-700/50 hover:text-white hover:border-gray-400 transition-all duration-200"
+                  className="h-12 px-8 border-purple-500/50 text-gray-200 hover:bg-purple-500/20 hover:text-white hover:border-purple-400/60 transition-all duration-200 text-base"
                 >
                   Clear
                 </Button>
@@ -171,13 +171,13 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
           </div>
 
           {prediction && showPrediction && (
-            <div className="mt-4 pt-4 border-t border-gray-600/50">
-              <div className="flex items-center gap-3 text-sm">
+            <div className="mt-5 pt-5 border-t border-purple-500/30">
+              <div className="flex items-center gap-3 text-base">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-green-400 font-medium">Prediction Active</span>
+                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                  <span className="text-purple-400 font-medium">Prediction Active</span>
                 </div>
-                <div className="text-gray-300">
+                <div className="text-gray-200">
                   <span className="font-medium">{predictionDays} days</span> forecast using <span className="font-medium capitalize">{modelType}</span> model
                 </div>
               </div>
