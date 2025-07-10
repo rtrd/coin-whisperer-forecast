@@ -218,7 +218,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                   <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between">
                     <span className="text-gray-400 font-medium">Model Accuracy</span>
                     <div className="text-purple-300 font-bold text-lg">
-                      {(prediction.accuracy * 100).toFixed(1)}%
+                      {prediction.accuracy.toFixed(1)}%
                     </div>
                   </div>
                 </div>
