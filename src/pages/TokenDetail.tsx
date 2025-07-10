@@ -1,28 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
-import Footer from "@/components/Footer";
 import { TokenProvider } from "@/contexts/TokenContext";
-import { TokenHeader } from "@/components/token/TokenHeader";
-import { TokenPriceDisplay } from "@/components/token/TokenPriceDisplay";
-import { TokenMarketStats } from "@/components/token/TokenMarketStats";
-import { TokenSidebar } from "@/components/token/TokenSidebar";
-import { TokenDetailHeader } from "@/components/token/TokenDetailHeader";
-import { TokenDetailChart } from "@/components/token/TokenDetailChart";
-import { TokenDetailAnalysis } from "@/components/token/TokenDetailAnalysis";
-import { TokenDetailOtherTokens } from "@/components/token/TokenDetailOtherTokens";
-import { TokenDetailActions } from "@/components/token/TokenDetailActions";
+import { TokenDetailLayout } from "@/components/token/TokenDetailLayout";
 import { TokenDataService } from "@/services/tokenDataService";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { useMarketData } from "@/hooks/useMarketData";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
-import { getAllCryptos } from "../../utils/api";
-import { CryptoToken } from "@/types/crypto";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
@@ -132,119 +120,29 @@ const TokenDetail = () => {
 
   return (
     <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <div className="container mx-auto px-4 py-8">
-          <TokenDetailHeader
-            cryptoId={cryptoId}
-            cryptoOptions={cryptoOptions}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-          />
-
-          {/* Main Content */}
-          <div className="space-y-6">
-            {/* Token Info Card - Full Width */}
-            <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
-              <CardContent className="p-8">
-                <div className="space-y-8">
-                  {/* Token Info Section */}
-                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-                    <TokenHeader />
-                    <TokenPriceDisplay
-                      currentPrice={currentPrice}
-                      priceChange={priceChange}
-                    />
-                  </div>
-
-                  {/* Market Statistics */}
-                  <TokenMarketStats marketData={displayMarketStats} />
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Price Chart with AI Prediction Engine */}
-            <TokenDetailChart
-              cryptoData={cryptoData}
-              dataLoading={dataLoading}
-              prediction={prediction}
-              showPrediction={showPrediction}
-              cryptoId={cryptoId}
-              timeframe={timeframe}
-              setTimeframe={setTimeframe}
-              predictionDays={predictionDays}
-              setPredictionDays={setPredictionDays}
-              modelType={modelType}
-              setModelType={setModelType}
-              predictionLoading={predictionLoading}
-              handlePredict={handlePredict}
-              handleClearPrediction={handleClearPrediction}
-            />
-
-            {/* Ad Banner After Price Chart - Centered */}
-            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-              <AdBanner
-                width={728}
-                height={120}
-                position="horizontal"
-                className="max-w-full h-full"
-              />
-            </div>
-          </div>
-
-          {/* Market Analysis and Sidebar Layout */}
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
-            {/* Market Analysis - 3/4 width */}
-            <div className="lg:col-span-3">
-              <TokenDetailAnalysis
-                cryptoId={cryptoId}
-                cryptoData={cryptoData}
-                dataLoading={dataLoading}
-                prediction={prediction}
-              />
-            </div>
-
-            {/* Sidebar - 1/4 width */}
-            <div className="lg:col-span-1">
-              <TokenSidebar
-                currentTokenId={tokenId || "bitcoin"}
-                selectedCrypto={cryptoId}
-                currentPrice={currentPrice}
-                priceChange={priceChange}
-                cryptoOptions={cryptoOptions}
-              />
-            </div>
-          </div>
-
-          {/* Other Tokens Section */}
-          <div className="mt-6">
-            <TokenDetailOtherTokens
-              tokenId={tokenId || "bitcoin"}
-              cryptoOptions={allCryptosData || []}
-            />
-          </div>
-
-          {/* Ad Banner Before Footer */}
-          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-            <AdBanner
-              width={728}
-              height={120}
-              position="horizontal"
-              className="max-w-full h-full"
-            />
-          </div>
-
-          {/* Footer */}
-          <div className="mt-12">
-            <Footer />
-          </div>
-        </div>
-
-        {/* Sticky Buy/Sell Buttons */}
-        <TokenDetailActions
-          selectedToken={selectedToken}
-          currentPrice={currentPrice}
-        />
-      </div>
+      <TokenDetailLayout
+        cryptoId={cryptoId}
+        cryptoOptions={cryptoOptions}
+        currentPrice={currentPrice}
+        priceChange={priceChange}
+        marketData={displayMarketStats}
+        cryptoData={cryptoData}
+        dataLoading={dataLoading}
+        prediction={prediction}
+        showPrediction={showPrediction}
+        timeframe={timeframe}
+        setTimeframe={setTimeframe}
+        predictionDays={predictionDays}
+        setPredictionDays={setPredictionDays}
+        modelType={modelType}
+        setModelType={setModelType}
+        predictionLoading={predictionLoading}
+        handlePredict={handlePredict}
+        handleClearPrediction={handleClearPrediction}
+        tokenId={tokenId || "bitcoin"}
+        selectedToken={selectedToken}
+        allCryptosData={allCryptosData}
+      />
     </TokenProvider>
   );
 };
