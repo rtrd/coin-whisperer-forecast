@@ -11,14 +11,15 @@ export const usePrediction = () => {
   const generatePrediction = async (
     data: PriceData[],
     crypto: string,
-    predictionDays: number
+    predictionDays: number,
+    modelType: string = 'technical'
   ): Promise<void> => {
     setIsLoading(true);
     
     try {
-      console.log('Generating AI prediction for', crypto, 'with', predictionDays, 'days');
+      console.log('Generating AI prediction for', crypto, 'with', predictionDays, 'days, model:', modelType);
       
-      const result = await generateAIPrediction(data, crypto, predictionDays);
+      const result = await generateAIPrediction(data, crypto, predictionDays, modelType);
       setPrediction(result);
       console.log('AI Prediction generated:', result);
       

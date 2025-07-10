@@ -85,7 +85,7 @@ const TokenDetail = () => {
       return;
     }
 
-    await generatePrediction(cryptoData, cryptoId, predictionDays);
+    await generatePrediction(cryptoData, cryptoId, predictionDays, modelType);
     setShowPrediction(true);
     toast.success("Prediction generated successfully!");
   };

@@ -2,10 +2,98 @@
 import { PriceData, PredictionResult, PredictionData, AIPredictionResponse } from '@/types/prediction';
 import { linearRegression, calculateRSI, calculateVolatility, calculateMovingAverage } from '@/utils/technicalAnalysis';
 
+// Helper function to generate model-specific factors
+const generateModelFactors = (modelType: string, data: {
+  aiTrend: string;
+  slope: number;
+  rsi: number;
+  currentPrice: number;
+  currentMA: number;
+  volatility: number;
+  priceChange: number;
+}) => {
+  const { aiTrend, slope, rsi, currentPrice, currentMA, volatility, priceChange } = data;
+
+  if (modelType === 'technical') {
+    return [
+      {
+        name: 'RSI Momentum',
+        weight: 0.35,
+        impact: rsi > 70 ? 'negative' : rsi < 30 ? 'positive' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      },
+      {
+        name: 'Moving Average Signal',
+        weight: 0.25,
+        impact: currentPrice > currentMA ? 'positive' : 'negative' as 'positive' | 'negative' | 'neutral'
+      },
+      {
+        name: 'Price Trend Analysis',
+        weight: 0.25,
+        impact: slope > 0 ? 'positive' : slope < 0 ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      },
+      {
+        name: 'Volatility Index',
+        weight: 0.15,
+        impact: volatility > 0.05 ? 'negative' : volatility < 0.02 ? 'positive' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      }
+    ];
+  }
+
+  if (modelType === 'sentiment') {
+    return [
+      {
+        name: 'Social Media Buzz',
+        weight: 0.40,
+        impact: aiTrend === 'bullish' ? 'positive' : aiTrend === 'bearish' ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      },
+      {
+        name: 'Community Sentiment',
+        weight: 0.30,
+        impact: priceChange > 2 ? 'positive' : priceChange < -2 ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      },
+      {
+        name: 'News Impact Score',
+        weight: 0.20,
+        impact: Math.abs(priceChange) > 5 ? 'positive' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      },
+      {
+        name: 'Market Mentions',
+        weight: 0.10,
+        impact: volatility > 0.03 ? 'positive' : 'neutral' as 'positive' | 'negative' | 'neutral'
+      }
+    ];
+  }
+
+  // Hybrid model - combines both technical and sentiment
+  return [
+    {
+      name: 'Social Sentiment Analysis',
+      weight: 0.30,
+      impact: aiTrend === 'bullish' ? 'positive' : aiTrend === 'bearish' ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
+    },
+    {
+      name: 'Technical Indicators',
+      weight: 0.25,
+      impact: rsi > 70 ? 'negative' : rsi < 30 ? 'positive' : 'neutral' as 'positive' | 'negative' | 'neutral'
+    },
+    {
+      name: 'Price Action Trend',
+      weight: 0.25,
+      impact: slope > 0 ? 'positive' : slope < 0 ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
+    },
+    {
+      name: 'Market Psychology',
+      weight: 0.20,
+      impact: currentPrice > currentMA && priceChange > 0 ? 'positive' : 'negative' as 'positive' | 'negative' | 'neutral'
+    }
+  ];
+};
+
 export const generateAIPrediction = async (
   data: PriceData[],
   crypto: string,
-  predictionDays: number
+  predictionDays: number,
+  modelType: string = 'technical'
 ): Promise<PredictionResult> => {
   const prices = data.map(d => d.price);
   const currentPrice = prices[prices.length - 1];
@@ -77,29 +165,16 @@ export const generateAIPrediction = async (
     });
   }
 
-  const factors = [
-    {
-      name: 'AI Market Analysis',
-      weight: 0.4,
-      impact: aiPrediction.trend === 'bullish' ? 'positive' : 
-              aiPrediction.trend === 'bearish' ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
-    },
-    {
-      name: 'Technical Trend',
-      weight: 0.25,
-      impact: slope > 0 ? 'positive' : slope < 0 ? 'negative' : 'neutral' as 'positive' | 'negative' | 'neutral'
-    },
-    {
-      name: 'RSI Signal',
-      weight: 0.2,
-      impact: rsi > 70 ? 'negative' : rsi < 30 ? 'positive' : 'neutral' as 'positive' | 'negative' | 'neutral'
-    },
-    {
-      name: 'Moving Average',
-      weight: 0.15,
-      impact: currentPrice > currentMA ? 'positive' : 'negative' as 'positive' | 'negative' | 'neutral'
-    }
-  ];
+  // Generate model-specific factors
+  const factors = generateModelFactors(modelType, {
+    aiTrend: aiPrediction.trend,
+    slope,
+    rsi,
+    currentPrice,
+    currentMA,
+    volatility,
+    priceChange
+  });
 
   return {
     predictions,
