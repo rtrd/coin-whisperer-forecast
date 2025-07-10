@@ -380,23 +380,40 @@ export const AITradingSignals = () => {
                 </div>
               </div>
 
-              {/* Key Market Insights - Now Full Width */}
+              {/* Key Market Insights - Two Column Grid */}
               <div className="bg-gray-800/50 rounded-lg p-4">
-                <h3 className="text-white font-medium flex items-center gap-2 mb-3">
+                <h3 className="text-white font-medium flex items-center gap-2 mb-4">
                   <Lightbulb className="h-4 w-4 text-orange-400" />
                   Key Market Insights
                 </h3>
-                <div className="space-y-2 px-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {signals.map((signal, index) => (
-                    <div key={index} className="flex items-start gap-3 text-sm">
-                      <div className={`mt-1 w-2 h-2 rounded-full ${
-                        signal.type === 'bullish' ? 'bg-green-400' : 
-                        signal.type === 'bearish' ? 'bg-red-400' : 'bg-yellow-400'
-                      }`}></div>
-                      <div>
-                        <span className="text-gray-200">{signal.asset}: {signal.description}</span>
-                        <div className="text-xs text-gray-300 mt-1">
-                          Strength: {signal.strength}% • Timeframe: {signal.timeframe}
+                    <div key={index} className="bg-gray-700/30 rounded-lg p-3 border border-gray-600/30 hover:bg-gray-700/40 transition-colors">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          {getSignalTypeIcon(signal.type)}
+                          <span className="text-white font-medium text-sm">{signal.asset}</span>
+                        </div>
+                        <Badge variant="outline" className={`text-xs ${getSignalTypeColor(signal.type)} px-2 py-0.5`}>
+                          {signal.timeframe}
+                        </Badge>
+                      </div>
+                      <p className="text-gray-200 text-xs mb-3 leading-relaxed">
+                        {signal.description}
+                      </p>
+                      <div className="space-y-2">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-gray-300">Signal Strength</span>
+                          <span className="text-gray-200 font-medium">{signal.strength}%</span>
+                        </div>
+                        <div className="w-full bg-gray-600/50 rounded-full h-1.5">
+                          <div 
+                            className={`h-1.5 rounded-full transition-all duration-500 ${
+                              signal.type === 'bullish' ? 'bg-green-400' : 
+                              signal.type === 'bearish' ? 'bg-red-400' : 'bg-yellow-400'
+                            }`}
+                            style={{ width: `${signal.strength}%` }}
+                          ></div>
                         </div>
                       </div>
                     </div>
