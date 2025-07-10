@@ -89,6 +89,61 @@ const generateModelFactors = (modelType: string, data: {
   ];
 };
 
+// Enhanced confidence calculation function
+const calculateEnhancedConfidence = (
+  data: PriceData[],
+  prices: number[],
+  rsi: number,
+  volatility: number,
+  currentPrice: number,
+  currentMA: number,
+  slope: number,
+  aiConfidence: number,
+  dayOffset: number
+): number => {
+  // 1. Data Quality Score (0.1 - 1.0)
+  const dataPointsScore = Math.min(Math.log10(prices.length + 1) / 3, 1); // Log scale, max at 1000 points
+  
+  // Volume consistency (if available)
+  const volumes = data.map(d => d.volume).filter(v => v !== undefined) as number[];
+  const volumeConsistency = volumes.length > 0 ? 
+    1 - (calculateVolatility(volumes) * 0.5) : 0.7; // Default if no volume data
+  
+  const dataQualityScore = (dataPointsScore * 0.7 + volumeConsistency * 0.3);
+  
+  // 2. Technical Convergence Score (0.0 - 1.0)
+  const rsiSignal = rsi > 70 ? -0.3 : rsi < 30 ? 0.3 : 0; // RSI overbought/oversold
+  const maSignal = currentPrice > currentMA ? 0.2 : -0.2; // Price vs MA
+  const trendSignal = slope > 0 ? 0.2 : slope < 0 ? -0.2 : 0; // Trend direction
+  
+  // Check alignment - when signals point in same direction, convergence is higher
+  const signalAlignment = Math.abs(rsiSignal + maSignal + trendSignal);
+  const technicalConvergence = Math.min(signalAlignment / 0.7, 1);
+  
+  // 3. Market Stability Score (0.2 - 1.0)
+  const volatilityPenalty = Math.min(volatility * 10, 0.8); // High volatility reduces confidence
+  const rsiStability = rsi > 20 && rsi < 80 ? 0.2 : 0; // Extreme RSI reduces stability
+  const marketStability = Math.max(1 - volatilityPenalty + rsiStability, 0.2);
+  
+  // 4. Adaptive Time Decay
+  const baseDecayRate = 0.08; // Base decay per day
+  const volatilityMultiplier = 1 + (volatility * 5); // Higher volatility = faster decay
+  const adaptiveDecayRate = baseDecayRate * volatilityMultiplier;
+  const timeDecay = Math.exp(-dayOffset * adaptiveDecayRate);
+  
+  // 5. Combine all factors with weights
+  const baseConfidence = aiConfidence || 0.75;
+  const enhancedConfidence = baseConfidence * 
+    (dataQualityScore * 0.25 + 
+     technicalConvergence * 0.30 + 
+     marketStability * 0.25 + 
+     0.20) * // Base component
+    timeDecay;
+  
+  // Ensure confidence stays within realistic bounds (5% - 98%)
+  return Math.max(Math.min(enhancedConfidence, 0.98), 0.05);
+};
+
 export const generateAIPrediction = async (
   data: PriceData[],
   crypto: string,
@@ -154,14 +209,23 @@ export const generateAIPrediction = async (
     const dailyChange = trendInfluence + technicalInfluence + rsiInfluence;
     const predictedPrice = currentPrice * Math.pow(1 + dailyChange, i);
     
-    const baseConfidence = aiPrediction.confidence || 0.75;
-    const timeDecay = Math.exp(-i * 0.1);
-    const confidence = baseConfidence * timeDecay;
+    // Use enhanced confidence calculation
+    const confidence = calculateEnhancedConfidence(
+      data,
+      prices,
+      rsi,
+      volatility,
+      currentPrice,
+      currentMA,
+      slope,
+      aiPrediction.confidence || 0.75,
+      i
+    );
     
     predictions.push({
       timestamp: data[data.length - 1].timestamp + (i * 24 * 60 * 60 * 1000),
       predictedPrice: Math.max(predictedPrice, 0),
-      confidence: Math.max(Math.min(confidence, 1), 0.1)
+      confidence
     });
   }
 
