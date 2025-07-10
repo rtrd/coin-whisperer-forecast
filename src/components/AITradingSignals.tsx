@@ -639,28 +639,6 @@ export const AITradingSignals = () => {
                         </div>
                       </div>
                     </div>
-
-                    {/* Real-time Impact Meter */}
-                    <div className="bg-gradient-to-b from-gray-800/50 to-gray-900/50 rounded-lg p-4 border border-gray-600/30">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Flame className="h-5 w-5 text-orange-400" />
-                        <span className="text-gray-200 font-semibold">Impact Meter</span>
-                      </div>
-                      <div className="space-y-2">
-                        {marketNarratives.slice(0, 3).map((narrative, index) => (
-                          <div key={index} className={`flex items-center justify-between p-2 rounded border ${getImpactColor(narrative.impact)}`}>
-                            <div className="flex items-center gap-2">
-                              {getNarrativeIcon(narrative.type)}
-                              <span className="text-white text-xs font-medium truncate max-w-24">{narrative.category}</span>
-                            </div>
-                            <div className="flex items-center gap-1">
-                              {getImpactIcon(narrative.impact)}
-                              <span className="text-xs">{narrative.score}%</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
                   </div>
                 </div>
 
