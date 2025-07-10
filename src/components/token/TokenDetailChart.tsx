@@ -201,9 +201,9 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                   </p>
                 </div>
 
-                {/* Market Trend and Model Accuracy */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between">
+                {/* Market Trend */}
+                <div className="flex justify-center mb-5">
+                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between min-w-64">
                     <span className="text-gray-400 font-medium">Market Trend</span>
                     <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
                       prediction.trend === 'bullish' ? 'text-green-400 border-green-400 bg-green-500/10' :
@@ -212,13 +212,6 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                     }`}>
                       {prediction.trend === 'bullish' ? '↗' : prediction.trend === 'bearish' ? '↘' : '→'}
                       <span className="capitalize font-medium">{prediction.trend}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between">
-                    <span className="text-gray-400 font-medium">Model Accuracy</span>
-                    <div className="text-purple-300 font-bold text-lg">
-                      {prediction.accuracy.toFixed(1)}%
                     </div>
                   </div>
                 </div>
