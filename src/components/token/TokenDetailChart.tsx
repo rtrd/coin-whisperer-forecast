@@ -201,8 +201,30 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                   </p>
                 </div>
 
+                {/* Market Trend and Model Accuracy */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between">
+                    <span className="text-gray-400 font-medium">Market Trend</span>
+                    <div className={`flex items-center gap-2 px-3 py-1 rounded-full border ${
+                      prediction.trend === 'bullish' ? 'text-green-400 border-green-400 bg-green-500/10' :
+                      prediction.trend === 'bearish' ? 'text-red-400 border-red-400 bg-red-500/10' :
+                      'text-yellow-400 border-yellow-400 bg-yellow-500/10'
+                    }`}>
+                      {prediction.trend === 'bullish' ? '↗' : prediction.trend === 'bearish' ? '↘' : '→'}
+                      <span className="capitalize font-medium">{prediction.trend}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50 flex items-center justify-between">
+                    <span className="text-gray-400 font-medium">Model Accuracy</span>
+                    <div className="text-purple-300 font-bold text-lg">
+                      {(prediction.accuracy * 100).toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+
                 {/* Organized Data Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
                   <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                     <div className="text-gray-400 text-sm font-medium mb-1">Asset</div>
                     <div className="text-white font-bold text-lg uppercase tracking-wide">{cryptoId}</div>
@@ -229,37 +251,56 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
 
                 {/* Price Information */}
                 {prediction.predictions && prediction.predictions.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-purple-400/20">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                        <div className="text-gray-400 text-sm font-medium mb-1">Current Price</div>
-                        <div className="text-gray-200 font-bold text-xl">
-                          ${cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1].price.toFixed(2) : 'N/A'}
-                        </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5">
+                    <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                      <div className="text-gray-400 text-sm font-medium mb-1">Current Price</div>
+                      <div className="text-gray-200 font-bold text-xl">
+                        ${cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1].price.toFixed(2) : 'N/A'}
                       </div>
-                      
-                      <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                        <div className="text-gray-400 text-sm font-medium mb-1">Predicted Price</div>
-                        <div className="text-green-400 font-bold text-xl">
-                          ${prediction.predictions[prediction.predictions.length - 1].predictedPrice.toFixed(2)}
-                        </div>
+                    </div>
+                    
+                    <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                      <div className="text-gray-400 text-sm font-medium mb-1">Predicted Price</div>
+                      <div className="text-green-400 font-bold text-xl">
+                        ${prediction.predictions[prediction.predictions.length - 1].predictedPrice.toFixed(2)}
                       </div>
-                      
-                      <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                        <div className="text-gray-400 text-sm font-medium mb-1">Expected Change</div>
-                        <div className={`font-bold text-xl flex items-center justify-center gap-1 ${
-                          cryptoData && cryptoData.length > 0 && 
-                          ((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100) >= 0 
-                            ? 'text-green-400' : 'text-red-400'
-                        }`}>
-                          {cryptoData && cryptoData.length > 0 ? (
-                            <>
-                              {((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100) >= 0 ? '↗' : '↘'}
-                              {Math.abs((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100).toFixed(1)}%
-                            </>
-                          ) : 'N/A'}
-                        </div>
+                    </div>
+                    
+                    <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                      <div className="text-gray-400 text-sm font-medium mb-1">Expected Change</div>
+                      <div className={`font-bold text-xl flex items-center justify-center gap-1 ${
+                        cryptoData && cryptoData.length > 0 && 
+                        ((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100) >= 0 
+                          ? 'text-green-400' : 'text-red-400'
+                      }`}>
+                        {cryptoData && cryptoData.length > 0 ? (
+                          <>
+                            {((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100) >= 0 ? '↗' : '↘'}
+                            {Math.abs((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100).toFixed(1)}%
+                          </>
+                        ) : 'N/A'}
                       </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Key Factors */}
+                {prediction.factors && prediction.factors.length > 0 && (
+                  <div className="bg-gray-800/60 rounded-lg p-4 border border-gray-600/50">
+                    <h4 className="text-white font-semibold mb-3">Key Prediction Factors</h4>
+                    <div className="space-y-2">
+                      {prediction.factors.slice(0, 3).map((factor: any, index: number) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-gray-700/50 rounded text-sm">
+                          <div className="flex items-center gap-2">
+                            <div className={`w-2 h-2 rounded-full ${
+                              factor.impact === 'positive' ? 'bg-green-400' :
+                              factor.impact === 'negative' ? 'bg-red-400' : 'bg-yellow-400'
+                            }`} />
+                            <span className="text-white">{factor.name}</span>
+                          </div>
+                          <span className="text-gray-400 font-medium">{(factor.weight * 100).toFixed(0)}%</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}

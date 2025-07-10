@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
-import { PredictionCard } from "@/components/PredictionCard";
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 
 interface TokenDetailAnalysisProps {
@@ -71,15 +70,6 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
           </Tabs>
         </CardContent>
       </Card>
-
-      {/* AI Prediction Results */}
-      {prediction && (
-        <div className="flex justify-center">
-          <div className="w-full max-w-md">
-            <PredictionCard prediction={prediction} crypto={cryptoId} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
