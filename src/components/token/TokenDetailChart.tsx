@@ -95,44 +95,47 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
         />
 
         {/* AI Prediction Engine Controls - Below Chart */}
-        <div className="bg-gradient-to-r from-gray-800/60 via-purple-900/20 to-gray-700/60 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 shadow-lg">
+        <div className="bg-gradient-to-br from-gray-800/80 via-purple-900/30 to-gray-700/80 backdrop-blur-sm border-2 border-purple-500/40 rounded-2xl p-6 shadow-2xl">
           <div className="flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 bg-purple-500/20 rounded-lg border border-purple-500/30">
-                <Brain className="h-6 w-6 text-purple-400" />
+            <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-xl border border-purple-400/50 shadow-lg">
+                <Brain className="h-7 w-7 text-purple-300" />
               </div>
-              <span className="text-white font-semibold text-xl">AI Price Prediction</span>
+              <div>
+                <span className="text-white font-bold text-xl tracking-wide">AI Price Prediction</span>
+                <div className="w-20 h-0.5 bg-gradient-to-r from-purple-400 to-blue-400 mt-1"></div>
+              </div>
             </div>
             
             <div className="flex items-center gap-5 flex-wrap">
               <div className="flex items-center gap-3">
-                <span className="text-base font-medium text-gray-200">Timeline:</span>
+                <span className="text-base font-semibold text-purple-200">Timeline:</span>
                 <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                  <SelectTrigger className="w-32 h-12 bg-gray-700/80 border-purple-500/40 text-white text-base font-medium hover:bg-gray-600/80 hover:border-purple-400/60 transition-colors">
-                    <SelectValue />
+                  <SelectTrigger className="w-32 h-12 bg-gray-900/80 border-purple-400/60 text-white text-base font-medium hover:bg-gray-800/90 hover:border-purple-300/80 transition-all duration-200 shadow-lg">
+                    <SelectValue className="text-white" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-purple-500/50 shadow-xl z-50">
-                    <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">7 Days</SelectItem>
-                    <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">30 Days</SelectItem>
-                    <SelectItem value="90" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">90 Days</SelectItem>
+                  <SelectContent className="bg-gray-900 border-purple-500/60 shadow-2xl z-[100]">
+                    <SelectItem value="7" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">7 Days</SelectItem>
+                    <SelectItem value="30" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">30 Days</SelectItem>
+                    <SelectItem value="90" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">90 Days</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="text-base font-medium text-gray-200">Model:</span>
+                <span className="text-base font-semibold text-purple-200">Model:</span>
                 <Select value={modelType} onValueChange={setModelType}>
-                  <SelectTrigger className="w-44 h-12 bg-gray-700/80 border-purple-500/40 text-white text-base font-medium hover:bg-gray-600/80 hover:border-purple-400/60 transition-colors">
-                    <SelectValue />
+                  <SelectTrigger className="w-44 h-12 bg-gray-900/80 border-purple-400/60 text-white text-base font-medium hover:bg-gray-800/90 hover:border-purple-300/80 transition-all duration-200 shadow-lg">
+                    <SelectValue className="text-white" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-purple-500/50 shadow-xl z-50">
-                    <SelectItem value="technical" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">
+                  <SelectContent className="bg-gray-900 border-purple-500/60 shadow-2xl z-[100]">
+                    <SelectItem value="technical" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">
                       Technical
                     </SelectItem>
-                    <SelectItem value="sentiment" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">
+                    <SelectItem value="sentiment" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">
                       Sentiment
                     </SelectItem>
-                    <SelectItem value="hybrid" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3 text-base">
+                    <SelectItem value="hybrid" className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 py-3 text-base font-medium">
                       Hybrid
                     </SelectItem>
                   </SelectContent>
@@ -143,7 +146,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
               <Button 
                 onClick={handlePredict}
                 disabled={predictionLoading || !cryptoData}
-                className="h-12 px-8 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium text-base shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+                className="h-12 px-8 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold text-base shadow-xl hover:shadow-2xl transition-all duration-300 disabled:opacity-50 border border-purple-400/30"
               >
                 {predictionLoading ? (
                   <>
@@ -162,7 +165,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                 <Button 
                   onClick={handleClearPrediction}
                   variant="outline"
-                  className="h-12 px-8 border-purple-500/50 text-gray-200 hover:bg-purple-500/20 hover:text-white hover:border-purple-400/60 transition-all duration-200 text-base"
+                  className="h-12 px-8 bg-gray-800/60 border-purple-400/60 text-white hover:bg-red-500/30 hover:text-white hover:border-red-400/60 transition-all duration-200 text-base font-medium shadow-lg"
                 >
                   Clear
                 </Button>
@@ -171,15 +174,66 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
           </div>
 
           {prediction && showPrediction && (
-            <div className="mt-5 pt-5 border-t border-purple-500/30">
-              <div className="flex items-center gap-3 text-base">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
-                  <span className="text-purple-400 font-medium">Prediction Active</span>
+            <div className="mt-6 pt-6 border-t border-purple-400/30">
+              <div className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl p-4 border border-purple-400/40">
+                <div className="flex items-start justify-between flex-wrap gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse shadow-lg"></div>
+                      <span className="text-purple-300 font-bold text-base">Active Prediction:</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 max-w-2xl">
+                    <div className="text-center">
+                      <div className="text-gray-400 text-sm font-medium">Token</div>
+                      <div className="text-white font-bold text-lg uppercase">{cryptoId}</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-gray-400 text-sm font-medium">Forecast Period</div>
+                      <div className="text-white font-bold text-lg">{predictionDays} Days</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-gray-400 text-sm font-medium">Model Type</div>
+                      <div className="text-white font-bold text-lg capitalize">{modelType}</div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-gray-200">
-                  <span className="font-medium">{predictionDays} days</span> forecast using <span className="font-medium capitalize">{modelType}</span> model
-                </div>
+                {prediction.predictions && prediction.predictions.length > 0 && (
+                  <div className="mt-4 pt-4 border-t border-purple-400/20">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <div className="text-gray-400 text-sm font-medium">Current Price</div>
+                        <div className="text-white font-bold text-lg">
+                          ${cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1].price.toFixed(2) : 'N/A'}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-gray-400 text-sm font-medium">Predicted Price</div>
+                        <div className="text-green-400 font-bold text-lg">
+                          ${prediction.predictions[prediction.predictions.length - 1].predictedPrice.toFixed(2)}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-gray-400 text-sm font-medium">Price Change</div>
+                        <div className={`font-bold text-lg ${
+                          cryptoData && cryptoData.length > 0 && 
+                          ((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100) >= 0 
+                            ? 'text-green-400' : 'text-red-400'
+                        }`}>
+                          {cryptoData && cryptoData.length > 0 ? (
+                            `${((prediction.predictions[prediction.predictions.length - 1].predictedPrice - cryptoData[cryptoData.length - 1].price) / cryptoData[cryptoData.length - 1].price * 100).toFixed(1)}%`
+                          ) : 'N/A'}
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-gray-400 text-sm font-medium">Confidence</div>
+                        <div className="text-blue-400 font-bold text-lg">
+                          {prediction.predictions[prediction.predictions.length - 1].confidence.toFixed(0)}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

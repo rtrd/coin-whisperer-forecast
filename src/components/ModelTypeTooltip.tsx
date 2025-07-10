@@ -75,7 +75,7 @@ export const ModelTypeTooltip: React.FC<ModelTypeTooltipProps> = ({ modelType })
         <TooltipTrigger>
           <Info className="h-4 w-4 text-gray-400 hover:text-white transition-colors" />
         </TooltipTrigger>
-        <TooltipContent className="max-w-md p-5 bg-gray-800 border-gray-600 shadow-2xl">
+        <TooltipContent className="max-w-md p-5 bg-gray-800 border-gray-600 shadow-2xl z-[9999]">
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               {modelInfo.icon}
