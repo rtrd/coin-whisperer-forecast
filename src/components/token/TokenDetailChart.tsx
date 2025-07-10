@@ -84,111 +84,6 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* AI Prediction Engine Controls */}
-        <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 rounded-xl p-6 border border-purple-500/20">
-          <div className="flex items-center gap-3 mb-4">
-            <Brain className="h-5 w-5 text-purple-400" />
-            <h3 className="text-lg font-semibold text-white">AI Prediction Engine</h3>
-            <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
-              Advanced
-            </Badge>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-            {/* Prediction Days */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300">Prediction Days</label>
-              <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                <SelectTrigger className="bg-gray-700/80 border-gray-600/50 text-white">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-600">
-                  <SelectItem value="7" className="text-white hover:bg-gray-700/80">7 Days</SelectItem>
-                  <SelectItem value="14" className="text-white hover:bg-gray-700/80">14 Days</SelectItem>
-                  <SelectItem value="30" className="text-white hover:bg-gray-700/80">30 Days</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Model Type */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300 flex items-center gap-1">
-                Model Type
-                <ModelTypeTooltip modelType={modelType} />
-              </label>
-              <Select value={modelType} onValueChange={setModelType}>
-                <SelectTrigger className="bg-gray-700/80 border-gray-600/50 text-white">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-600">
-                  <SelectItem value="technical" className="text-white hover:bg-gray-700/80">
-                    <div className="flex items-center gap-2">
-                      <Activity className="h-4 w-4" />
-                      Technical
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="sentiment" className="text-white hover:bg-gray-700/80">
-                    <div className="flex items-center gap-2">
-                      <Brain className="h-4 w-4" />
-                      Sentiment
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="hybrid" className="text-white hover:bg-gray-700/80">
-                    <div className="flex items-center gap-2">
-                      <Target className="h-4 w-4" />
-                      Hybrid
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Predict Button */}
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-300 opacity-0">Action</label>
-              <Button 
-                onClick={handlePredict}
-                disabled={predictionLoading || !cryptoData}
-                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white border-0"
-              >
-                {predictionLoading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Analyzing...
-                  </>
-                ) : (
-                  <>
-                    <Brain className="h-4 w-4 mr-2" />
-                    Predict
-                  </>
-                )}
-              </Button>
-            </div>
-
-            {/* Clear Button */}
-            {showPrediction && (
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-300 opacity-0">Clear</label>
-                <Button 
-                  onClick={handleClearPrediction}
-                  variant="outline"
-                  className="w-full border-gray-600 text-gray-300 hover:bg-gray-700/50"
-                >
-                  Clear Prediction
-                </Button>
-              </div>
-            )}
-          </div>
-
-          {/* Prediction Status */}
-          {prediction && showPrediction && (
-            <div className="flex items-center gap-2 text-sm text-green-400 bg-green-500/10 px-3 py-2 rounded-lg">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              AI prediction active for {predictionDays} days • {modelType} model
-            </div>
-          )}
-        </div>
-
         <PriceChart
           data={cryptoData || []}
           isLoading={dataLoading}
@@ -198,6 +93,86 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
           crypto={cryptoId}
           onClearPrediction={handleClearPrediction}
         />
+
+        {/* AI Prediction Engine Controls - Below Chart */}
+        <div className="bg-gray-800/30 border border-gray-700/50 rounded-lg p-4">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-3">
+              <Brain className="h-5 w-5 text-blue-400" />
+              <span className="text-white font-medium">AI Price Prediction</span>
+            </div>
+            
+            <div className="flex items-center gap-3 flex-wrap">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-400">Days:</span>
+                <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
+                  <SelectTrigger className="w-20 h-8 bg-gray-700/50 border-gray-600 text-white text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-gray-600">
+                    <SelectItem value="7" className="text-white hover:bg-gray-700">7</SelectItem>
+                    <SelectItem value="14" className="text-white hover:bg-gray-700">14</SelectItem>
+                    <SelectItem value="30" className="text-white hover:bg-gray-700">30</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-400">Model:</span>
+                <Select value={modelType} onValueChange={setModelType}>
+                  <SelectTrigger className="w-32 h-8 bg-gray-700/50 border-gray-600 text-white text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-gray-600">
+                    <SelectItem value="technical" className="text-white hover:bg-gray-700">Technical</SelectItem>
+                    <SelectItem value="sentiment" className="text-white hover:bg-gray-700">Sentiment</SelectItem>
+                    <SelectItem value="hybrid" className="text-white hover:bg-gray-700">Hybrid</SelectItem>
+                  </SelectContent>
+                </Select>
+                <ModelTypeTooltip modelType={modelType} />
+              </div>
+
+              <Button 
+                onClick={handlePredict}
+                disabled={predictionLoading || !cryptoData}
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                {predictionLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
+                    Analyzing
+                  </>
+                ) : (
+                  <>
+                    <Brain className="h-3 w-3 mr-1" />
+                    Predict
+                  </>
+                )}
+              </Button>
+
+              {showPrediction && (
+                <Button 
+                  onClick={handleClearPrediction}
+                  variant="outline"
+                  size="sm"
+                  className="border-gray-600 text-gray-300 hover:bg-gray-700/50"
+                >
+                  Clear
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {prediction && showPrediction && (
+            <div className="mt-3 pt-3 border-t border-gray-700/50">
+              <div className="flex items-center gap-2 text-sm text-green-400">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>Prediction active: {predictionDays} days ahead using {modelType} model</span>
+              </div>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
