@@ -101,23 +101,20 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
               <div className="flex items-center justify-center w-8 h-8 bg-blue-500/20 rounded-lg">
                 <Brain className="h-5 w-5 text-blue-400" />
               </div>
-              <div>
-                <span className="text-white font-semibold text-base">AI Price Prediction</span>
-                <p className="text-gray-400 text-xs">Advanced machine learning analysis</p>
-              </div>
+              <span className="text-white font-semibold text-lg">AI Price Prediction</span>
             </div>
             
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-gray-300">Days:</span>
                 <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
-                  <SelectTrigger className="w-24 h-9 bg-gray-700/80 border-gray-600/60 text-white text-sm font-medium hover:bg-gray-600/80 transition-colors">
+                  <SelectTrigger className="w-28 h-11 bg-gray-700/80 border-gray-600/60 text-white text-sm font-medium hover:bg-gray-600/80 transition-colors">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-600 shadow-xl z-50">
-                    <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-2">7 days</SelectItem>
-                    <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-2">14 days</SelectItem>
-                    <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-2">30 days</SelectItem>
+                    <SelectItem value="7" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">7 days</SelectItem>
+                    <SelectItem value="14" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">14 days</SelectItem>
+                    <SelectItem value="30" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">30 days</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -125,27 +122,18 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-gray-300">Model:</span>
                 <Select value={modelType} onValueChange={setModelType}>
-                  <SelectTrigger className="w-36 h-9 bg-gray-700/80 border-gray-600/60 text-white text-sm font-medium hover:bg-gray-600/80 transition-colors">
+                  <SelectTrigger className="w-40 h-11 bg-gray-700/80 border-gray-600/60 text-white text-sm font-medium hover:bg-gray-600/80 transition-colors">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-800 border-gray-600 shadow-xl z-50">
-                    <SelectItem value="technical" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-2">
-                      <div className="flex items-center gap-2">
-                        <Activity className="h-4 w-4 text-blue-400" />
-                        Technical
-                      </div>
+                    <SelectItem value="technical" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">
+                      Technical
                     </SelectItem>
-                    <SelectItem value="sentiment" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-2">
-                      <div className="flex items-center gap-2">
-                        <Brain className="h-4 w-4 text-purple-400" />
-                        Sentiment
-                      </div>
+                    <SelectItem value="sentiment" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">
+                      Sentiment
                     </SelectItem>
-                    <SelectItem value="hybrid" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-2">
-                      <div className="flex items-center gap-2">
-                        <Target className="h-4 w-4 text-green-400" />
-                        Hybrid
-                      </div>
+                    <SelectItem value="hybrid" className="text-white hover:bg-gray-700 focus:bg-gray-700 py-3">
+                      Hybrid
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -155,7 +143,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
               <Button 
                 onClick={handlePredict}
                 disabled={predictionLoading || !cryptoData}
-                className="h-9 px-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
+                className="h-11 px-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50"
               >
                 {predictionLoading ? (
                   <>
@@ -174,7 +162,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                 <Button 
                   onClick={handleClearPrediction}
                   variant="outline"
-                  className="h-9 px-4 border-gray-500 text-gray-300 hover:bg-gray-700/50 hover:text-white hover:border-gray-400 transition-all duration-200"
+                  className="h-11 px-6 border-gray-500 text-gray-300 hover:bg-gray-700/50 hover:text-white hover:border-gray-400 transition-all duration-200"
                 >
                   Clear
                 </Button>
