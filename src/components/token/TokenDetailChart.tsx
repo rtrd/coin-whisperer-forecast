@@ -221,13 +221,15 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
                     
                     <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                       <div className="text-gray-400 text-sm font-medium mb-1">Trend</div>
-                      <div className={`flex items-center justify-center gap-1 px-2 py-1 rounded-full border text-sm font-medium ${
-                        prediction.trend === 'bullish' ? 'text-green-400 border-green-400 bg-green-500/10' :
-                        prediction.trend === 'bearish' ? 'text-red-400 border-red-400 bg-red-500/10' :
-                        'text-yellow-400 border-yellow-400 bg-yellow-500/10'
-                      }`}>
-                        {prediction.trend === 'bullish' ? '↗' : prediction.trend === 'bearish' ? '↘' : '→'}
-                        <span className="capitalize">{prediction.trend}</span>
+                      <div className="flex justify-center">
+                        <div className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm font-medium w-fit ${
+                          prediction.trend === 'bullish' ? 'text-green-400 border-green-400 bg-green-500/10' :
+                          prediction.trend === 'bearish' ? 'text-red-400 border-red-400 bg-red-500/10' :
+                          'text-yellow-400 border-yellow-400 bg-yellow-500/10'
+                        }`}>
+                          {prediction.trend === 'bullish' ? '↗' : prediction.trend === 'bearish' ? '↘' : '→'}
+                          <span className="capitalize">{prediction.trend}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
