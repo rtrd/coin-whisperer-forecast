@@ -70,48 +70,49 @@ export const AITradingSignals = () => {
       
       // Simulate AI analysis
       setTimeout(() => {
+        // Generate broader market insights (themes, not specific assets)
         const newSignals: MarketSignal[] = [
           {
             type: 'bullish',
-            strength: 85,
-            timeframe: '4H',
-            description: 'Golden cross forming with volume confirmation',
-            asset: 'BTC'
+            strength: 82,
+            timeframe: 'TREND',
+            description: 'Institutional adoption accelerating with new ETF approvals driving long-term accumulation patterns',
+            asset: 'INSTITUTIONAL'
           },
           {
             type: 'neutral',
-            strength: 60,
-            timeframe: '1D',
-            description: 'Consolidating near key resistance levels',
-            asset: 'ETH'
+            strength: 65,
+            timeframe: 'MACRO',
+            description: 'Federal Reserve policy uncertainty creating mixed signals across risk assets',
+            asset: 'MACRO POLICY'
+          },
+          {
+            type: 'bullish',
+            strength: 76,
+            timeframe: 'DEFI',
+            description: 'DeFi protocols showing strong TVL growth with improved yield opportunities',
+            asset: 'DEFI SECTOR'
           },
           {
             type: 'bearish',
-            strength: 75,
-            timeframe: '1H',
-            description: 'Showing weakness against BTC dominance',
-            asset: 'ALTS'
+            strength: 71,
+            timeframe: 'REGULATION',
+            description: 'Regulatory clarity concerns weighing on altcoin sentiment globally',
+            asset: 'REGULATORY'
           },
           {
             type: 'bullish',
-            strength: 78,
-            timeframe: '6H',
-            description: 'Breaking above moving average resistance',
-            asset: 'SOL'
-          },
-          {
-            type: 'bullish',
-            strength: 68,
-            timeframe: '2H',
-            description: 'RSI bounce from oversold levels',
-            asset: 'ADA'
+            strength: 79,
+            timeframe: 'TECH',
+            description: 'Layer 2 scaling solutions gaining traction with lower fees and faster transactions',
+            asset: 'L2 SCALING'
           },
           {
             type: 'neutral',
-            strength: 55,
-            timeframe: '12H',
-            description: 'Testing support at key Fibonacci level',
-            asset: 'MATIC'
+            strength: 58,
+            timeframe: 'SENTIMENT',
+            description: 'Market correlation patterns suggest consolidation before next major move',
+            asset: 'CORRELATION'
           }
         ];
 
