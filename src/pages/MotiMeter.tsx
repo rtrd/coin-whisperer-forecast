@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TrendingUp, Flame, Clock, Users, BarChart3, ShoppingCart, TrendingDown, Home, Search, User, ArrowLeft } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TrendingUp, Flame, Clock, Users, BarChart3, ShoppingCart, TrendingDown, Home, Search, User, ArrowLeft, AlertTriangle } from "lucide-react";
 import { useMotiMeterData } from "@/hooks/useMotiMeterData";
 import { MotiToken } from "@/types/motiMeter";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -64,7 +65,7 @@ const MotiMeter = () => {
     <>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
         {/* PumpParade Header */}
-        <div className="container mx-auto px-4 py-4 md:py-8">
+        <div className="container mx-auto px-4 py-2">
           <IndexHeader 
             selectedCrypto="bitcoin"
             cryptoOptions={cryptoOptions}
@@ -73,7 +74,7 @@ const MotiMeter = () => {
           />
         </div>
 
-        <div className="container mx-auto px-4 pb-8">
+        <div className="container mx-auto px-4 pb-8">{/* Reduced gap */}
           {/* Back to Home Button */}
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">
@@ -319,63 +320,81 @@ const MotiMeter = () => {
 
                           {/* Native Ad every 4 tokens - More natural looking */}
                           {(index + 1) % 4 === 0 && index < 9 && (
-                            <Card className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all relative">
-                              <div className="absolute top-2 right-2">
-                                <span className="text-xs text-gray-500 bg-gray-700 px-2 py-1 rounded">Ad</span>
-                              </div>
-                              <CardContent className="p-6">
-                                <div className="flex items-center justify-between">
-                                  <div className="flex items-center gap-4">
-                                    <div className="flex flex-col items-center">
-                                      <div className="text-2xl font-bold text-blue-400 mb-1">🚀</div>
-                                      <Badge className="bg-blue-600 text-white px-2 py-1 text-xs">
-                                        HOT 🔥
-                                      </Badge>
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3">
-                                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                                        <span className="text-white font-bold">$</span>
-                                      </div>
-                                      <div>
-                                        <h3 className="text-lg font-semibold text-white">Trade {token.symbol?.toUpperCase() || 'MEME'}</h3>
-                                        <p className="text-gray-400 text-sm">Zero fees • Best rates</p>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex items-center gap-4">
-                                    <div className="text-right">
-                                      <div className="text-2xl font-bold text-blue-400 mb-1">
-                                        0%
-                                      </div>
-                                      <div className="text-sm text-gray-400">
-                                        Trading Fees
-                                      </div>
-                                      <div className="text-sm text-green-400">
-                                        100% Cashback for crypto fees
-                                      </div>
-                                    </div>
-                                    
-                                    <div className="flex flex-col gap-2">
-                                      <Button
-                                        size="sm"
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1"
-                                      >
-                                        Trade Now
-                                      </Button>
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        className="border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white px-3 py-1"
-                                      >
-                                        Learn More
-                                      </Button>
-                                    </div>
-                                  </div>
+                            <TooltipProvider>
+                              <Card className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all relative">
+                                <div className="absolute top-2 right-2">
+                                  <span className="text-xs text-gray-500 bg-gray-700 px-2 py-1 rounded">Ad</span>
                                 </div>
-                              </CardContent>
-                            </Card>
+                                <CardContent className="p-6">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-4">
+                                      <div className="flex flex-col items-center">
+                                        <div className="text-2xl font-bold text-blue-400 mb-1">🚀</div>
+                                        <Badge className="bg-blue-600 text-white px-2 py-1 text-xs">
+                                          HOT 🔥
+                                        </Badge>
+                                      </div>
+                                      
+                                      <div className="flex items-center gap-3">
+                                        <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                                          <span className="text-white font-bold">$</span>
+                                        </div>
+                                        <div>
+                                          <h3 className="text-lg font-semibold text-white">Trade {token.symbol?.toUpperCase() || 'MEME'}</h3>
+                                          <p className="text-gray-400 text-sm">Zero fees • Best rates</p>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                    <div className="flex items-center gap-4">
+                                      <div className="text-right">
+                                        <div className="text-2xl font-bold text-blue-400 mb-1">
+                                          0%
+                                        </div>
+                                        <div className="text-sm text-gray-400">
+                                          Trading Fees
+                                        </div>
+                                        <div className="text-sm text-green-400">
+                                          100% Cashback for crypto fees
+                                        </div>
+                                      </div>
+                                      
+                                      <div className="flex flex-col gap-2">
+                                        <Button
+                                          size="sm"
+                                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 transition-all duration-200 transform hover:scale-105 animate-pulse"
+                                        >
+                                          Trade Now
+                                        </Button>
+                                        <Button
+                                          size="sm"
+                                          variant="outline"
+                                          className="border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white px-3 py-1"
+                                        >
+                                          Learn More
+                                        </Button>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <div className="flex items-center justify-center gap-1 text-yellow-400 cursor-help mt-1">
+                                              <AlertTriangle className="h-3 w-3" />
+                                              <span className="text-xs">Risk Warning</span>
+                                            </div>
+                                          </TooltipTrigger>
+                                          <TooltipContent className="max-w-xs">
+                                            <p className="text-sm">
+                                              Crypto investments are risky and highly volatile. Tax may apply. Understand the risks here{' '}
+                                              <a href="https://etoro.tw/3PI44nZ" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                                                https://etoro.tw/3PI44nZ
+                                              </a>
+                                            </p>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </TooltipProvider>
                           )}
                         </React.Fragment>
                       ))}
