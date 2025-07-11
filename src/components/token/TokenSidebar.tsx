@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -17,6 +17,7 @@ import {
   ChevronRight
 } from "lucide-react";
 import { getWordPressPost } from "../../../utils/api";
+import { trackArticleClick } from '@/utils/analytics';
 
 interface TokenSidebarProps {
   currentTokenId: string;
@@ -29,6 +30,7 @@ interface TokenSidebarProps {
 export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, priceChange, cryptoOptions }: TokenSidebarProps) {
   const [articles, setArticles] = useState<any[]>([]);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const navigate = useNavigate();
   
   useEffect(() => {
     fetchArticles();
@@ -117,7 +119,12 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
               {/* Article Image - Clickable */}
               <div 
                 className="relative h-48 overflow-hidden rounded-t-lg cursor-pointer"
-                onClick={() => window.open(currentArticle.url, '_blank')}
+                onClick={() => {
+                  trackArticleClick(currentArticle.title, currentArticleIndex);
+                  navigate(`/article/${currentArticle.id}`, { 
+                    state: { article: currentArticle } 
+                  });
+                }}
               >
                 <img 
                   src={currentArticle.image} 
@@ -167,7 +174,12 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
                 {/* Clickable Headline */}
                 <h4 
                   className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in cursor-pointer hover:text-blue-400 transition-colors"
-                  onClick={() => window.open(currentArticle.url, '_blank')}
+                  onClick={() => {
+                    trackArticleClick(currentArticle.title, currentArticleIndex);
+                    navigate(`/article/${currentArticle.id}`, { 
+                      state: { article: currentArticle } 
+                    });
+                  }}
                 >
                   {currentArticle.title}
                 </h4>
