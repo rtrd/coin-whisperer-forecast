@@ -384,13 +384,6 @@ const MotiMeter = () => {
                                         >
                                           Trade Now
                                         </Button>
-                                        <Button
-                                          size="sm"
-                                          variant="outline"
-                                          className="border-purple-600 text-purple-400 hover:bg-purple-600 hover:text-white px-3 py-1"
-                                        >
-                                          Learn More
-                                        </Button>
                                       </div>
                                     </div>
                                   </div>
@@ -404,10 +397,15 @@ const MotiMeter = () => {
                   )}
                 </TabsContent>
               </Tabs>
+
+              {/* Trending Articles Widget - moved inside main content */}
+              <div className="mt-8">
+                <WordPressIntegration />
+              </div>
             </div>
 
             {/* Sticky Sidebar */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block lg:col-span-1">
               <div className="sticky top-8 space-y-8">
                 <AdBanner width={300} height={600} position="vertical" />
                 
@@ -415,11 +413,6 @@ const MotiMeter = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Trending Articles Widget */}
-        <div className="container mx-auto px-4 py-8">
-          <WordPressIntegration />
         </div>
 
         <Footer />
