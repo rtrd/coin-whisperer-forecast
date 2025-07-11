@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { ArticleCard } from "@/components/ArticleCard";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { TokenDataService } from "@/services/tokenDataService";
@@ -102,7 +102,7 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
 
       {/* Ad Banner - Centered */}
       <div className="w-full min-h-[200px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-        <AdBanner width={280} height={200} position="vertical" className="max-w-full h-full" />
+        <AdUnit type="sidebar" className="max-w-full h-full" />
       </div>
 
       {/* Articles Section */}

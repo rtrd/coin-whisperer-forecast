@@ -8,7 +8,7 @@ import { TrendingUp, Flame, Clock, Users, BarChart3, ShoppingCart, TrendingDown,
 import { useMotiMeterData } from "@/hooks/useMotiMeterData";
 import { MotiToken } from "@/types/motiMeter";
 import { IndexHeader } from "@/components/IndexHeader";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import Footer from "@/components/Footer";
@@ -407,7 +407,7 @@ const MotiMeter = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block lg:col-span-1">
               <div className="sticky top-8 space-y-8">
-                <AdBanner width={300} height={600} position="vertical" />
+                <AdUnit type="skyscraper" />
                 
                 <MarketWinnersWidget topGainnersandLoosers={topGainersAndLosers} />
               </div>

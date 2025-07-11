@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
 import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
 import { SentimentAnalysis } from "@/components/SentimentAnalysis";
@@ -29,7 +29,7 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
     <div className="space-y-6">
       {/* Side Ad - Full width to match other components */}
       <div className="w-full min-h-[250px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
-        <AdBanner width={300} height={250} position="vertical" className="w-full h-full" />
+        <AdUnit type="sidebar" className="w-full h-full" />
       </div>
 
       {/* Dynamic Prediction Adjuster */}

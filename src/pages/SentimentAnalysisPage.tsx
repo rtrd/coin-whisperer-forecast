@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Heart, MessageCircle, TrendingUp, Users, Globe, Brain } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
@@ -201,7 +201,7 @@ const SentimentAnalysisPage = () => {
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
               <MarketWinnersWidget topGainnersandLoosers={mockTopGainersAndLosers} />
-              <AdBanner width={300} height={600} position="vertical" />
+              <AdUnit type="skyscraper" />
             </div>
           </div>
         </div>

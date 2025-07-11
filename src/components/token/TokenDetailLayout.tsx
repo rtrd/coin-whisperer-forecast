@@ -1,5 +1,5 @@
 import React from "react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import Footer from "@/components/Footer";
 import { TokenDetailHeader } from "./TokenDetailHeader";
 import { TokenDetailInfo } from "./TokenDetailInfo";
@@ -103,12 +103,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 
           {/* Ad Banner After Price Chart - Centered */}
           <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-            <AdBanner
-              width={728}
-              height={120}
-              position="horizontal"
-              className="max-w-full h-full"
-            />
+            <AdUnit type="leaderboard" className="max-w-full h-full" />
           </div>
         </div>
 
@@ -146,12 +141,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 
         {/* Ad Banner Before Footer */}
         <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-          <AdBanner
-            width={728}
-            height={120}
-            position="horizontal"
-            className="max-w-full h-full"
-          />
+          <AdUnit type="leaderboard" className="max-w-full h-full" />
         </div>
 
         {/* Footer */}

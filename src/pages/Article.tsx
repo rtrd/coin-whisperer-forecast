@@ -3,7 +3,7 @@ import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { ArticleIndex } from "@/components/ArticleIndex";
@@ -188,7 +188,7 @@ const Article = () => {
         
         {/* Header Ad - below header description */}
         <div className="flex justify-center mt-6 mb-8">
-          <AdBanner width={728} height={90} position="horizontal" />
+          <AdUnit type="header" />
         </div>
       </div>
 
@@ -218,10 +218,10 @@ const Article = () => {
             {/* Square Ads between tags and related articles */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
               <div className="flex justify-center">
-                <AdBanner width={300} height={300} position="horizontal" />
+                <AdUnit type="square" />
               </div>
               <div className="flex justify-center">
-                <AdBanner width={300} height={300} position="horizontal" />
+                <AdUnit type="square" />
               </div>
             </div>
 
@@ -233,7 +233,7 @@ const Article = () => {
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
               <ArticleIndex content={article.content} />
-              <AdBanner width={300} height={600} position="vertical" />
+              <AdUnit type="skyscraper" />
               <MarketWinnersWidget
                 topGainnersandLoosers={topGainnersandLoosers}
               />

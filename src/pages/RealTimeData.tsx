@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Activity, TrendingUp, BarChart3, Zap, Clock } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
@@ -171,7 +171,7 @@ const RealTimeData = () => {
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
               <MarketWinnersWidget topGainnersandLoosers={mockTopGainersAndLosers} />
-              <AdBanner width={300} height={600} position="vertical" />
+              <AdUnit type="skyscraper" />
             </div>
           </div>
         </div>

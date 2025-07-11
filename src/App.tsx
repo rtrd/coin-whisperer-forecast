@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AdBlockDetector } from "@/components/ads/AdBlockDetector";
+import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Subscribe from "./pages/Subscribe";
@@ -28,6 +30,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <AdBlockDetector />
+      <AutoRefresh />
       <BrowserRouter>
         <ScrollToTop />
         <Routes>

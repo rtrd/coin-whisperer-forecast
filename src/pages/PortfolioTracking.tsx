@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PieChart, Mail, Clock, Check, Loader2 } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
@@ -211,7 +211,7 @@ const PortfolioTracking = () => {
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
               <MarketWinnersWidget topGainnersandLoosers={mockTopGainersAndLosers} />
-              <AdBanner width={300} height={600} position="vertical" />
+              <AdUnit type="skyscraper" />
             </div>
           </div>
         </div>

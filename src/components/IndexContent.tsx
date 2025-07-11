@@ -9,7 +9,7 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import { AITradingSignals } from "@/components/AITradingSignals";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
 import Footer from "@/components/Footer";

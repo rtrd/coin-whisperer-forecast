@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { IndexHeader } from "@/components/IndexHeader";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 
 interface TokenDetailHeaderProps {
   cryptoId: string;
@@ -44,7 +44,7 @@ export const TokenDetailHeader: React.FC<TokenDetailHeaderProps> = ({
 
       {/* Ad Banner Before Price Chart - Centered with more bottom margin */}
       <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6 mb-8">
-        <AdBanner width={728} height={120} position="horizontal" className="max-w-full h-full" />
+        <AdUnit type="leaderboard" className="max-w-full h-full" />
       </div>
     </>
   );

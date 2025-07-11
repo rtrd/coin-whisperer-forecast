@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, Brain, TrendingUp, BarChart3 } from "lucide-react";
-import { AdBanner } from "@/components/AdBanner";
+import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
@@ -142,7 +142,7 @@ const AIPricePrediction = () => {
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
               <MarketWinnersWidget topGainnersandLoosers={mockTopGainersAndLosers} />
-              <AdBanner width={300} height={600} position="vertical" />
+              <AdUnit type="skyscraper" />
             </div>
           </div>
         </div>
