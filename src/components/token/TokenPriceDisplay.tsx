@@ -5,8 +5,10 @@ import {
   TrendingDown,
   ShoppingCart,
   Wallet,
+  AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 
 interface TokenPriceDisplayProps {
@@ -66,23 +68,45 @@ export const TokenPriceDisplay: React.FC<TokenPriceDisplayProps> = ({
         </div>
 
         {/* Prominent Buy/Sell Buttons */}
-        <div className="grid grid-cols-2 gap-3">
-          <Button
-            onClick={handleBuy}
-            className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
-            size="lg"
-          >
-            <ShoppingCart className="h-5 w-5 mr-2" />
-            BUY
-          </Button>
-          <Button
-            onClick={handleSell}
-            className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
-            size="lg"
-          >
-            <Wallet className="h-5 w-5 mr-2" />
-            SELL
-          </Button>
+        <div className="space-y-3">
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              onClick={handleBuy}
+              className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
+              size="lg"
+            >
+              <ShoppingCart className="h-5 w-5 mr-2" />
+              BUY
+            </Button>
+            <Button
+              onClick={handleSell}
+              className="bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all duration-200 transform hover:scale-105"
+              size="lg"
+            >
+              <Wallet className="h-5 w-5 mr-2" />
+              SELL
+            </Button>
+          </div>
+          <TooltipProvider>
+            <div className="flex justify-center">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="flex items-center gap-1 text-yellow-400 cursor-help">
+                    <AlertTriangle className="h-3 w-3" />
+                    <span className="text-xs">Risk Warning</span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">
+                    Crypto investments are risky and highly volatile. Tax may apply. Understand the risks here{' '}
+                    <a href="https://etoro.tw/3PI44nZ" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                      https://etoro.tw/3PI44nZ
+                    </a>
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
         </div>
       </div>
     </div>
