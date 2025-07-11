@@ -185,6 +185,11 @@ const Article = () => {
           currentPrice={45000}
           priceChange={2.5}
         />
+        
+        {/* Header Ad - below header description */}
+        <div className="flex justify-center mt-6 mb-8">
+          <AdBanner width={728} height={90} position="horizontal" />
+        </div>
       </div>
 
       <div className="container mx-auto px-4 pb-8">
@@ -207,14 +212,6 @@ const Article = () => {
             {/* Article Content with Header */}
             <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
               <ArticleHeader article={article} />
-              
-              {/* Header Ad - below header description, before content */}
-              <div className="px-4 md:px-8 py-4 border-b border-gray-600">
-                <div className="flex justify-center">
-                  <AdBanner width={728} height={90} position="horizontal" />
-                </div>
-              </div>
-              
               <ArticleContent content={article.content} tags={article.tags} />
             </Card>
 
