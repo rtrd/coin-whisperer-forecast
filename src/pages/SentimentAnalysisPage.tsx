@@ -115,15 +115,15 @@ const SentimentAnalysisPage = () => {
                       <Brain className="h-8 w-8 text-purple-400" />
                     </div>
                     <h3 className="text-xl font-semibold text-white mb-2">AI Classification</h3>
-                    <p className="text-gray-300 text-sm">BERT and GPT models classify sentiment with 94% accuracy</p>
+                    <p className="text-gray-300 text-sm">Natural language processing algorithms identify sentiment patterns and trends</p>
                   </div>
                   
                   <div className="text-center p-6 bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-xl border border-orange-500/30 hover:shadow-lg transition-all">
                     <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 rounded-full mb-4">
                       <Calculator className="h-8 w-8 text-orange-400" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">Weighted Scoring</h3>
-                    <p className="text-gray-300 text-sm">Compound sentiment score using engagement and influence metrics</p>
+                    <h3 className="text-xl font-semibold text-white mb-2">Data Aggregation</h3>
+                    <p className="text-gray-300 text-sm">Multiple data sources combined to provide comprehensive sentiment insights</p>
                   </div>
                   
                   <div className="text-center p-6 bg-gradient-to-br from-cyan-600/20 to-blue-600/20 rounded-xl border border-cyan-500/30 hover:shadow-lg transition-all">
@@ -145,46 +145,59 @@ const SentimentAnalysisPage = () => {
               </CardContent>
             </Card>
 
-            {/* Sentiment Calculation Formula */}
+            {/* Data Sources & Methodology */}
             <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
               <CardHeader className="bg-gradient-to-r from-green-600/10 to-cyan-600/10 border-b border-gray-600/50">
                 <CardTitle className="text-white flex items-center gap-2 text-2xl">
-                  <Calculator className="h-6 w-6 text-green-400" />
-                  Sentiment Score Calculation
+                  <Lightbulb className="h-6 w-6 text-green-400" />
+                  LunarCrush Data Integration
                 </CardTitle>
-                <p className="text-gray-300 mt-2">Advanced mathematical formula for market sentiment scoring</p>
+                <p className="text-gray-300 mt-2">Powered by LunarCrush's comprehensive social and market data</p>
               </CardHeader>
               <CardContent className="p-6">
-                <div className="bg-gray-900/50 p-6 rounded-lg border border-gray-600/50 mb-6">
-                  <div className="text-center">
-                    <div className="text-2xl font-mono text-green-400 mb-4">
-                      Sentiment Score = Σ(Wi × Si × Ii × Ti) / N
+                <div className="bg-gradient-to-r from-blue-900/20 to-purple-900/20 p-6 rounded-lg border border-blue-500/30 mb-6">
+                  <div className="flex items-start gap-4">
+                    <Shield className="h-8 w-8 text-blue-400 flex-shrink-0 mt-1" />
+                    <div>
+                      <h3 className="text-white font-semibold mb-2">Third-Party Data Provider</h3>
+                      <p className="text-gray-300 text-sm mb-3">
+                        Our sentiment analysis is powered by LunarCrush, a leading cryptocurrency social analytics platform that tracks and analyzes social media activity across multiple platforms.
+                      </p>
+                      <div className="bg-gray-700/30 p-3 rounded-lg">
+                        <p className="text-gray-400 text-xs">
+                          <strong>Disclaimer:</strong> Sentiment data is provided by LunarCrush and processed through their proprietary algorithms. Scores represent social sentiment trends and should not be considered financial advice.
+                        </p>
+                      </div>
                     </div>
-                    <div className="text-gray-300 text-sm mb-6">Where each component is weighted by source reliability and influence</div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <BarChart3 className="h-5 w-5 text-green-400" />
+                      Key Metrics Tracked
+                    </h4>
+                    <ul className="text-gray-300 text-sm space-y-2">
+                      <li>• <span className="text-blue-400">Social Score:</span> Overall social activity level</li>
+                      <li>• <span className="text-green-400">Galaxy Score:</span> Comprehensive performance metric</li>
+                      <li>• <span className="text-purple-400">Alt Rank:</span> Relative ranking among altcoins</li>
+                      <li>• <span className="text-orange-400">Social Volume:</span> Mention frequency across platforms</li>
+                    </ul>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-gray-700/30 p-4 rounded-lg">
-                      <h4 className="text-white font-semibold mb-2">Variables:</h4>
-                      <ul className="text-gray-300 text-sm space-y-1">
-                        <li><span className="text-blue-400 font-mono">Wi</span> = Source weight (0.1-1.0)</li>
-                        <li><span className="text-green-400 font-mono">Si</span> = Sentiment polarity (-1 to +1)</li>
-                        <li><span className="text-purple-400 font-mono">Ii</span> = Influence factor (1-10)</li>
-                        <li><span className="text-orange-400 font-mono">Ti</span> = Time decay (0.5-1.0)</li>
-                        <li><span className="text-cyan-400 font-mono">N</span> = Total weighted mentions</li>
-                      </ul>
-                    </div>
-                    
-                    <div className="bg-gray-700/30 p-4 rounded-lg">
-                      <h4 className="text-white font-semibold mb-2">Source Weights:</h4>
-                      <ul className="text-gray-300 text-sm space-y-1">
-                        <li>Verified Twitter accounts: <span className="text-green-400">0.8-1.0</span></li>
-                        <li>Reddit upvoted posts: <span className="text-blue-400">0.6-0.8</span></li>
-                        <li>News outlets: <span className="text-purple-400">0.7-0.9</span></li>
-                        <li>Crypto forums: <span className="text-orange-400">0.4-0.6</span></li>
-                        <li>General social media: <span className="text-cyan-400">0.2-0.4</span></li>
-                      </ul>
-                    </div>
+                  <div className="bg-gray-700/30 p-4 rounded-lg">
+                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <Globe className="h-5 w-5 text-blue-400" />
+                      Data Sources
+                    </h4>
+                    <ul className="text-gray-300 text-sm space-y-2">
+                      <li>• Twitter/X social mentions and engagement</li>
+                      <li>• Reddit posts and community discussions</li>
+                      <li>• News articles and press releases</li>
+                      <li>• Social media influencer activity</li>
+                      <li>• Community forum discussions</li>
+                    </ul>
                   </div>
                 </div>
               </CardContent>
@@ -288,19 +301,19 @@ const SentimentAnalysisPage = () => {
 
                   <AccordionItem value="how-algorithm-works" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
                     <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
-                      How Does Our Sentiment Algorithm Work?
+                      How is Sentiment Data Processed?
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                      Our algorithm combines BERT (Bidirectional Encoder Representations from Transformers) and GPT models to understand context and sentiment. We process text through tokenization, emotion detection, and polarity scoring. Each mention is weighted by source credibility, user influence, and engagement metrics, then aggregated using our proprietary sentiment score formula.
+                      Pump Parade integrates with LunarCrush's API to access their comprehensive social analytics. LunarCrush uses machine learning algorithms to analyze social media posts, news articles, and community discussions. Their system processes text for sentiment polarity, engagement metrics, and influence scores to generate comprehensive social sentiment data for cryptocurrencies.
                     </AccordionContent>
                   </AccordionItem>
 
                   <AccordionItem value="data-sources" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
                     <AccordionTrigger className="text-white hover:text-green-400 font-medium">
-                      What Data Sources Do We Monitor?
+                      What Data Sources Are Used?
                     </AccordionTrigger>
                     <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                      We monitor 50+ data sources including Twitter/X, Reddit, Telegram, Discord, crypto forums, news outlets (CoinDesk, CoinTelegraph, etc.), YouTube comments, and specialized crypto communities. Each source is weighted differently based on historical accuracy and influence on market movements.
+                      Through LunarCrush's platform, we access data from major social media platforms including Twitter/X, Reddit, and various crypto communities. LunarCrush aggregates social mentions, engagement metrics, and sentiment indicators from these sources to provide comprehensive social analytics for cryptocurrency markets.
                     </AccordionContent>
                   </AccordionItem>
 
