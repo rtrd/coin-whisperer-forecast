@@ -75,6 +75,11 @@ const MotiMeter = () => {
         </div>
 
         <div className="container mx-auto px-4 pb-8">{/* Reduced gap */}
+          {/* Header Ad */}
+          <div className="flex justify-center mb-6">
+            <div id='div-gpt-ad-header-moti' style={{minWidth: '728px', minHeight: '90px'}}></div>
+          </div>
+
           {/* Back to Home Button */}
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">
@@ -86,11 +91,6 @@ const MotiMeter = () => {
                 Back to Home
               </Button>
             </Link>
-          </div>
-
-          {/* Header Ad */}
-          <div className="flex justify-center mb-6">
-            <div id='div-gpt-ad-header-moti' style={{minWidth: '728px', minHeight: '90px'}}></div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -341,7 +341,25 @@ const MotiMeter = () => {
                                         </div>
                                         <div>
                                           <h3 className="text-lg font-semibold text-white">Trade {token.symbol?.toUpperCase() || 'MEME'}</h3>
-                                          <p className="text-gray-400 text-sm">Zero fees • Best rates</p>
+                                          <div className="space-y-1">
+                                            <p className="text-gray-400 text-sm">Zero fees • Best rates</p>
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <div className="flex items-center gap-1 text-yellow-400 cursor-help">
+                                                  <AlertTriangle className="h-3 w-3" />
+                                                  <span className="text-xs">Risk Warning</span>
+                                                </div>
+                                              </TooltipTrigger>
+                                              <TooltipContent className="max-w-xs">
+                                                <p className="text-sm">
+                                                  Crypto investments are risky and highly volatile. Tax may apply. Understand the risks here{' '}
+                                                  <a href="https://etoro.tw/3PI44nZ" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
+                                                    https://etoro.tw/3PI44nZ
+                                                  </a>
+                                                </p>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
@@ -362,7 +380,7 @@ const MotiMeter = () => {
                                       <div className="flex flex-col gap-2">
                                         <Button
                                           size="sm"
-                                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 transition-all duration-200 transform hover:scale-105 animate-pulse"
+                                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
                                         >
                                           Trade Now
                                         </Button>
@@ -373,22 +391,6 @@ const MotiMeter = () => {
                                         >
                                           Learn More
                                         </Button>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <div className="flex items-center justify-center gap-1 text-yellow-400 cursor-help mt-1">
-                                              <AlertTriangle className="h-3 w-3" />
-                                              <span className="text-xs">Risk Warning</span>
-                                            </div>
-                                          </TooltipTrigger>
-                                          <TooltipContent className="max-w-xs">
-                                            <p className="text-sm">
-                                              Crypto investments are risky and highly volatile. Tax may apply. Understand the risks here{' '}
-                                              <a href="https://etoro.tw/3PI44nZ" target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">
-                                                https://etoro.tw/3PI44nZ
-                                              </a>
-                                            </p>
-                                          </TooltipContent>
-                                        </Tooltip>
                                       </div>
                                     </div>
                                   </div>
