@@ -207,8 +207,26 @@ const Article = () => {
             {/* Article Content with Header */}
             <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
               <ArticleHeader article={article} />
+              
+              {/* Header Ad - below header description, before content */}
+              <div className="px-4 md:px-8 py-4 border-b border-gray-600">
+                <div className="flex justify-center">
+                  <AdBanner width={728} height={90} position="horizontal" />
+                </div>
+              </div>
+              
               <ArticleContent content={article.content} tags={article.tags} />
             </Card>
+
+            {/* Square Ads between tags and related articles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+              <div className="flex justify-center">
+                <AdBanner width={300} height={300} position="horizontal" />
+              </div>
+              <div className="flex justify-center">
+                <AdBanner width={300} height={300} position="horizontal" />
+              </div>
+            </div>
 
             {/* Related Articles */}
             <RelatedArticles articles={transformedArticles} />
