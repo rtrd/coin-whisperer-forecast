@@ -17,16 +17,40 @@ const SentimentAnalysisPage = () => {
   ];
 
   // Mock data for MarketWinnersWidget
-  const mockTopGainersAndLosers = {
-    gainers: [
-      { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', price_change_percentage_24h: 5.2 },
-      { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', price_change_percentage_24h: 3.1 }
-    ],
-    losers: [
-      { id: 'cardano', name: 'Cardano', symbol: 'ADA', price_change_percentage_24h: -2.5 },
-      { id: 'solana', name: 'Solana', symbol: 'SOL', price_change_percentage_24h: -1.8 }
-    ]
-  };
+  const mockTopGainersAndLosers = [
+    { 
+      id: 'bitcoin', 
+      name: 'Bitcoin', 
+      symbol: 'btc', 
+      current_price: 45000,
+      price_change_percentage_24h: 5.2,
+      image: 'https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png'
+    },
+    { 
+      id: 'ethereum', 
+      name: 'Ethereum', 
+      symbol: 'eth', 
+      current_price: 2800,
+      price_change_percentage_24h: 3.1,
+      image: 'https://assets.coingecko.com/coins/images/279/thumb/ethereum.png'
+    },
+    { 
+      id: 'cardano', 
+      name: 'Cardano', 
+      symbol: 'ada', 
+      current_price: 0.45,
+      price_change_percentage_24h: -2.5,
+      image: 'https://assets.coingecko.com/coins/images/975/thumb/cardano.png'
+    },
+    { 
+      id: 'solana', 
+      name: 'Solana', 
+      symbol: 'sol', 
+      current_price: 98,
+      price_change_percentage_24h: -1.8,
+      image: 'https://assets.coingecko.com/coins/images/4128/thumb/solana.png'
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
