@@ -11,6 +11,10 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
 import Footer from "@/components/Footer";
+import { getAllCryptos } from "../../utils/api";
+
+const CACHE_KEY = "topGainersAndLosers";
+const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const AIPricePrediction = () => {
   const [marketData, setMarketData] = useState([]);
@@ -20,65 +24,55 @@ const AIPricePrediction = () => {
     { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' },
   ];
 
-  // Fetch real market data
-  useEffect(() => {
-    const fetchMarketData = async () => {
+  // Fetch real market data using the same approach as Article.tsx
+  const fetchAndCacheMarketData = async () => {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
       try {
-        const cryptos = ['bitcoin', 'ethereum', 'cardano', 'solana', 'binancecoin', 'ripple', 'avalanche-2', 'polygon'];
-        const promises = cryptos.map(async (crypto) => {
-          const response = await fetch('/api/coingecko-proxy', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ crypto, timeframe: '1d' }),
-          });
-          
-          if (response.ok) {
-            const data = await response.json();
-            const latestPrice = data[data.length - 1]?.price || 0;
-            const previousPrice = data[data.length - 24]?.price || latestPrice;
-            const priceChange = ((latestPrice - previousPrice) / previousPrice) * 100;
-            
-            return {
-              id: crypto,
-              name: crypto.charAt(0).toUpperCase() + crypto.slice(1),
-              symbol: crypto === 'binancecoin' ? 'BNB' : crypto === 'avalanche-2' ? 'AVAX' : crypto.toUpperCase().slice(0, 3),
-              current_price: latestPrice,
-              price_change_percentage_24h: priceChange,
-              image: `/placeholder.svg`
-            };
-          }
-          return null;
-        });
-
-        const results = await Promise.all(promises);
-        const validData = results.filter(Boolean);
-        setMarketData(validData);
-      } catch (error) {
-        console.error('Error fetching market data:', error);
-        // Fallback to mock data
-        setMarketData([
-          { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', price_change_percentage_24h: 5.2, image: '/placeholder.svg', current_price: 118184 },
-          { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', price_change_percentage_24h: 3.1, image: '/placeholder.svg', current_price: 3007 },
-          { id: 'cardano', name: 'Cardano', symbol: 'ADA', price_change_percentage_24h: -2.5, image: '/placeholder.svg', current_price: 0.72 },
-          { id: 'solana', name: 'Solana', symbol: 'SOL', price_change_percentage_24h: -1.8, image: '/placeholder.svg', current_price: 164 }
-        ]);
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          setMarketData(data);
+          return;
+        }
+      } catch (err) {
+        console.error('Cache parsing error:', err);
       }
-    };
+    }
+    
+    try {
+      const data = await getAllCryptos();
+      setMarketData(data);
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({ data, timestamp: Date.now() })
+      );
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+      // Fallback to mock data
+      setMarketData([
+        { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', price_change_percentage_24h: 5.2, image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png', current_price: 118184 },
+        { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', price_change_percentage_24h: 3.1, image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png', current_price: 3007 },
+        { id: 'cardano', name: 'Cardano', symbol: 'ADA', price_change_percentage_24h: -2.5, image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png', current_price: 0.72 },
+        { id: 'solana', name: 'Solana', symbol: 'SOL', price_change_percentage_24h: -1.8, image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png', current_price: 164 }
+      ]);
+    }
+  };
 
-    fetchMarketData();
+  useEffect(() => {
+    fetchAndCacheMarketData();
   }, []);
 
   const lockedContent = (
     <div className="lg:col-span-3 space-y-8">
       {/* Key Features Section */}
-      <Card className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 border-gray-600 shadow-2xl backdrop-blur-sm">
+      <Card className="bg-card/90 border-border shadow-2xl backdrop-blur-sm">
         <CardContent className="p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4">
               <Brain className="h-10 w-10 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-white mb-3">AI-Powered Predictions</h2>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-foreground mb-3">AI-Powered Predictions</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
               Experience the future of crypto trading with our advanced machine learning algorithms
             </p>
           </div>
@@ -88,118 +82,118 @@ const AIPricePrediction = () => {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
                 <Zap className="h-8 w-8 text-blue-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Real-Time Analysis</h3>
-              <p className="text-gray-300 text-sm">Predictions updated every 15 minutes using live market data</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Real-Time Analysis</h3>
+              <p className="text-muted-foreground text-sm">Predictions updated every 15 minutes using live market data</p>
             </div>
             
             <div className="text-center p-6 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500/30 hover:shadow-lg transition-all">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
                 <Target className="h-8 w-8 text-green-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">95% Accuracy</h3>
-              <p className="text-gray-300 text-sm">Proven track record with industry-leading prediction accuracy</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">95% Accuracy</h3>
+              <p className="text-muted-foreground text-sm">Proven track record with industry-leading prediction accuracy</p>
             </div>
             
             <div className="text-center p-6 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-xl border border-purple-500/30 hover:shadow-lg transition-all">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-500/20 rounded-full mb-4">
                 <Cpu className="h-8 w-8 text-purple-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Multi-Model AI</h3>
-              <p className="text-gray-300 text-sm">LSTM, Random Forest, and Transformer models working together</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Multi-Model AI</h3>
+              <p className="text-muted-foreground text-sm">LSTM, Random Forest, and Transformer models working together</p>
             </div>
             
             <div className="text-center p-6 bg-gradient-to-br from-orange-600/20 to-red-600/20 rounded-xl border border-orange-500/30 hover:shadow-lg transition-all">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-500/20 rounded-full mb-4">
                 <Shield className="h-8 w-8 text-orange-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Risk Assessment</h3>
-              <p className="text-gray-300 text-sm">Confidence scores and risk analysis for informed decisions</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Risk Assessment</h3>
+              <p className="text-muted-foreground text-sm">Confidence scores and risk analysis for informed decisions</p>
             </div>
             
             <div className="text-center p-6 bg-gradient-to-br from-cyan-600/20 to-blue-600/20 rounded-xl border border-cyan-500/30 hover:shadow-lg transition-all">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-cyan-500/20 rounded-full mb-4">
                 <ChartLine className="h-8 w-8 text-cyan-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">30+ Data Sources</h3>
-              <p className="text-gray-300 text-sm">Comprehensive market analysis from premium APIs and exchanges</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">30+ Data Sources</h3>
+              <p className="text-muted-foreground text-sm">Comprehensive market analysis from premium APIs and exchanges</p>
             </div>
             
             <div className="text-center p-6 bg-gradient-to-br from-pink-600/20 to-rose-600/20 rounded-xl border border-pink-500/30 hover:shadow-lg transition-all">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-500/20 rounded-full mb-4">
                 <Users className="h-8 w-8 text-pink-400" />
               </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Community Driven</h3>
-              <p className="text-gray-300 text-sm">Social sentiment analysis from Twitter, Reddit, and news sources</p>
+              <h3 className="text-xl font-semibold text-foreground mb-2">Community Driven</h3>
+              <p className="text-muted-foreground text-sm">Social sentiment analysis from Twitter, Reddit, and news sources</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* AI Price Prediction FAQ */}
-      <Card className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 border-gray-600 shadow-xl backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-b border-gray-600/50">
+      <Card className="bg-card/90 border-border shadow-xl backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-b border-border">
           <div className="flex items-center gap-3 mb-2">
             <Brain className="h-8 w-8 text-blue-400" />
             <div>
-              <CardTitle className="text-2xl text-white">
+              <CardTitle className="text-2xl text-foreground">
                 How Pump Parade's AI Price Prediction Works
               </CardTitle>
-              <p className="text-gray-300 mt-2">Get instant crypto price predictions powered by advanced machine learning</p>
+              <p className="text-muted-foreground mt-2">Get instant crypto price predictions powered by advanced machine learning</p>
             </div>
           </div>
         </CardHeader>
         <CardContent className="p-6">
           <Accordion type="single" collapsible className="space-y-3">
-            <AccordionItem value="what-is-ai-prediction" className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
-              <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
+            <AccordionItem value="what-is-ai-prediction" className="bg-muted/30 rounded-lg px-4 border border-border hover:border-blue-500/50 transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-blue-400 font-medium">
                 What is AI Price Prediction on Pump Parade?
               </AccordionTrigger>
-              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pt-4 leading-relaxed">
                 Pump Parade's AI Price Prediction uses advanced machine learning algorithms to analyze cryptocurrency market data and provide real-time price forecasts. Our system processes thousands of data points including price history, volume, market sentiment, and technical indicators to generate accurate predictions for short-term and long-term price movements.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="how-it-works" className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
-              <AccordionTrigger className="text-white hover:text-green-400 font-medium">
+            <AccordionItem value="how-it-works" className="bg-muted/30 rounded-lg px-4 border border-border hover:border-green-500/50 transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-green-400 font-medium">
                 How Does Our AI Algorithm Work?
               </AccordionTrigger>
-              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pt-4 leading-relaxed">
                 Our AI system combines multiple neural network architectures including LSTM (Long Short-Term Memory) networks for time series analysis, Random Forest for pattern recognition, and Transformer models for complex market behavior understanding. The algorithm analyzes historical price data, trading volumes, social sentiment, and macro-economic factors to generate predictions with confidence scores.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="accuracy" className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg px-4 border border-gray-600/50 hover:border-purple-500/50 transition-colors">
-              <AccordionTrigger className="text-white hover:text-purple-400 font-medium">
+            <AccordionItem value="accuracy" className="bg-muted/30 rounded-lg px-4 border border-border hover:border-purple-500/50 transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-purple-400 font-medium">
                 How Accurate Are the Predictions?
               </AccordionTrigger>
-              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pt-4 leading-relaxed">
                 Our AI models achieve accuracy rates of 85-95% for short-term predictions (24-48 hours) and 70-85% for medium-term forecasts (1-7 days). The accuracy varies by cryptocurrency, with major coins like Bitcoin and Ethereum showing higher prediction accuracy due to more stable trading patterns and larger data sets.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="data-sources" className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg px-4 border border-gray-600/50 hover:border-orange-500/50 transition-colors">
-              <AccordionTrigger className="text-white hover:text-orange-400 font-medium">
+            <AccordionItem value="data-sources" className="bg-muted/30 rounded-lg px-4 border border-border hover:border-orange-500/50 transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-orange-400 font-medium">
                 What Data Sources Do We Use?
               </AccordionTrigger>
-              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pt-4 leading-relaxed">
                 We aggregate data from 30+ premium APIs including major exchanges (Binance, Coinbase, Kraken), social sentiment from Twitter and Reddit, on-chain analytics, Google Trends, fear & greed index, and macro-economic indicators. This comprehensive data approach ensures our predictions consider all market-moving factors.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="how-to-use" className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg px-4 border border-gray-600/50 hover:border-cyan-500/50 transition-colors">
-              <AccordionTrigger className="text-white hover:text-cyan-400 font-medium">
+            <AccordionItem value="how-to-use" className="bg-muted/30 rounded-lg px-4 border border-border hover:border-cyan-500/50 transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-cyan-400 font-medium">
                 How to Use AI Predictions for Trading?
               </AccordionTrigger>
-              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pt-4 leading-relaxed">
                 Our AI predictions show expected price movements with confidence levels. Use predictions as one factor in your trading decisions - combine them with your own analysis, risk management, and never invest more than you can afford to lose. Higher confidence scores (above 80%) indicate stronger conviction in the prediction.
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="updates" className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg px-4 border border-gray-600/50 hover:border-pink-500/50 transition-colors">
-              <AccordionTrigger className="text-white hover:text-pink-400 font-medium">
+            <AccordionItem value="updates" className="bg-muted/30 rounded-lg px-4 border border-border hover:border-pink-500/50 transition-colors">
+              <AccordionTrigger className="text-foreground hover:text-pink-400 font-medium">
                 How Often Are Predictions Updated?
               </AccordionTrigger>
-              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+              <AccordionContent className="text-muted-foreground pt-4 leading-relaxed">
                 Our AI models run continuously, updating predictions every 15 minutes during active trading hours. This ensures you always have the most current market analysis based on the latest price movements, volume changes, and sentiment shifts.
               </AccordionContent>
             </AccordionItem>
@@ -208,27 +202,27 @@ const AIPricePrediction = () => {
       </Card>
 
       {/* Live Predictions */}
-      <Card className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 border-gray-600 shadow-xl backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-green-600/10 to-blue-600/10 border-b border-gray-600/50">
-          <CardTitle className="text-white flex items-center gap-2 text-xl">
+      <Card className="bg-card/90 border-border shadow-xl backdrop-blur-sm">
+        <CardHeader className="bg-gradient-to-r from-green-600/10 to-blue-600/10 border-b border-border">
+          <CardTitle className="text-foreground flex items-center gap-2 text-xl">
             <TrendingUp className="h-6 w-6 text-green-400" />
             Live AI Predictions
           </CardTitle>
-          <p className="text-gray-300 text-sm mt-1">Real-time price predictions updated every 15 minutes</p>
+          <p className="text-muted-foreground text-sm mt-1">Real-time price predictions updated every 15 minutes</p>
         </CardHeader>
         <CardContent className="p-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {['Bitcoin', 'Ethereum', 'Cardano', 'Solana'].map((crypto, index) => (
-              <div key={crypto} className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-700/50 to-gray-600/50 rounded-lg border border-gray-600/50 hover:border-green-500/50 transition-all">
+              <div key={crypto} className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border border-border hover:border-green-500/50 transition-all">
                 <div>
-                  <h4 className="text-white font-semibold text-lg">{crypto}</h4>
-                  <p className="text-gray-400 text-sm">24h prediction</p>
+                  <h4 className="text-foreground font-semibold text-lg">{crypto}</h4>
+                  <p className="text-muted-foreground text-sm">24h prediction</p>
                 </div>
                 <div className="text-right">
                   <p className="text-green-400 font-bold text-lg">+{(Math.random() * 10 + 2).toFixed(1)}%</p>
                   <div className="flex items-center gap-2 mt-1">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <p className="text-gray-400 text-xs">Confidence: {(85 + Math.random() * 10).toFixed(0)}%</p>
+                    <p className="text-muted-foreground text-xs">Confidence: {(85 + Math.random() * 10).toFixed(0)}%</p>
                   </div>
                 </div>
               </div>
@@ -255,7 +249,7 @@ const AIPricePrediction = () => {
         {/* Back Button */}
         <div className="flex items-center gap-4 mb-6">
           <Link to="/">
-            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+            <Button variant="outline" className="bg-card border-border text-foreground hover:bg-muted">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
