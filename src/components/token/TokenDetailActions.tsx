@@ -37,7 +37,7 @@ export const TokenDetailActions: React.FC<TokenDetailActionsProps> = ({
                 ${currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col items-center gap-2">
               <div className="flex gap-3">
                 <Button
                   onClick={handleBuy}
@@ -56,7 +56,7 @@ export const TokenDetailActions: React.FC<TokenDetailActionsProps> = ({
               </div>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <AlertTriangle className="h-4 w-4 text-yellow-400 cursor-help" />
+                  <span className="text-xs text-yellow-400 cursor-help">Risk Warning</span>
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
                   <p className="text-sm">
