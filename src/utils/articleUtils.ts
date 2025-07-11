@@ -37,6 +37,24 @@ export const formatArticleForDisplay = (article: any) => {
   };
 };
 
+export const getFeaturedArticle = (articles: any[]) => {
+  // Look for articles with "featured" tag (case-insensitive)
+  const featuredArticles = articles.filter(article => 
+    Array.isArray(article.tags) && 
+    article.tags.some((tag: string) => 
+      typeof tag === 'string' && tag.toLowerCase().includes('featured')
+    )
+  );
+
+  // If featured articles exist, return the most recent one
+  if (featuredArticles.length > 0) {
+    return featuredArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+  }
+
+  // Fallback to first article if no featured articles
+  return articles[0] || null;
+};
+
 export const getRelatedArticles = (currentArticle: any, allArticles: any[]) => {
   if (!currentArticle || !Array.isArray(currentArticle.tags)) return [];
 

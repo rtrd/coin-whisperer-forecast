@@ -6,7 +6,7 @@ import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
 import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
 import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { getWordPressPost } from "../../utils/api";
-import { formatArticleForDisplay } from "@/utils/articleUtils";
+import { formatArticleForDisplay, getFeaturedArticle } from "@/utils/articleUtils";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
@@ -134,8 +134,8 @@ const Blog = () => {
     }
   };
 
-  // Mock data for demonstration - in real implementation, these would come from analytics
-  const featuredArticle = articles[0] || null;
+  // Select featured article based on "Featured" tag or fallback to first article
+  const featuredArticle = getFeaturedArticle(articles);
   const trendingArticles = articles.slice(0, 5); // Changed to get 5 items
   const latestArticles = articles.slice(0, 8);
   console.log("Article:", articles.length);
