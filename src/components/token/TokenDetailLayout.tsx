@@ -89,6 +89,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             prediction={prediction}
             showPrediction={showPrediction}
             cryptoId={cryptoId}
+            currentPrice={currentPrice}
             timeframe={timeframe}
             setTimeframe={setTimeframe}
             predictionDays={predictionDays}
