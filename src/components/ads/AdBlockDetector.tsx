@@ -7,27 +7,58 @@ export const AdBlockDetector: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Create a test element that adblock would typically hide
-    const testAd = document.createElement('div');
-    testAd.innerHTML = '&nbsp;';
-    testAd.className = 'adsbox';
-    testAd.style.position = 'absolute';
-    testAd.style.left = '-10000px';
-    testAd.style.width = '1px';
-    testAd.style.height = '1px';
-    
-    document.body.appendChild(testAd);
+    // Simple and reliable detection method
+    const detectAdBlock = () => {
+      // Method 1: Check if ads are being blocked by trying to create ad-like elements
+      const bait = document.createElement('div');
+      bait.setAttribute('class', 'pub_300x250 pub_300x250m pub_728x90 text-ad textAd text_ad text_ads text-ads text-ad-links ad-text adSense adnxs adnxs');
+      bait.setAttribute('style', 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -1000px !important;');
+      document.body.appendChild(bait);
 
-    // Check if the element is hidden by adblock
-    setTimeout(() => {
-      const isBlocked = testAd.offsetHeight === 0 || 
-                       window.getComputedStyle(testAd).display === 'none' ||
-                       window.getComputedStyle(testAd).visibility === 'hidden';
+      // Check immediately and after a delay
+      const checkBlocked = () => {
+        const isBlocked = bait.offsetParent === null || 
+                         bait.offsetHeight === 0 || 
+                         bait.offsetLeft === 0 || 
+                         bait.offsetTop === 0 || 
+                         bait.offsetWidth === 0 || 
+                         bait.clientHeight === 0 || 
+                         bait.clientWidth === 0;
+        
+        setIsAdBlockDetected(isBlocked);
+        setIsVisible(isBlocked);
+        
+        if (document.body.contains(bait)) {
+          document.body.removeChild(bait);
+        }
+      };
+
+      setTimeout(checkBlocked, 100);
       
-      setIsAdBlockDetected(isBlocked);
-      setIsVisible(isBlocked);
-      document.body.removeChild(testAd);
-    }, 100);
+      // Also try the Google Ads detection
+      if (window.getComputedStyle) {
+        const ads = document.createElement('ins');
+        ads.className = 'adsbygoogle';
+        ads.style.display = 'block';
+        ads.style.position = 'absolute';
+        ads.style.top = '-1px';
+        ads.style.height = '1px';
+        document.body.appendChild(ads);
+        
+        setTimeout(() => {
+          const isGoogleBlocked = ads.style.display === 'none' || ads.clientHeight === 0;
+          if (isGoogleBlocked) {
+            setIsAdBlockDetected(true);
+            setIsVisible(true);
+          }
+          if (document.body.contains(ads)) {
+            document.body.removeChild(ads);
+          }
+        }, 200);
+      }
+    };
+
+    detectAdBlock();
   }, []);
 
   if (!isVisible) return null;
