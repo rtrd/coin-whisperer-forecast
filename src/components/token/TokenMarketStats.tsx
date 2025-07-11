@@ -91,7 +91,7 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
       label: "30d Change",
       value: `${
         marketData.price_change_percentage_30d_in_currency >= 0 ? "+" : ""
-      }${marketData.price_change_percentage_30d_in_currency.toFixed(2)}%`,
+      }${(marketData.price_change_percentage_30d_in_currency ?? 0).toFixed(2)}%`,
       valueColor:
         marketData.price_change_percentage_30d_in_currency >= 0
           ? "text-green-400"
