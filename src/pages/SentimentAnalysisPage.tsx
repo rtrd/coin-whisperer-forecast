@@ -204,42 +204,42 @@ const SentimentAnalysisPage = () => {
             </Card>
 
             {/* Overall Market Sentiment */}
-            <Card className="bg-gradient-to-br from-gray-800/80 to-purple-900/30 border-purple-500/30 shadow-2xl backdrop-blur-sm overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-purple-500/5" />
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-purple-400/10 to-transparent rounded-full translate-y-12 -translate-x-12" />
+            <Card className="bg-gradient-to-br from-card/80 to-card/30 border-border shadow-2xl backdrop-blur-sm overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-accent/5" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-16 translate-x-16" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-accent/10 to-transparent rounded-full translate-y-12 -translate-x-12" />
               
-              <CardHeader className="relative z-10 bg-gradient-to-r from-purple-600/10 to-green-600/10 border-b border-purple-500/20">
-                <CardTitle className="text-white flex items-center gap-3 text-2xl">
-                  <div className="p-2 bg-gradient-to-br from-purple-500/20 to-green-500/20 rounded-xl">
-                    <Brain className="h-6 w-6 text-purple-400" />
+              <CardHeader className="relative z-10 bg-gradient-to-r from-primary/10 to-accent/10 border-b border-border">
+                <CardTitle className="text-foreground flex items-center gap-3 text-2xl">
+                  <div className="p-2 bg-gradient-to-br from-primary/20 to-accent/20 rounded-xl">
+                    <Brain className="h-6 w-6 text-primary" />
                   </div>
                   Overall Market Sentiment
-                  <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 shadow-lg animate-pulse">
+                  <Badge className="bg-gradient-to-r from-primary to-accent text-primary-foreground border-0 shadow-lg animate-pulse">
                     🚀 Bullish
                   </Badge>
                 </CardTitle>
-                <CardDescription className="text-gray-300 text-lg">
+                <CardDescription className="text-muted-foreground text-lg">
                   Real-time sentiment analysis across multiple data sources
                 </CardDescription>
               </CardHeader>
               <CardContent className="relative z-10 p-8">
                 <div className="text-center mb-8">
                   <div className="relative inline-block">
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-emerald-400/20 rounded-full blur-2xl scale-150" />
-                    <div className="relative text-7xl font-black bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-3 animate-pulse">
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-2xl scale-150" />
+                    <div className="relative text-7xl font-black bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent mb-3 animate-pulse">
                       72
                     </div>
                   </div>
-                  <div className="text-gray-200 text-xl font-semibold mb-4">Market Sentiment Score</div>
+                  <div className="text-foreground text-xl font-semibold mb-4">Market Sentiment Score</div>
                   <div className="relative max-w-md mx-auto">
-                    <div className="h-4 bg-gray-700 rounded-full overflow-hidden shadow-inner">
+                    <div className="h-4 bg-muted rounded-full overflow-hidden shadow-inner">
                       <div 
-                        className="h-full bg-gradient-to-r from-green-400 via-emerald-400 to-green-500 rounded-full transition-all duration-1000 ease-out shadow-lg"
+                        className="h-full bg-gradient-to-r from-primary via-accent to-primary rounded-full transition-all duration-1000 ease-out shadow-lg"
                         style={{ width: '72%' }}
                       />
                     </div>
-                    <div className="flex justify-between text-xs text-gray-400 mt-2">
+                    <div className="flex justify-between text-xs text-muted-foreground mt-2">
                       <span>Bearish</span>
                       <span>Neutral</span>
                       <span>Bullish</span>
@@ -248,122 +248,103 @@ const SentimentAnalysisPage = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="group text-center p-6 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-xl border border-green-500/30 hover:border-green-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-green-500/20">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-green-500/20 rounded-full mb-3 group-hover:scale-110 transition-transform">
-                      <TrendingUp className="h-6 w-6 text-green-400" />
+                  <div className="group text-center p-6 bg-gradient-to-br from-primary/10 to-accent/10 rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/20">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/20 rounded-full mb-3 group-hover:scale-110 transition-transform">
+                      <TrendingUp className="h-6 w-6 text-primary" />
                     </div>
-                    <div className="text-2xl font-bold text-green-400 mb-1">Bullish</div>
-                    <div className="text-sm text-gray-400">Primary Trend</div>
+                    <div className="text-2xl font-bold text-primary mb-1">Bullish</div>
+                    <div className="text-sm text-muted-foreground">Primary Trend</div>
                   </div>
-                  <div className="group text-center p-6 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-blue-500/20 rounded-full mb-3 group-hover:scale-110 transition-transform">
-                      <Target className="h-6 w-6 text-blue-400" />
+                  <div className="group text-center p-6 bg-gradient-to-br from-accent/10 to-primary/10 rounded-xl border border-border hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/20">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-accent/20 rounded-full mb-3 group-hover:scale-110 transition-transform">
+                      <Target className="h-6 w-6 text-accent-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-blue-400 mb-1">High</div>
-                    <div className="text-sm text-gray-400">Confidence Level</div>
+                    <div className="text-2xl font-bold text-accent-foreground mb-1">High</div>
+                    <div className="text-sm text-muted-foreground">Confidence Level</div>
                   </div>
-                  <div className="group text-center p-6 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20">
-                    <div className="inline-flex items-center justify-center w-12 h-12 bg-purple-500/20 rounded-full mb-3 group-hover:scale-110 transition-transform">
-                      <Zap className="h-6 w-6 text-purple-400" />
+                  <div className="group text-center p-6 bg-gradient-to-br from-secondary/10 to-primary/10 rounded-xl border border-border hover:border-secondary/50 transition-all duration-300 hover:shadow-lg hover:shadow-secondary/20">
+                    <div className="inline-flex items-center justify-center w-12 h-12 bg-secondary/20 rounded-full mb-3 group-hover:scale-110 transition-transform">
+                      <Zap className="h-6 w-6 text-secondary-foreground" />
                     </div>
-                    <div className="text-2xl font-bold text-purple-400 mb-1">Rising</div>
-                    <div className="text-sm text-gray-400">24h Change</div>
+                    <div className="text-2xl font-bold text-secondary-foreground mb-1">Rising</div>
+                    <div className="text-sm text-muted-foreground">24h Change</div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Top Cryptocurrencies by Sentiment */}
-            <Card className="bg-gradient-to-br from-gray-800/80 to-blue-900/30 border-blue-500/30 shadow-2xl backdrop-blur-sm overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-500/5" />
-              <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-blue-400/10 to-transparent rounded-full -translate-y-20 -translate-x-20" />
+            <Card className="bg-gradient-to-br from-card/80 to-card/30 border-border shadow-2xl backdrop-blur-sm overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-secondary/5" />
+              <div className="absolute top-0 left-0 w-40 h-40 bg-gradient-to-br from-primary/10 to-transparent rounded-full -translate-y-20 -translate-x-20" />
               
-              <CardHeader className="relative z-10 bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-b border-blue-500/20">
-                <CardTitle className="text-white flex items-center gap-3 text-2xl">
-                  <div className="p-2 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-xl">
-                    <BarChart3 className="h-6 w-6 text-blue-400" />
+              <CardHeader className="relative z-10 bg-gradient-to-r from-primary/10 to-secondary/10 border-b border-border">
+                <CardTitle className="text-foreground flex items-center gap-3 text-2xl">
+                  <div className="p-2 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl">
+                    <BarChart3 className="h-6 w-6 text-primary" />
                   </div>
                   Top Cryptocurrencies by Sentiment
-                  <Badge variant="outline" className="text-blue-400 border-blue-400/50 bg-blue-400/10">
+                  <Badge variant="outline" className="text-primary border-border bg-primary/10">
                     Live Rankings
                   </Badge>
                 </CardTitle>
-                <CardDescription className="text-gray-300">
+                <CardDescription className="text-muted-foreground">
                   Real-time sentiment scores and trends for major cryptocurrencies
                 </CardDescription>
               </CardHeader>
               <CardContent className="relative z-10 p-6">
                 <div className="space-y-4">
                   {[
-                    { name: 'Bitcoin', symbol: 'BTC', sentiment: 78, trend: 'up', icon: '₿', color: 'orange' },
-                    { name: 'Ethereum', symbol: 'ETH', sentiment: 72, trend: 'up', icon: 'Ξ', color: 'blue' },
-                    { name: 'Solana', symbol: 'SOL', sentiment: 68, trend: 'up', icon: '◎', color: 'purple' },
-                    { name: 'Cardano', symbol: 'ADA', sentiment: 45, trend: 'down', icon: '₳', color: 'red' },
-                    { name: 'Polygon', symbol: 'MATIC', sentiment: 62, trend: 'up', icon: '⬟', color: 'green' }
+                    { name: 'Bitcoin', symbol: 'BTC', sentiment: 78, trend: 'up', icon: '₿', position: 1 },
+                    { name: 'Ethereum', symbol: 'ETH', sentiment: 72, trend: 'up', icon: 'Ξ', position: 2 },
+                    { name: 'Solana', symbol: 'SOL', sentiment: 68, trend: 'up', icon: '◎', position: 3 },
+                    { name: 'Cardano', symbol: 'ADA', sentiment: 45, trend: 'down', icon: '₳', position: 4 },
+                    { name: 'Polygon', symbol: 'MATIC', sentiment: 62, trend: 'up', icon: '⬟', position: 5 }
                   ].map((crypto, index) => {
-                    const getColorClasses = (color: string, sentiment: number) => {
-                      const isPositive = sentiment >= 60;
-                      switch (color) {
-                        case 'orange':
-                          return isPositive ? 'from-orange-500/20 to-yellow-500/20 border-orange-500/30 hover:border-orange-400/50' : 'from-orange-500/10 to-red-500/10 border-orange-500/20 hover:border-orange-400/30';
-                        case 'blue':
-                          return isPositive ? 'from-blue-500/20 to-cyan-500/20 border-blue-500/30 hover:border-blue-400/50' : 'from-blue-500/10 to-gray-500/10 border-blue-500/20 hover:border-blue-400/30';
-                        case 'purple':
-                          return isPositive ? 'from-purple-500/20 to-pink-500/20 border-purple-500/30 hover:border-purple-400/50' : 'from-purple-500/10 to-gray-500/10 border-purple-500/20 hover:border-purple-400/30';
-                        case 'red':
-                          return 'from-red-500/10 to-orange-500/10 border-red-500/20 hover:border-red-400/30';
-                        case 'green':
-                          return isPositive ? 'from-green-500/20 to-emerald-500/20 border-green-500/30 hover:border-green-400/50' : 'from-green-500/10 to-gray-500/10 border-green-500/20 hover:border-green-400/30';
-                        default:
-                          return 'from-gray-500/20 to-gray-600/20 border-gray-500/30 hover:border-gray-400/50';
-                      }
-                    };
-
-                    const getProgressColor = (sentiment: number) => {
-                      if (sentiment >= 70) return 'from-green-400 to-emerald-500';
-                      if (sentiment >= 60) return 'from-blue-400 to-cyan-500';
-                      if (sentiment >= 50) return 'from-yellow-400 to-orange-500';
-                      return 'from-red-400 to-orange-500';
-                    };
+                    const isPositive = crypto.sentiment >= 60;
+                    const isTop3 = crypto.position <= 3;
 
                     return (
                       <div 
                         key={crypto.symbol} 
-                        className={`group flex items-center justify-between p-5 bg-gradient-to-r ${getColorClasses(crypto.color, crypto.sentiment)} rounded-xl border transition-all duration-300 hover:shadow-lg`}
+                        className={`group flex items-center justify-between p-5 bg-gradient-to-r from-card to-muted/50 rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 ${isTop3 ? 'ring-1 ring-primary/30' : ''}`}
                         style={{ animationDelay: `${index * 100}ms` }}
                       >
                         <div className="flex items-center gap-4">
-                          <div className="flex items-center justify-center w-12 h-12 bg-white/10 rounded-full text-xl font-bold text-white group-hover:scale-110 transition-transform">
+                          <div className="flex items-center justify-center w-8 h-8 bg-muted rounded-full text-sm font-bold text-muted-foreground">
+                            #{crypto.position}
+                          </div>
+                          <div className="flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full text-xl font-bold text-foreground group-hover:scale-110 transition-transform">
                             {crypto.icon}
                           </div>
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-white font-semibold text-lg">{crypto.name}</span>
-                              <Badge variant="secondary" className="text-xs bg-white/10 text-gray-300 border-0">
+                              <span className="text-foreground font-semibold text-lg">{crypto.name}</span>
+                              <Badge variant="secondary" className="text-xs">
                                 {crypto.symbol}
                               </Badge>
                             </div>
-                            <div className="text-gray-400 text-sm">#{index + 1} by sentiment</div>
+                            <div className="text-muted-foreground text-sm">Sentiment rank #{crypto.position}</div>
                           </div>
                         </div>
                         <div className="flex items-center gap-4">
                           <div className="text-right">
-                            <div className="text-white font-bold text-lg">{crypto.sentiment}</div>
-                            <div className="text-gray-400 text-xs">Sentiment Score</div>
+                            <div className="text-foreground font-bold text-lg">{crypto.sentiment}</div>
+                            <div className="text-muted-foreground text-xs">Score</div>
                           </div>
                           <div className="relative w-32">
-                            <div className="h-3 bg-gray-700/50 rounded-full overflow-hidden">
+                            <div className="h-3 bg-muted rounded-full overflow-hidden">
                               <div 
-                                className={`h-full bg-gradient-to-r ${getProgressColor(crypto.sentiment)} rounded-full transition-all duration-1000 ease-out`}
+                                className={`h-full ${isPositive ? 'bg-gradient-to-r from-primary to-accent' : 'bg-gradient-to-r from-muted-foreground to-muted'} rounded-full transition-all duration-1000 ease-out`}
                                 style={{ width: `${crypto.sentiment}%` }}
                               />
                             </div>
                           </div>
-                          <div className={`p-2 rounded-full ${crypto.trend === 'up' ? 'bg-green-500/20' : 'bg-red-500/20'} group-hover:scale-110 transition-transform`}>
+                          <div className={`p-2 rounded-full ${crypto.trend === 'up' ? 'bg-primary/20' : 'bg-destructive/20'} group-hover:scale-110 transition-transform`}>
                             {crypto.trend === 'up' ? (
-                              <TrendingUp className="h-5 w-5 text-green-400" />
+                              <TrendingUp className="h-5 w-5 text-primary" />
                             ) : (
-                              <TrendingUp className="h-5 w-5 text-red-400 rotate-180" />
+                              <TrendingUp className="h-5 w-5 text-destructive rotate-180" />
                             )}
                           </div>
                         </div>
