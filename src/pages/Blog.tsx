@@ -94,7 +94,7 @@ const Blog = () => {
 
         setArticles(formattedArticles);
 
-        // Group articles by category, excluding "General" and empty categories
+        // Group articles by category, excluding "General", "Uncategorized", and "Featured" categories
         const categoryGroups: { [key: string]: any[] } = {};
         formattedArticles.forEach((article) => {
           console.log(article);
@@ -102,7 +102,8 @@ const Blog = () => {
           if (
             category &&
             category !== "General" &&
-            category !== "Uncategorized"
+            category !== "Uncategorized" &&
+            category !== "Featured"
           ) {
             if (!categoryGroups[category]) {
               categoryGroups[category] = [];

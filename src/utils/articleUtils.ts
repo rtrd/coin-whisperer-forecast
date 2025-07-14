@@ -60,44 +60,39 @@ export const getFeaturedArticle = (articles: any[]) => {
   console.log("🎯 FEATURED ARTICLE DETECTION");
   console.log("📊 Finding featured article from", articles.length, "articles");
   
-  // Debug: Log all articles and their tags
+  // Debug: Log all articles and their categories
   articles.forEach((article, index) => {
     console.log(`📄 Article ${index + 1}: "${article.title}"`);
-    console.log(`   Tags: [${article.tags?.join(', ')}]`);
+    console.log(`   Category: ${article.category}`);
     console.log(`   Date: ${article.date}`);
   });
   
-  // Look for articles with "Featured" tag (exact match with capital F)
-  console.log("🔍 Looking for articles with 'Featured' tag (exact match)...");
+  // Look for articles with "Featured" category (exact match with capital F)
+  console.log("🔍 Looking for articles with 'Featured' category (exact match)...");
   const featuredArticles = articles.filter(article => {
-    const hasFeaturedTag = Array.isArray(article.tags) && 
-      article.tags.some((tag: string) => 
-        typeof tag === 'string' && tag === 'Featured'
-      );
+    const hasFeaturedCategory = article.category === 'Featured';
     
-    if (hasFeaturedTag) {
-      console.log("✅ Found featured article:", article.title, "with tags:", article.tags);
+    if (hasFeaturedCategory) {
+      console.log("✅ Found featured article:", article.title, "with category:", article.category);
     }
     
-    return hasFeaturedTag;
+    return hasFeaturedCategory;
   });
 
-  console.log(`📊 Found ${featuredArticles.length} articles tagged as 'Featured'`);
+  console.log(`📊 Found ${featuredArticles.length} articles in 'Featured' category`);
 
   // If no exact match, try case-insensitive search
   if (featuredArticles.length === 0) {
     console.log("🔍 No exact 'Featured' match, trying case-insensitive search...");
     const caseInsensitiveFeatured = articles.filter(article => {
-      const hasFeaturedTag = Array.isArray(article.tags) && 
-        article.tags.some((tag: string) => 
-          typeof tag === 'string' && tag.toLowerCase().includes('featured')
-        );
+      const hasFeaturedCategory = typeof article.category === 'string' && 
+        article.category.toLowerCase() === 'featured';
       
-      if (hasFeaturedTag) {
-        console.log("⚠️ Found case-insensitive featured article:", article.title, "with tags:", article.tags);
+      if (hasFeaturedCategory) {
+        console.log("⚠️ Found case-insensitive featured article:", article.title, "with category:", article.category);
       }
       
-      return hasFeaturedTag;
+      return hasFeaturedCategory;
     });
     
     if (caseInsensitiveFeatured.length > 0) {
@@ -117,7 +112,7 @@ export const getFeaturedArticle = (articles: any[]) => {
   console.log("❌ No featured articles found, using first article as fallback");
   const fallback = articles[0] || null;
   if (fallback) {
-    console.log("📄 Fallback article:", fallback.title, "with tags:", fallback.tags);
+    console.log("📄 Fallback article:", fallback.title, "with category:", fallback.category);
   }
   return fallback;
 };
