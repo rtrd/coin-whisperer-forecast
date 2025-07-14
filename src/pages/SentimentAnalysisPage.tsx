@@ -505,9 +505,10 @@ const SentimentAnalysisPage = () => {
                     };
 
                     return (
-                      <div 
+                      <Link 
                         key={crypto.symbol} 
-                        className={`group flex items-center justify-between p-5 bg-gradient-to-r ${getGradientClasses(crypto.color, crypto.sentiment)} rounded-xl border transition-all duration-300 hover:shadow-lg ${isTop3 ? 'ring-1 ring-yellow-400/30' : ''}`}
+                        to={`/token/${crypto.id}`}
+                        className={`group flex items-center justify-between p-5 bg-gradient-to-r ${getGradientClasses(crypto.color, crypto.sentiment)} rounded-xl border transition-all duration-300 hover:shadow-lg cursor-pointer ${isTop3 ? 'ring-1 ring-yellow-400/30' : ''}`}
                         style={{ animationDelay: `${index * 100}ms` }}
                       >
                         <div className="flex items-center gap-4">
@@ -545,7 +546,7 @@ const SentimentAnalysisPage = () => {
                             )}
                           </div>
                         </div>
-                      </div>
+                      </Link>
                     );
                   })}
                   </div>
