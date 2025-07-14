@@ -10,6 +10,7 @@ import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
+import { LiveAIPredictions } from "@/components/LiveAIPredictions";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 
@@ -202,34 +203,7 @@ const AIPricePrediction = () => {
       </Card>
 
       {/* Live Predictions */}
-      <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
-        <CardHeader className="bg-gradient-to-r from-green-600/10 to-blue-600/10 border-b border-gray-600/50">
-          <CardTitle className="text-white flex items-center gap-2 text-xl">
-            <TrendingUp className="h-6 w-6 text-green-400" />
-            Live AI Predictions
-          </CardTitle>
-          <p className="text-gray-300 text-sm mt-1">Real-time price predictions updated every 15 minutes</p>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {['Bitcoin', 'Ethereum', 'Cardano', 'Solana'].map((crypto, index) => (
-              <div key={crypto} className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg border border-gray-600/50 hover:border-green-500/50 transition-all">
-                <div>
-                  <h4 className="text-white font-semibold text-lg">{crypto}</h4>
-                  <p className="text-gray-400 text-sm">24h prediction</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-green-400 font-bold text-lg">+{(Math.random() * 10 + 2).toFixed(1)}%</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <p className="text-gray-400 text-xs">Confidence: {(85 + Math.random() * 10).toFixed(0)}%</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      <LiveAIPredictions />
     </div>
   );
 

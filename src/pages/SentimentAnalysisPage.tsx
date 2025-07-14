@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,48 +10,56 @@ import { AdUnit } from "@/components/ads/AdService";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
+import { getAllCryptos } from "../../utils/api";
 
 const SentimentAnalysisPage = () => {
+  const [marketData, setMarketData] = useState([]);
+  
   const cryptoOptions = [
     { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
     { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' },
   ];
 
-  // Mock data for MarketWinnersWidget
-  const mockTopGainersAndLosers = [
-    { 
-      id: 'bitcoin', 
-      name: 'Bitcoin', 
-      symbol: 'btc', 
-      current_price: 45000,
-      price_change_percentage_24h: 5.2,
-      image: 'https://assets.coingecko.com/coins/images/1/thumb/bitcoin.png'
-    },
-    { 
-      id: 'ethereum', 
-      name: 'Ethereum', 
-      symbol: 'eth', 
-      current_price: 2800,
-      price_change_percentage_24h: 3.1,
-      image: 'https://assets.coingecko.com/coins/images/279/thumb/ethereum.png'
-    },
-    { 
-      id: 'cardano', 
-      name: 'Cardano', 
-      symbol: 'ada', 
-      current_price: 0.45,
-      price_change_percentage_24h: -2.5,
-      image: 'https://assets.coingecko.com/coins/images/975/thumb/cardano.png'
-    },
-    { 
-      id: 'solana', 
-      name: 'Solana', 
-      symbol: 'sol', 
-      current_price: 98,
-      price_change_percentage_24h: -1.8,
-      image: 'https://assets.coingecko.com/coins/images/4128/thumb/solana.png'
+  const CACHE_KEY = "topGainersAndLosers";
+  const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
+
+  // Fetch real market data using the same approach as Article.tsx
+  const fetchAndCacheMarketData = async () => {
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      try {
+        const { data, timestamp } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          setMarketData(data);
+          return;
+        }
+      } catch (err) {
+        console.error('Cache parsing error:', err);
+      }
     }
-  ];
+    
+    try {
+      const data = await getAllCryptos();
+      setMarketData(data);
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({ data, timestamp: Date.now() })
+      );
+    } catch (error) {
+      console.error('Error fetching market data:', error);
+      // Fallback to mock data
+      setMarketData([
+        { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', price_change_percentage_24h: 5.2, image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png', current_price: 118184 },
+        { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', price_change_percentage_24h: 3.1, image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png', current_price: 3007 },
+        { id: 'cardano', name: 'Cardano', symbol: 'ADA', price_change_percentage_24h: -2.5, image: 'https://assets.coingecko.com/coins/images/975/large/cardano.png', current_price: 0.72 },
+        { id: 'solana', name: 'Solana', symbol: 'SOL', price_change_percentage_24h: -1.8, image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png', current_price: 164 }
+      ]);
+    }
+  };
+
+  useEffect(() => {
+    fetchAndCacheMarketData();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -453,7 +461,7 @@ const SentimentAnalysisPage = () => {
           {/* Sticky Sidebar */}
           <div className="hidden lg:block">
             <div className="sticky top-8 space-y-8">
-              <MarketWinnersWidget topGainnersandLoosers={mockTopGainersAndLosers} />
+              <MarketWinnersWidget topGainnersandLoosers={marketData} />
               <AdUnit type="skyscraper" />
             </div>
           </div>
