@@ -6,12 +6,14 @@ interface MarketDataGridProps {
   marketData: any[];
   isUnlocked: boolean;
   activeFilter: string;
+  AllCryptosData?: any[]; // Optional, used for additional data display
 }
 
 export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   marketData,
   isUnlocked,
   activeFilter,
+  AllCryptosData = [],
 }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -25,6 +27,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             index={index}
             isUnlocked={isUnlocked}
             tokenUrlId={tokenUrlId}
+            AllCryptosData={AllCryptosData}
           />
         );
       })}

@@ -42,6 +42,19 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   isLoading,
   technicalIndicator,
 }) => {
+  const hasClose = technicalIndicator.some((d) => typeof d.close === "number");
+  const prices = hasClose
+    ? technicalIndicator.map((d) => d.close)
+    : data.map((d) => d.price);
+
+  const currentPrice = prices[prices.length - 1];
+
+  // Scale normalized values to 0.2 to 0.8 (20% to 80%)
+  const scaleStrength = (raw: number): number => {
+    const clamped = Math.min(Math.max(raw, 0), 1); // 0 to 1
+    return 0.2 + clamped * 0.6; // maps 0 to 0.2, 1 to 0.8
+  };
+
   const calculateRSI = (prices: number[], period: number = 14): number => {
     if (prices.length < period + 1) return 50;
 
@@ -61,36 +74,105 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     return 100 - 100 / (1 + rs);
   };
 
-  const calculateSMA = (prices: number[], period: number): number => {
-    if (prices.length < period) return prices[prices.length - 1] || 0;
-    const slice = prices.slice(-period);
-    return slice.reduce((sum, price) => sum + price, 0) / period;
-  };
+  const calculateRSIStrength = (rsi: number): number => {
+    let raw = 0;
 
-  const calculateMACD = (
-    prices: number[]
-  ): { macd: number; signal: number } => {
-    const ema12 = calculateEMA(prices, 12);
-    const ema26 = calculateEMA(prices, 26);
-    const macd = ema12 - ema26;
-    const signal = calculateEMA([macd], 9);
-
-    return { macd, signal };
-  };
-
-  const calculateEMA = (prices: number[], period: number): number => {
-    if (prices.length === 0) return 0;
-    if (prices.length === 1) return prices[0];
-
-    const multiplier = 2 / (period + 1);
-    let ema = prices[0];
-
-    for (let i = 1; i < prices.length; i++) {
-      ema = prices[i] * multiplier + ema * (1 - multiplier);
+    if (rsi < 50) {
+      // Closer to 30 or below → stronger buy signal
+      raw = (30 - rsi) / 30;
+    } else {
+      // Closer to 70 or above → stronger sell signal
+      raw = (rsi - 70) / 30;
     }
 
-    return ema;
+    // Only keep positive values, cap at 1
+    raw = Math.max(0, Math.min(raw, 1));
+
+    return scaleStrength(raw); // Scale to 20%–80%
   };
+
+  const calculateSMA = (prices: number[], period: number): number => {
+    if (prices.length < period)
+      return prices.reduce((a, b) => a + b, 0) / prices.length;
+    const recent = prices.slice(-period);
+    return recent.reduce((a, b) => a + b, 0) / period;
+  };
+
+  const calculateSMA20Strength = (prices: number[]) => {
+    const sma20 = calculateSMA(prices, 20);
+    const currentPrice = prices.at(-1) ?? 0;
+    const deviation = Math.abs(currentPrice - sma20) / Math.max(sma20, 1);
+
+    return { sma20, strength: scaleStrength(deviation) }; // scale to 20-80%
+  };
+
+  const calculateSMA50Strength = (prices: number[]) => {
+    const sma50 = calculateSMA(prices, 50);
+    const currentPrice = prices.at(-1) ?? 0;
+    const deviation = Math.abs(currentPrice - sma50) / Math.max(sma50, 1);
+
+    return { sma50, strength: scaleStrength(deviation) }; // scale to 20-80%
+  };
+
+  const recentWindow = Math.min(20, prices.length);
+  const recentPrices = prices.slice(-recentWindow);
+  const supportLevel = Math.min(...recentPrices);
+  const resistanceLevel = Math.max(...recentPrices);
+  const calculateEMAList = (prices: number[], period: number): number[] => {
+    const multiplier = 2 / (period + 1);
+    const emaArray: number[] = [];
+    let ema = prices[0];
+
+    prices.forEach((price, i) => {
+      if (i === 0) {
+        emaArray.push(ema);
+      } else {
+        ema = price * multiplier + ema * (1 - multiplier);
+        emaArray.push(ema);
+      }
+    });
+
+    return emaArray;
+  };
+  // Strength normalization helper
+  const normalizeStrength = (val: number, range: number = 100) =>
+    Math.min(Math.abs(val) / range, 1);
+
+  const normalizeRelative = (diff: number, base: number) =>
+    Math.min(Math.abs(diff) / Math.max(base, 1), 1);
+
+  // Updated MACD (with series)
+  const calculateMACD = (prices: number[]) => {
+    const ema12 = calculateEMAList(prices, 12);
+    const ema26 = calculateEMAList(prices, 26);
+    const macdLine = ema12.map((val, idx) => val - (ema26[idx] ?? 0));
+    const signalLine = calculateEMAList(macdLine, 9);
+
+    const latestMACD = macdLine.at(-1) ?? 0;
+    const latestSignal = signalLine.at(-1) ?? 0;
+
+    const diff = latestMACD - latestSignal;
+
+    // Normalize using signal crossover momentum
+    const rawStrength = Math.abs(diff) / Math.max(Math.abs(latestSignal), 1);
+    const scaled = scaleStrength(rawStrength);
+
+    return { macd: latestMACD, signal: latestSignal, strength: scaled };
+  };
+
+  // const calculateEMA = (prices: number[], period: number): number => {
+  //   if (prices.length === 0) return 0;
+  //   if (prices.length === 1) return prices[0];
+
+  //   const multiplier = 2 / (period + 1);
+  //   let ema = prices[0];
+
+  //   for (let i = 1; i < prices.length; i++) {
+  //     ema = prices[i] * multiplier + ema * (1 - multiplier);
+  //   }
+
+  //   return ema;
+  // };
 
   if (isLoading) {
     return (
@@ -125,26 +207,20 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
       </Card>
     );
   }
-  const hasClose = technicalIndicator.some((d) => typeof d.close === "number");
-
-  const prices = hasClose
-    ? technicalIndicator.map((d) => d.close)
-    : data.map((d) => d.price);
-
-  const currentPrice = prices[prices.length - 1];
 
   // Calculate technical indicators
   const rsi = calculateRSI(prices);
-  const sma20 = calculateSMA(prices, 20);
-  const sma50 = calculateSMA(prices, 50);
-  const { macd, signal } = calculateMACD(prices);
+  const { sma20, strength: sma20Strength } = calculateSMA20Strength(prices);
+  const { sma50, strength: sma50Strength } = calculateSMA50Strength(prices);
+
+  const { macd, signal, strength: macdStrength } = calculateMACD(prices);
 
   const indicators: TechnicalIndicator[] = [
     {
       name: "RSI (14)",
       value: rsi,
       signal: rsi > 70 ? "sell" : rsi < 30 ? "buy" : "neutral",
-      strength: Math.abs(rsi - 50) / 50,
+      strength: calculateRSIStrength(rsi), // max deviation from neutral
     },
     {
       name: "SMA 20",
@@ -155,7 +231,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           : currentPrice < sma20
           ? "sell"
           : "neutral",
-      strength: Math.abs(currentPrice - sma20) / sma20,
+      strength: sma20Strength,
     },
     {
       name: "SMA 50",
@@ -166,14 +242,13 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           : currentPrice < sma50
           ? "sell"
           : "neutral",
-      strength: Math.abs(currentPrice - sma50) / sma50,
+      strength: sma50Strength,
     },
     {
       name: "MACD",
       value: macd,
       signal: macd > signal ? "buy" : macd < signal ? "sell" : "neutral",
-      strength:
-        Math.abs(macd - signal) / Math.max(Math.abs(macd), Math.abs(signal), 1),
+      strength: macdStrength,
     },
   ];
 
@@ -199,11 +274,14 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     }
   };
 
-  const overallSignal = indicators.reduce((acc, ind) => {
-    if (ind.signal === "buy") return acc + ind.strength;
-    if (ind.signal === "sell") return acc - ind.strength;
-    return acc;
-  }, 0);
+  const totalStrength = indicators.reduce((sum, ind) => sum + ind.strength, 0);
+
+  const overallSignal =
+    indicators.reduce((acc, ind) => {
+      if (ind.signal === "buy") return acc + ind.strength;
+      if (ind.signal === "sell") return acc - ind.strength;
+      return acc;
+    }, 0) / Math.max(totalStrength, 1); // normalized between -1 and 1
 
   const overallTrend =
     overallSignal > 0.1 ? "buy" : overallSignal < -0.1 ? "sell" : "neutral";
@@ -255,7 +333,10 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             }`}
           />
           <div className="flex justify-between mt-2 text-xs text-gray-400">
-            <span>Strength: {(Math.abs(overallSignal) * 100).toFixed(0)}%</span>
+            <span>
+              Strength:{" "}
+              {(Math.min(Math.abs(overallSignal), 1) * 100).toFixed(0)}%
+            </span>
             <span>Confidence: High</span>
           </div>
         </div>
@@ -295,7 +376,10 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                     : indicator.value.toFixed(2)}
                 </span>
                 <span className="text-xs text-gray-400 font-medium">
-                  {(indicator.strength * 100).toFixed(0)}% strength
+                  {indicator.name.includes("MACD")
+                    ? (indicator.strength * 100).toFixed(2)
+                    : (indicator.strength * 100).toFixed(2)}
+                  % strength
                 </span>
               </div>
               <Progress
@@ -331,7 +415,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </p>
               </div>
               <p className="text-lg font-bold text-white">
-                ${(currentPrice * 0.95).toFixed(2)}
+                ${supportLevel.toFixed(2)}
               </p>
               <p className="text-xs text-emerald-300/80">
                 Strong buying interest
@@ -347,7 +431,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </p>
               </div>
               <p className="text-lg font-bold text-white">
-                ${(currentPrice * 1.05).toFixed(2)}
+                ${resistanceLevel.toFixed(2)}
               </p>
               <p className="text-xs text-red-300/80">Selling pressure zone</p>
             </div>

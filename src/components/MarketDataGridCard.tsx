@@ -12,10 +12,11 @@ interface MarketDataGridCardProps {
   index: number;
   isUnlocked: boolean;
   tokenUrlId: string;
+  AllCryptosData?: any[]; // Optional, used for additional data display
 }
 
 export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
-  ({ token, index, isUnlocked, tokenUrlId }) => {
+  ({ token, index, isUnlocked, tokenUrlId, AllCryptosData }) => {
     return (
       <div className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
         <div className="flex items-start justify-between mb-4">
@@ -154,7 +155,7 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
             className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
             asChild
           >
-            <Link to={`/token/${tokenUrlId}`} state={{ token }}>
+            <Link to={`/token/${tokenUrlId}`} state={{ token, AllCryptosData }}>
               <ExternalLink className="h-3 w-3 mr-2" />
               View Details
             </Link>
