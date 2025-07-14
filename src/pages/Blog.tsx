@@ -39,9 +39,12 @@ const Blog = () => {
   const fetchBlogData = async () => {
     try {
       const articleData = await getWordPressPost();
-      console.log("Fetched blog data:", articleData);
+      console.log("🔍 RAW WordPress data:", articleData);
+      
       if (Array.isArray(articleData)) {
-        const formattedArticles = articleData.map((post) => {
+        console.log("🔍 Processing", articleData.length, "WordPress posts");
+        
+        const formattedArticles = articleData.map((post, index) => {
           const title = post.title?.rendered || "No Title";
           const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
           const date = new Date(post.date).toISOString().split("T")[0];
@@ -51,6 +54,12 @@ const Blog = () => {
             post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
             "https://via.placeholder.com/800x400";
           const content = post.content?.rendered || "";
+
+          // Debug raw WordPress tag data
+          console.log(`🔍 Post ${index + 1}: "${title}"`);
+          console.log("  - Raw tags array:", post.tags);
+          console.log("  - Raw tagNames array:", post.tagNames);
+          console.log("  - Filtered tagNames:", post.tagNames?.filter((t: string) => t && t.trim()));
 
           // Extract category from WordPress categories with proper fallback
           const wpCategories = post._embedded?.["wp:term"]?.[0] || [];
