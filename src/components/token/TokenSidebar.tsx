@@ -1,23 +1,22 @@
-
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AdUnit } from "@/components/ads/AdService";
+// import { AdBanner } from "@/components/AdBanner";
 import { ArticleCard } from "@/components/ArticleCard";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
 import { TokenDataService } from "@/services/tokenDataService";
-import { 
-  ExternalLink, 
-  ArrowRight, 
+import {
+  ExternalLink,
+  ArrowRight,
   FileText,
   BarChart3,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
 } from "lucide-react";
 import { getWordPressPost } from "../../../utils/api";
-import { trackArticleClick } from '@/utils/analytics';
+import { trackArticleClick } from "@/utils/analytics";
 
 interface TokenSidebarProps {
   currentTokenId: string;
@@ -25,13 +24,21 @@ interface TokenSidebarProps {
   currentPrice: number;
   priceChange: number;
   cryptoOptions: any[];
+  cryptoData?: any[]; // Optional, used for additional data display
+  technicalIndicator?: any[]; // Optional, can be undefined if not used
 }
 
-export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, priceChange, cryptoOptions }: TokenSidebarProps) {
+export function TokenSidebar({
+  currentTokenId,
+  selectedCrypto,
+  currentPrice,
+  priceChange,
+  cryptoOptions,
+  cryptoData,
+  technicalIndicator = [], // Optional, can be undefined if not used
+}: TokenSidebarProps) {
   const [articles, setArticles] = useState<any[]>([]);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
-  const navigate = useNavigate();
-  
   useEffect(() => {
     fetchArticles();
   }, []);
@@ -53,14 +60,17 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
         const formattedArticles = articleData.slice(0, 6).map((post: any) => ({
           id: post.id,
           title: post.title?.rendered || "No Title",
-          excerpt: post.excerpt?.rendered?.replace(/<[^>]+>/g, "").slice(0, 120) + "..." || "",
+          excerpt:
+            post.excerpt?.rendered?.replace(/<[^>]+>/g, "").slice(0, 120) +
+              "..." || "",
           author: post._embedded?.author?.[0]?.name || "Unknown",
           date: new Date(post.date).toISOString().split("T")[0],
           category: "Blog",
           readTime: "4 min read",
-          image: post.jetpack_featured_media_url || 
-                 post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || 
-                 "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
+          image:
+            post.jetpack_featured_media_url ||
+            post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+            "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
           url: post.link,
         }));
         setArticles(formattedArticles);
@@ -75,7 +85,9 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
   };
 
   const prevArticle = () => {
-    setCurrentArticleIndex((prev) => (prev - 1 + articles.length) % articles.length);
+    setCurrentArticleIndex(
+      (prev) => (prev - 1 + articles.length) % articles.length
+    );
   };
 
   const currentArticle = articles[currentArticleIndex];
@@ -91,19 +103,30 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0">
-          <DynamicTokenAnalysis
-            selectedCrypto={selectedCrypto}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-            cryptoOptions={cryptoOptions}
-          />
+          {Array.isArray(cryptoData) && cryptoData.length > 0 ? (
+            <DynamicTokenAnalysis
+              selectedCrypto={selectedCrypto}
+              currentPrice={currentPrice}
+              priceChange={priceChange}
+              cryptoOptions={cryptoOptions}
+              cryptoData={cryptoData}
+              technicalIndicator={technicalIndicator}
+            />
+          ) : (
+            <div>Loading data...</div>
+          )}
         </CardContent>
       </Card>
 
       {/* Ad Banner - Centered */}
-      <div className="w-full min-h-[200px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-        <AdUnit type="sidebar" className="max-w-full h-full" />
-      </div>
+      {/* <div className="w-full min-h-[200px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+        <AdBanner
+          width={280}
+          height={200}
+          position="vertical"
+          className="max-w-full h-full"
+        />
+      </div> */}
 
       {/* Articles Section */}
       <Card className="bg-gray-800/50 border-gray-700">
@@ -117,22 +140,17 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
           {currentArticle ? (
             <div className="relative group">
               {/* Article Image - Clickable */}
-              <div 
+              <div
                 className="relative h-48 overflow-hidden rounded-t-lg cursor-pointer"
-                onClick={() => {
-                  trackArticleClick(currentArticle.title, currentArticleIndex);
-                  navigate(`/article/${currentArticle.id}`, { 
-                    state: { article: currentArticle } 
-                  });
-                }}
+                onClick={() => window.open(currentArticle.url, "_blank")}
               >
-                <img 
-                  src={currentArticle.image} 
+                <img
+                  src={currentArticle.image}
                   alt={currentArticle.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" />
-                
+
                 {/* Navigation Arrows */}
                 {articles.length > 1 && (
                   <>
@@ -160,7 +178,7 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
                     </Button>
                   </>
                 )}
-                
+
                 {/* Article counter */}
                 {articles.length > 1 && (
                   <div className="absolute top-2 right-2 bg-gray-900/70 text-white text-xs px-2 py-1 rounded">
@@ -168,18 +186,13 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
                   </div>
                 )}
               </div>
-              
+
               {/* Article Content */}
               <div className="p-4">
                 {/* Clickable Headline */}
-                <h4 
+                <h4
                   className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in cursor-pointer hover:text-blue-400 transition-colors"
-                  onClick={() => {
-                    trackArticleClick(currentArticle.title, currentArticleIndex);
-                    navigate(`/article/${currentArticle.id}`, { 
-                      state: { article: currentArticle } 
-                    });
-                  }}
+                  onClick={() => window.open(currentArticle.url, "_blank")}
                 >
                   {currentArticle.title}
                 </h4>
@@ -187,11 +200,15 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
                   {currentArticle.excerpt}
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-xs">{currentArticle.readTime}</span>
-                  <span className="text-gray-500 text-xs">{currentArticle.date}</span>
+                  <span className="text-gray-500 text-xs">
+                    {currentArticle.readTime}
+                  </span>
+                  <span className="text-gray-500 text-xs">
+                    {currentArticle.date}
+                  </span>
                 </div>
               </div>
-              
+
               {/* Dots indicator */}
               {articles.length > 1 && (
                 <div className="flex justify-center space-x-1 pb-4">
@@ -199,7 +216,9 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
                     <button
                       key={index}
                       className={`w-2 h-2 rounded-full transition-colors ${
-                        index === currentArticleIndex ? 'bg-blue-400' : 'bg-gray-600'
+                        index === currentArticleIndex
+                          ? "bg-blue-400"
+                          : "bg-gray-600"
                       }`}
                       onClick={() => setCurrentArticleIndex(index)}
                     />
@@ -214,7 +233,6 @@ export function TokenSidebar({ currentTokenId, selectedCrypto, currentPrice, pri
           )}
         </CardContent>
       </Card>
-
     </div>
   );
 }

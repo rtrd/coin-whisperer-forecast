@@ -1,20 +1,32 @@
-
-import React from 'react';
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import React from "react";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Info, Lock } from "lucide-react";
-import { MarketDataRow } from './MarketDataRow';
+import { MarketDataRow } from "./MarketDataRow";
+import { CryptoToken } from "@/types/crypto";
 
 interface MarketDataTableProps {
   marketData: any[];
   isUnlocked: boolean;
   activeFilter: string;
+  AllCryptosData: CryptoToken[];
 }
 
 export const MarketDataTable: React.FC<MarketDataTableProps> = ({
   marketData,
   isUnlocked,
-  activeFilter
+  activeFilter,
+  AllCryptosData = [],
 }) => {
   return (
     <div className="overflow-x-auto">
@@ -24,7 +36,9 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
             <TableHead className="text-gray-300 w-12 px-2">#</TableHead>
             <TableHead className="text-gray-300 w-48 px-2">Token</TableHead>
             <TableHead className="text-gray-300 w-32 px-2">Price</TableHead>
-            <TableHead className="text-gray-300 w-32 px-2">24h Change</TableHead>
+            <TableHead className="text-gray-300 w-32 px-2">
+              24h Change
+            </TableHead>
             <TableHead className="text-gray-300 w-32 px-2">
               <div className="flex items-center gap-1">
                 Prediction %
@@ -33,7 +47,10 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                     <Info className="h-3 w-3 text-gray-400" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>AI-generated price prediction percentage for the next period</p>
+                    <p>
+                      AI-generated price prediction percentage for the next
+                      period
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -47,7 +64,10 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                     <Info className="h-3 w-3 text-gray-400" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>AI confidence score (0-100) based on market analysis and technical indicators</p>
+                    <p>
+                      AI confidence score (0-100) based on market analysis and
+                      technical indicators
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -89,6 +109,7 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
               index={index}
               isUnlocked={isUnlocked}
               activeFilter={activeFilter}
+              AllCryptosData={AllCryptosData}
             />
           ))}
         </TableBody>

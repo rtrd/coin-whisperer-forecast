@@ -199,7 +199,7 @@ const AllTokens = () => {
                 <Link
                   key={token.name}
                   to={`/token/${token.name}`}
-                  state={{ token }}
+                  state={{ token, AllCryptosData }}
                   className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg border border-gray-600 hover:bg-gray-600/50 transition-colors group"
                 >
                   <div className="flex items-center gap-3">

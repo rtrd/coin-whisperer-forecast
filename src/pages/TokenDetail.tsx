@@ -16,6 +16,7 @@ const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
   const tokenmarketstats = location.state?.token;
+  const Alltokenmarketstats = location.state?.AllCryptosData;
   const [timeframe, setTimeframe] = useState("7d");
   const [predictionDays, setPredictionDays] = useState(7);
   const [modelType, setModelType] = useState("technical");
@@ -25,12 +26,11 @@ const TokenDetail = () => {
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
   const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
   const cryptoOptions = TokenDataService.getCryptoOptions();
-
   const {
     data: cryptoData,
     isLoading: dataLoading,
     error: dataError,
-  } = useCryptoData(cryptoId, timeframe);
+  } = useCryptoData(cryptoId, timeframe, Alltokenmarketstats);
   const {
     prediction,
     isLoading: predictionLoading,

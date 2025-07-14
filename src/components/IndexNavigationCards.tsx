@@ -1,14 +1,13 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Brain, Rocket, ExternalLink, Flame } from "lucide-react";
-import { trackNavClick } from '@/utils/analytics';
+import { trackNavClick } from "@/utils/analytics";
 
 export const IndexNavigationCards = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fit,_minmax(280px,_1fr))] gap-6 mb-8">
       {/* AI Prediction Analysis */}
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
         <CardHeader>
@@ -19,9 +18,15 @@ export const IndexNavigationCards = () => {
         </CardHeader>
         <CardContent>
           <p className="text-gray-300 mb-4">
-            Get advanced AI-powered cryptocurrency predictions and market analysis
+            Get advanced AI-powered cryptocurrency predictions and market
+            analysis
           </p>
-          <Link to="/ai-prediction" onClick={() => trackNavClick('/ai-prediction', 'index_navigation_cards')}>
+          <Link
+            to="/ai-prediction"
+            onClick={() =>
+              trackNavClick("/ai-prediction", "index_navigation_cards")
+            }
+          >
             <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
               <ExternalLink className="h-4 w-4 mr-2" />
               View AI Predictions
@@ -42,7 +47,10 @@ export const IndexNavigationCards = () => {
           <p className="text-gray-300 mb-4">
             Discover and track trending memecoins and new token launches
           </p>
-          <Link to="/pump-fun" onClick={() => trackNavClick('/pump-fun', 'index_navigation_cards')}>
+          <Link
+            to="/pump-fun"
+            onClick={() => trackNavClick("/pump-fun", "index_navigation_cards")}
+          >
             <Button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
               <ExternalLink className="h-4 w-4 mr-2" />
               Explore Memecoin Insights
@@ -52,7 +60,7 @@ export const IndexNavigationCards = () => {
       </Card>
 
       {/* MOTI Meter */}
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
+      {/* <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Flame className="h-5 w-5 text-orange-400" />
@@ -70,7 +78,7 @@ export const IndexNavigationCards = () => {
             </Button>
           </Link>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

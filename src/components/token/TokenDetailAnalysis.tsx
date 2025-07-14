@@ -10,6 +10,7 @@ interface TokenDetailAnalysisProps {
   cryptoData: any[] | undefined;
   dataLoading: boolean;
   prediction: any;
+  technicalIndicator?: any[]; // Optional, can be undefined if not used
 }
 
 export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({

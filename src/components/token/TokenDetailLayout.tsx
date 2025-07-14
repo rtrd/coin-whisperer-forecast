@@ -1,5 +1,5 @@
 import React from "react";
-import { AdUnit } from "@/components/ads/AdService";
+// import { AdBanner } from "@/components/AdBanner";
 import Footer from "@/components/Footer";
 import { TokenDetailHeader } from "./TokenDetailHeader";
 import { TokenDetailInfo } from "./TokenDetailInfo";
@@ -15,10 +15,10 @@ interface TokenDetailLayoutProps {
   cryptoOptions: any[];
   currentPrice: number;
   priceChange: number;
-  
+
   // Info props
   marketData: any;
-  
+
   // Chart props
   cryptoData: any[] | undefined;
   dataLoading: boolean;
@@ -33,11 +33,12 @@ interface TokenDetailLayoutProps {
   predictionLoading: boolean;
   handlePredict: () => void;
   handleClearPrediction: () => void;
-  
+
   // Other props
   tokenId: string;
   selectedToken: any;
   allCryptosData: any[];
+  technicalIndicator?: any[]; // Optional, can be undefined if not used
 }
 
 export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
@@ -62,6 +63,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   tokenId,
   selectedToken,
   allCryptosData,
+  technicalIndicator,
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -102,9 +104,14 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
 
           {/* Ad Banner After Price Chart - Centered */}
-          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-            <AdUnit type="leaderboard" className="max-w-full h-full" />
-          </div>
+          {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+            <AdBanner
+              width={728}
+              height={120}
+              position="horizontal"
+              className="max-w-full h-full"
+            />
+          </div> */}
         </div>
 
         {/* Market Analysis and Sidebar Layout */}
@@ -127,6 +134,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               currentPrice={currentPrice}
               priceChange={priceChange}
               cryptoOptions={cryptoOptions}
+              cryptoData={cryptoData}
             />
           </div>
         </div>
@@ -140,9 +148,14 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         </div>
 
         {/* Ad Banner Before Footer */}
-        <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-          <AdUnit type="leaderboard" className="max-w-full h-full" />
-        </div>
+        {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
+          <AdBanner
+            width={728}
+            height={120}
+            position="horizontal"
+            className="max-w-full h-full"
+          />
+        </div> */}
 
         {/* Footer */}
         <div className="mt-12">

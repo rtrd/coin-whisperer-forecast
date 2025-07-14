@@ -6,17 +6,18 @@ import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
-import { MarketData } from "@/types/crypto";
+import { CryptoToken, MarketData } from "@/types/crypto";
 
 interface MarketDataRowProps {
   token: MarketData;
   index: number;
   isUnlocked: boolean;
   activeFilter: string;
+  AllCryptosData: CryptoToken[];
 }
 
 export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
-  ({ token, index, isUnlocked, activeFilter }) => {
+  ({ token, index, isUnlocked, AllCryptosData }) => {
     const tokenUrlId = getTokenUrlId(token.value);
 
     return (
@@ -27,7 +28,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
         <TableCell className="w-48 px-2 py-3">
           <Link
             to={`/token/${tokenUrlId}`}
-            state={{ token }}
+            state={{ token, AllCryptosData }}
             className="flex items-center gap-2 hover:text-blue-400 transition-colors"
           >
             <img

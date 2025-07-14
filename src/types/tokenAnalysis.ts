@@ -1,4 +1,3 @@
-
 export interface SelectedTokenInfo {
   value: string;
   label: string;
@@ -16,7 +15,7 @@ export interface SelectedTokenInfo {
 export interface TokenAnalysis {
   momentum: number;
   volatility: number;
-  marketSentiment: 'bullish' | 'bearish' | 'neutral';
+  marketSentiment: "bullish" | "bearish" | "neutral";
   supportLevel: number;
   resistanceLevel: number;
 }
@@ -26,4 +25,6 @@ export interface TokenAnalysisProps {
   currentPrice: number;
   priceChange: number;
   cryptoOptions?: any[];
+  cryptoData?: any[];
+  technicalIndicator?: any[]; // Optional, can be undefined if not used
 }
