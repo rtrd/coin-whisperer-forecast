@@ -64,17 +64,25 @@ export const getFeaturedArticle = (articles: any[]) => {
   // Debug: Log all articles and their categories
   articles.forEach((article, index) => {
     console.log(`📄 Article ${index + 1}: "${article.title}"`);
-    console.log(`   Category: ${article.category}`);
+    console.log(`   Primary Category: ${article.category}`);
+    console.log(`   All Categories: ${JSON.stringify(article.allCategories)}`);
     console.log(`   Date: ${article.date}`);
   });
   
   // Look for articles with "Featured" category (exact match with capital F)
+  // Check both primary category and allCategories array
   console.log("🔍 Looking for articles with 'Featured' category (exact match)...");
   const featuredArticles = articles.filter(article => {
-    const hasFeaturedCategory = article.category === 'Featured';
+    const isPrimaryFeatured = article.category === 'Featured';
+    const isInAllCategories = article.allCategories?.includes('Featured');
+    const hasFeaturedCategory = isPrimaryFeatured || isInAllCategories;
     
     if (hasFeaturedCategory) {
-      console.log("✅ Found featured article:", article.title, "with category:", article.category);
+      console.log("✅ Found featured article:", article.title);
+      console.log("   - Primary category:", article.category);
+      console.log("   - All categories:", article.allCategories);
+      console.log("   - Featured via primary:", isPrimaryFeatured);
+      console.log("   - Featured via allCategories:", isInAllCategories);
     }
     
     return hasFeaturedCategory;
@@ -86,11 +94,19 @@ export const getFeaturedArticle = (articles: any[]) => {
   if (featuredArticles.length === 0) {
     console.log("🔍 No exact 'Featured' match, trying case-insensitive search...");
     const caseInsensitiveFeatured = articles.filter(article => {
-      const hasFeaturedCategory = typeof article.category === 'string' && 
+      const isPrimaryFeatured = typeof article.category === 'string' && 
         article.category.toLowerCase() === 'featured';
+      const isInAllCategories = article.allCategories?.some((cat: string) => 
+        cat?.toLowerCase() === 'featured'
+      );
+      const hasFeaturedCategory = isPrimaryFeatured || isInAllCategories;
       
       if (hasFeaturedCategory) {
-        console.log("⚠️ Found case-insensitive featured article:", article.title, "with category:", article.category);
+        console.log("⚠️ Found case-insensitive featured article:", article.title);
+        console.log("   - Primary category:", article.category);
+        console.log("   - All categories:", article.allCategories);
+        console.log("   - Featured via primary:", isPrimaryFeatured);
+        console.log("   - Featured via allCategories:", isInAllCategories);
       }
       
       return hasFeaturedCategory;
