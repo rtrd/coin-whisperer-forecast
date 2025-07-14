@@ -60,7 +60,7 @@ export const IndexNavigationCards = () => {
       </Card>
 
       {/* MOTI Meter */}
-      {/* <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl hover:shadow-3xl transition-all hover:bg-gray-800/70">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Flame className="h-5 w-5 text-orange-400" />
@@ -78,7 +78,7 @@ export const IndexNavigationCards = () => {
             </Button>
           </Link>
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 };
