@@ -4,11 +4,9 @@ export type FilterType = "market_cap" | "volume" | "gainers" | "losers" | "trend
 
 export const formatPrice = (price: number): string => {
   if (price < 0.01) {
-    return `$${price.toFixed(6)}`;
+    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 6, maximumFractionDigits: 6 })}`;
   } else if (price < 1) {
-    return `$${price.toFixed(4)}`;
-  } else if (price < 100) {
-    return `$${price.toFixed(2)}`;
+    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}`;
   } else {
     return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
@@ -16,25 +14,25 @@ export const formatPrice = (price: number): string => {
 
 export const formatVolume = (volume: number): string => {
   if (volume >= 1000000000) {
-    return `$${(volume / 1000000000).toFixed(2)}B`;
+    return `$${(volume / 1000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}B`;
   } else if (volume >= 1000000) {
-    return `$${(volume / 1000000).toFixed(2)}M`;
+    return `$${(volume / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M`;
   } else if (volume >= 1000) {
-    return `$${(volume / 1000).toFixed(2)}K`;
+    return `$${(volume / 1000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}K`;
   } else {
-    return `$${volume.toFixed(2)}`;
+    return `$${volume.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 };
 
 export const formatMarketCap = (marketCap: number): string => {
   if (marketCap >= 1000000000000) {
-    return `$${(marketCap / 1000000000000).toFixed(2)}T`;
+    return `$${(marketCap / 1000000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}T`;
   } else if (marketCap >= 1000000000) {
-    return `$${(marketCap / 1000000000).toFixed(2)}B`;
+    return `$${(marketCap / 1000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}B`;
   } else if (marketCap >= 1000000) {
-    return `$${(marketCap / 1000000).toFixed(2)}M`;
+    return `$${(marketCap / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M`;
   } else {
-    return `$${marketCap.toLocaleString()}`;
+    return `$${marketCap.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
 };
 

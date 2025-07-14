@@ -1,4 +1,5 @@
 import React from "react";
+import { formatPrice } from "@/components/MarketDataUtils";
 
 interface AIPredictionResultsProps {
   prediction: any;
@@ -36,7 +37,7 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
             } momentum for the next {predictionDays} days. 
             {prediction.predictions && prediction.predictions.length > 0 && (
               <>
-                {' '}The model predicts a price target of ${prediction.predictions[prediction.predictions.length - 1].predictedPrice.toFixed(2)}, representing a {
+                {' '}The model predicts a price target of {formatPrice(prediction.predictions[prediction.predictions.length - 1].predictedPrice)}, representing a {
                   ((prediction.predictions[prediction.predictions.length - 1].predictedPrice - currentPrice) / currentPrice * 100).toFixed(1)
                 }% change from current levels. Key factors driving this forecast include technical indicators and market sentiment patterns with {prediction.predictions[prediction.predictions.length - 1].confidence.toFixed(0)}% confidence.
               </>
@@ -89,14 +90,14 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
               <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                 <div className="text-gray-400 text-sm font-medium mb-1">Current Price</div>
                 <div className="text-gray-200 font-bold text-lg">
-                  ${currentPrice.toFixed(2)}
+                  {formatPrice(currentPrice)}
                 </div>
               </div>
               
               <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                 <div className="text-gray-400 text-sm font-medium mb-1">Predicted Price</div>
                 <div className="text-blue-400 font-bold text-lg">
-                  ${prediction.predictions[prediction.predictions.length - 1].predictedPrice.toFixed(2)}
+                  {formatPrice(prediction.predictions[prediction.predictions.length - 1].predictedPrice)}
                 </div>
               </div>
               
