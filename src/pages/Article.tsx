@@ -32,18 +32,23 @@ const Article = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  const articles = Array.isArray(location.state?.article)
-    ? location.state.article.map(formatArticleForDisplay)
-    : location.state?.article
-    ? [formatArticleForDisplay(location.state.article)]
-    : (() => {
-        const fallbackArticle = allArticlesData.find(
-          (a) => a.id === Number(articleId)
-        );
-        return fallbackArticle
-          ? [formatArticleForDisplay(fallbackArticle)]
-          : [];
-      })();
+  const articles = (() => {
+    // Prioritize state data if available
+    if (location.state?.article) {
+      const stateArticle = Array.isArray(location.state.article)
+        ? location.state.article.map(formatArticleForDisplay)
+        : [formatArticleForDisplay(location.state.article)];
+      return stateArticle;
+    }
+    
+    // Fallback to fetched data
+    const fallbackArticle = allArticlesData.find(
+      (a) => a.id === Number(articleId)
+    );
+    return fallbackArticle
+      ? [formatArticleForDisplay(fallbackArticle)]
+      : [];
+  })();
 
   const cryptoOptions = [
     {

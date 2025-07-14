@@ -73,6 +73,9 @@ export function TokenSidebar({
             post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
             "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
           url: post.link,
+          content: post.content?.rendered || "",
+          tags: post.tagNames?.filter((t: string) => t && t.trim()) || [],
+          tagname: post.tagNames?.filter((t: string) => t)?.join(", ") || "",
         }));
         setArticles(formattedArticles);
       }
