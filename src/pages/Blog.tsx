@@ -61,18 +61,22 @@ const Blog = () => {
           console.log("  - Raw tagNames array:", post.tagNames);
           console.log("  - Filtered tagNames:", post.tagNames?.filter((t: string) => t && t.trim()));
 
-          // Extract category from WordPress categories with proper fallback
+          // Extract all categories from WordPress categories
           const wpCategories = post._embedded?.["wp:term"]?.[0] || [];
-          //console.log(JSON.stringify(post._embedded?.["wp:term"], null, 2));
           let categoryName = "General";
+          let allCategories: string[] = [];
 
           if (wpCategories.length > 0) {
-            const category = wpCategories.find(
+            const categories = wpCategories.filter(
               (cat: any) =>
                 cat.taxonomy === "category" && cat.name !== "Uncategorized"
             );
-            if (category) {
-              categoryName = category.name;
+            
+            if (categories.length > 0) {
+              // Use first category as primary category
+              categoryName = categories[0].name;
+              // Store all categories for later use
+              allCategories = categories.map((cat: any) => cat.name);
             }
           }
 
@@ -83,6 +87,7 @@ const Blog = () => {
             author,
             date,
             category: categoryName,
+            allCategories: allCategories, // Store all categories
             readTime: "4 min read",
             image,
             url: post.link,
@@ -94,22 +99,26 @@ const Blog = () => {
 
         setArticles(formattedArticles);
 
-        // Group articles by category, excluding "General", "Uncategorized", and "Featured" categories
+        // Group articles by all their categories, excluding "General", "Uncategorized", and "Featured"
         const categoryGroups: { [key: string]: any[] } = {};
         formattedArticles.forEach((article) => {
           console.log(article);
-          const category = article.category;
-          if (
-            category &&
-            category !== "General" &&
-            category !== "Uncategorized" &&
-            category !== "Featured"
-          ) {
-            if (!categoryGroups[category]) {
-              categoryGroups[category] = [];
+          // Use all categories if available, otherwise use primary category
+          const categories = article.allCategories || [article.category];
+          
+          categories.forEach((category: string) => {
+            if (
+              category &&
+              category !== "General" &&
+              category !== "Uncategorized" &&
+              category !== "Featured"
+            ) {
+              if (!categoryGroups[category]) {
+                categoryGroups[category] = [];
+              }
+              categoryGroups[category].push(article);
             }
-            categoryGroups[category].push(article);
-          }
+          });
         });
 
         // If no specific categories found, use placeholder categories with actual articles

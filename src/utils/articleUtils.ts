@@ -47,6 +47,7 @@ export const formatArticleForDisplay = (article: any) => {
     author: article.author || "Unknown",
     date: article.date,
     category: article.category || "General",
+    allCategories: article.allCategories || [], // Store all categories
     readTime: article.readTime || "4 min read",
     image: article.image || "https://via.placeholder.com/800x400",
     tags: uniqueTags.length > 0 ? uniqueTags : ["crypto", "analysis", "market"], // fallback
