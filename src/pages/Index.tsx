@@ -13,24 +13,24 @@ const Index = () => {
   const [modelType, setModelType] = useState("advanced");
 
   const {
-    data: cryptoData,
-    isLoading: dataLoading,
-    error: dataError,
-  } = useCryptoData(selectedCrypto, timeframe);
-  
-  const {
-    prediction,
-    isLoading: predictionLoading,
-    generatePrediction,
-  } = usePrediction();
-
-  const {
     filteredCryptos,
     allCryptosData,
     handleFilterChange,
     isLoading: filtersLoading,
     error: filtersError
   } = useCryptoFilters();
+
+  const {
+    data: cryptoData,
+    isLoading: dataLoading,
+    error: dataError,
+  } = useCryptoData(selectedCrypto, timeframe, allCryptosData as any || []);
+  
+  const {
+    prediction,
+    isLoading: predictionLoading,
+    generatePrediction,
+  } = usePrediction();
 
   const handlePredict = async () => {
     if (!cryptoData?.length) {

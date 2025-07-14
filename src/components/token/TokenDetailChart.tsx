@@ -96,7 +96,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
         />
 
         {/* AI Prediction Engine Controls */}
-        {/* <AIPredictionControls
+        <AIPredictionControls
           predictionDays={predictionDays}
           setPredictionDays={setPredictionDays}
           modelType={modelType}
@@ -106,7 +106,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
           handleClearPrediction={handleClearPrediction}
           showPrediction={showPrediction}
           cryptoData={cryptoData}
-        /> */}
+        />
 
         {/* AI Prediction Results */}
         {showPrediction && (

@@ -35,7 +35,7 @@ export const IndependentPredictionWidget: React.FC<IndependentPredictionWidgetPr
   const [modelType, setModelType] = useState('advanced');
   const [showPrediction, setShowPrediction] = useState(false);
 
-  const { data: cryptoData, isLoading: dataLoading } = useCryptoData(selectedCrypto, timeframe);
+  const { data: cryptoData, isLoading: dataLoading } = useCryptoData(selectedCrypto, timeframe, []);
   const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   const handlePredict = async () => {

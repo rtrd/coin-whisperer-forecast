@@ -60,7 +60,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
 
       {/* AI Trading Signals - Restored */}
       <div className="mb-8">
-        <LockedAITradingSignals />
+        <AITradingSignals />
       </div>
 
       {/* Crypto Filters - Smart Crypto Filters */}
