@@ -9,10 +9,17 @@ import { Link } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
+import { trackFormSubmission, trackFormError, trackSubscriptionEvent, trackPageView } from "@/utils/analytics";
 
 const Subscribe = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Track page view on component mount
+  React.useEffect(() => {
+    trackPageView('/subscribe');
+    trackSubscriptionEvent('view_plans', 'premium', 'subscribe_page');
+  }, []);
 
   const cryptoOptions = [
     { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
@@ -23,10 +30,12 @@ const Subscribe = () => {
     e.preventDefault();
     if (!email) {
       toast.error("Please enter your email address");
+      trackFormError("subscribe_page", "empty_email");
       return;
     }
 
     setIsLoading(true);
+    trackSubscriptionEvent("start_checkout", "premium", "subscribe_page");
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -34,6 +43,10 @@ const Subscribe = () => {
     toast.success("Successfully subscribed! Premium features unlocked.");
     setIsLoading(false);
     setEmail('');
+    
+    // Track successful subscription
+    trackFormSubmission("subscribe_page", true);
+    trackSubscriptionEvent("complete", "premium", "subscribe_page");
   };
 
   const premiumFeatures = [

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { getPreviewText } from "./articleUtils";
+import { trackArticleClick } from "@/utils/analytics";
 
 interface HorizontalArticleCardProps {
   article: {
@@ -22,11 +23,16 @@ interface HorizontalArticleCardProps {
 export const HorizontalArticleCard: React.FC<HorizontalArticleCardProps> = ({
   article,
 }) => {
+  const handleClick = () => {
+    trackArticleClick(article.title, 0);
+  };
+
   return (
     <Link
       to={`/article/${article.id}`}
       state={{ article }}
       className="group cursor-pointer block"
+      onClick={handleClick}
     >
       <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 flex h-40">
         {/* Image - 30% */}

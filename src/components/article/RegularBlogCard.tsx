@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
 import { getPreviewText } from "./articleUtils";
+import { trackArticleClick } from "@/utils/analytics";
 
 interface RegularBlogCardProps {
   article: {
@@ -25,6 +26,10 @@ export const RegularBlogCard: React.FC<RegularBlogCardProps> = ({
   article, 
   compact = false 
 }) => {
+  const handleClick = () => {
+    trackArticleClick(article.title, 0);
+  };
+
   const cardClasses = compact 
     ? "bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-md hover:shadow-blue-500/10 h-full flex flex-col"
     : "bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 h-full flex flex-col";
@@ -40,6 +45,7 @@ export const RegularBlogCard: React.FC<RegularBlogCardProps> = ({
       to={`/article/${article.id}`}
       state={{ article }}
       className="group cursor-pointer block h-full"
+      onClick={handleClick}
     >
       <div className={cardClasses}>
         <div className={`${aspectRatio} bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden`}>

@@ -12,6 +12,7 @@ import { useMarketData } from "@/hooks/useMarketData";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
+import { trackTokenPageView, trackPredictionTool, trackPageView } from "@/utils/analytics";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -25,6 +26,14 @@ const TokenDetail = () => {
   // Get token info and crypto options
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
   const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
+  
+  // Track token page view
+  React.useEffect(() => {
+    if (selectedToken) {
+      trackTokenPageView(selectedToken.name, selectedToken.symbol, tokenmarketstats?.current_price);
+      trackPageView(`/token/${tokenId}`);
+    }
+  }, [tokenId, selectedToken, tokenmarketstats?.current_price]);
   const cryptoOptions = TokenDataService.getCryptoOptions();
   const {
     data: cryptoData,
@@ -85,12 +94,14 @@ const TokenDetail = () => {
       return;
     }
 
+    trackPredictionTool("generate", selectedToken?.name, modelType);
     await generatePrediction(cryptoData, cryptoId, predictionDays, modelType);
     setShowPrediction(true);
     toast.success("Prediction generated successfully!");
   };
 
   const handleClearPrediction = () => {
+    trackPredictionTool("clear", selectedToken?.name, modelType);
     setShowPrediction(false);
     toast.success("Prediction cleared from chart");
   };

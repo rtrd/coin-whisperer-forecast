@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Lock, Mail, Crown, Check, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { ComingSoonPlaceholder } from "./ComingSoonPlaceholder";
+import { trackFormSubmission, trackFormError, trackSubscriptionEvent } from "@/utils/analytics";
 interface SignupLockProps {
   children: React.ReactNode;
   title: string;
@@ -51,10 +52,12 @@ export const SignupLock: React.FC<SignupLockProps> = ({
     e.preventDefault();
     if (!email) {
       toast.error("Please enter your email address");
+      trackFormError("signup_lock", "empty_email");
       return;
     }
 
     setIsLoading(true);
+    trackSubscriptionEvent("start_signup", "free", "signup_lock");
 
     try {
       await saveEmail(email); // <-- Call the API here
@@ -65,8 +68,14 @@ export const SignupLock: React.FC<SignupLockProps> = ({
         "Thank you for signing up! Our AI features are coming soon."
       );
       setEmail("");
+      
+      // Track successful form submission and subscription
+      trackFormSubmission("signup_lock", true);
+      trackSubscriptionEvent("complete", "free", "signup_lock");
     } catch (err: any) {
       toast.error(err.message);
+      trackFormError("signup_lock", "api_error");
+      trackSubscriptionEvent("failed", "free", "signup_lock");
     } finally {
       setIsLoading(false);
     }

@@ -8,6 +8,7 @@ import { LockedIndependentPrediction } from "@/components/LockedIndependentPredi
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import { category } from "../../utils/Category";
+import { trackPageView, trackFeatureUsage } from "@/utils/analytics";
 
 const AIPrediction = () => {
   const [cryptoOptions, setCryptoOptions] = useState<any[]>([]);
@@ -88,6 +89,9 @@ const AIPrediction = () => {
 
   useEffect(() => {
     getCryptos();
+    // Track page view
+    trackPageView('/ai-prediction');
+    trackFeatureUsage('ai_prediction_page', 'view');
   }, []);
 
   // Get current price data for the selected crypto (bitcoin as default)

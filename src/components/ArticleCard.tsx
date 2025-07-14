@@ -3,6 +3,7 @@ import { DefaultArticleCard } from "./article/DefaultArticleCard";
 import { HorizontalArticleCard } from "./article/HorizontalArticleCard";
 import { HighlightedArticleCard } from "./article/HighlightedArticleCard";
 import { RegularBlogCard } from "./article/RegularBlogCard";
+import { trackArticleClick } from "@/utils/analytics";
 
 interface ArticleCardProps {
   article: {

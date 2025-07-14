@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
 import { getPreviewText } from "./articleUtils";
+import { trackArticleClick } from "@/utils/analytics";
 
 interface HighlightedArticleCardProps {
   article: {
@@ -21,11 +22,16 @@ interface HighlightedArticleCardProps {
 }
 
 export const HighlightedArticleCard: React.FC<HighlightedArticleCardProps> = ({ article }) => {
+  const handleClick = () => {
+    trackArticleClick(article.title, 0);
+  };
+
   return (
     <Link
       to={`/article/${article.id}`}
       state={{ article }}
       className="group cursor-pointer block h-full"
+      onClick={handleClick}
     >
       <div className="bg-gray-700/50 rounded-lg overflow-hidden border-2 border-yellow-500/50 hover:border-yellow-400 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20 h-full flex flex-col">
         <div className="aspect-[4/3] bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">

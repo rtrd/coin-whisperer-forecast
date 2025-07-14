@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { trackTokenClick } from "@/utils/analytics";
 
 interface CryptoOption {
   value: string;
@@ -23,9 +24,17 @@ export const CryptoSelector: React.FC<CryptoSelectorProps> = ({
   onSelectCrypto
 }) => {
   const selectedOption = cryptoOptions.find(option => option.value === selectedCrypto);
+  
+  const handleCryptoSelect = (value: string) => {
+    const selected = cryptoOptions.find(option => option.value === value);
+    if (selected) {
+      trackTokenClick(selected.label, 'crypto_selector');
+    }
+    onSelectCrypto(value);
+  };
 
   return (
-    <Select value={selectedCrypto} onValueChange={onSelectCrypto}>
+    <Select value={selectedCrypto} onValueChange={handleCryptoSelect}>
       <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
         <SelectValue>
           {selectedOption ? (
