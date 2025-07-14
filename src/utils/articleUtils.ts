@@ -2,8 +2,16 @@
 export const formatArticleForDisplay = (article: any) => {
   const tagList: string[] = [];
 
-  // Case 1: comma-separated `tagname`
-  if (typeof article.tagname === "string") {
+  // Case 1: WordPress tagNames array (prioritize this)
+  if (Array.isArray(article.tagNames)) {
+    tagList.push(
+      ...article.tagNames
+        .filter((tag: any) => typeof tag === "string" && tag.trim())
+        .map((tag: string) => tag.trim())
+    );
+  }
+  // Case 2: comma-separated `tagname`
+  else if (typeof article.tagname === "string") {
     tagList.push(
       ...article.tagname
         .split(",")
@@ -11,9 +19,8 @@ export const formatArticleForDisplay = (article: any) => {
         .filter(Boolean)
     );
   }
-
-  // Case 2: `tags` is already an array
-  if (Array.isArray(article.tags)) {
+  // Case 3: `tags` is already an array
+  else if (Array.isArray(article.tags)) {
     tagList.push(
       ...article.tags
         .filter((tag: any) => typeof tag === "string")
@@ -21,8 +28,8 @@ export const formatArticleForDisplay = (article: any) => {
     );
   }
 
-  // Remove duplicates and normalize (e.g. lowercase)
-  const uniqueTags = [...new Set(tagList.map((t) => t.toLowerCase()))];
+  // Remove duplicates but preserve original case for featured detection
+  const uniqueTags = [...new Set(tagList.filter(Boolean))];
 
   return {
     id: article.id,
@@ -38,19 +45,30 @@ export const formatArticleForDisplay = (article: any) => {
 };
 
 export const getFeaturedArticle = (articles: any[]) => {
+  console.log("Finding featured article from", articles.length, "articles");
+  
   // Look for articles with "featured" tag (case-insensitive)
-  const featuredArticles = articles.filter(article => 
-    Array.isArray(article.tags) && 
-    article.tags.some((tag: string) => 
-      typeof tag === 'string' && tag.toLowerCase().includes('featured')
-    )
-  );
+  const featuredArticles = articles.filter(article => {
+    const hasFeaturedTag = Array.isArray(article.tags) && 
+      article.tags.some((tag: string) => 
+        typeof tag === 'string' && tag.toLowerCase().includes('featured')
+      );
+    
+    if (hasFeaturedTag) {
+      console.log("Found featured article:", article.title, "with tags:", article.tags);
+    }
+    
+    return hasFeaturedTag;
+  });
 
   // If featured articles exist, return the most recent one
   if (featuredArticles.length > 0) {
-    return featuredArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+    const selected = featuredArticles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+    console.log("Selected featured article:", selected.title);
+    return selected;
   }
 
+  console.log("No featured articles found, using first article");
   // Fallback to first article if no featured articles
   return articles[0] || null;
 };

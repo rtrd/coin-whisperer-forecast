@@ -79,6 +79,7 @@ const Blog = () => {
             url: post.link,
             content,
             tagname: post.tagNames?.filter((t: string) => t)?.join(", ") || "",
+            tagNames: post.tagNames?.filter((t: string) => t && t.trim()) || [], // Pass original array
           });
         });
 
