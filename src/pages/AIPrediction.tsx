@@ -1,18 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Zap, ArrowLeft } from "lucide-react";
 import { Link } from 'react-router-dom';
 import { IndexHeader } from "@/components/IndexHeader";
-import { LockedIndependentPrediction } from "@/components/LockedIndependentPrediction";
+import { AIPredictionControls } from "@/components/token/AIPredictionControls";
+import { AIPredictionResults } from "@/components/token/AIPredictionResults";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import { category } from "../../utils/Category";
 import { trackPageView, trackFeatureUsage } from "@/utils/analytics";
+import { useCryptoData } from "@/hooks/useCryptoData";
+import { usePrediction } from "@/hooks/usePrediction";
 
 const AIPrediction = () => {
   const [cryptoOptions, setCryptoOptions] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
+  const [predictionDays, setPredictionDays] = useState(7);
+  const [modelType, setModelType] = useState('technical');
+  const [showPrediction, setShowPrediction] = useState(false);
+
+  const { data: cryptoData, isLoading: dataLoading } = useCryptoData(selectedCrypto, '7d', [] as any);
+  const { prediction, isLoading: predictionLoading, generatePrediction } = usePrediction();
 
   function addCategoryToTokens(tokens: any[], categories: any[]) {
     const categoryMap = Object.fromEntries(
@@ -87,6 +98,17 @@ const AIPrediction = () => {
     return iconMap[symbol] || '🪙';
   };
 
+  const handlePredict = async () => {
+    if (!cryptoData || cryptoData.length === 0) return;
+    
+    await generatePrediction(cryptoData, selectedCrypto, predictionDays, modelType);
+    setShowPrediction(true);
+  };
+
+  const handleClearPrediction = () => {
+    setShowPrediction(false);
+  };
+
   useEffect(() => {
     getCryptos();
     // Track page view
@@ -94,9 +116,10 @@ const AIPrediction = () => {
     trackFeatureUsage('ai_prediction_page', 'view');
   }, []);
 
-  // Get current price data for the selected crypto (bitcoin as default)
-  const currentPrice = 50000; // This could be fetched from the crypto data
-  const priceChange = 2.5;
+  // Get current price data for the selected crypto
+  const currentPrice = cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1].price : 50000;
+  const priceChange = cryptoData && cryptoData.length > 1 ? 
+    ((cryptoData[cryptoData.length - 1].price - cryptoData[cryptoData.length - 2].price) / cryptoData[cryptoData.length - 2].price * 100) : 2.5;
 
   if (isLoading) {
     return (
@@ -118,7 +141,7 @@ const AIPrediction = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Homepage Header */}
         <IndexHeader 
-          selectedCrypto="bitcoin"
+          selectedCrypto={selectedCrypto}
           cryptoOptions={cryptoOptions}
           currentPrice={currentPrice}
           priceChange={priceChange}
@@ -144,7 +167,63 @@ const AIPrediction = () => {
           </p>
         </div>
 
-        <LockedIndependentPrediction cryptoOptions={cryptoOptions} />
+        {/* AI Prediction Interface */}
+        <Card className="bg-gray-800/50 border-gray-700 shadow-2xl mb-8">
+          <CardHeader>
+            <CardTitle className="text-white flex items-center gap-3">
+              <Zap className="h-6 w-6 text-purple-400" />
+              AI Price Prediction
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Cryptocurrency Selection */}
+            <div className="bg-gradient-to-br from-gray-800/80 via-purple-900/30 to-gray-700/80 backdrop-blur-sm border-2 border-purple-500/40 rounded-2xl p-6 shadow-2xl">
+              <div className="flex items-center gap-4 mb-4">
+                <span className="text-white font-bold text-lg">Select Cryptocurrency:</span>
+                <Select value={selectedCrypto} onValueChange={setSelectedCrypto}>
+                  <SelectTrigger className="w-64 h-12 bg-gray-900/80 border-purple-400/60 text-white text-base font-medium hover:bg-gray-800/90 hover:border-purple-300/80 transition-all duration-200 shadow-lg">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-900 border-purple-500/60 shadow-2xl z-[100] max-h-64 overflow-y-auto">
+                    {cryptoOptions.slice(0, 20).map((option) => (
+                      <SelectItem 
+                        key={option.value} 
+                        value={option.value}
+                        className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium"
+                      >
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* AI Prediction Controls */}
+            <AIPredictionControls
+              predictionDays={predictionDays}
+              setPredictionDays={setPredictionDays}
+              modelType={modelType}
+              setModelType={setModelType}
+              predictionLoading={predictionLoading}
+              handlePredict={handlePredict}
+              handleClearPrediction={handleClearPrediction}
+              showPrediction={showPrediction}
+              cryptoData={cryptoData}
+            />
+
+            {/* AI Prediction Results */}
+            {showPrediction && prediction && (
+              <AIPredictionResults
+                prediction={prediction}
+                cryptoId={selectedCrypto}
+                modelType={modelType}
+                predictionDays={predictionDays}
+                currentPrice={currentPrice}
+              />
+            )}
+          </CardContent>
+        </Card>
       </div>
       
       <Footer />
