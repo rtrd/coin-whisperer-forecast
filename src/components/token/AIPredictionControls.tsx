@@ -20,6 +20,9 @@ interface AIPredictionControlsProps {
   handleClearPrediction: () => void;
   showPrediction: boolean;
   cryptoData: any[] | undefined;
+  selectedCrypto?: string;
+  setSelectedCrypto?: (value: string) => void;
+  cryptoOptions?: any[];
 }
 
 export const AIPredictionControls: React.FC<AIPredictionControlsProps> = ({
@@ -32,6 +35,9 @@ export const AIPredictionControls: React.FC<AIPredictionControlsProps> = ({
   handleClearPrediction,
   showPrediction,
   cryptoData,
+  selectedCrypto,
+  setSelectedCrypto,
+  cryptoOptions,
 }) => {
   return (
     <div className="bg-gradient-to-br from-gray-800/80 via-purple-900/30 to-gray-700/80 backdrop-blur-sm border-2 border-purple-500/40 rounded-2xl p-6 shadow-2xl">
@@ -47,6 +53,28 @@ export const AIPredictionControls: React.FC<AIPredictionControlsProps> = ({
         </div>
         
         <div className="flex items-center gap-5 flex-wrap">
+          {selectedCrypto && setSelectedCrypto && cryptoOptions && (
+            <div className="flex items-center gap-3">
+              <span className="text-base font-semibold text-purple-200">Cryptocurrency:</span>
+              <Select value={selectedCrypto} onValueChange={setSelectedCrypto}>
+                <SelectTrigger className="w-64 h-12 bg-gray-900/80 border-purple-400/60 text-white text-base font-medium hover:bg-gray-800/90 hover:border-purple-300/80 transition-all duration-200 shadow-lg">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-900 border-purple-500/60 shadow-2xl z-[100] max-h-64 overflow-y-auto">
+                  {cryptoOptions.slice(0, 20).map((option) => (
+                    <SelectItem 
+                      key={option.value} 
+                      value={option.value}
+                      className="text-white hover:bg-purple-600/30 focus:bg-purple-600/30 focus:text-white py-3 text-base font-medium"
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+          
           <div className="flex items-center gap-3">
             <span className="text-base font-semibold text-purple-200">Timeline:</span>
             <Select value={predictionDays.toString()} onValueChange={(value) => setPredictionDays(Number(value))}>
