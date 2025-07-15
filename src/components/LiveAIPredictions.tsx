@@ -12,7 +12,7 @@ interface LivePrediction {
   symbol: string;
   id: string;
   prediction: string;
-  confidence: number;
+  currentPrice: number;
   trend: 'up' | 'down';
 }
 
@@ -82,7 +82,7 @@ export const LiveAIPredictions = () => {
               symbol: crypto.symbol,
               id: crypto.id,
               prediction: `${percentChange >= 0 ? '+' : ''}${percentChange.toFixed(1)}%`,
-              confidence: result.accuracy,
+              currentPrice: currentPrice,
               trend: percentChange >= 0 ? 'up' : 'down'
             });
           } else {
@@ -97,7 +97,7 @@ export const LiveAIPredictions = () => {
             symbol: crypto.symbol,
             id: crypto.id,
             prediction: `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`,
-            confidence: 75 + Math.random() * 20, // 75-95%
+            currentPrice: 0,
             trend: change >= 0 ? 'up' : 'down'
           });
         }
@@ -112,7 +112,7 @@ export const LiveAIPredictions = () => {
           symbol: crypto.symbol,
           id: crypto.id,
           prediction: `${change >= 0 ? '+' : ''}${change.toFixed(1)}%`,
-          confidence: 75 + Math.random() * 20, // 75-95%
+          currentPrice: 0,
           trend: change >= 0 ? 'up' : 'down'
         });
       }
@@ -174,7 +174,9 @@ export const LiveAIPredictions = () => {
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <div className={`w-2 h-2 ${pred.trend === 'up' ? 'bg-green-400' : 'bg-red-400'} rounded-full animate-pulse`}></div>
-                      <p className="text-gray-400 text-xs">Confidence: {pred.confidence.toFixed(0)}%</p>
+                      <p className="text-gray-400 text-xs">
+                        ${pred.currentPrice > 0 ? pred.currentPrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 }) : 'N/A'}
+                      </p>
                     </div>
                   </div>
                 </div>
