@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { TokenProvider } from "@/contexts/TokenContext";
 import { TokenDetailLayout } from "@/components/token/TokenDetailLayout";
 import { TokenDataService } from "@/services/tokenDataService";
@@ -13,6 +15,14 @@ import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 import { trackTokenPageView, trackPredictionTool, trackPageView } from "@/utils/analytics";
+import { 
+  generateTokenMetaTitle, 
+  generateTokenMetaDescription, 
+  generateTokenKeywords,
+  generateTokenStructuredData,
+  generateCanonicalUrl,
+  type TokenSEOData
+} from "@/utils/seo";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -106,6 +116,23 @@ const TokenDetail = () => {
     toast.success("Prediction cleared from chart");
   };
 
+  // Create SEO data object
+  const seoData: TokenSEOData = {
+    name: selectedToken?.name || '',
+    symbol: selectedToken?.symbol || '',
+    currentPrice,
+    priceChange,
+    marketCap: displayMarketStats.market_cap,
+    description: selectedToken?.description || `${selectedToken?.name} price analysis and predictions`,
+    category: selectedToken?.category || 'Cryptocurrency'
+  };
+
+  const canonicalUrl = generateCanonicalUrl(tokenId || 'bitcoin');
+  const breadcrumbItems = [
+    { label: 'Tokens', href: '/tokens' },
+    { label: `${selectedToken?.name} (${selectedToken?.symbol})` }
+  ];
+
   if (!selectedToken) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
@@ -130,31 +157,71 @@ const TokenDetail = () => {
   }
 
   return (
-    <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
-      <TokenDetailLayout
-        cryptoId={cryptoId}
-        cryptoOptions={cryptoOptions}
-        currentPrice={currentPrice}
-        priceChange={priceChange}
-        marketData={displayMarketStats}
-        cryptoData={cryptoData}
-        dataLoading={dataLoading}
-        prediction={prediction}
-        showPrediction={showPrediction}
-        timeframe={timeframe}
-        setTimeframe={setTimeframe}
-        predictionDays={predictionDays}
-        setPredictionDays={setPredictionDays}
-        modelType={modelType}
-        setModelType={setModelType}
-        predictionLoading={predictionLoading}
-        handlePredict={handlePredict}
-        handleClearPrediction={handleClearPrediction}
-        tokenId={tokenId || "bitcoin"}
-        selectedToken={selectedToken}
-        allCryptosData={allCryptosData}
-      />
-    </TokenProvider>
+    <>
+      <Helmet>
+        <title>{generateTokenMetaTitle(seoData)}</title>
+        <meta name="description" content={generateTokenMetaDescription(seoData)} />
+        <meta name="keywords" content={generateTokenKeywords(seoData)} />
+        <link rel="canonical" href={canonicalUrl} />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content={generateTokenMetaTitle(seoData)} />
+        <meta property="og:description" content={generateTokenMetaDescription(seoData)} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://pumpparade.com/og-image.jpg" />
+        <meta property="og:image:alt" content={`${seoData.name} price analysis and predictions`} />
+        <meta property="og:site_name" content="Pump Parade" />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={generateTokenMetaTitle(seoData)} />
+        <meta name="twitter:description" content={generateTokenMetaDescription(seoData)} />
+        <meta name="twitter:image" content="https://pumpparade.com/og-image.jpg" />
+        <meta name="twitter:image:alt" content={`${seoData.name} price analysis and predictions`} />
+        
+        {/* Additional SEO tags */}
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <meta name="author" content="Pump Parade" />
+        <meta name="theme-color" content="#1e40af" />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
+        </script>
+      </Helmet>
+      
+      <TokenProvider tokenId={tokenId || "bitcoin"} cryptoOptions={cryptoOptions}>
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+          <div className="container mx-auto px-4 py-6">
+            <Breadcrumb items={breadcrumbItems} />
+            <TokenDetailLayout
+              cryptoId={cryptoId}
+              cryptoOptions={cryptoOptions}
+              currentPrice={currentPrice}
+              priceChange={priceChange}
+              marketData={displayMarketStats}
+              cryptoData={cryptoData}
+              dataLoading={dataLoading}
+              prediction={prediction}
+              showPrediction={showPrediction}
+              timeframe={timeframe}
+              setTimeframe={setTimeframe}
+              predictionDays={predictionDays}
+              setPredictionDays={setPredictionDays}
+              modelType={modelType}
+              setModelType={setModelType}
+              predictionLoading={predictionLoading}
+              handlePredict={handlePredict}
+              handleClearPrediction={handleClearPrediction}
+              tokenId={tokenId || "bitcoin"}
+              selectedToken={selectedToken}
+              allCryptosData={allCryptosData}
+            />
+          </div>
+        </div>
+      </TokenProvider>
+    </>
   );
 };
 
