@@ -11,9 +11,7 @@ export interface TokenSEOData {
 }
 
 export const generateTokenMetaTitle = (tokenData: TokenSEOData): string => {
-  const changeText = tokenData.priceChange >= 0 ? "📈" : "📉";
-  const priceFormatted = formatPrice(tokenData.currentPrice);
-  return `${tokenData.name} (${tokenData.symbol}) Price $${priceFormatted} ${changeText} | Live Analysis & AI Predictions | Pump Parade`;
+  return `${tokenData.name} Technical Analysis & Price Prediction | Pump Parade`;
 };
 
 export const generateTokenMetaDescription = (tokenData: TokenSEOData): string => {
