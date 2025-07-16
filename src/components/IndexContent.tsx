@@ -36,8 +36,10 @@ export const IndexContent: React.FC<IndexContentProps> = ({
 }) => {
   useEffect(() => {
     // Ensure googletag is available and display the ad
-    if (window.googletag && window.googletag.display) {
-      window.googletag.display('div-gpt-ad-1752049298270-0');
+    if (window.googletag && window.googletag.cmd) {
+      window.googletag.cmd.push(function() { 
+        window.googletag.display('div-gpt-ad-1752654531765-0'); 
+      });
     }
   }, []);
 
@@ -50,9 +52,9 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         priceChange={priceChange}
       />
 
-      {/* Google Ad - Below Headline */}
+      {/* Google Ad - Below Header */}
       <div className="flex justify-center mb-6 md:mb-8">
-        <div id='div-gpt-ad-1752049298270-0' style={{minWidth: '728px', minHeight: '90px'}}></div>
+        <div id='div-gpt-ad-1752654531765-0' style={{minWidth: '728px', minHeight: '90px'}}></div>
       </div>
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
