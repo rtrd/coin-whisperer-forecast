@@ -9,7 +9,7 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import { AITradingSignals } from "@/components/AITradingSignals";
-import { AdUnit } from "@/components/ads/AdService";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { MarketDataWidget } from "@/components/MarketDataWidget";
 import Footer from "@/components/Footer";
@@ -34,15 +34,6 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   AllCryptosData,
   handleFilterChange,
 }) => {
-  useEffect(() => {
-    // Ensure googletag is available and display the ad
-    if (window.googletag && window.googletag.cmd) {
-      window.googletag.cmd.push(function() { 
-        window.googletag.display('div-gpt-ad-1752654531765-0'); 
-      });
-    }
-  }, []);
-
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
       <IndexHeader
@@ -52,10 +43,12 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         priceChange={priceChange}
       />
 
-      {/* Google Ad - Below Header */}
-      <div className="flex justify-center mb-6 md:mb-8">
-        <div id='div-gpt-ad-1752654531765-0' style={{minWidth: '728px', minHeight: '90px'}}></div>
-      </div>
+      {/* Google Ad Manager - Header Ad */}
+      <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-0"
+        size={[728, 90]}
+        className="mb-6 md:mb-8"
+      />
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <WordPressIntegration />
