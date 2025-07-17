@@ -372,7 +372,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 <span className="text-xs text-gray-400 font-medium">
                   {indicator.name.includes("SMA") ||
                   indicator.name.includes("MACD")
-                    ? `$${indicator.value.toFixed(2)}`
+                    ? `$${indicator.value >= 1000 ? indicator.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : indicator.value.toFixed(2)}`
                     : indicator.value.toFixed(2)}
                 </span>
                 <span className="text-xs text-gray-400 font-medium">
@@ -415,7 +415,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </p>
               </div>
               <p className="text-lg font-bold text-white">
-                ${supportLevel.toFixed(2)}
+                ${supportLevel >= 1000 ? supportLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : supportLevel.toFixed(2)}
               </p>
               <p className="text-xs text-emerald-300/80">
                 Strong buying interest
@@ -431,7 +431,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </p>
               </div>
               <p className="text-lg font-bold text-white">
-                ${resistanceLevel.toFixed(2)}
+                ${resistanceLevel >= 1000 ? resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : resistanceLevel.toFixed(2)}
               </p>
               <p className="text-xs text-red-300/80">Selling pressure zone</p>
             </div>
