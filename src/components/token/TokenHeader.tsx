@@ -1,10 +1,33 @@
-
 import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Globe, Twitter } from "lucide-react";
 import { useToken } from '@/contexts/TokenContext';
 import { useQuery } from '@tanstack/react-query';
 import { useTokenInfo } from '@/hooks/useTokenInfo';
+
+const truncateToSentence = (text: string, maxLength: number): string => {
+  if (text.length <= maxLength) return text;
+  
+  // Find the last complete sentence within the limit
+  let truncated = text.substring(0, maxLength);
+  const lastSentenceEnd = Math.max(
+    truncated.lastIndexOf('.'),
+    truncated.lastIndexOf('!'),
+    truncated.lastIndexOf('?')
+  );
+  
+  if (lastSentenceEnd > maxLength * 0.7) {
+    // If we found a sentence ending in the last 30% of the text, use it
+    return truncated.substring(0, lastSentenceEnd + 1);
+  } else {
+    // Otherwise, find the last space and add a period
+    const lastSpace = truncated.lastIndexOf(' ');
+    if (lastSpace > maxLength * 0.8) {
+      return truncated.substring(0, lastSpace) + '.';
+    }
+    return truncated + '...';
+  }
+};
 
 const generateAIDescription = async (tokenInfo: any): Promise<string> => {
   if (!tokenInfo) return '';
@@ -19,15 +42,15 @@ const generateAIDescription = async (tokenInfo: any): Promise<string> => {
         messages: [
           {
             role: 'system',
-            content: 'You are a cryptocurrency analyst. Generate comprehensive, SEO-optimized descriptions for crypto tokens. Write in a professional, informative tone that would be suitable for investors and traders. Focus on utility, technology, market position, and potential use cases.'
+            content: 'You are a cryptocurrency analyst. Generate concise, SEO-optimized descriptions for crypto tokens in EXACTLY 850 characters or less. Count your characters carefully. Write in a professional, informative tone. Focus on utility, technology, and market position. Always end with a complete sentence.'
           },
           {
             role: 'user',
-            content: `Generate a comprehensive description (max 850 characters) for ${tokenInfo.name} (${tokenInfo.symbol}). Include information about its technology, use cases, market position, and what makes it unique. The current market cap is $${tokenInfo.market_cap?.toLocaleString() || 'N/A'} and it ranks #${tokenInfo.market_cap_rank || 'N/A'} by market capitalization. End with a complete sentence, no ellipsis. Base your response on: ${tokenInfo.description || `${tokenInfo.name} is a cryptocurrency`}.`
+            content: `Write a description for ${tokenInfo.name} (${tokenInfo.symbol}) in EXACTLY 850 characters or less. Include: technology, use cases, market position (currently ranked #${tokenInfo.market_cap_rank || 'N/A'} with $${tokenInfo.market_cap?.toLocaleString() || 'N/A'} market cap). End with complete sentence. Base on: ${tokenInfo.description || `${tokenInfo.name} is a cryptocurrency`}.`
           }
         ],
         model: 'openai/gpt-4o-mini',
-        max_tokens: 300,
+        max_tokens: 120,
         temperature: 0.7
       }),
     });
@@ -37,10 +60,14 @@ const generateAIDescription = async (tokenInfo: any): Promise<string> => {
     }
 
     const data = await response.json();
-    return data.choices?.[0]?.message?.content || tokenInfo.description || `${tokenInfo.name} is a digital cryptocurrency that operates on blockchain technology.`;
+    const aiDescription = data.choices?.[0]?.message?.content || tokenInfo.description || `${tokenInfo.name} is a digital cryptocurrency that operates on blockchain technology.`;
+    
+    // Ensure the description is exactly 850 characters or less
+    return truncateToSentence(aiDescription, 850);
   } catch (error) {
     console.error('Error generating AI description:', error);
-    return tokenInfo.description || `${tokenInfo.name} is a digital cryptocurrency that operates on blockchain technology, offering various features and use cases in the decentralized finance ecosystem.`;
+    const fallbackDescription = tokenInfo.description || `${tokenInfo.name} is a digital cryptocurrency that operates on blockchain technology, offering various features and use cases in the decentralized finance ecosystem.`;
+    return truncateToSentence(fallbackDescription, 850);
   }
 };
 
