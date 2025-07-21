@@ -55,10 +55,21 @@ export const TokenHeader: React.FC<TokenHeaderProps> = ({ tokenId }) => {
                 .replace(/\s+/g, ' ') // Replace multiple spaces with single space
                 .trim();
               
-              // Show more content - increase to 500 characters for better SEO and user info
-              return cleanDescription.length > 500 
-                ? cleanDescription.substring(0, 500) + '...'
-                : cleanDescription;
+              // Use more space - up to 800 characters and end with complete sentence
+              if (cleanDescription.length > 800) {
+                const truncated = cleanDescription.substring(0, 800);
+                // Find the last complete sentence within the limit
+                const lastPeriod = truncated.lastIndexOf('.');
+                const lastExclamation = truncated.lastIndexOf('!');
+                const lastQuestion = truncated.lastIndexOf('?');
+                const lastSentenceEnd = Math.max(lastPeriod, lastExclamation, lastQuestion);
+                
+                if (lastSentenceEnd > 400) { // Make sure we have a reasonable amount of text
+                  return truncated.substring(0, lastSentenceEnd + 1);
+                }
+                return truncated + '.'; // Fallback: add period if no good sentence break found
+              }
+              return cleanDescription;
             })()}
           </p>
         </div>
