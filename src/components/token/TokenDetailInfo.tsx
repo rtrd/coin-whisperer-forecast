@@ -3,17 +3,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { TokenHeader } from "./TokenHeader";
 import { TokenPriceDisplay } from "./TokenPriceDisplay";
 import { TokenMarketStats } from "./TokenMarketStats";
+import { TokenDescription } from "./TokenDescription";
 
 interface TokenDetailInfoProps {
   currentPrice: number;
   priceChange: number;
   marketData: any;
+  tokenId: string;
 }
 
 export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
   currentPrice,
   priceChange,
   marketData,
+  tokenId,
 }) => {
   return (
     <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
@@ -27,6 +30,9 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
               priceChange={priceChange}
             />
           </div>
+
+          {/* Token Description */}
+          <TokenDescription tokenId={tokenId} />
 
           {/* Market Statistics */}
           <TokenMarketStats marketData={marketData} />
