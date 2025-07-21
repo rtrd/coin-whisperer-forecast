@@ -23,11 +23,11 @@ const generateAIDescription = async (tokenInfo: any): Promise<string> => {
           },
           {
             role: 'user',
-            content: `Generate a brief description (180-240 characters) for ${tokenInfo.name} (${tokenInfo.symbol}). Include its key use case and market position. The current market cap is $${tokenInfo.market_cap?.toLocaleString() || 'N/A'} and it ranks #${tokenInfo.market_cap_rank || 'N/A'}. End with a complete sentence, no ellipsis. Base your response on: ${tokenInfo.description || `${tokenInfo.name} is a cryptocurrency`}.`
+            content: `Generate a very brief description (90-120 characters) for ${tokenInfo.name} (${tokenInfo.symbol}). Include its main use case. End with a complete sentence. Base your response on: ${tokenInfo.description || `${tokenInfo.name} is a cryptocurrency`}.`
           }
         ],
         model: 'openai/gpt-4o-mini',
-        max_tokens: 90,
+        max_tokens: 45,
         temperature: 0.7
       }),
     });
