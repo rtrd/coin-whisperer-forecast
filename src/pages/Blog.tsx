@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { BlogLayout } from "@/components/blog/BlogLayout";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogFeaturedSection } from "@/components/blog/BlogFeaturedSection";
@@ -7,11 +8,14 @@ import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
 import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { getWordPressPost } from "../../utils/api";
 import { formatArticleForDisplay, getFeaturedArticle } from "@/utils/articleUtils";
+import { generateBlogSEO } from "@/utils/pageSeo";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
   const [categories, setCategories] = useState<{ [key: string]: any[] }>({});
   const [loading, setLoading] = useState(true);
+
+  const seoData = generateBlogSEO();
 
   const cryptoOptions = [
     {
@@ -170,13 +174,35 @@ const Blog = () => {
   }
 
   return (
-    <BlogLayout cryptoOptions={cryptoOptions}>
-      <BlogHeader />
-      <BlogFeaturedSection featuredArticle={featuredArticle} />
-      <BlogTrendingSection trendingArticles={trendingArticles} />
-      <BlogLatestSection latestArticles={latestArticles} />
-      <BlogCategoriesSection categories={categories} />
-    </BlogLayout>
+    <>
+      <Helmet>
+        <title>{seoData.title}</title>
+        <meta name="description" content={seoData.description} />
+        <meta name="keywords" content={seoData.keywords} />
+        <link rel="canonical" href={seoData.canonical} />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content={seoData.openGraph.title} />
+        <meta property="og:description" content={seoData.openGraph.description} />
+        <meta property="og:type" content={seoData.openGraph.type} />
+        <meta property="og:url" content={seoData.openGraph.url} />
+        <meta property="og:image" content={seoData.openGraph.image} />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content={seoData.twitter.card} />
+        <meta name="twitter:title" content={seoData.twitter.title} />
+        <meta name="twitter:description" content={seoData.twitter.description} />
+        <meta name="twitter:image" content={seoData.twitter.image} />
+      </Helmet>
+
+      <BlogLayout cryptoOptions={cryptoOptions}>
+        <BlogHeader />
+        <BlogFeaturedSection featuredArticle={featuredArticle} />
+        <BlogTrendingSection trendingArticles={trendingArticles} />
+        <BlogLatestSection latestArticles={latestArticles} />
+        <BlogCategoriesSection categories={categories} />
+      </BlogLayout>
+    </>
   );
 };
 

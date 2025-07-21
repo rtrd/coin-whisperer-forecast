@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,12 +12,15 @@ import Footer from "@/components/Footer";
 import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import { MarketDataFilters, FilterType } from "@/components/MarketDataFilters";
+import { generateAllTokensSEO } from "@/utils/pageSeo";
 
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
   const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
   const location = useLocation();
   const { AllCryptosData } = location.state || { AllCryptosData: [] };
+
+  const seoData = generateAllTokensSEO();
 
   const cryptoOptions = [
     {
@@ -156,99 +160,121 @@ const AllTokens = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      <div className="container mx-auto px-4 py-4 md:py-8">
-        {/* Homepage Header */}
-        <IndexHeader
-          selectedCrypto="bitcoin"
-          cryptoOptions={cryptoOptions}
-          currentPrice={50000}
-          priceChange={2.5}
-        />
+    <>
+      <Helmet>
+        <title>{seoData.title}</title>
+        <meta name="description" content={seoData.description} />
+        <meta name="keywords" content={seoData.keywords} />
+        <link rel="canonical" href={seoData.canonical} />
+        
+        {/* Open Graph tags */}
+        <meta property="og:title" content={seoData.openGraph.title} />
+        <meta property="og:description" content={seoData.openGraph.description} />
+        <meta property="og:type" content={seoData.openGraph.type} />
+        <meta property="og:url" content={seoData.openGraph.url} />
+        <meta property="og:image" content={seoData.openGraph.image} />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content={seoData.twitter.card} />
+        <meta name="twitter:title" content={seoData.twitter.title} />
+        <meta name="twitter:description" content={seoData.twitter.description} />
+        <meta name="twitter:image" content={seoData.twitter.image} />
+      </Helmet>
 
-        <div className="mb-6">
-          <Link to="/">
-            <Button
-              variant="outline"
-              className="mb-4 bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
-          <h1 className="text-4xl font-bold text-white mb-2">All Tokens</h1>
-          <p className="text-gray-300">
-            Browse and analyze all available cryptocurrencies
-          </p>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        <div className="container mx-auto px-4 py-4 md:py-8">
+          {/* Homepage Header */}
+          <IndexHeader
+            selectedCrypto="bitcoin"
+            cryptoOptions={cryptoOptions}
+            currentPrice={50000}
+            priceChange={2.5}
+          />
+
+          <div className="mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="mb-4 bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+            <h1 className="text-4xl font-bold text-white mb-2">All Tokens</h1>
+            <p className="text-gray-300">
+              Browse and analyze all available cryptocurrencies
+            </p>
+          </div>
+
+          {/* Crypto Filters */}
+          <CryptoFilters onFilterChange={handleFilterChange} />
+
+          {/* Token List */}
+          <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <ExternalLink className="h-5 w-5 text-blue-400" />
+                All Tokens ({filteredCryptos.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+                {filteredCryptos.map((token) => (
+                  <Link
+                    key={token.name}
+                    to={`/token/${token.name}`}
+                    state={{ token, AllCryptosData }}
+                    className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg border border-gray-600 hover:bg-gray-600/50 transition-colors group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="text-xl">
+                        <img
+                          src={token.image}
+                          alt={token.label}
+                          width={30}
+                          height={30}
+                        />
+                      </span>
+                      <div>
+                        <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
+                          {token.symbol.toUpperCase()}
+                        </div>
+                        <div className="text-gray-400 text-xs">
+                          {(Math.random() * 10).toFixed(2)}/10
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div
+                        className={`text-sm font-medium ${
+                          token.price_change_percentage_24h > 0
+                            ? "text-green-400"
+                            : "text-red-400"
+                        }`}
+                      >
+                        <span>
+                          {token.price_change_percentage_24h > 0 ? "+" : ""}
+                        </span>
+                        {(token.price_change_percentage_24h ?? 0).toFixed(2)}%
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className="text-xs text-gray-300 border-gray-500"
+                      >
+                        {token.category}
+                      </Badge>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
-        {/* Crypto Filters */}
-        <CryptoFilters onFilterChange={handleFilterChange} />
-
-        {/* Token List */}
-        <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-          <CardHeader>
-            <CardTitle className="text-white flex items-center gap-2">
-              <ExternalLink className="h-5 w-5 text-blue-400" />
-              All Tokens ({filteredCryptos.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-              {filteredCryptos.map((token) => (
-                <Link
-                  key={token.name}
-                  to={`/token/${token.name}`}
-                  state={{ token, AllCryptosData }}
-                  className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg border border-gray-600 hover:bg-gray-600/50 transition-colors group"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className="text-xl">
-                      <img
-                        src={token.image}
-                        alt={token.label}
-                        width={30}
-                        height={30}
-                      />
-                    </span>
-                    <div>
-                      <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                        {token.symbol.toUpperCase()}
-                      </div>
-                      <div className="text-gray-400 text-xs">
-                        {(Math.random() * 10).toFixed(2)}/10
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div
-                      className={`text-sm font-medium ${
-                        token.price_change_percentage_24h > 0
-                          ? "text-green-400"
-                          : "text-red-400"
-                      }`}
-                    >
-                      <span>
-                        {token.price_change_percentage_24h > 0 ? "+" : ""}
-                      </span>
-                      {(token.price_change_percentage_24h ?? 0).toFixed(2)}%
-                    </div>
-                    <Badge
-                      variant="outline"
-                      className="text-xs text-gray-300 border-gray-500"
-                    >
-                      {token.category}
-                    </Badge>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </>
   );
 };
 

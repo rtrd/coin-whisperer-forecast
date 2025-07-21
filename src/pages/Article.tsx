@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import {
 } from "@/utils/articleUtils";
 import { getAllCryptos, getWordPressPost } from "../../utils/api";
 import { CryptoToken } from "@/types/crypto";
+import { generateArticleSEO } from "@/utils/pageSeo";
 
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
@@ -147,9 +149,8 @@ const Article = () => {
   };
 
   const article = articles.find((a) => a.id === Number(articleId));
-  console.log("article", article);
+  const seoData = article ? generateArticleSEO(article) : null;
 
-  //related articles with tags for filtering
   const transformallArticles = (articles: any[]): any[] => {
     return articles.map((a) => ({
       id: a.id,
@@ -172,83 +173,117 @@ const Article = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
         <div className="text-white text-xl">Loading article...</div>
       </div>
-    ); // or <LoadingSpinner />
+    );
   }
+  
   if (!article) {
     return <ArticleNotFound />;
   }
+
   const relatedArticles = getRelatedArticles(article, articlesData);
   const transformedArticles = transformallArticles(relatedArticles);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      {/* Header like homepage */}
-      <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader
-          selectedCrypto="bitcoin"
-          cryptoOptions={cryptoOptions}
-          currentPrice={45000}
-          priceChange={2.5}
-        />
-        
-        {/* Header Ad - below header description */}
-        <div className="flex justify-center mt-6 mb-8">
-          <AdUnit type="header" />
-        </div>
-      </div>
+    <>
+      {seoData && (
+        <Helmet>
+          <title>{seoData.title}</title>
+          <meta name="description" content={seoData.description} />
+          <meta name="keywords" content={seoData.keywords} />
+          <link rel="canonical" href={seoData.canonical} />
+          
+          {/* Open Graph tags */}
+          <meta property="og:title" content={seoData.openGraph.title} />
+          <meta property="og:description" content={seoData.openGraph.description} />
+          <meta property="og:type" content={seoData.openGraph.type} />
+          <meta property="og:url" content={seoData.openGraph.url} />
+          <meta property="og:image" content={seoData.openGraph.image} />
+          
+          {/* Twitter Card tags */}
+          <meta name="twitter:card" content={seoData.twitter.card} />
+          <meta name="twitter:title" content={seoData.twitter.title} />
+          <meta name="twitter:description" content={seoData.twitter.description} />
+          <meta name="twitter:image" content={seoData.twitter.image} />
+          
+          {/* Structured Data */}
+          {seoData.structuredData && (
+            <script type="application/ld+json">
+              {JSON.stringify(seoData.structuredData)}
+            </script>
+          )}
+        </Helmet>
+      )}
 
-      <div className="container mx-auto px-4 pb-8">
-        {/* Back Button */}
-        <div className="flex items-center gap-4 mb-6">
-          <Link to="/">
-            <Button
-              variant="outline"
-              className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Article Content with Header */}
-            <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
-              <ArticleHeader article={article} />
-              <ArticleContent content={article.content} tags={article.tags} />
-            </Card>
-
-            {/* Square Ads between tags and related articles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-              <div className="flex justify-center">
-                <AdUnit type="square" />
-              </div>
-              <div className="flex justify-center">
-                <AdUnit type="square" />
-              </div>
-            </div>
-
-            {/* Related Articles */}
-            <RelatedArticles articles={transformedArticles} />
-          </div>
-
-          {/* Sticky Sidebar */}
-          <div className="hidden lg:block">
-            <div className="sticky top-8 space-y-8">
-              <ArticleIndex content={article.content} />
-              <AdUnit type="skyscraper" />
-              <MarketWinnersWidget
-                topGainnersandLoosers={topGainnersandLoosers}
-              />
-            </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        {/* Header like homepage */}
+        <div className="container mx-auto px-4 py-4 md:py-8">
+          <IndexHeader
+            selectedCrypto="bitcoin"
+            cryptoOptions={cryptoOptions}
+            currentPrice={45000}
+            priceChange={2.5}
+          />
+          
+          {/* Header Ad - below header description */}
+          <div className="flex justify-center mt-6 mb-8">
+            <AdUnit type="header" />
           </div>
         </div>
-      </div>
 
-      <Footer />
-    </div>
+        <div className="container mx-auto px-4 pb-8">
+          {/* Back Button */}
+          <div className="flex items-center gap-4 mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-3 space-y-8">
+              {/* Article Content with Header */}
+              <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
+                <ArticleHeader article={article} />
+                <ArticleContent content={article.content} tags={article.tags} />
+              </Card>
+
+              {/* Square Ads between tags and related articles */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+                <div className="flex justify-center">
+                  <AdUnit type="square" />
+                </div>
+                <div className="flex justify-center">
+                  <AdUnit type="square" />
+                </div>
+              </div>
+
+              {/* Related Articles */}
+              <RelatedArticles articles={transformedArticles} />
+            </div>
+
+            {/* Sticky Sidebar */}
+            <div className="hidden lg:block">
+              <div className="sticky top-8 space-y-8">
+                <ArticleIndex content={article.content} />
+                <AdUnit type="skyscraper" />
+                <MarketWinnersWidget
+                  topGainnersandLoosers={topGainnersandLoosers}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Footer />
+      </div>
+    </>
   );
 };
+
 export default Article;

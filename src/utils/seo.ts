@@ -11,7 +11,7 @@ export interface TokenSEOData {
 }
 
 export const generateTokenMetaTitle = (tokenData: TokenSEOData): string => {
-  return `${tokenData.name} Technical Analysis & Price Prediction | Pump Parade`;
+  return `${tokenData.name} (${tokenData.symbol}) Technical Analysis & Price Prediction | Pump Parade`;
 };
 
 export const generateTokenMetaDescription = (tokenData: TokenSEOData): string => {
