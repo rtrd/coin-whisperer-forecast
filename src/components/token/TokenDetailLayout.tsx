@@ -82,7 +82,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             currentPrice={currentPrice}
             priceChange={priceChange}
             marketData={marketData}
-            tokenId={tokenId}
           />
 
           {/* Price Chart with AI Prediction Engine */}

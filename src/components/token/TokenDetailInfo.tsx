@@ -8,14 +8,12 @@ interface TokenDetailInfoProps {
   currentPrice: number;
   priceChange: number;
   marketData: any;
-  tokenId: string;
 }
 
 export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
   currentPrice,
   priceChange,
   marketData,
-  tokenId,
 }) => {
   return (
     <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
@@ -23,7 +21,7 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
         <div className="space-y-8">
           {/* Token Info Section */}
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-            <TokenHeader tokenId={tokenId} />
+            <TokenHeader />
             <TokenPriceDisplay
               currentPrice={currentPrice}
               priceChange={priceChange}
