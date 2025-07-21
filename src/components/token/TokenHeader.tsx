@@ -3,9 +3,20 @@ import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Globe, Twitter } from "lucide-react";
 import { useToken } from '@/contexts/TokenContext';
+import { useTokenInfo } from '@/hooks/useTokenInfo';
+import { getCoinGeckoId } from '@/utils/tokenMapping';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export const TokenHeader: React.FC = () => {
+interface TokenHeaderProps {
+  tokenId?: string;
+}
+
+export const TokenHeader: React.FC<TokenHeaderProps> = ({ tokenId }) => {
   const { selectedToken } = useToken();
+  
+  // Fetch dynamic token info if tokenId is provided
+  const cryptoId = tokenId ? getCoinGeckoId(tokenId) : '';
+  const { data: tokenInfo, isLoading: tokenInfoLoading } = useTokenInfo(cryptoId);
 
   if (!selectedToken) return null;
 
@@ -27,10 +38,35 @@ export const TokenHeader: React.FC = () => {
           {selectedToken.category}
         </Badge>
       </div>
-      
-      <p className="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
-        {selectedToken.description}
-      </p>
+      {/* Dynamic API Description */}
+      {tokenInfoLoading ? (
+        <div className="space-y-2 mb-6">
+          <Skeleton className="h-4 w-full bg-gray-700/50" />
+          <Skeleton className="h-4 w-3/4 bg-gray-700/50" />
+          <Skeleton className="h-4 w-5/6 bg-gray-700/50" />
+        </div>
+      ) : tokenInfo?.description ? (
+        <div className="mb-6">
+          <p className="text-gray-300 text-base lg:text-lg leading-relaxed">
+            {(() => {
+              // Clean up HTML tags from description and limit length
+              const cleanDescription = tokenInfo.description
+                .replace(/<[^>]*>/g, '') // Remove HTML tags
+                .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+                .trim();
+              
+              // Truncate to reasonable length for SEO (around 200 characters)
+              return cleanDescription.length > 200 
+                ? cleanDescription.substring(0, 200) + '...'
+                : cleanDescription;
+            })()}
+          </p>
+        </div>
+      ) : (
+        <p className="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
+          {selectedToken.description}
+        </p>
+      )}
       
       <div className="flex items-center gap-4">
         {selectedToken.website && (
