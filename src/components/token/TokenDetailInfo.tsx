@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { TokenHeader } from "./TokenHeader";
 import { TokenPriceDisplay } from "./TokenPriceDisplay";
 import { TokenMarketStats } from "./TokenMarketStats";
-import { TokenDescription } from "./TokenDescription";
+
 
 interface TokenDetailInfoProps {
   currentPrice: number;
@@ -24,15 +24,12 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
         <div className="space-y-8">
           {/* Token Info Section */}
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8">
-            <TokenHeader />
+            <TokenHeader tokenId={tokenId} />
             <TokenPriceDisplay
               currentPrice={currentPrice}
               priceChange={priceChange}
             />
           </div>
-
-          {/* AI-Generated Token Description */}
-          <TokenDescription tokenId={tokenId} />
 
           {/* Market Statistics */}
           <TokenMarketStats marketData={marketData} />

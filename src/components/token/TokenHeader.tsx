@@ -3,9 +3,62 @@ import React from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Globe, Twitter } from "lucide-react";
 import { useToken } from '@/contexts/TokenContext';
+import { useQuery } from '@tanstack/react-query';
+import { useTokenInfo } from '@/hooks/useTokenInfo';
 
-export const TokenHeader: React.FC = () => {
+const generateAIDescription = async (tokenInfo: any): Promise<string> => {
+  if (!tokenInfo) return '';
+
+  try {
+    const response = await fetch('/api/openrouter-proxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a cryptocurrency analyst. Generate comprehensive, SEO-optimized descriptions for crypto tokens. Write in a professional, informative tone that would be suitable for investors and traders. Focus on utility, technology, market position, and potential use cases.'
+          },
+          {
+            role: 'user',
+            content: `Generate a detailed description (600-800 characters) for ${tokenInfo.name} (${tokenInfo.symbol}). Include information about its technology, use cases, market position, and what makes it unique in the crypto space. The current market cap is $${tokenInfo.market_cap?.toLocaleString() || 'N/A'} and it ranks #${tokenInfo.market_cap_rank || 'N/A'} by market capitalization. End with a complete sentence, no ellipsis. Base your response on: ${tokenInfo.description || `${tokenInfo.name} is a cryptocurrency`}.`
+          }
+        ],
+        model: 'openai/gpt-4o-mini',
+        max_tokens: 250,
+        temperature: 0.7
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to generate description');
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || tokenInfo.description || `${tokenInfo.name} is a digital cryptocurrency that operates on blockchain technology.`;
+  } catch (error) {
+    console.error('Error generating AI description:', error);
+    return tokenInfo.description || `${tokenInfo.name} is a digital cryptocurrency that operates on blockchain technology, offering various features and use cases in the decentralized finance ecosystem.`;
+  }
+};
+
+interface TokenHeaderProps {
+  tokenId?: string;
+}
+
+export const TokenHeader: React.FC<TokenHeaderProps> = ({ tokenId }) => {
   const { selectedToken } = useToken();
+  const { data: tokenInfo } = useTokenInfo(tokenId || selectedToken?.value || '');
+
+  const { data: aiDescription, isLoading: descriptionLoading } = useQuery<string>({
+    queryKey: ['ai-description', tokenId || selectedToken?.value, tokenInfo?.name],
+    queryFn: () => generateAIDescription(tokenInfo),
+    enabled: !!tokenInfo,
+    staleTime: 1000 * 60 * 60 * 24, // 24 hours
+    gcTime: 1000 * 60 * 60 * 24 * 7, // 7 days
+  });
 
   if (!selectedToken) return null;
 
@@ -28,9 +81,18 @@ export const TokenHeader: React.FC = () => {
         </Badge>
       </div>
       
-      <p className="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
-        {selectedToken.description}
-      </p>
+      {descriptionLoading ? (
+        <div className="space-y-3 animate-pulse mb-6">
+          <div className="h-4 bg-gray-700/50 rounded w-full"></div>
+          <div className="h-4 bg-gray-700/50 rounded w-5/6"></div>
+          <div className="h-4 bg-gray-700/50 rounded w-4/5"></div>
+          <div className="h-4 bg-gray-700/50 rounded w-3/4"></div>
+        </div>
+      ) : (
+        <p className="text-gray-300 text-base lg:text-lg mb-6 leading-relaxed">
+          {aiDescription || selectedToken.description || `Learn more about ${selectedToken.name} and its role in the cryptocurrency ecosystem.`}
+        </p>
+      )}
       
       <div className="flex items-center gap-4">
         {selectedToken.website && (
