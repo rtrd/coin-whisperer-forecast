@@ -55,9 +55,9 @@ export const TokenHeader: React.FC<TokenHeaderProps> = ({ tokenId }) => {
                 .replace(/\s+/g, ' ') // Replace multiple spaces with single space
                 .trim();
               
-              // Truncate to reasonable length for SEO (around 200 characters)
-              return cleanDescription.length > 200 
-                ? cleanDescription.substring(0, 200) + '...'
+              // Show more content - increase to 500 characters for better SEO and user info
+              return cleanDescription.length > 500 
+                ? cleanDescription.substring(0, 500) + '...'
                 : cleanDescription;
             })()}
           </p>
