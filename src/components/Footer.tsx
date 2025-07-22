@@ -36,11 +36,11 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Supported Coins</h3>
             <ul className="space-y-2 text-sm text-gray-400">
-              <li>Bitcoin (BTC)</li>
-              <li>Ethereum (ETH)</li>
-              <li>Altcoins</li>
-              <li>DeFi Tokens</li>
-              <li>Meme Coins</li>
+              <li><Link to="/token/bitcoin" className="hover:text-white transition-colors">Bitcoin (BTC)</Link></li>
+              <li><Link to="/token/ethereum" className="hover:text-white transition-colors">Ethereum (ETH)</Link></li>
+              <li><Link to="/token/solana" className="hover:text-white transition-colors">Solana (SOL)</Link></li>
+              <li><Link to="/token/cardano" className="hover:text-white transition-colors">Cardano (ADA)</Link></li>
+              <li><Link to="/all-tokens" className="hover:text-white transition-colors">View All Tokens</Link></li>
             </ul>
           </div>
 
