@@ -3,6 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
+import { openAffiliateLink } from "@/utils/affiliateLinks";
 
 interface PumpToken {
   name: string;
@@ -71,9 +72,10 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass })
       <Button 
         className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
         size="sm"
+        onClick={() => openAffiliateLink(token.symbol)}
       >
         <ExternalLink className="h-4 w-4 mr-2" />
-        Trade on Pump.fun
+        Trade on eToro
       </Button>
     </div>
   );

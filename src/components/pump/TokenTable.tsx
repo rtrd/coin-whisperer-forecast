@@ -4,6 +4,7 @@ import { Table, TableBody, TableHead, TableHeader, TableRow, TableCell } from "@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TrendingUp, TrendingDown, ExternalLink } from "lucide-react";
+import { openAffiliateLink } from "@/utils/affiliateLinks";
 
 interface PumpToken {
   name: string;
@@ -88,6 +89,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
                 <Button 
                   className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                   size="sm"
+                  onClick={() => openAffiliateLink(token.symbol)}
                 >
                   <ExternalLink className="h-3 w-3 mr-1" />
                   Trade
