@@ -19,7 +19,7 @@ export const LockedTechnicalAnalysis: React.FC<LockedTechnicalAnalysisProps> = (
       description="Get detailed technical indicators, RSI analysis, and trading signals powered by AI"
       skeletonData={<TechnicalAnalysisSkeleton />}
     >
-      <TechnicalAnalysis data={data} isLoading={isLoading} technicalIndicator={data || []} />
+      <TechnicalAnalysis data={data} isLoading={isLoading} />
     </SignupLock>
   );
 };
