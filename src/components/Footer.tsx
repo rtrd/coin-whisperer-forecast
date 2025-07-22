@@ -40,7 +40,7 @@ const Footer = () => {
               <li><Link to="/token/ethereum" className="hover:text-white transition-colors">Ethereum (ETH)</Link></li>
               <li><Link to="/token/solana" className="hover:text-white transition-colors">Solana (SOL)</Link></li>
               <li><Link to="/token/cardano" className="hover:text-white transition-colors">Cardano (ADA)</Link></li>
-              <li><Link to="/all-tokens" className="hover:text-white transition-colors">View All Tokens</Link></li>
+              <li><Link to="/tokens" className="hover:text-white transition-colors">View All Tokens</Link></li>
             </ul>
           </div>
 
