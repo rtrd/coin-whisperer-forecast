@@ -11,6 +11,8 @@ interface TokenSectionProps {
   tokens: PumpToken[];
   changeColorClass: string;
   viewMode: "list" | "grid";
+  showPrice?: boolean;
+  showChange?: boolean;
 }
 
 export const TokenSection: React.FC<TokenSectionProps> = ({
@@ -19,6 +21,8 @@ export const TokenSection: React.FC<TokenSectionProps> = ({
   tokens,
   changeColorClass,
   viewMode,
+  showPrice = true,
+  showChange = true,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -50,11 +54,18 @@ export const TokenSection: React.FC<TokenSectionProps> = ({
                   key={index}
                   token={token}
                   changeColorClass={changeColorClass}
+                  showPrice={showPrice}
+                  showChange={showChange}
                 />
               ))}
             </div>
           ) : (
-            <TokenTable tokens={tokens} changeColorClass={changeColorClass} />
+            <TokenTable 
+              tokens={tokens} 
+              changeColorClass={changeColorClass}
+              showPrice={showPrice}
+              showChange={showChange}
+            />
           )}
         </>
       )}

@@ -9,9 +9,11 @@ import { PumpToken } from "../../hooks/usePumpPortalData";
 interface TokenCardProps {
   token: PumpToken;
   changeColorClass: string;
+  showPrice?: boolean;
+  showChange?: boolean;
 }
 
-export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass }) => {
+export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass, showPrice = true, showChange = true }) => {
   const formatNumber = (num: number) => {
     if (num >= 1e6) return `${(num / 1e6).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}M`;
     if (num >= 1e3) return `${(num / 1e3).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}K`;
@@ -34,17 +36,21 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass })
       </div>
       
       <div className="space-y-3">
-        <div className="grid grid-cols-2 gap-3 text-sm">
-          <div className="space-y-1">
-            <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
-            <div className="text-white font-mono font-medium">${token.price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
-          </div>
-          <div className="space-y-1">
-            <div className="text-gray-400 text-xs uppercase tracking-wide">24h Change</div>
-            <div className={`${changeColorClass} font-bold font-mono`}>
-              {token.change24h >= 0 ? '+' : ''}{token.change24h.toLocaleString('en-US')}%
+        <div className={`grid gap-3 text-sm ${showPrice && showChange ? 'grid-cols-2' : showPrice || showChange ? 'grid-cols-1' : 'hidden'}`}>
+          {showPrice && (
+            <div className="space-y-1">
+              <div className="text-gray-400 text-xs uppercase tracking-wide">Price</div>
+              <div className="text-white font-mono font-medium">${token.price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}</div>
             </div>
-          </div>
+          )}
+          {showChange && (
+            <div className="space-y-1">
+              <div className="text-gray-400 text-xs uppercase tracking-wide">24h Change</div>
+              <div className={`${changeColorClass} font-bold font-mono`}>
+                {token.change24h >= 0 ? '+' : ''}{token.change24h.toLocaleString('en-US')}%
+              </div>
+            </div>
+          )}
         </div>
         
         <div className="grid grid-cols-2 gap-3 text-sm">

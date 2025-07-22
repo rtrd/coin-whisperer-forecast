@@ -10,9 +10,11 @@ import { PumpToken } from "../../hooks/usePumpPortalData";
 interface TokenTableProps {
   tokens: PumpToken[];
   changeColorClass: string;
+  showPrice?: boolean;
+  showChange?: boolean;
 }
 
-export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass }) => {
+export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass, showPrice = true, showChange = true }) => {
   const formatNumber = (num: number) => {
     if (num >= 1e6) return `${(num / 1e6).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}M`;
     if (num >= 1e3) return `${(num / 1e3).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}K`;
@@ -26,8 +28,8 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
           <TableRow className="border-gray-700 h-14">
             <TableHead className="text-gray-300 w-12 px-2">#</TableHead>
             <TableHead className="text-gray-300 w-48 px-2">Token</TableHead>
-            <TableHead className="text-gray-300 w-32 px-2">Price</TableHead>
-            <TableHead className="text-gray-300 w-32 px-2">24h Change</TableHead>
+            {showPrice && <TableHead className="text-gray-300 w-32 px-2">Price</TableHead>}
+            {showChange && <TableHead className="text-gray-300 w-32 px-2">24h Change</TableHead>}
             <TableHead className="text-gray-300 w-28 px-2">Pump Score</TableHead>
             <TableHead className="text-gray-300 w-40 px-2">Trading Volume</TableHead>
             <TableHead className="text-gray-300 w-32 px-2">Market Cap</TableHead>
@@ -49,21 +51,25 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
                   </div>
                 </div>
               </TableCell>
-              <TableCell className="text-white font-mono text-sm px-2">
-                ${token.price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}
-              </TableCell>
-              <TableCell className="px-2">
-                <div className={`flex items-center gap-1 ${changeColorClass}`}>
-                  {token.change24h >= 0 ? (
-                    <TrendingUp className="h-3 w-3" />
-                  ) : (
-                    <TrendingDown className="h-3 w-3" />
-                  )}
-                  <span className="font-mono text-sm">
-                    {token.change24h >= 0 ? "+" : ""}{token.change24h.toLocaleString('en-US')}%
-                  </span>
-                </div>
-              </TableCell>
+              {showPrice && (
+                <TableCell className="text-white font-mono text-sm px-2">
+                  ${token.price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}
+                </TableCell>
+              )}
+              {showChange && (
+                <TableCell className="px-2">
+                  <div className={`flex items-center gap-1 ${changeColorClass}`}>
+                    {token.change24h >= 0 ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
+                    <span className="font-mono text-sm">
+                      {token.change24h >= 0 ? "+" : ""}{token.change24h.toLocaleString('en-US')}%
+                    </span>
+                  </div>
+                </TableCell>
+              )}
               <TableCell className="px-2">
                 <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs">
                   {token.pumpScore}

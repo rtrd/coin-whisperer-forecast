@@ -73,6 +73,8 @@ export const PumpFunIntegration = () => {
             tokens={newLaunches}
             changeColorClass="text-green-400"
             viewMode={viewMode}
+            showPrice={false}
+            showChange={false}
           />
 
           <MemecoinCarousel />
