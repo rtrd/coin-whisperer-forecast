@@ -13,11 +13,18 @@ const fetchCryptoData = async (
   AllCryptosData: []
 ): Promise<PriceData[]> => {
   console.log(`Fetching real ${crypto} data for ${timeframe}`);
-  debugger;
+  if (timeframe === "7d") {
+    timeframe = "1w";
+  }
+  if (timeframe === "30d") {
+    timeframe = "1m";
+  } else if (timeframe === "90d") {
+    timeframe = "3m";
+  }
   try {
     // Use Supabase Edge Function instead of direct API call
     const response = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=1m`,
+      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=${timeframe}`,
       {
         method: "GET",
         headers: {
@@ -42,7 +49,6 @@ const fetchCryptoData = async (
         volume: item.volume_24h,
       }))
     );
-    debugger;
     const hasValidPrice = data.some(
       (d) => typeof d.price === "number" && !isNaN(d.price)
     );
@@ -62,36 +68,54 @@ const fetchCryptoData = async (
 const generateMockData = (
   crypto: string,
   timeframe: string,
-  AllCryptosData: []
+  AllCryptosData: any[]
 ): PriceData[] => {
-  debugger;
-  const now = Date.now();
-  const days =
-    timeframe === "1d"
-      ? 1
-      : timeframe === "7d"
-      ? 7
+  const now = new Date();
+  now.setHours(0, 0, 0, 0); // normalize to midnight
+
+  // Normalize timeframe
+  const normalizedTimeframe =
+    timeframe === "7d"
+      ? "1w"
       : timeframe === "30d"
+      ? "1m"
+      : timeframe === "90d"
+      ? "3m"
+      : timeframe;
+
+  const days =
+    normalizedTimeframe === "1d"
+      ? 1
+      : normalizedTimeframe === "1w"
+      ? 7
+      : normalizedTimeframe === "1m"
       ? 30
       : 90;
-  const intervals = days === 1 ? 24 : days * 4;
-  const basePrices: { [key: string]: number } = {};
 
+  const pointsPerDay = days === 1 ? 24 : 1;
+  const totalPoints = days * pointsPerDay;
+
+  const intervalSec = (24 * 60 * 60) / pointsPerDay; // seconds between points
+  const nowSec = Math.floor(now.getTime() / 1000); // now in seconds
+
+  // Get base price
+  const basePrices: { [key: string]: number } = {};
   AllCryptosData.forEach((token) => {
     const { id, current_price } = token;
     if (typeof current_price === "number" && !isNaN(current_price)) {
       basePrices[id] = current_price;
     }
   });
+
   const basePrice = basePrices[crypto] || 1.0;
-  const data: PriceData[] = [];
   let currentPrice = basePrice;
+  const data: PriceData[] = [];
 
-  for (let i = intervals; i >= 0; i--) {
-    const timestamp = now - i * (days === 1 ? 3600000 : 21600000);
+  for (let i = 0; i < totalPoints; i++) {
+    const timestamp = nowSec - (totalPoints - 1 - i) * intervalSec;
 
+    // Volatility logic
     let volatility = 0.02;
-
     if (
       crypto.includes("shiba") ||
       crypto.includes("pepe") ||
@@ -110,8 +134,9 @@ const generateMockData = (
     }
 
     const change = (Math.random() - 0.5) * volatility;
-    currentPrice = currentPrice * (1 + change);
+    currentPrice *= 1 + change;
 
+    // Trend logic
     let trend = 0.0001;
     if (
       crypto.includes("ai") ||
@@ -129,7 +154,7 @@ const generateMockData = (
       trend = (Math.random() - 0.5) * 0.0005;
     }
 
-    currentPrice = currentPrice * (1 + trend);
+    currentPrice *= 1 + trend;
 
     data.push({
       timestamp,
@@ -137,10 +162,10 @@ const generateMockData = (
       volume:
         Math.random() *
         (basePrice > 100
-          ? 100000000
+          ? 100_000_000
           : basePrice > 1
-          ? 1000000000
-          : 10000000000),
+          ? 1_000_000_000
+          : 10_000_000_000),
     });
   }
 
