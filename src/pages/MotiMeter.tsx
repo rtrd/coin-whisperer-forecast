@@ -381,10 +381,15 @@ const MotiMeter = () => {
                                         </div>
                                       </div>
                                       
-                                      <div className="flex flex-col gap-2">
+                                       <div className="flex flex-col gap-2">
                                         <Button
                                           size="sm"
                                           className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/25"
+                                          onClick={() => {
+                                            const symbol = token.symbol?.toLowerCase() || token.id;
+                                            const affiliateUrl = `https://www.etoro.com/markets/${symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+                                            window.open(affiliateUrl, '_blank');
+                                          }}
                                         >
                                           Trade Now
                                         </Button>
