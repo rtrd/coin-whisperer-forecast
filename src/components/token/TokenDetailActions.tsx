@@ -15,14 +15,18 @@ export const TokenDetailActions: React.FC<TokenDetailActionsProps> = ({
   currentPrice
 }) => {
   const handleBuy = () => {
+    const affiliateUrl = `https://www.etoro.com/markets/${selectedToken.symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+    window.open(affiliateUrl, '_blank');
     toast.success("Redirecting to buy...", {
-      description: "This would redirect to a trading platform"
+      description: "Opening eToro trading platform"
     });
   };
 
   const handleSell = () => {
+    const affiliateUrl = `https://www.etoro.com/markets/${selectedToken.symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+    window.open(affiliateUrl, '_blank');
     toast.success("Redirecting to sell...", {
-      description: "This would redirect to a trading platform"
+      description: "Opening eToro trading platform"
     });
   };
 

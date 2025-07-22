@@ -28,6 +28,7 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
             <TokenPriceDisplay
               currentPrice={currentPrice}
               priceChange={priceChange}
+              tokenSymbol={marketData?.symbol}
             />
           </div>
 
