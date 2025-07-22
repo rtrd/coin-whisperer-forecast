@@ -15,7 +15,8 @@ export const TokenDetailActions: React.FC<TokenDetailActionsProps> = ({
   currentPrice
 }) => {
   const handleBuy = () => {
-    const affiliateUrl = `https://www.etoro.com/markets/${selectedToken.symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+    const symbol = selectedToken.symbol.toLowerCase();
+    const affiliateUrl = `https://www.etoro.com/markets/${symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
     window.open(affiliateUrl, '_blank');
     toast.success("Redirecting to buy...", {
       description: "Opening eToro trading platform"
@@ -23,7 +24,8 @@ export const TokenDetailActions: React.FC<TokenDetailActionsProps> = ({
   };
 
   const handleSell = () => {
-    const affiliateUrl = `https://www.etoro.com/markets/${selectedToken.symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+    const symbol = selectedToken.symbol.toLowerCase();
+    const affiliateUrl = `https://www.etoro.com/markets/${symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
     window.open(affiliateUrl, '_blank');
     toast.success("Redirecting to sell...", {
       description: "Opening eToro trading platform"
