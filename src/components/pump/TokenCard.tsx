@@ -4,17 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ExternalLink } from "lucide-react";
 import { openAffiliateLink } from "@/utils/affiliateLinks";
-
-interface PumpToken {
-  name: string;
-  symbol: string;
-  price: number;
-  change24h: number;
-  volume: number;
-  marketCap: number;
-  icon: string;
-  pumpScore: number;
-}
+import { PumpToken } from "../../hooks/usePumpPortalData";
 
 interface TokenCardProps {
   token: PumpToken;

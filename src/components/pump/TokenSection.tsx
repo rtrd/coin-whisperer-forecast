@@ -3,17 +3,7 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { TokenCard } from "./TokenCard";
 import { TokenTable } from "./TokenTable";
-
-interface PumpToken {
-  name: string;
-  symbol: string;
-  price: number;
-  change24h: number;
-  volume: number;
-  marketCap: number;
-  icon: string;
-  pumpScore: number;
-}
+import { PumpToken } from "../../hooks/usePumpPortalData";
 
 interface TokenSectionProps {
   title: string;
