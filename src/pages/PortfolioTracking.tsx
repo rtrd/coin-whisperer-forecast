@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, PieChart, Mail, Clock, Check, Loader2 } from "lucide-react";
 import { AdUnit } from "@/components/ads/AdService";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
@@ -92,6 +93,13 @@ const PortfolioTracking = () => {
           priceChange={2.5}
         />
       </div>
+
+      {/* Google Ad Manager - Header Ad */}
+      <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-0"
+        size={[728, 90]}
+        className="mb-6 md:mb-8"
+      />
 
       <div className="container mx-auto px-4 pb-8">
         {/* Back Button */}
@@ -247,6 +255,13 @@ const PortfolioTracking = () => {
             </div>
           </div>
         </div>
+
+        {/* Google Ad Manager - Bottom Ad */}
+        <GAMAdUnit
+          adUnitId="div-gpt-ad-1752654531765-1"
+          size={[728, 90]}
+          className="mt-8"
+        />
       </div>
 
       <Footer />

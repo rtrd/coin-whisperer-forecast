@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { ArrowLeft, Brain, TrendingUp, BarChart3, Zap, Target, Cpu, Shield, ChartLine, Users } from "lucide-react";
 import { AdUnit } from "@/components/ads/AdService";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
@@ -219,6 +220,13 @@ const AIPricePrediction = () => {
         />
       </div>
 
+      {/* Google Ad Manager - Header Ad */}
+      <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-0"
+        size={[728, 90]}
+        className="mb-6 md:mb-8"
+      />
+
       <div className="container mx-auto px-4 pb-8">
         {/* Back Button */}
         <div className="flex items-center gap-4 mb-6">
@@ -252,6 +260,13 @@ const AIPricePrediction = () => {
         <div className="mt-12 flex justify-center">
           <AdUnit type="leaderboard" />
         </div>
+
+        {/* Google Ad Manager - Bottom Ad */}
+        <GAMAdUnit
+          adUnitId="div-gpt-ad-1752654531765-1"
+          size={[728, 90]}
+          className="mt-8"
+        />
       </div>
 
       <Footer />
