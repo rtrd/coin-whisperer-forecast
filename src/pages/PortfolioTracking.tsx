@@ -105,7 +105,7 @@ const PortfolioTracking = () => {
         {/* Back Button */}
         <div className="flex items-center gap-4 mb-6">
           <Link to="/">
-            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+            <Button variant="outline" className="bg-card border-border text-card-foreground hover:bg-muted">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Button>
@@ -116,34 +116,34 @@ const PortfolioTracking = () => {
           {/* Main Content */}
           <div className="lg:col-span-3 space-y-8">
             {/* Page Header */}
-            <Card className="bg-gray-800/50 border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader>
                 <div className="flex items-center gap-3 mb-4">
-                  <PieChart className="h-8 w-8 text-green-400" />
+                  <PieChart className="h-8 w-8 text-green-500" />
                   <CardTitle 
-                    className="text-4xl text-white"
+                    className="text-4xl text-card-foreground"
                     style={{ textShadow: '0 0 15px rgba(0, 0, 0, 0.3)' }}
                   >
                     Portfolio Tracking
                   </CardTitle>
                 </div>
-                <p className="text-gray-300 text-lg">Advanced cryptocurrency portfolio tracking and performance analysis</p>
+                <p className="text-muted-foreground text-lg">Advanced cryptocurrency portfolio tracking and performance analysis</p>
               </CardHeader>
             </Card>
 
             {/* Coming Soon Section */}
-            <Card className="bg-gradient-to-br from-blue-900/20 to-purple-900/20 border-blue-700/50">
+            <Card className="bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200 dark:border-blue-700/50">
               <CardHeader className="text-center">
                 <div className="flex items-center justify-center gap-2 mb-4">
-                  <Clock className="h-8 w-8 text-blue-400" />
+                  <Clock className="h-8 w-8 text-blue-500" />
                   <Badge className="bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold text-lg px-4 py-2">
                     COMING SOON
                   </Badge>
                 </div>
-                <CardTitle className="text-3xl text-white mb-4">
+                <CardTitle className="text-3xl text-card-foreground mb-4">
                   Advanced Portfolio Tracking is Almost Here!
                 </CardTitle>
-                <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+                <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
                   We're putting the finishing touches on our comprehensive portfolio tracking system. 
                   Get notified when it's ready and be among the first to experience it!
                 </p>
@@ -156,7 +156,7 @@ const PortfolioTracking = () => {
                       placeholder="Enter your email for early access"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-gray-700 border-gray-600 text-white text-lg h-12"
+                      className="bg-muted border-border text-card-foreground text-lg h-12"
                       required
                     />
                   </div>
@@ -180,8 +180,8 @@ const PortfolioTracking = () => {
                   </Button>
                 </form>
 
-                <div className="mt-6 p-4 bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-700/50 rounded-lg">
-                  <div className="flex items-center gap-2 text-green-300 text-sm justify-center">
+                <div className="mt-6 p-4 bg-gradient-to-r from-green-50/80 to-emerald-50/80 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-700/50 rounded-lg">
+                  <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm justify-center">
                     <Check className="h-4 w-4" />
                     <span>100% Free • No subscription required</span>
                   </div>
@@ -190,55 +190,55 @@ const PortfolioTracking = () => {
             </Card>
 
             {/* Features Preview */}
-            <Card className="bg-gray-800/50 border-gray-700">
+            <Card className="bg-card border-border">
               <CardHeader>
-                <CardTitle className="text-white">What's Coming</CardTitle>
+                <CardTitle className="text-card-foreground">What's Coming</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <Check className="h-5 w-5 text-green-500 mt-1" />
+                        <div>
+                          <h4 className="text-card-foreground font-medium">Real-time Portfolio Tracking</h4>
+                          <p className="text-muted-foreground text-sm">Monitor your crypto holdings across multiple wallets and exchanges</p>
+                        </div>
+                    </div>
                     <div className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-green-400 mt-1" />
+                      <Check className="h-5 w-5 text-green-500 mt-1" />
                       <div>
-                        <h4 className="text-white font-medium">Real-time Portfolio Tracking</h4>
-                        <p className="text-gray-400 text-sm">Monitor your crypto holdings across multiple wallets and exchanges</p>
+                        <h4 className="text-card-foreground font-medium">Performance Analytics</h4>
+                        <p className="text-muted-foreground text-sm">Detailed insights into your portfolio's performance and ROI</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-green-400 mt-1" />
+                      <Check className="h-5 w-5 text-green-500 mt-1" />
                       <div>
-                        <h4 className="text-white font-medium">Performance Analytics</h4>
-                        <p className="text-gray-400 text-sm">Detailed insights into your portfolio's performance and ROI</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-green-400 mt-1" />
-                      <div>
-                        <h4 className="text-white font-medium">Risk Assessment</h4>
-                        <p className="text-gray-400 text-sm">AI-powered risk analysis and portfolio optimization suggestions</p>
+                        <h4 className="text-card-foreground font-medium">Risk Assessment</h4>
+                        <p className="text-muted-foreground text-sm">AI-powered risk analysis and portfolio optimization suggestions</p>
                       </div>
                     </div>
                   </div>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-green-400 mt-1" />
+                      <Check className="h-5 w-5 text-green-500 mt-1" />
                       <div>
-                        <h4 className="text-white font-medium">Smart Alerts</h4>
-                        <p className="text-gray-400 text-sm">Custom notifications for price changes and portfolio events</p>
+                        <h4 className="text-card-foreground font-medium">Smart Alerts</h4>
+                        <p className="text-muted-foreground text-sm">Custom notifications for price changes and portfolio events</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-green-400 mt-1" />
+                      <Check className="h-5 w-5 text-green-500 mt-1" />
                       <div>
-                        <h4 className="text-white font-medium">Tax Reporting</h4>
-                        <p className="text-gray-400 text-sm">Automated tax calculation and reporting for your crypto gains</p>
+                        <h4 className="text-card-foreground font-medium">Tax Reporting</h4>
+                        <p className="text-muted-foreground text-sm">Automated tax calculation and reporting for your crypto gains</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <Check className="h-5 w-5 text-green-400 mt-1" />
+                      <Check className="h-5 w-5 text-green-500 mt-1" />
                       <div>
-                        <h4 className="text-white font-medium">DeFi Integration</h4>
-                        <p className="text-gray-400 text-sm">Track your DeFi positions and yield farming rewards</p>
+                        <h4 className="text-card-foreground font-medium">DeFi Integration</h4>
+                        <p className="text-muted-foreground text-sm">Track your DeFi positions and yield farming rewards</p>
                       </div>
                     </div>
                   </div>
