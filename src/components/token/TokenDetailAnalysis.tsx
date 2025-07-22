@@ -11,6 +11,7 @@ interface TokenDetailAnalysisProps {
   dataLoading: boolean;
   prediction: any;
   technicalIndicator?: any[]; // Optional, can be undefined if not used
+  sentimentData?: any; // Optional sentiment data prop
 }
 
 export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
@@ -18,21 +19,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   cryptoData,
   dataLoading,
   prediction,
+  sentimentData, // Added this line
 }) => {
-  const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetchTechnicalIndicators(cryptoId); // or any topic
-        console.log("Fetched technical indicators:", response);
-        setTechnicalIndicator(response);
-      } catch (error) {
-        console.error("Error fetching technical indicators:", error);
-      }
-    };
-
-    getData();
-  }, []);
   return (
     <div className="space-y-6">
       {/* Market Analysis - Combined Sentiment and Technical */}
@@ -58,15 +46,14 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
             </TabsList>
 
             <TabsContent value="sentiment" className="mt-6">
-              <SentimentAnalysis crypto={cryptoId} />
+              <SentimentAnalysis
+                crypto={cryptoId}
+                sentimentData={sentimentData}
+              />
             </TabsContent>
 
             <TabsContent value="technical" className="mt-6">
-              <TechnicalAnalysis
-                data={cryptoData}
-                isLoading={dataLoading}
-                technicalIndicator={technicalIndicator}
-              />
+              <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
             </TabsContent>
           </Tabs>
         </CardContent>

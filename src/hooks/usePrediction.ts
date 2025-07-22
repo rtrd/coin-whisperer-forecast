@@ -1,8 +1,12 @@
-
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { PriceData, PredictionResult } from '@/types/prediction';
-import { generateAIPrediction } from '@/services/aiPredictionService';
+import { useState } from "react";
+import { toast } from "sonner";
+import {
+  PriceData,
+  PredictionResult,
+  AIPredictionResponse,
+} from "@/types/prediction";
+import { generateAIPrediction } from "@/services/aiPredictionService";
+import { useCryptoData } from "@/hooks/useCryptoData";
 
 export const usePrediction = () => {
   const [prediction, setPrediction] = useState<PredictionResult | null>(null);
@@ -12,20 +16,35 @@ export const usePrediction = () => {
     data: PriceData[],
     crypto: string,
     predictionDays: number,
-    modelType: string = 'technical'
-  ): Promise<void> => {
+    modelType: string = "technical",
+    technicalIndicator?: any,
+    sentimentData?: any[], // Optional sentiment data for future use
+    Alltokenmarketstats?: any
+  ): Promise<void> => {  
     setIsLoading(true);
-    
     try {
-      console.log('Generating AI prediction for', crypto, 'with', predictionDays, 'days, model:', modelType);
-      
-      const result = await generateAIPrediction(data, crypto, predictionDays, modelType);
+      console.log(
+        "Generating AI prediction for",
+        crypto,
+        "with",
+        predictionDays,
+        "days, model:",
+        modelType
+      );
+      const result = await generateAIPrediction(
+        data,
+        crypto,
+        predictionDays,
+        modelType,
+        technicalIndicator,
+        sentimentData,
+        Alltokenmarketstats
+      );
       setPrediction(result);
-      console.log('AI Prediction generated:', result);
-      
+      console.log("AI Prediction generated:", result);
     } catch (error) {
-      console.error('Prediction generation failed:', error);
-      toast.error('Failed to generate AI prediction');
+      console.error("Prediction generation failed:", error);
+      toast.error("Failed to generate AI prediction");
     } finally {
       setIsLoading(false);
     }
@@ -34,6 +53,6 @@ export const usePrediction = () => {
   return {
     prediction,
     isLoading,
-    generatePrediction
+    generatePrediction,
   };
 };

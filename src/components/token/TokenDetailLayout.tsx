@@ -39,6 +39,7 @@ interface TokenDetailLayoutProps {
   selectedToken: any;
   allCryptosData: any[];
   technicalIndicator?: any[]; // Optional, can be undefined if not used
+  SentimentData?: (data: any) => void; // Optional sentiment data prop
 }
 
 export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
@@ -63,7 +64,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   tokenId,
   selectedToken,
   allCryptosData,
-  technicalIndicator,
+  SentimentData,
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -124,6 +125,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               cryptoData={cryptoData}
               dataLoading={dataLoading}
               prediction={prediction}
+              sentimentData={SentimentData} // Pass sentiment data prop
             />
           </div>
 

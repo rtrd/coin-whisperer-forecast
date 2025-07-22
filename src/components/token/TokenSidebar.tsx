@@ -24,7 +24,7 @@ interface TokenSidebarProps {
   currentPrice: number;
   priceChange: number;
   cryptoOptions: any[];
-  cryptoData?: any[]; // Optional, used for additional data display
+  cryptoData: any[] | undefined;
   technicalIndicator?: any[]; // Optional, can be undefined if not used
 }
 
@@ -35,11 +35,12 @@ export function TokenSidebar({
   priceChange,
   cryptoOptions,
   cryptoData,
-  technicalIndicator = [], // Optional, can be undefined if not used
+  technicalIndicator,
 }: TokenSidebarProps) {
-  const navigate = useNavigate();
   const [articles, setArticles] = useState<any[]>([]);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchArticles();
   }, []);
@@ -153,7 +154,12 @@ export function TokenSidebar({
               {/* Article Image - Clickable */}
               <div
                 className="relative h-48 overflow-hidden rounded-t-lg cursor-pointer"
-                onClick={() => handleArticleClick(currentArticle)}
+                onClick={() => {
+                  trackArticleClick(currentArticle.title, currentArticleIndex);
+                  navigate(`/article/${currentArticle.id}`, {
+                    state: { article: currentArticle },
+                  });
+                }}
               >
                 <img
                   src={currentArticle.image}
@@ -203,7 +209,15 @@ export function TokenSidebar({
                 {/* Clickable Headline */}
                 <h4
                   className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in cursor-pointer hover:text-blue-400 transition-colors"
-                  onClick={() => handleArticleClick(currentArticle)}
+                  onClick={() => {
+                    trackArticleClick(
+                      currentArticle.title,
+                      currentArticleIndex
+                    );
+                    navigate(`/article/${currentArticle.id}`, {
+                      state: { article: currentArticle },
+                    });
+                  }}
                 >
                   {currentArticle.title}
                 </h4>

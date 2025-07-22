@@ -33,19 +33,14 @@ interface TechnicalIndicator {
 
 interface TechnicalAnalysisProps {
   data: PriceData[] | null;
-  isLoading: boolean;
-  technicalIndicator: any; // Adjust type as needed based on your data structure
+  isLoading: boolean; // Adjust type as needed based on your data structure
 }
 
 export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   data,
   isLoading,
-  technicalIndicator,
 }) => {
-  const hasClose = technicalIndicator.some((d) => typeof d.close === "number");
-  const prices = hasClose
-    ? technicalIndicator.map((d) => d.close)
-    : data.map((d) => d.price);
+  const prices = data.map((d) => d.price);
 
   const currentPrice = prices[prices.length - 1];
 
@@ -159,20 +154,6 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
     return { macd: latestMACD, signal: latestSignal, strength: scaled };
   };
-
-  // const calculateEMA = (prices: number[], period: number): number => {
-  //   if (prices.length === 0) return 0;
-  //   if (prices.length === 1) return prices[0];
-
-  //   const multiplier = 2 / (period + 1);
-  //   let ema = prices[0];
-
-  //   for (let i = 1; i < prices.length; i++) {
-  //     ema = prices[i] * multiplier + ema * (1 - multiplier);
-  //   }
-
-  //   return ema;
-  // };
 
   if (isLoading) {
     return (
@@ -372,7 +353,14 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 <span className="text-xs text-gray-400 font-medium">
                   {indicator.name.includes("SMA") ||
                   indicator.name.includes("MACD")
-                    ? `$${indicator.value >= 1000 ? indicator.value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : indicator.value.toFixed(2)}`
+                    ? `$${
+                        indicator.value >= 1000
+                          ? indicator.value.toLocaleString("en-US", {
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
+                          : indicator.value.toFixed(2)
+                      }`
                     : indicator.value.toFixed(2)}
                 </span>
                 <span className="text-xs text-gray-400 font-medium">
@@ -415,7 +403,13 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </p>
               </div>
               <p className="text-lg font-bold text-white">
-                ${supportLevel >= 1000 ? supportLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : supportLevel.toFixed(2)}
+                $
+                {supportLevel >= 1000
+                  ? supportLevel.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : supportLevel.toFixed(2)}
               </p>
               <p className="text-xs text-emerald-300/80">
                 Strong buying interest
@@ -431,7 +425,13 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </p>
               </div>
               <p className="text-lg font-bold text-white">
-                ${resistanceLevel >= 1000 ? resistanceLevel.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : resistanceLevel.toFixed(2)}
+                $
+                {resistanceLevel >= 1000
+                  ? resistanceLevel.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
+                  : resistanceLevel.toFixed(2)}
               </p>
               <p className="text-xs text-red-300/80">Selling pressure zone</p>
             </div>

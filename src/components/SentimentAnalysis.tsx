@@ -31,10 +31,12 @@ interface SentimentData {
 
 interface SentimentAnalysisProps {
   crypto: string;
+  sentimentData?: any; // Optional sentiment data prop
 }
 
 export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
   crypto,
+  sentimentData,
 }) => {
   const [sentiment, setSentiment] = useState<SentimentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +45,14 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
     // Simulate sentiment analysis data
     const generateSentimentData = (): SentimentData => {
       const score = Math.random() * 100;
-      const getSentimentLabel = (score: number): "Very Bearish" | "Bearish" | "Neutral" | "Bullish" | "Very Bullish" => {
+      const getSentimentLabel = (
+        score: number
+      ):
+        | "Very Bearish"
+        | "Bearish"
+        | "Neutral"
+        | "Bullish"
+        | "Very Bullish" => {
         if (score < 20) return "Very Bearish";
         if (score < 40) return "Bearish";
         if (score < 60) return "Neutral";
@@ -80,10 +89,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
     };
     const transformApiDataToSentiment = (apiData: any): SentimentData => {
       console.log("Transforming API data:", apiData);
-      
+
       // Handle different possible API response structures
       const dataPayload = apiData?.data || apiData;
-      
+
       // Map the API source keys to your desired display names
       const sourceNameMap: Record<string, string> = {
         tweet: "Twitter/X",
@@ -92,18 +101,27 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         "youtube-video": "Crypto Forums",
       };
 
-      let sources: Array<{name: string; sentiment: number; mentions: number;}> = [];
+      let sources: Array<{
+        name: string;
+        sentiment: number;
+        mentions: number;
+      }> = [];
       let avgScore = 0;
 
       try {
         // Check if we have the expected data structure
-        if (dataPayload?.types_sentiment && typeof dataPayload.types_sentiment === 'object') {
+        if (
+          dataPayload?.types_sentiment &&
+          typeof dataPayload.types_sentiment === "object"
+        ) {
           sources = Object.keys(dataPayload.types_sentiment)
             .filter((key) => sourceNameMap[key]) // only include mapped sources
             .map((key) => ({
               name: sourceNameMap[key],
               sentiment: dataPayload.types_sentiment[key] || 0,
-              mentions: dataPayload.types_interactions?.[key] || Math.floor(Math.random() * 1000) + 100,
+              mentions:
+                dataPayload.types_interactions?.[key] ||
+                Math.floor(Math.random() * 1000) + 100,
             }));
 
           // Calculate overall average sentiment score
@@ -114,9 +132,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           avgScore = sources.length ? totalScore / sources.length : 0;
         } else {
           // Fallback: create mock data based on overall sentiment if available
-          const fallbackSentiment = dataPayload?.sentiment || Math.random() * 100;
+          const fallbackSentiment =
+            dataPayload?.sentiment || Math.random() * 100;
           avgScore = fallbackSentiment;
-          
+
           sources = [
             {
               name: "Twitter/X",
@@ -138,9 +157,9 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
               sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
               mentions: Math.floor(Math.random() * 2000) + 200,
             },
-          ].map(source => ({
+          ].map((source) => ({
             ...source,
-            sentiment: Math.max(0, Math.min(100, source.sentiment)) // Clamp between 0-100
+            sentiment: Math.max(0, Math.min(100, source.sentiment)), // Clamp between 0-100
           }));
         }
       } catch (error) {
@@ -172,7 +191,14 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
       }
 
       // Determine sentiment label from score
-      const getSentimentLabel = (score: number): "Very Bearish" | "Bearish" | "Neutral" | "Bullish" | "Very Bullish" => {
+      const getSentimentLabel = (
+        score: number
+      ):
+        | "Very Bearish"
+        | "Bearish"
+        | "Neutral"
+        | "Bullish"
+        | "Very Bullish" => {
         if (score >= 85) return "Very Bullish";
         if (score >= 70) return "Bullish";
         if (score >= 50) return "Neutral";
@@ -195,28 +221,32 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
       try {
         console.log(`Fetching sentiment data for crypto: ${crypto}`);
         const res = await fetchSentimentData(crypto);
-        
+
         if (res) {
           const result = transformApiDataToSentiment(res);
           setSentiment(result);
+          sentimentData(result); // Update optional prop if provided
           console.log("Successfully processed sentiment data:", result);
         } else {
           console.warn("No data received from API, using fallback");
           // Use fallback data
           const fallbackData = generateSentimentData();
           setSentiment(fallbackData);
+          sentimentData(fallbackData); // Update optional prop if provided
         }
       } catch (error) {
         console.error("Error in sentiment data fetch:", error);
         // Use fallback data on error
         const fallbackData = generateSentimentData();
         setSentiment(fallbackData);
+        sentimentData(fallbackData); // Update optional prop if provided
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
+    // Optionally, if you want to simulate loading delay, use setTimeout(() => fetchData(), 1500);
   }, [crypto]);
 
   const getSentimentColor = (score: number) => {
