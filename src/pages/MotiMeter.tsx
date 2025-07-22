@@ -38,13 +38,17 @@ const MotiMeter = () => {
   }, []);
 
   const handleBuyToken = (token: MotiToken) => {
-    // In production, this would integrate with a DEX like Uniswap or Jupiter
-    window.open(`https://www.coingecko.com/en/coins/${token.id}`, '_blank');
+    // Use eToro affiliate link instead of CoinGecko
+    const symbol = token.symbol?.toLowerCase() || token.id;
+    const affiliateUrl = `https://www.etoro.com/markets/${symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+    window.open(affiliateUrl, '_blank');
   };
 
   const handleSellToken = (token: MotiToken) => {
-    // In production, this would integrate with a DEX
-    window.open(`https://www.coingecko.com/en/coins/${token.id}`, '_blank');
+    // Use eToro affiliate link instead of CoinGecko
+    const symbol = token.symbol?.toLowerCase() || token.id;
+    const affiliateUrl = `https://www.etoro.com/markets/${symbol}?utm_medium=Affiliate&utm_source=126447&utm_content=0&utm_serial=CHANGE&utm_campaign=CHANGE&utm_term=`;
+    window.open(affiliateUrl, '_blank');
   };
 
   const getMotiColor = (score: number) => {
