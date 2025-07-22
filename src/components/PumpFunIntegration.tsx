@@ -4,10 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, TrendingUp, TrendingDown, Sparkles, LayoutList, LayoutGrid, Wifi, WifiOff, AlertCircle } from "lucide-react";
 import { TokenSection } from "./pump/TokenSection";
+import { MemecoinCarousel } from "./pump/MemecoinCarousel";
 import { usePumpPortalData } from "@/hooks/usePumpPortalData";
 
 export const PumpFunIntegration = () => {
-  const { topPerformers, topLosers, newLaunches, isConnected, error } = usePumpPortalData();
+  const { newLaunches, isConnected, error } = usePumpPortalData();
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
 
   return (
@@ -67,28 +68,14 @@ export const PumpFunIntegration = () => {
             </div>
           )}
           <TokenSection
-            title="Top Performers"
-            icon={<TrendingUp className="h-4 w-4 text-green-400" />}
-            tokens={topPerformers}
-            changeColorClass="text-green-400"
-            viewMode={viewMode}
-          />
-
-          <TokenSection
-            title="Top Losers"
-            icon={<TrendingDown className="h-4 w-4 text-red-400" />}
-            tokens={topLosers}
-            changeColorClass="text-red-400"
-            viewMode={viewMode}
-          />
-
-          <TokenSection
             title="New Launches"
             icon={<Sparkles className="h-4 w-4 text-yellow-400" />}
             tokens={newLaunches}
             changeColorClass="text-green-400"
             viewMode={viewMode}
           />
+
+          <MemecoinCarousel />
         </CardContent>
       </Card>
     </div>

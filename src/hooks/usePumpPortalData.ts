@@ -43,15 +43,12 @@ interface NewTokenEvent {
 }
 
 export const usePumpPortalData = () => {
-  const [topPerformers, setTopPerformers] = useState<PumpToken[]>([]);
-  const [topLosers, setTopLosers] = useState<PumpToken[]>([]);
   const [newLaunches, setNewLaunches] = useState<PumpToken[]>([]);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const ws = useRef<WebSocket | null>(null);
   const tokenDataMap = useRef<Map<string, PumpToken>>(new Map());
-  const priceHistory = useRef<Map<string, number[]>>(new Map());
 
   const calculatePumpScore = (token: PumpToken): number => {
     // Calculate pump score based on volume, market cap, and 24h change
@@ -95,49 +92,27 @@ export const usePumpPortalData = () => {
     const existingToken = tokenDataMap.current.get(data.mint);
     if (!existingToken) return;
 
+    // For new launches, we mainly care about volume updates
     const newPrice = data.virtual_sol_reserves / data.virtual_token_reserves;
     const priceChange = ((newPrice - existingToken.price) / existingToken.price) * 100;
     
-    // Update price history for 24h change calculation
-    const history = priceHistory.current.get(data.mint) || [existingToken.price];
-    history.push(newPrice);
-    if (history.length > 100) history.shift(); // Keep last 100 price points
-    priceHistory.current.set(data.mint, history);
-    
-    // Calculate 24h change (simplified - using first vs last price in history)
-    const change24h = history.length > 1 ? 
-      ((newPrice - history[0]) / history[0]) * 100 : 0;
-
     const updatedToken: PumpToken = {
       ...existingToken,
       price: newPrice,
-      change24h: change24h,
+      change24h: priceChange,
       volume: existingToken.volume + (data.sol_amount * 150), // Add trade volume
       marketCap: newPrice * 1000000000 * 150, // Rough calculation
-      pumpScore: 0 // Will be calculated later
     };
 
     updatedToken.pumpScore = calculatePumpScore(updatedToken);
     tokenDataMap.current.set(data.mint, updatedToken);
 
-    // Update appropriate lists based on performance
-    if (updatedToken.change24h > 0) {
-      setTopPerformers(prev => {
-        const filtered = prev.filter(t => t.contractAddress !== data.mint);
-        const updated = [...filtered, updatedToken]
-          .sort((a, b) => b.change24h - a.change24h)
-          .slice(0, 8);
-        return updated;
-      });
-    } else if (updatedToken.change24h < 0) {
-      setTopLosers(prev => {
-        const filtered = prev.filter(t => t.contractAddress !== data.mint);
-        const updated = [...filtered, updatedToken]
-          .sort((a, b) => a.change24h - b.change24h)
-          .slice(0, 8);
-        return updated;
-      });
-    }
+    // Update the new launches list with the updated token data
+    setNewLaunches(prev => 
+      prev.map(token => 
+        token.contractAddress === data.mint ? updatedToken : token
+      )
+    );
   };
 
   useEffect(() => {
@@ -210,8 +185,6 @@ export const usePumpPortalData = () => {
   }, []);
 
   return {
-    topPerformers,
-    topLosers,
     newLaunches,
     isConnected,
     error
