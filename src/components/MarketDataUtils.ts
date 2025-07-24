@@ -2,7 +2,12 @@ import { CryptoToken } from '@/types/crypto';
 
 export type FilterType = "market_cap" | "volume" | "gainers" | "losers" | "trending";
 
-export const formatPrice = (price: number): string => {
+export const formatPrice = (price: number | undefined | null): string => {
+  // Handle undefined, null, or non-numeric values
+  if (price == null || typeof price !== 'number' || isNaN(price)) {
+    return '$0.00';
+  }
+  
   if (price < 0.01) {
     return `$${price.toLocaleString('en-US', { minimumFractionDigits: 6, maximumFractionDigits: 6 })}`;
   } else if (price < 1) {

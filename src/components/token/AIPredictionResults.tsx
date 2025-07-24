@@ -17,16 +17,23 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
   currentPrice,
 }) => {
   if (!prediction) return null;
+  
+  // Helper function to safely get predicted price
+  const getLastPredictedPrice = () => {
+    if (!prediction.predictions || prediction.predictions.length === 0) return null;
+    const lastPrediction = prediction.predictions[prediction.predictions.length - 1];
+    const price = lastPrediction?.predictedPrice;
+    // Handle the case where predictedPrice is an object with _type: "undefined"
+    if (typeof price === 'object' && price?._type === 'undefined') return null;
+    return typeof price === 'number' && !isNaN(price) ? price : null;
+  };
+  
+  const predictedPrice = getLastPredictedPrice();
+  
   console.log({
-    predictedPrice:
-      prediction.predictions[prediction.predictions.length - 1].predictedPrice,
+    predictedPrice,
     currentPrice,
-    change:
-      ((prediction.predictions[prediction.predictions.length - 1]
-        .predictedPrice -
-        currentPrice) /
-        currentPrice) *
-      100,
+    change: predictedPrice ? ((predictedPrice - currentPrice) / currentPrice) * 100 : NaN,
   });
 
   return (
@@ -45,33 +52,19 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
           <p className="text-gray-200 text-base leading-relaxed">
             Based on our {modelType} analysis model, {cryptoId.toUpperCase()}{" "}
             shows{" "}
-            {prediction.predictions && prediction.predictions.length > 0
-              ? ((prediction.predictions[prediction.predictions.length - 1]
-                  .predictedPrice -
-                  currentPrice) /
-                  currentPrice) *
-                  100 >=
-                0
+            {prediction.predictions && prediction.predictions.length > 0 && predictedPrice != null
+              ? ((predictedPrice - currentPrice) / currentPrice) * 100 >= 0
                 ? "bullish"
                 : "bearish"
               : "neutral"}{" "}
             momentum for the next {predictionDays} days.
-            {prediction.predictions && prediction.predictions.length > 0 && (
+            {prediction.predictions && prediction.predictions.length > 0 && predictedPrice != null && (
               <>
                 {" "}
                 The model predicts a price target of{" "}
-                {formatPrice(
-                  prediction.predictions[prediction.predictions.length - 1]
-                    .predictedPrice
-                )}
+                {formatPrice(predictedPrice)}
                 , representing a{" "}
-                {(
-                  ((prediction.predictions[prediction.predictions.length - 1]
-                    .predictedPrice -
-                    currentPrice) /
-                    currentPrice) *
-                  100
-                ).toFixed(2)}
+                {(((predictedPrice - currentPrice) / currentPrice) * 100).toFixed(2)}
                 % change from current levels. Key factors driving this forecast
                 include technical indicators and market sentiment patterns with{" "}
                 {(
@@ -139,7 +132,7 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
             </div>
           </div>
 
-          {prediction.predictions && prediction.predictions.length > 0 && (
+          {prediction.predictions && prediction.predictions.length > 0 && predictedPrice != null && (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
                 <div className="text-gray-400 text-sm font-medium mb-1">
@@ -168,10 +161,7 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
                   Predicted Price
                 </div>
                 <div className="text-blue-400 font-bold text-lg">
-                  {formatPrice(
-                    prediction.predictions[prediction.predictions.length - 1]
-                      .predictedPrice
-                  )}
+                  {formatPrice(predictedPrice)}
                 </div>
               </div>
 
@@ -181,32 +171,17 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
                 </div>
                 <div
                   className={`font-bold text-lg flex items-center justify-center gap-1 ${
-                    ((prediction.predictions[prediction.predictions.length - 1]
-                      .predictedPrice -
-                      currentPrice) /
-                      currentPrice) *
-                      100 >=
-                    0
+                    ((predictedPrice - currentPrice) / currentPrice) * 100 >= 0
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
                   <>
-                    {((prediction.predictions[prediction.predictions.length - 1]
-                      .predictedPrice -
-                      currentPrice) /
-                      currentPrice) *
-                      100 >=
-                    0
+                    {((predictedPrice - currentPrice) / currentPrice) * 100 >= 0
                       ? "↗"
                       : "↘"}
                     {Math.abs(
-                      ((prediction.predictions[
-                        prediction.predictions.length - 1
-                      ].predictedPrice -
-                        currentPrice) /
-                        currentPrice) *
-                        100
+                      ((predictedPrice - currentPrice) / currentPrice) * 100
                     ).toFixed(2)}
                     %
                   </>
