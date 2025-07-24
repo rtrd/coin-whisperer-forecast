@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
-import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
+import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 
 interface TokenDetailAnalysisProps {
@@ -46,14 +46,11 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
             </TabsList>
 
             <TabsContent value="sentiment" className="mt-6">
-              <SentimentAnalysis
-                crypto={cryptoId}
-                sentimentData={sentimentData}
-              />
+              <LockedSentimentAnalysis crypto={cryptoId} />
             </TabsContent>
 
             <TabsContent value="technical" className="mt-6">
-              <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+              <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
             </TabsContent>
           </Tabs>
         </CardContent>

@@ -53,9 +53,8 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <WordPressIntegration />
 
-      {/* AI Trading Signals - Restored */}
       <div className="mb-8">
-        <AITradingSignals />
+        <LockedAITradingSignals />
       </div>
 
       {/* Crypto Filters - Smart Crypto Filters */}

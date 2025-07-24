@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown, Lock, ExternalLink } from "lucide-react";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { MarketData } from "@/types/crypto";
+import { SignupDialog } from "@/components/SignupDialog";
 
 interface MarketDataGridCardProps {
   token: MarketData;
@@ -17,6 +18,8 @@ interface MarketDataGridCardProps {
 
 export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
   ({ token, index, isUnlocked, tokenUrlId, AllCryptosData }) => {
+    const [showSignupDialog, setShowSignupDialog] = useState(false);
+    
     return (
       <div className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
         <div className="flex items-start justify-between mb-4">
@@ -101,12 +104,15 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                   {token.predictionPercentage >= 0 ? "+" : ""}
                   {token.predictionPercentage.toFixed(2)}%
                 </div>
-              ) : (
-                <div className="flex items-center gap-1">
-                  <Lock className="h-3 w-3 text-yellow-400" />
-                  <span className="text-yellow-400 text-xs">Premium</span>
-                </div>
-              )}
+               ) : (
+                 <div 
+                   className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+                   onClick={() => setShowSignupDialog(true)}
+                 >
+                   <Lock className="h-3 w-3 text-yellow-400" />
+                   <span className="text-yellow-400 text-xs">Premium</span>
+                 </div>
+               )}
             </div>
             <div className="space-y-1">
               <div className="text-gray-400 text-xs uppercase tracking-wide">
@@ -120,12 +126,15 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                 >
                   {token.aiScore.toFixed(0)}/100
                 </div>
-              ) : (
-                <div className="flex items-center gap-1">
-                  <Lock className="h-3 w-3 text-yellow-400" />
-                  <span className="text-yellow-400 text-xs">Premium</span>
-                </div>
-              )}
+               ) : (
+                 <div 
+                   className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+                   onClick={() => setShowSignupDialog(true)}
+                 >
+                   <Lock className="h-3 w-3 text-yellow-400" />
+                   <span className="text-yellow-400 text-xs">Premium</span>
+                 </div>
+               )}
             </div>
           </div>
 
@@ -161,6 +170,13 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
             </Link>
           </Button>
         </div>
+        
+        <SignupDialog
+          open={showSignupDialog}
+          onOpenChange={setShowSignupDialog}
+          title="Unlock AI Predictions"
+          description="Get access to AI-powered predictions, market sentiment analysis, and technical indicators."
+        />
       </div>
     );
   }

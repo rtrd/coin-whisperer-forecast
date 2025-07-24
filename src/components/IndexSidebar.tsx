@@ -5,8 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle } from "lucide-react";
 import { AdUnit } from "@/components/ads/AdService";
 import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
-import { TechnicalAnalysis } from "@/components/TechnicalAnalysis";
-import { SentimentAnalysis } from "@/components/SentimentAnalysis";
+import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
+import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
 
 interface IndexSidebarProps {
   selectedCrypto: string;
@@ -50,11 +50,11 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
         </TabsList>
         
         <TabsContent value="technical">
-          <TechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+          <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
         </TabsContent>
         
         <TabsContent value="sentiment">
-          <SentimentAnalysis crypto={selectedCrypto} />
+          <LockedSentimentAnalysis crypto={selectedCrypto} />
         </TabsContent>
       </Tabs>
 
