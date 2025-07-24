@@ -17,6 +17,18 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
   currentPrice,
 }) => {
   if (!prediction) return null;
+  console.log({
+    predictedPrice:
+      prediction.predictions[prediction.predictions.length - 1].predictedPrice,
+    currentPrice,
+    change:
+      ((prediction.predictions[prediction.predictions.length - 1]
+        .predictedPrice -
+        currentPrice) /
+        currentPrice) *
+      100,
+  });
+
   return (
     <div className="mt-6 pt-6 border-t border-purple-400/30">
       <div className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-xl p-5 border border-purple-400/40">
@@ -59,12 +71,13 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
                     currentPrice) /
                     currentPrice) *
                   100
-                ).toFixed(1)}
+                ).toFixed(2)}
                 % change from current levels. Key factors driving this forecast
                 include technical indicators and market sentiment patterns with{" "}
-                {prediction.predictions[
-                  prediction.predictions.length - 1
-                ].confidence.toFixed(0)}
+                {(
+                  prediction.predictions[prediction.predictions.length - 1]
+                    .confidence * 100
+                ).toFixed(0)}
                 % confidence.
               </>
             )}
@@ -133,9 +146,10 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
                   Confidence
                 </div>
                 <div className="text-green-400 font-bold text-lg">
-                  {prediction.predictions[
-                    prediction.predictions.length - 1
-                  ].confidence.toFixed(0)}
+                  {(
+                    prediction.predictions[prediction.predictions.length - 1]
+                      .confidence * 100
+                  ).toFixed(0)}
                   %
                 </div>
               </div>
@@ -193,7 +207,7 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
                         currentPrice) /
                         currentPrice) *
                         100
-                    ).toFixed(1)}
+                    ).toFixed(2)}
                     %
                   </>
                 </div>
