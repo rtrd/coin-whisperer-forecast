@@ -135,13 +135,13 @@ const Subscribe = () => {
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative overflow-hidden">
         {/* Animated background elements */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),rgba(255,255,255,0))]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-premium/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-premium-end/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
         
-        <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="container mx-auto px-4 py-6 relative z-10">
           {/* Homepage Header */}
           <IndexHeader 
             selectedCrypto="bitcoin"
@@ -161,29 +161,29 @@ const Subscribe = () => {
           </div>
 
           {/* Hero Section */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-crypto-gold/20 border border-crypto-gold/50 rounded-full px-4 py-2 mb-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-crypto-gold/20 border border-crypto-gold/50 rounded-full px-4 py-2 mb-4">
               <Star className="h-4 w-4 text-crypto-gold" />
               <span className="text-crypto-gold font-semibold text-sm">LIMITED TIME OFFER</span>
             </div>
 
-            <h1 className="text-6xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-premium to-premium-end bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
                 Unlock
               </span>
               <br />
               <span className="flex items-center justify-center gap-4 mt-2">
-                <Crown className="h-16 w-16 text-crypto-gold animate-glow" />
+                <Crown className="h-12 w-12 text-crypto-gold animate-glow" />
                 Premium Trading
               </span>
             </h1>
             
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8 leading-relaxed">
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6 leading-relaxed">
               Join 12,847+ traders making <span className="text-crypto-success font-bold">$2,340+ daily</span> with our AI-powered predictions.
               Get 95% accurate signals and never miss a pump again.
             </p>
 
-            <div className="flex items-center justify-center gap-8 text-sm text-gray-400 mb-12">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400 mb-8">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-crypto-success rounded-full animate-pulse"></div>
                 <span>12,847 Active Users</span>
@@ -193,35 +193,35 @@ const Subscribe = () => {
                 <span>847 Signals Today</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-premium rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
                 <span>94.8% Success Rate</span>
               </div>
             </div>
           </div>
 
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
               {/* Subscription Form */}
               <div className="lg:col-span-2">
-                <Card className="bg-glass-bg backdrop-blur-sm border-glass-border shadow-2xl animate-glow">
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-2xl text-white flex items-center justify-center gap-2">
-                      <Rocket className="h-6 w-6 text-premium" />
+                <Card className="bg-glass-bg backdrop-blur-sm border-glass-border shadow-2xl h-full">
+                  <CardHeader className="text-center pb-4">
+                    <CardTitle className="text-xl text-white flex items-center justify-center gap-2">
+                      <Rocket className="h-5 w-5 text-blue-400" />
                       Start Your Premium Journey
                     </CardTitle>
                     <CardDescription className="text-gray-300">
                       Enter your email to unlock AI-powered trading insights
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                  <CardContent className="pt-0">
+                    <form onSubmit={handleSubmit} className="space-y-4">
                       <div>
                         <Input
                           type="email"
                           placeholder="Enter your email address"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-glass-bg border-glass-border text-white text-lg h-14 focus:border-premium transition-colors"
+                          className="bg-glass-bg border-glass-border text-white text-lg h-12 focus:border-blue-400 transition-colors"
                           required
                         />
                       </div>
@@ -229,38 +229,38 @@ const Subscribe = () => {
                       <Button 
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-premium to-premium-end hover:from-premium/90 hover:to-premium-end/90 text-lg h-14 shadow-xl animate-glow font-bold"
+                        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-lg h-12 shadow-xl font-bold"
                       >
                         {isLoading ? (
                           <div className="flex items-center gap-2">
-                            <Brain className="h-6 w-6 animate-spin" />
+                            <Brain className="h-5 w-5 animate-spin" />
                             Activating Premium...
                           </div>
                         ) : (
                           <div className="flex items-center gap-2">
-                            <Crown className="h-6 w-6" />
+                            <Crown className="h-5 w-5" />
                             Get Instant Access - FREE
                           </div>
                         )}
                       </Button>
                     </form>
 
-                    <div className="grid grid-cols-3 gap-4 mt-8">
+                    <div className="grid grid-cols-3 gap-4 mt-6">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-crypto-success">$2,340</div>
+                        <div className="text-xl font-bold text-crypto-success">$2,340</div>
                         <div className="text-xs text-gray-400">Avg Daily Profit</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-crypto-gold">94.8%</div>
+                        <div className="text-xl font-bold text-crypto-gold">94.8%</div>
                         <div className="text-xs text-gray-400">Success Rate</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-premium">&lt; 5min</div>
+                        <div className="text-xl font-bold text-blue-400">&lt; 5min</div>
                         <div className="text-xs text-gray-400">Setup Time</div>
                       </div>
                     </div>
 
-                    <div className="mt-6 p-4 bg-gradient-to-r from-crypto-success/20 to-crypto-gold/20 border border-crypto-success/50 rounded-lg">
+                    <div className="mt-4 p-3 bg-gradient-to-r from-crypto-success/20 to-crypto-gold/20 border border-crypto-success/50 rounded-lg">
                       <p className="text-crypto-success text-sm text-center font-semibold">
                         🚀 <strong>Limited Time:</strong> Get premium features FREE for early subscribers!
                       </p>
@@ -269,29 +269,29 @@ const Subscribe = () => {
                 </Card>
               </div>
 
-              {/* Live Stats Widget */}
+              {/* Right sidebar - Live Stats */}
               <div className="space-y-6">
                 <LiveStatsWidget />
                 
-                <div className="bg-glass-bg backdrop-blur-sm border border-glass-border rounded-xl p-6">
-                  <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-crypto-success" />
+                <div className="bg-glass-bg backdrop-blur-sm border border-glass-border rounded-xl p-4 h-fit">
+                  <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-crypto-success" />
                     Today's Top Signal
                   </h3>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">PEPE/USDT</span>
-                      <span className="text-crypto-success font-bold">+847%</span>
+                      <span className="text-gray-300 text-sm">PEPE/USDT</span>
+                      <span className="text-crypto-success font-bold text-sm">+847%</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Entry</span>
-                      <span className="text-white">$0.00001234</span>
+                      <span className="text-gray-300 text-sm">Entry</span>
+                      <span className="text-white text-sm">$0.00001234</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-300">Current</span>
-                      <span className="text-crypto-success">$0.00011688</span>
+                      <span className="text-gray-300 text-sm">Current</span>
+                      <span className="text-crypto-success text-sm">$0.00011688</span>
                     </div>
-                    <div className="text-xs text-gray-400 text-center pt-2">
+                    <div className="text-xs text-gray-400 text-center pt-1 border-t border-glass-border">
                       Signal sent 4 hours ago
                     </div>
                   </div>
@@ -300,12 +300,12 @@ const Subscribe = () => {
             </div>
 
             {/* Premium Features Grid */}
-            <div className="mb-16">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-white mb-4">
-                  Everything You Need to <span className="text-premium">Dominate</span> Crypto
+            <div className="mb-10">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-3">
+                  Everything You Need to <span className="text-blue-400">Dominate</span> Crypto
                 </h2>
-                <p className="text-gray-300 text-lg">Professional trading tools used by 12,847+ successful traders</p>
+                <p className="text-gray-300">Professional trading tools used by 12,847+ successful traders</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -322,12 +322,12 @@ const Subscribe = () => {
             </div>
 
             {/* Testimonials */}
-            <div className="mb-16">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-white mb-4">
+            <div className="mb-10">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-3">
                   Real Traders, Real <span className="text-crypto-success">Profits</span>
                 </h2>
-                <p className="text-gray-300 text-lg">See what our community is saying about their success</p>
+                <p className="text-gray-300">See what our community is saying about their success</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -338,12 +338,12 @@ const Subscribe = () => {
             </div>
 
             {/* Comparison Table */}
-            <div className="mb-16">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-white mb-4">
-                  Free vs <span className="text-premium">Premium</span>
+            <div className="mb-10">
+              <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold text-white mb-3">
+                  Free vs <span className="text-blue-400">Premium</span>
                 </h2>
-                <p className="text-gray-300 text-lg">See exactly what you get with premium access</p>
+                <p className="text-gray-300">See exactly what you get with premium access</p>
               </div>
               
               <ComparisonTable />
@@ -351,16 +351,16 @@ const Subscribe = () => {
 
             {/* Final CTA */}
             <div className="text-center">
-              <Card className="bg-gradient-to-br from-premium/20 to-premium-end/20 border-premium/50 shadow-2xl animate-glow max-w-2xl mx-auto">
-                <CardContent className="p-8">
-                  <Crown className="h-16 w-16 text-crypto-gold mx-auto mb-6 animate-float" />
-                  <h3 className="text-3xl font-bold text-white mb-4">Ready to 10x Your Portfolio?</h3>
-                  <p className="text-gray-300 mb-6">Join 12,847+ traders who are already making $2,340+ daily with our AI predictions.</p>
+              <Card className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/50 shadow-2xl max-w-2xl mx-auto">
+                <CardContent className="p-6">
+                  <Crown className="h-12 w-12 text-crypto-gold mx-auto mb-4 animate-float" />
+                  <h3 className="text-2xl font-bold text-white mb-3">Ready to 10x Your Portfolio?</h3>
+                  <p className="text-gray-300 mb-4">Join 12,847+ traders who are already making $2,340+ daily with our AI predictions.</p>
                   <Button 
-                    className="bg-gradient-to-r from-crypto-gold to-crypto-success hover:from-crypto-gold/90 hover:to-crypto-success/90 text-black font-bold text-lg px-8 py-4 h-auto animate-pulse-slow"
+                    className="bg-gradient-to-r from-crypto-gold to-crypto-success hover:from-crypto-gold/90 hover:to-crypto-success/90 text-black font-bold px-6 py-3 h-auto"
                     onClick={() => (document.querySelector('input[type="email"]') as HTMLInputElement)?.focus()}
                   >
-                    <Rocket className="h-5 w-5 mr-2" />
+                    <Rocket className="h-4 w-4 mr-2" />
                     Get Free Premium Access Now
                   </Button>
                 </CardContent>
@@ -370,7 +370,7 @@ const Subscribe = () => {
         </div>
       </div>
       
-      <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <Footer />
       </div>
     </>
