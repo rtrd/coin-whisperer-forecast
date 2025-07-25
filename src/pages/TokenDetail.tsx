@@ -367,6 +367,8 @@ const TokenDetail = () => {
           {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
         </script>
       </Helmet>
+
+      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
       <TokenProvider
         tokenId={tokenId || "bitcoin"}
         cryptoOptions={cryptoOptions}

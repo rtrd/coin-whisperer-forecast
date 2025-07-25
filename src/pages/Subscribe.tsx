@@ -135,6 +135,8 @@ const Subscribe = () => {
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
 
+      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
+
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>

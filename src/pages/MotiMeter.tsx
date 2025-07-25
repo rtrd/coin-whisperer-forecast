@@ -67,6 +67,7 @@ const MotiMeter = () => {
 
   return (
     <>
+      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
         {/* PumpParade Header */}
         <div className="container mx-auto px-4 py-2">
