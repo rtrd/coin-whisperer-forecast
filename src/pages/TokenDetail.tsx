@@ -29,6 +29,7 @@ import {
 } from "@/utils/seo";
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 import { PriceData } from "@/types/crypto";
+import { useAdScript } from "@/hooks/useAdScript";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -43,6 +44,9 @@ const TokenDetail = () => {
   // Get token info and crypto options
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
   const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
+  
+  // Initialize ad script on page load
+  useAdScript();
 
   // Track token page view
   React.useEffect(() => {
@@ -367,8 +371,6 @@ const TokenDetail = () => {
           {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
         </script>
       </Helmet>
-
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
       <TokenProvider
         tokenId={tokenId || "bitcoin"}
         cryptoOptions={cryptoOptions}

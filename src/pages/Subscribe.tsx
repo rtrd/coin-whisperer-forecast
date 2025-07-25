@@ -15,12 +15,16 @@ import { PremiumFeatureCard } from "@/components/subscribe/PremiumFeatureCard";
 import { TestimonialCard } from "@/components/subscribe/TestimonialCard";
 import { LiveStatsWidget } from "@/components/subscribe/LiveStatsWidget";
 import { ComparisonTable } from "@/components/subscribe/ComparisonTable";
+import { useAdScript } from "@/hooks/useAdScript";
 
 const Subscribe = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const seoData = generateSubscribeSEO();
+  
+  // Initialize ad script on page load
+  useAdScript();
 
   // Track page view on component mount
   React.useEffect(() => {
@@ -134,8 +138,6 @@ const Subscribe = () => {
         <meta name="twitter:description" content={seoData.twitter.description} />
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
-
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative overflow-hidden">
         {/* Animated background elements */}

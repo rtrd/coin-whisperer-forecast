@@ -6,6 +6,7 @@ import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 import { generateHomepageSEO } from "@/utils/pageSeo";
+import { useAdScript } from "@/hooks/useAdScript";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState("bitcoin");
@@ -14,6 +15,9 @@ const Index = () => {
   const [modelType, setModelType] = useState("advanced");
 
   const seoData = generateHomepageSEO();
+  
+  // Initialize ad script on page load
+  useAdScript();
 
   const {
     filteredCryptos,
