@@ -46,11 +46,17 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
             </TabsList>
 
             <TabsContent value="sentiment" className="mt-6">
-              <LockedSentimentAnalysis crypto={cryptoId} />
+              <LockedSentimentAnalysis
+                crypto={cryptoId}
+                sentimentData={sentimentData}
+              />
             </TabsContent>
 
             <TabsContent value="technical" className="mt-6">
-              <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+              <LockedTechnicalAnalysis
+                data={cryptoData}
+                isLoading={dataLoading}
+              />
             </TabsContent>
           </Tabs>
         </CardContent>
