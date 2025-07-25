@@ -44,7 +44,7 @@ const TokenDetail = () => {
   // Get token info and crypto options
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
   const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
-  
+
   // Initialize ad script on page load
   useAdScript();
 
@@ -65,7 +65,6 @@ const TokenDetail = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        debugger;
         const response = await fetchTechnicalIndicators(cryptoId, "3m"); // or any topic
         console.log("Fetched technical indicators:", response);
         const prices = response.map((d) => d.price);
@@ -250,7 +249,6 @@ const TokenDetail = () => {
       toast.error("No data available for prediction");
       return;
     }
-    debugger;
 
     await generatePrediction(
       cryptoData,
