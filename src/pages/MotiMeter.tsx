@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,6 +24,9 @@ declare global {
 
 const MotiMeter = () => {
   const [selectedPeriod, setSelectedPeriod] = useState<'24h' | '5d' | '7d'>('24h');
+  
+  // Initialize ad script on page load
+  useAdScript();
   const { data: motiTokens, isLoading, error } = useMotiMeterData(selectedPeriod);
   const [topGainersAndLosers, setTopGainersAndLosers] = useState<any[]>([]);
 
@@ -67,7 +72,7 @@ const MotiMeter = () => {
 
   return (
     <>
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
+      
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
         {/* PumpParade Header */}
         <div className="container mx-auto px-4 py-2">

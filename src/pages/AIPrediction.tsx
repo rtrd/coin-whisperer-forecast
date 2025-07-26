@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -18,6 +19,9 @@ import { generateAIPredictionSEO } from "@/utils/pageSeo";
 
 const AIPrediction = () => {
   const [cryptoOptions, setCryptoOptions] = useState<any[]>([]);
+  
+  // Initialize ad script on page load
+  useAdScript();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
   const [predictionDays, setPredictionDays] = useState(7);

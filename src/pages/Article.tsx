@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -26,6 +27,9 @@ const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
+  
+  // Initialize ad script on page load
+  useAdScript();
   const [articlesData, setArticlesData] = useState<any[]>([]);
   const [allArticlesData, setallArticlesData] = useState<any[]>([]);
   const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>(
@@ -214,7 +218,7 @@ const Article = () => {
         </Helmet>
       )}
 
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
+      
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         {/* Header like homepage */}

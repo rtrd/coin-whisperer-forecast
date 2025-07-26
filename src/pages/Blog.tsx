@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { BlogLayout } from "@/components/blog/BlogLayout";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogFeaturedSection } from "@/components/blog/BlogFeaturedSection";
@@ -12,6 +13,9 @@ import { generateBlogSEO } from "@/utils/pageSeo";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
+  
+  // Initialize ad script on page load
+  useAdScript();
   const [categories, setCategories] = useState<{ [key: string]: any[] }>({});
   const [loading, setLoading] = useState(true);
 

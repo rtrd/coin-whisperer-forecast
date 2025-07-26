@@ -54,7 +54,7 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
         </TabsContent>
         
         <TabsContent value="sentiment">
-          <LockedSentimentAnalysis crypto={selectedCrypto} />
+          <LockedSentimentAnalysis crypto={selectedCrypto} sentimentData={[]} />
         </TabsContent>
       </Tabs>
 

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -14,6 +16,9 @@ import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 
 const SentimentAnalysisPage = () => {
+  // Initialize ad script on page load
+  useAdScript();
+  
   const [marketData, setMarketData] = useState([]);
   const [overallSentiment, setOverallSentiment] = useState({
     score: 0,
@@ -182,7 +187,7 @@ const SentimentAnalysisPage = () => {
 
   return (
     <>
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
+      
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       {/* Header like homepage */}
       <div className="container mx-auto px-4 py-4 md:py-8">

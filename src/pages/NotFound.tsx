@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -7,6 +8,9 @@ import Footer from "@/components/Footer";
 
 const NotFound = () => {
   const location = useLocation();
+  
+  // Initialize ad script on page load
+  useAdScript();
 
   const cryptoOptions = [
     { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
