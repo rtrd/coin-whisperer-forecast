@@ -200,24 +200,24 @@ const MotiMeter = () => {
           {/* Enhanced Time Period Tabs */}
           <Tabs value={selectedPeriod} onValueChange={(value) => setSelectedPeriod(value as '24h' | '5d' | '7d')} className="mb-10">
             <div className="flex justify-center">
-              <TabsList className="grid grid-cols-3 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-600 rounded-xl p-1 shadow-2xl">
+              <TabsList className="grid grid-cols-3 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-600 rounded-xl p-2 shadow-2xl h-14">
                 <TabsTrigger 
                   value="24h" 
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+                  className="h-10 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 font-medium"
                 >
                   <Clock className="h-4 w-4 mr-2" />
                   24 Hours
                 </TabsTrigger>
                 <TabsTrigger 
                   value="5d" 
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+                  className="h-10 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 font-medium"
                 >
                   <TrendingUp className="h-4 w-4 mr-2" />
                   5 Days
                 </TabsTrigger>
                 <TabsTrigger 
                   value="7d" 
-                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+                  className="h-10 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 font-medium"
                 >
                   <Users className="h-4 w-4 mr-2" />
                   7 Days
@@ -290,15 +290,24 @@ const MotiMeter = () => {
                                 </div>
 
                                  <div className="flex items-center gap-6">
-                                   <div className="text-right">
-                                     <div className="text-4xl font-black text-transparent bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text mb-2">
-                                       {token.motiScore.toFixed(1)}
+                                   <div className="flex flex-col gap-3">
+                                     <div className="bg-gray-900/50 rounded-lg p-4 border border-orange-400/30 backdrop-blur-sm">
+                                       <div className="text-xs text-orange-300 uppercase tracking-wide mb-1 font-semibold">MOTI Score</div>
+                                       <div className="text-3xl font-black text-transparent bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text">
+                                         {token.motiScore.toFixed(1)}/5
+                                       </div>
                                      </div>
-                                     <div className="text-lg text-gray-300 font-semibold">
-                                       ${token.current_price?.toFixed(6) || 'N/A'}
+                                     <div className="bg-gray-900/50 rounded-lg p-4 border border-blue-400/30 backdrop-blur-sm">
+                                       <div className="text-xs text-blue-300 uppercase tracking-wide mb-1 font-semibold">Current Price</div>
+                                       <div className="text-xl font-bold text-gray-100">
+                                         ${token.current_price?.toFixed(6) || 'N/A'}
+                                       </div>
                                      </div>
-                                     <div className={`text-base font-bold ${token.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                       {token.price_change_percentage_24h >= 0 ? '+' : ''}{token.price_change_percentage_24h?.toFixed(2) || '0'}%
+                                     <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-600/30 backdrop-blur-sm">
+                                       <div className="text-xs text-gray-300 uppercase tracking-wide mb-1 font-semibold">24h Change</div>
+                                       <div className={`text-xl font-bold ${token.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                         {token.price_change_percentage_24h >= 0 ? '+' : ''}{token.price_change_percentage_24h?.toFixed(2) || '0'}%
+                                       </div>
                                      </div>
                                    </div>
                                   
@@ -314,8 +323,7 @@ const MotiMeter = () => {
                                      </Button>
                                      <Button
                                        size="lg"
-                                       variant="outline"
-                                       className="border-red-500 text-red-400 hover:bg-gradient-to-r hover:from-red-600 hover:to-red-700 hover:text-white px-6 py-3 hover:border-transparent transition-all duration-300"
+                                       className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-6 py-3 shadow-lg hover:shadow-red-500/25 transition-all duration-300 border-0"
                                        onClick={() => handleSellToken(token)}
                                      >
                                        <TrendingDown className="h-4 w-4 mr-2" />
