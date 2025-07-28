@@ -171,8 +171,8 @@ const Subscribe = () => {
               <span className="text-crypto-gold font-semibold text-sm">LIMITED TIME OFFER</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
-              <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-4 leading-tight">
+              <span className="bg-gradient-to-r from-premium to-premium-end bg-clip-text text-transparent">
                 Unlock
               </span>
               <br />
@@ -182,12 +182,12 @@ const Subscribe = () => {
               </span>
             </h1>
             
-            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
               Join 12,847+ traders making <span className="text-crypto-success font-bold">$2,340+ daily</span> with our AI-powered predictions.
               Get 95% accurate signals and never miss a pump again.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400 mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground mb-8">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-crypto-success rounded-full animate-pulse"></div>
                 <span>12,847 Active Users</span>
@@ -213,11 +213,11 @@ const Subscribe = () => {
                       <Crown className="h-4 w-4 text-crypto-success" />
                       <span className="text-crypto-success font-semibold text-sm">FREE PREMIUM ACCESS</span>
                     </div>
-                    <CardTitle className="text-3xl text-white flex items-center justify-center gap-3 mb-2">
-                      <Rocket className="h-8 w-8 text-blue-400" />
+                    <CardTitle className="text-3xl text-foreground flex items-center justify-center gap-3 mb-2">
+                      <Rocket className="h-8 w-8 text-premium" />
                       Start Your Premium Journey
                     </CardTitle>
-                    <CardDescription className="text-lg text-gray-300 max-w-xl mx-auto">
+                    <CardDescription className="text-lg text-muted-foreground max-w-xl mx-auto">
                       Join our community by entering your email - No payment required. Premium features unlock instantly.
                     </CardDescription>
                   </CardHeader>
@@ -229,7 +229,7 @@ const Subscribe = () => {
                           placeholder="Enter your email address"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-glass-bg border-glass-border text-white text-lg h-14 focus:border-blue-400 transition-colors text-center"
+                          className="bg-glass-bg border-glass-border text-foreground text-lg h-14 focus:border-premium transition-colors text-center"
                           required
                         />
                       </div>
@@ -237,7 +237,7 @@ const Subscribe = () => {
                       <Button 
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-crypto-success to-blue-500 hover:from-crypto-success/90 hover:to-blue-500/90 text-lg h-14 shadow-xl font-bold text-white"
+                        className="w-full bg-gradient-to-r from-crypto-success to-premium hover:from-crypto-success/90 hover:to-premium/90 text-lg h-14 shadow-xl font-bold text-primary-foreground"
                       >
                         {isLoading ? (
                           <div className="flex items-center gap-2">
@@ -253,23 +253,23 @@ const Subscribe = () => {
                       </Button>
                     </form>
 
-                    <div className="grid grid-cols-3 gap-6 mt-8 max-w-xl mx-auto">
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-white">12,847</div>
-                        <div className="text-sm text-gray-400">Active Users</div>
+                      <div className="grid grid-cols-3 gap-6 mt-8 max-w-xl mx-auto">
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-foreground">12,847</div>
+                          <div className="text-sm text-muted-foreground">Active Users</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-crypto-success">Free</div>
+                          <div className="text-sm text-muted-foreground">Forever</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-2xl font-bold text-premium">Instant</div>
+                          <div className="text-sm text-muted-foreground">Access</div>
+                        </div>
                       </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-crypto-success">Free</div>
-                        <div className="text-sm text-gray-400">Forever</div>
-                      </div>
-                      <div className="text-center">
-                        <div className="text-2xl font-bold text-blue-400">Instant</div>
-                        <div className="text-sm text-gray-400">Access</div>
-                      </div>
-                    </div>
 
                     <div className="mt-6 p-4 bg-gradient-to-r from-crypto-success/20 to-blue-500/20 border border-crypto-success/50 rounded-lg text-center">
-                      <p className="text-white font-semibold">
+                      <p className="text-foreground font-semibold">
                         ✨ <strong>100% Free Premium:</strong> No credit card required, no hidden fees, unlock everything with just your email!
                       </p>
                     </div>
@@ -281,10 +281,10 @@ const Subscribe = () => {
             {/* Premium Features Grid */}
             <div className="mb-10">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-3">
-                  Everything You Need to <span className="text-blue-400">Dominate</span> Crypto
+                <h2 className="text-3xl font-bold text-foreground mb-3">
+                  Everything You Need to <span className="text-premium">Dominate</span> Crypto
                 </h2>
-                <p className="text-gray-300">Professional trading tools used by 12,847+ successful traders</p>
+                <p className="text-muted-foreground">Professional trading tools used by 12,847+ successful traders</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -303,10 +303,10 @@ const Subscribe = () => {
             {/* Testimonials */}
             <div className="mb-10">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-3">
+                <h2 className="text-3xl font-bold text-foreground mb-3">
                   Real Traders, Real <span className="text-crypto-success">Profits</span>
                 </h2>
-                <p className="text-gray-300">See what our community is saying about their success</p>
+                <p className="text-muted-foreground">See what our community is saying about their success</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -329,8 +329,8 @@ const Subscribe = () => {
                       </div>
                     </div>
                   </div>
-                  <h3 className="text-3xl font-bold text-white mb-4">Don't Miss Out!</h3>
-                  <p className="text-gray-300 mb-6 text-lg">
+                  <h3 className="text-3xl font-bold text-foreground mb-4">Don't Miss Out!</h3>
+                  <p className="text-muted-foreground mb-6 text-lg">
                     12,847+ traders are already using our free premium tools. Join the community that's revolutionizing crypto trading.
                   </p>
                   
@@ -340,13 +340,13 @@ const Subscribe = () => {
                       placeholder="Enter your email for instant access"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="bg-glass-bg border-glass-border text-white text-lg h-12 focus:border-crypto-success transition-colors text-center"
+                      className="bg-glass-bg border-glass-border text-foreground text-lg h-12 focus:border-crypto-success transition-colors text-center"
                       required
                     />
                     <Button 
                       type="submit"
                       disabled={isLoading}
-                      className="w-full bg-gradient-to-r from-crypto-success to-blue-500 hover:from-crypto-success/90 hover:to-blue-500/90 text-white font-bold text-lg h-12"
+                      className="w-full bg-gradient-to-r from-crypto-success to-premium hover:from-crypto-success/90 hover:to-premium/90 text-primary-foreground font-bold text-lg h-12"
                     >
                       {isLoading ? (
                         <div className="flex items-center gap-2">

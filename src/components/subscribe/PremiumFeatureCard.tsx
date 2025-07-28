@@ -26,20 +26,20 @@ export const PremiumFeatureCard: React.FC<PremiumFeatureCardProps> = ({
         <div className={`
           p-3 rounded-lg
           ${highlight 
-            ? 'bg-gradient-to-br from-premium to-premium-end text-white' 
+            ? 'bg-gradient-to-br from-premium to-premium-end text-primary-foreground' 
             : 'bg-glass-bg text-premium'
           }
         `}>
           <Icon className="h-6 w-6" />
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-          <p className="text-gray-300 text-sm leading-relaxed">{description}</p>
+          <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">{description}</p>
         </div>
       </div>
       
       {highlight && (
-        <div className="absolute -top-3 -right-3 bg-crypto-gold text-black text-xs px-3 py-1 rounded-full font-bold animate-pulse-slow">
+        <div className="absolute -top-3 -right-3 bg-crypto-gold text-primary-foreground text-xs px-3 py-1 rounded-full font-bold animate-pulse-slow">
           MOST POPULAR
         </div>
       )}
