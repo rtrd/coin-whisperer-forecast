@@ -26,14 +26,14 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
       <Table className="w-full table-fixed">
         <TableHeader>
           <TableRow className="border-slate-700/50 h-16 bg-gradient-to-r from-slate-800/50 to-slate-700/50">
-            <TableHead className="text-slate-300 font-semibold w-8 px-3 text-center">#</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-40 px-3">Token</TableHead>
-            {showPrice && <TableHead className="text-slate-300 font-semibold w-24 px-2 text-right">Price</TableHead>}
+            <TableHead className="text-slate-300 font-semibold w-12 px-2 text-center">#</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-32 px-3">Token</TableHead>
+            {showPrice && <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">Price</TableHead>}
             {showChange && <TableHead className="text-slate-300 font-semibold w-24 px-2 text-center">24h</TableHead>}
             <TableHead className="text-slate-300 font-semibold w-20 px-2 text-center">Score</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-24 px-2 text-right">Volume</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-24 px-2 text-right">MCap</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-32 px-2 text-center">Actions</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">Volume</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">MCap</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-36 px-2 text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
