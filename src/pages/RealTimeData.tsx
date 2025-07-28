@@ -376,57 +376,150 @@ const RealTimeData = () => {
                 </CardContent>
               </Card>
 
-              {/* Live Trading Activity */}
+              {/* Market Movers Analysis */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
                 <CardHeader className="bg-gradient-to-r from-orange-600/10 to-red-600/10 border-b border-gray-600/50">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <Zap className="h-8 w-8 text-orange-400" />
                       <div>
-                        <CardTitle className="text-2xl text-white">Live Trading Activity</CardTitle>
-                        <p className="text-gray-300 mt-1">Real-time transaction monitoring</p>
+                        <CardTitle className="text-2xl text-white">Market Movers Analysis</CardTitle>
+                        <p className="text-gray-300 mt-1">Real-time market momentum and volume insights</p>
                       </div>
                     </div>
                     <Badge variant="outline" className="text-orange-400 border-orange-400 animate-pulse">
-                      ACTIVE
+                      LIVE
                     </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <div className="space-y-3">
-                    {[...Array(10)].map((_, index) => {
-                      const isBuy = Math.random() > 0.5;
-                      const crypto = marketData[Math.floor(Math.random() * Math.min(marketData.length, 5))];
-                      const amount = (Math.random() * 50 + 1).toFixed(2);
-                      const value = Math.random() * 500000 + 10000;
-                      
-                      return (
-                        <div key={index} className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-2 h-2 rounded-full animate-pulse ${isBuy ? 'bg-green-400' : 'bg-red-400'}`}></div>
-                            <Badge 
-                              variant={isBuy ? "default" : "destructive"} 
-                              className="text-xs"
-                            >
-                              {isBuy ? 'BUY' : 'SELL'}
-                            </Badge>
-                            <span className="text-gray-300 text-sm">
-                              {amount} {crypto?.symbol?.toUpperCase() || 'BTC'}
-                            </span>
-                            <span className="text-gray-500 text-xs">
-                              @ ${crypto?.current_price ? formatPrice(crypto.current_price) : '45,000'}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-white text-sm font-medium">
-                              ${formatVolume(value)}
-                            </span>
-                            <Clock className="h-3 w-3 text-gray-400" />
-                            <span className="text-gray-400 text-xs">now</span>
-                          </div>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    {/* Top Gainers */}
+                    <div className="space-y-4">
+                      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-green-400" />
+                        Top Gainers (24h)
+                      </h4>
+                      {marketData
+                        .filter(crypto => crypto.price_change_percentage_24h > 0)
+                        .sort((a, b) => b.price_change_percentage_24h - a.price_change_percentage_24h)
+                        .slice(0, 5)
+                        .map((crypto, index) => (
+                          <Link 
+                            key={crypto.id} 
+                            to={`/token/${crypto.id}`}
+                            className="block transition-all duration-200 hover:scale-[1.02]"
+                          >
+                            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-lg border border-green-500/30 hover:border-green-400/50">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                                  <span className="text-green-400 font-bold text-sm">#{index + 1}</span>
+                                </div>
+                                <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
+                                <div>
+                                  <p className="text-white font-medium">{crypto.name}</p>
+                                  <p className="text-gray-400 text-sm">{crypto.symbol.toUpperCase()}</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-white font-semibold">${formatPrice(crypto.current_price)}</p>
+                                <div className="flex items-center gap-1">
+                                  <TrendingUp className="h-3 w-3 text-green-400" />
+                                  <span className="text-green-400 text-sm font-medium">
+                                    +{crypto.price_change_percentage_24h.toFixed(2)}%
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                    </div>
+
+                    {/* High Volume Movers */}
+                    <div className="space-y-4">
+                      <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+                        <ChartBar className="h-5 w-5 text-blue-400" />
+                        High Volume Movers
+                      </h4>
+                      {marketData
+                        .sort((a, b) => b.total_volume - a.total_volume)
+                        .slice(0, 5)
+                        .map((crypto, index) => (
+                          <Link 
+                            key={crypto.id} 
+                            to={`/token/${crypto.id}`}
+                            className="block transition-all duration-200 hover:scale-[1.02]"
+                          >
+                            <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-lg border border-blue-500/30 hover:border-blue-400/50">
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center">
+                                  <span className="text-blue-400 font-bold text-sm">#{index + 1}</span>
+                                </div>
+                                <img src={crypto.image} alt={crypto.name} className="w-8 h-8 rounded-full" />
+                                <div>
+                                  <p className="text-white font-medium">{crypto.name}</p>
+                                  <p className="text-gray-400 text-sm">{crypto.symbol.toUpperCase()}</p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-white font-semibold">${formatVolume(crypto.total_volume)}</p>
+                                <div className="flex items-center gap-1">
+                                  <ChartBar className="h-3 w-3 text-blue-400" />
+                                  <span className={`text-sm font-medium ${
+                                    crypto.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
+                                  }`}>
+                                    {crypto.price_change_percentage_24h >= 0 ? '+' : ''}{crypto.price_change_percentage_24h.toFixed(2)}%
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </Link>
+                        ))}
+                    </div>
+                  </div>
+
+                  {/* Market Momentum Indicators */}
+                  <div className="border-t border-gray-600/50 pt-6">
+                    <h4 className="text-lg font-semibold text-white flex items-center gap-2 mb-4">
+                      <Target className="h-5 w-5 text-purple-400" />
+                      Market Momentum Indicators
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="p-4 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-lg border border-purple-500/30">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-gray-300 text-sm">Bullish Signals</span>
+                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                         </div>
-                      );
-                    })}
+                        <p className="text-2xl font-bold text-white">
+                          {marketData.filter(crypto => crypto.price_change_percentage_24h > 5).length}
+                        </p>
+                        <p className="text-green-400 text-xs">Tokens +5% or more</p>
+                      </div>
+                      
+                      <div className="p-4 bg-gradient-to-r from-orange-600/20 to-red-600/20 rounded-lg border border-orange-500/30">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-gray-300 text-sm">Bearish Signals</span>
+                          <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                        </div>
+                        <p className="text-2xl font-bold text-white">
+                          {marketData.filter(crypto => crypto.price_change_percentage_24h < -5).length}
+                        </p>
+                        <p className="text-red-400 text-xs">Tokens -5% or more</p>
+                      </div>
+                      
+                      <div className="p-4 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 rounded-lg border border-cyan-500/30">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-gray-300 text-sm">Neutral Zone</span>
+                          <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                        </div>
+                        <p className="text-2xl font-bold text-white">
+                          {marketData.filter(crypto => 
+                            crypto.price_change_percentage_24h >= -5 && crypto.price_change_percentage_24h <= 5
+                          ).length}
+                        </p>
+                        <p className="text-yellow-400 text-xs">Tokens in ±5% range</p>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
