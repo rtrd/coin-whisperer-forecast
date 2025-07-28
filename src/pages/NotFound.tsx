@@ -1,68 +1,110 @@
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { useAdScript } from "@/hooks/useAdScript";
-import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { IndexHeader } from "@/components/IndexHeader";
-import Footer from "@/components/Footer";
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Home, Search, TrendingUp } from 'lucide-react';
+import { SEOHead } from '@/components/SEOHead';
+import { useEffect } from 'react';
 
 const NotFound = () => {
-  const location = useLocation();
-  
-  // Initialize ad script on page load
-  useAdScript();
-
-  const cryptoOptions = [
-    { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
-    { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' }
-  ];
-
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
-  }, [location.pathname]);
+    // Track 404 errors
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'page_view', {
+        page_title: '404 - Page Not Found',
+        page_location: window.location.href,
+        custom_parameters: {
+          error_type: '404',
+          referrer: document.referrer
+        }
+      });
+    }
+  }, []);
+
+  const seoData = {
+    title: '404 - Page Not Found | Pump Parade',
+    description: 'The page you are looking for could not be found. Explore our crypto analysis tools, AI predictions, and market data instead.',
+    canonical: 'https://pumpparade.com/404',
+    keywords: 'error, 404, not found, crypto analysis, pump parade',
+    openGraph: {
+      title: '404 - Page Not Found | Pump Parade',
+      description: 'The page you are looking for could not be found. Explore our crypto analysis tools instead.',
+      url: 'https://pumpparade.com/404',
+      type: 'website' as const,
+      image: 'https://pumpparade.com/og-image.jpg'
+    },
+    twitter: {
+      title: '404 - Page Not Found | Pump Parade',
+      description: 'The page you are looking for could not be found. Explore our crypto analysis tools instead.',
+      card: 'summary_large_image' as const,
+      image: 'https://pumpparade.com/og-image.jpg'
+    }
+  };
 
   return (
     <>
-      <Helmet>
-        <title>404 | Page Not Found | Pump Parade</title>
-        <meta name="description" content="The page you're looking for doesn't exist. Return to Pump Parade for cryptocurrency analysis and price predictions." />
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+      <SEOHead seoData={seoData} />
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-8 p-8 max-w-lg mx-auto">
+          {/* 404 Display */}
+          <div className="space-y-2">
+            <h1 className="text-9xl font-bold text-primary/20 select-none">404</h1>
+            <h2 className="text-3xl font-bold text-foreground">Page Not Found</h2>
+            <p className="text-muted-foreground text-lg">
+              The page you're looking for doesn't exist or has been moved.
+            </p>
+          </div>
 
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
-
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Homepage Header */}
-          <IndexHeader 
-            selectedCrypto="bitcoin"
-            cryptoOptions={cryptoOptions}
-            currentPrice={50000}
-            priceChange={2.5}
-          />
-
-          <div className="flex items-center justify-center min-h-[60vh]">
-            <div className="text-center">
-              <h1 className="text-6xl font-bold text-white mb-4">404</h1>
-              <p className="text-2xl text-gray-300 mb-6">Oops! Page not found</p>
-              <p className="text-lg text-gray-400 mb-8">The page you're looking for doesn't exist.</p>
-              <Link 
-                to="/" 
-                className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
-              >
-                Return to Home
-              </Link>
+          {/* Quick Navigation */}
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold text-foreground">
+              Explore our crypto tools instead:
+            </h3>
+            
+            <div className="grid gap-3">
+              <Button asChild variant="default" className="w-full">
+                <Link to="/" className="flex items-center gap-2">
+                  <Home className="h-4 w-4" />
+                  Homepage
+                </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/tokens" className="flex items-center gap-2">
+                  <Search className="h-4 w-4" />
+                  Browse All Tokens
+                </Link>
+              </Button>
+              
+              <Button asChild variant="outline" className="w-full">
+                <Link to="/ai-prediction" className="flex items-center gap-2">
+                  <TrendingUp className="h-4 w-4" />
+                  AI Predictions
+                </Link>
+              </Button>
             </div>
           </div>
+
+          {/* Search Suggestion */}
+          <div className="pt-4 border-t border-border">
+            <p className="text-sm text-muted-foreground">
+              Looking for a specific token? Try searching from our{' '}
+              <Link to="/" className="text-primary hover:underline">
+                homepage
+              </Link>{' '}
+              or browse our{' '}
+              <Link to="/blog" className="text-primary hover:underline">
+                blog
+              </Link>{' '}
+              for the latest crypto insights.
+            </p>
+          </div>
         </div>
-        
-        <Footer />
       </div>
     </>
   );
 };
 
 export default NotFound;
+
+declare global {
+  function gtag(...args: any[]): void;
+}

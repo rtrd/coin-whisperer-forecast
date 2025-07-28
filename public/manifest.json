@@ -1,0 +1,22 @@
+{
+  "name": "Pump Parade - AI-Powered Crypto Research Tools",
+  "short_name": "Pump Parade",
+  "description": "AI-driven crypto research tools platform for technical analysis, trading strategies, and real-time market signals",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32 16x16",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity", "business"],
+  "lang": "en",
+  "dir": "ltr"
+}

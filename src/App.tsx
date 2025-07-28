@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { AdBlockDetector } from "@/components/ads/AdBlockDetector";
 import { AutoRefresh } from "@/components/layout/AutoRefresh";
+import { HeadImprovements } from "@/components/layout/HeadImprovements";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Subscribe from "./pages/Subscribe";
@@ -30,6 +31,7 @@ const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <HeadImprovements />
         <Toaster />
         <Sonner />
         <AdBlockDetector />
