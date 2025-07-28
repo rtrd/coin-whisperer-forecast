@@ -290,20 +290,20 @@ const MotiMeter = () => {
                                 </div>
 
                                  <div className="flex items-center gap-6">
-                                   <div className="flex flex-col gap-3">
-                                     <div className="bg-gray-900/50 rounded-lg p-4 border border-orange-400/30 backdrop-blur-sm">
+                                   <div className="flex gap-3">
+                                     <div className="bg-gray-900/50 rounded-lg p-3 border border-orange-400/30 backdrop-blur-sm min-w-[120px]">
                                        <div className="text-xs text-orange-300 uppercase tracking-wide mb-1 font-semibold">MOTI Score</div>
-                                       <div className="text-3xl font-black text-transparent bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text">
+                                       <div className="text-2xl font-black text-transparent bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text">
                                          {token.motiScore.toFixed(1)}/5
                                        </div>
                                      </div>
-                                     <div className="bg-gray-900/50 rounded-lg p-4 border border-blue-400/30 backdrop-blur-sm">
+                                     <div className="bg-gray-900/50 rounded-lg p-3 border border-blue-400/30 backdrop-blur-sm min-w-[140px]">
                                        <div className="text-xs text-blue-300 uppercase tracking-wide mb-1 font-semibold">Current Price</div>
                                        <div className="text-xl font-bold text-gray-100">
                                          ${token.current_price?.toFixed(6) || 'N/A'}
                                        </div>
                                      </div>
-                                     <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-600/30 backdrop-blur-sm">
+                                     <div className="bg-gray-900/50 rounded-lg p-3 border border-gray-600/30 backdrop-blur-sm min-w-[120px]">
                                        <div className="text-xs text-gray-300 uppercase tracking-wide mb-1 font-semibold">24h Change</div>
                                        <div className={`text-xl font-bold ${token.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                                          {token.price_change_percentage_24h >= 0 ? '+' : ''}{token.price_change_percentage_24h?.toFixed(2) || '0'}%
