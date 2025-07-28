@@ -260,12 +260,9 @@ const MotiMeter = () => {
                               <div className="flex items-center justify-between">
                                  <div className="flex items-center gap-6">
                                    <div className="flex flex-col items-center">
-                                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-2 shadow-lg">
+                                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center shadow-lg">
                                        <span className="text-2xl font-black text-white">#{index + 1}</span>
                                      </div>
-                                     <Badge className={`${getMotiColor(token.motiScore)} text-white px-3 py-1 text-sm font-bold shadow-lg`}>
-                                       {getMotiLabel(token.motiScore)}
-                                     </Badge>
                                    </div>
                                   
                                    <div className="flex items-center gap-4">
@@ -283,8 +280,13 @@ const MotiMeter = () => {
                                        </div>
                                      </div>
                                      <div>
-                                       <h3 className="text-xl font-bold text-white mb-1">{token.name}</h3>
-                                       <p className="text-gray-400 text-base font-semibold uppercase tracking-wider">${token.symbol}</p>
+                                       <div className="flex items-center gap-3">
+                                         <h3 className="text-xl font-bold text-white">{token.name}</h3>
+                                         <Badge className={`${getMotiColor(token.motiScore)} text-white px-3 py-1 text-sm font-bold shadow-lg`}>
+                                           {getMotiLabel(token.motiScore)}
+                                         </Badge>
+                                       </div>
+                                       <p className="text-gray-400 text-base font-semibold uppercase tracking-wider mt-1">${token.symbol}</p>
                                      </div>
                                    </div>
                                 </div>
