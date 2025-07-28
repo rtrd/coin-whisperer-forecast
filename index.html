@@ -65,7 +65,17 @@
       crossorigin="anonymous"
     ></script>
 
-    <!-- IMPORTANT: Removed the old GPT header ad script as requested -->
+    <!-- Google Publisher Tag (GPT) for GAM Ad Units -->
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>
+      window.googletag = window.googletag || {cmd: []};
+      googletag.cmd.push(function() {
+        googletag.defineSlot('/22081946781/pumpparade_leaderboard', [728, 90], 'div-gpt-ad-1752654531765-0')
+          .addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+      });
+    </script>
   </head>
 
   <body>
