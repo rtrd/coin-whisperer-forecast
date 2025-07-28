@@ -25,7 +25,6 @@ const PortfolioTracking = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [marketData, setMarketData] = useState([]);
-  const [showFAQs, setShowFAQs] = useState(false);
   const [portfolioDemo, setPortfolioDemo] = useState({
     totalValue: 125430.50,
     totalCost: 98750.00,
@@ -270,78 +269,82 @@ const PortfolioTracking = () => {
                 </CardContent>
               </Card>
 
-              {/* FAQ Section */}
-              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-white text-2xl">Frequently Asked Questions</CardTitle>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowFAQs(!showFAQs)}
-                      className="text-gray-300 hover:text-white"
-                    >
-                      <HelpCircle className="h-5 w-5 mr-2" />
-                      {showFAQs ? 'Hide' : 'Show'} FAQs
-                      <ChevronDown className={`h-4 w-4 ml-2 transition-transform ${showFAQs ? 'rotate-180' : ''}`} />
-                    </Button>
+              {/* Portfolio Tracking FAQ */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-green-600/10 to-blue-600/10 border-b border-gray-600/50">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Briefcase className="h-8 w-8 text-green-400" />
+                    <div>
+                      <CardTitle className="text-2xl text-white">
+                        Portfolio Tracking FAQ
+                      </CardTitle>
+                      <p className="text-gray-300 mt-2">Common questions about our upcoming portfolio tracking platform</p>
+                    </div>
                   </div>
                 </CardHeader>
-                {showFAQs && (
-                  <CardContent>
-                    <Accordion type="single" collapsible className="space-y-2">
-                      <AccordionItem value="item-1" className="border-gray-600">
-                        <AccordionTrigger className="text-white hover:text-gray-300">
-                          What exchanges and wallets will be supported?
-                        </AccordionTrigger>
-                        <AccordionContent className="text-gray-300">
-                          We'll support all major exchanges including Binance, Coinbase, Kraken, and 20+ others. 
-                          Wallet support includes MetaMask, Trust Wallet, Ledger, and other popular options.
-                        </AccordionContent>
-                      </AccordionItem>
-                      
-                      <AccordionItem value="item-2" className="border-gray-600">
-                        <AccordionTrigger className="text-white hover:text-gray-300">
-                          Is my data secure and private?
-                        </AccordionTrigger>
-                        <AccordionContent className="text-gray-300">
-                          Absolutely. We use read-only API connections, bank-level encryption, and never store your private keys. 
-                          Your data is encrypted both in transit and at rest.
-                        </AccordionContent>
-                      </AccordionItem>
-                      
-                      <AccordionItem value="item-3" className="border-gray-600">
-                        <AccordionTrigger className="text-white hover:text-gray-300">
-                          Will there be a free tier?
-                        </AccordionTrigger>
-                        <AccordionContent className="text-gray-300">
-                          Yes! The free tier will include basic portfolio tracking for up to 3 connected accounts. 
-                          Premium features like advanced analytics and unlimited connections will require a subscription.
-                        </AccordionContent>
-                      </AccordionItem>
-                      
-                      <AccordionItem value="item-4" className="border-gray-600">
-                        <AccordionTrigger className="text-white hover:text-gray-300">
-                          When will the platform launch?
-                        </AccordionTrigger>
-                        <AccordionContent className="text-gray-300">
-                          We're targeting Q2 2025 for the initial beta release. Early access subscribers will get 
-                          priority access and exclusive features during the beta period.
-                        </AccordionContent>
-                      </AccordionItem>
-                      
-                      <AccordionItem value="item-5" className="border-gray-600">
-                        <AccordionTrigger className="text-white hover:text-gray-300">
-                          Can I import my transaction history?
-                        </AccordionTrigger>
-                        <AccordionContent className="text-gray-300">
-                          Yes, you'll be able to import CSV files from exchanges and use our automated sync tools 
-                          to pull historical data where possible. Manual entry options will also be available.
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </CardContent>
-                )}
+                <CardContent className="p-6">
+                  <Accordion type="single" collapsible className="space-y-3">
+                    <AccordionItem value="supported-exchanges" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
+                      <AccordionTrigger className="text-white hover:text-green-400 font-medium">
+                        What exchanges and wallets will be supported?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                        We'll support all major exchanges including Binance, Coinbase, Kraken, and 20+ others. 
+                        Wallet support includes MetaMask, Trust Wallet, Ledger, and other popular options with read-only API connections for maximum security.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="data-security" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
+                      <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
+                        Is my data secure and private?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                        Absolutely. We use read-only API connections, bank-level encryption, and never store your private keys. 
+                        Your data is encrypted both in transit and at rest, and we follow SOC 2 compliance standards.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="pricing-tiers" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-purple-500/50 transition-colors">
+                      <AccordionTrigger className="text-white hover:text-purple-400 font-medium">
+                        Will there be a free tier?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                        Yes! The free tier will include basic portfolio tracking for up to 3 connected accounts. 
+                        Premium features like advanced analytics, unlimited connections, and tax optimization will require a subscription starting at $9.99/month.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="launch-timeline" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-orange-500/50 transition-colors">
+                      <AccordionTrigger className="text-white hover:text-orange-400 font-medium">
+                        When will the platform launch?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                        We're targeting Q2 2025 for the initial beta release. Early access subscribers will get 
+                        priority access and exclusive features during the beta period, plus a 50% discount on the first year.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="transaction-history" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-cyan-500/50 transition-colors">
+                      <AccordionTrigger className="text-white hover:text-cyan-400 font-medium">
+                        Can I import my transaction history?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                        Yes, you'll be able to import CSV files from exchanges and use our automated sync tools 
+                        to pull historical data where possible. Manual entry options will also be available for complete flexibility.
+                      </AccordionContent>
+                    </AccordionItem>
+
+                    <AccordionItem value="mobile-access" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-pink-500/50 transition-colors">
+                      <AccordionTrigger className="text-white hover:text-pink-400 font-medium">
+                        Will there be mobile apps?
+                      </AccordionTrigger>
+                      <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                        iOS and Android native apps are planned for Q3 2025, following the web platform launch. 
+                        The web platform will be fully responsive and mobile-optimized from day one.
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
               </Card>
 
               {/* Improved Email Subscription */}
