@@ -139,11 +139,11 @@ const Subscribe = () => {
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         {/* Animated background elements */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(147,51,234,0.1),rgba(255,255,255,0))]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
         
         <div className="container mx-auto px-4 py-6 relative z-10">
           {/* Homepage Header */}
@@ -166,10 +166,6 @@ const Subscribe = () => {
 
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/50 rounded-full px-4 py-2 mb-4">
-              <Star className="h-4 w-4 text-yellow-400" />
-              <span className="text-yellow-400 font-semibold text-sm">LIMITED TIME OFFER</span>
-            </div>
 
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
               <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
@@ -183,22 +179,22 @@ const Subscribe = () => {
             </h1>
             
             <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6 leading-relaxed">
-              Join 12,847+ traders making <span className="text-green-400 font-bold">$2,340+ daily</span> with our AI-powered predictions.
-              Get 95% accurate signals and never miss a pump again.
+              Join thousands of traders using AI-powered predictions and advanced technical analysis.
+              Get real-time market insights and never miss trading opportunities.
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-300 mb-8">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span>12,847 Active Users</span>
+                <span>Live Market Analysis</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                <span>847 Signals Today</span>
+                <span>AI Predictions</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                <span>94.8% Success Rate</span>
+                <span>Technical Indicators</span>
               </div>
             </div>
           </div>
@@ -255,16 +251,16 @@ const Subscribe = () => {
 
                       <div className="grid grid-cols-3 gap-6 mt-8 max-w-xl mx-auto">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-white">12,847</div>
-                          <div className="text-sm text-gray-400">Active Users</div>
+                          <div className="text-2xl font-bold text-white">24/7</div>
+                          <div className="text-sm text-gray-400">Market Monitoring</div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-green-400">Free</div>
-                          <div className="text-sm text-gray-400">Forever</div>
+                          <div className="text-sm text-gray-400">Access</div>
                         </div>
                         <div className="text-center">
                           <div className="text-2xl font-bold text-purple-400">Instant</div>
-                          <div className="text-sm text-gray-400">Access</div>
+                          <div className="text-sm text-gray-400">Setup</div>
                         </div>
                       </div>
 
@@ -284,7 +280,7 @@ const Subscribe = () => {
                 <h2 className="text-3xl font-bold text-white mb-3">
                   Everything You Need to <span className="text-purple-400">Dominate</span> Crypto
                 </h2>
-                <p className="text-gray-300">Professional trading tools used by 12,847+ successful traders</p>
+                <p className="text-gray-300">Professional trading tools for crypto analysis</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -303,7 +299,7 @@ const Subscribe = () => {
         </div>
       </div>
       
-      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
+      <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <Footer />
       </div>
     </>
