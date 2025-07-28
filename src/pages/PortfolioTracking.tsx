@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Mail, Briefcase, TrendingUp, BarChart3, Target, PieChart, DollarSign, Calculator, AlertTriangle, Wallet, Shield, Activity, Zap, Users, Globe, CreditCard, Smartphone, Bell, Settings } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { ArrowLeft, Mail, Briefcase, TrendingUp, BarChart3, Target, PieChart, DollarSign, Calculator, AlertTriangle, Wallet, Shield, Activity, Zap, Users, Globe, CreditCard, Smartphone, Bell, Settings, ChevronDown, Plus, MessageCircle, HelpCircle, Star, Calendar, Layers, Lock, Unlock, CheckCircle } from "lucide-react";
 import { formatPrice, formatVolume, formatMarketCap } from "@/utils/marketDataHelpers";
 import { AdUnit } from "@/components/ads/AdService";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
@@ -24,6 +25,7 @@ const PortfolioTracking = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [marketData, setMarketData] = useState([]);
+  const [showFAQs, setShowFAQs] = useState(false);
   const [portfolioDemo, setPortfolioDemo] = useState({
     totalValue: 125430.50,
     totalCost: 98750.00,
@@ -128,8 +130,8 @@ const PortfolioTracking = () => {
   return (
     <>
       <Helmet>
-        <title>Portfolio Tracking - Advanced Crypto Portfolio Management | CryptoInsights</title>
-        <meta name="description" content="Track your cryptocurrency portfolio with real-time data, performance analytics, and professional-grade tools. Get early access to our portfolio management platform." />
+        <title>Portfolio Tracking - Advanced Crypto Portfolio Analytics | CryptoInsights</title>
+        <meta name="description" content="Track your cryptocurrency portfolio with real-time data, performance analytics, and professional-grade tools. Get early access to our portfolio tracking platform." />
       </Helmet>
       
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -160,7 +162,7 @@ const PortfolioTracking = () => {
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full mb-4">
                       <Briefcase className="h-10 w-10 text-white" />
                     </div>
-                    <h2 className="text-3xl font-bold text-white mb-3">Professional Portfolio Management</h2>
+                    <h2 className="text-3xl font-bold text-white mb-3">Professional Portfolio Tracking</h2>
                     <Badge variant="outline" className="text-yellow-400 border-yellow-400 px-4 py-2 text-sm mb-4">
                       LAUNCHING Q2 2025
                     </Badge>
@@ -194,13 +196,165 @@ const PortfolioTracking = () => {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border-green-500/30 shadow-xl backdrop-blur-sm">
+              {/* Future Features Section */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white text-2xl mb-4">Advanced Features Coming Soon</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-blue-500/20 rounded-lg">
+                          <BarChart3 className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold">Advanced Analytics</h4>
+                          <p className="text-gray-300 text-sm">Risk analysis, correlation matrices, Sharpe ratio calculations</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-green-500/20 rounded-lg">
+                          <Target className="h-5 w-5 text-green-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold">Portfolio Rebalancing</h4>
+                          <p className="text-gray-300 text-sm">Automated suggestions and manual rebalancing tools</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-purple-500/20 rounded-lg">
+                          <Bell className="h-5 w-5 text-purple-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold">Smart Alerts</h4>
+                          <p className="text-gray-300 text-sm">Price, volume, and performance notifications</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-orange-500/20 rounded-lg">
+                          <Calculator className="h-5 w-5 text-orange-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold">Tax Optimization</h4>
+                          <p className="text-gray-300 text-sm">Tax-loss harvesting and FIFO/LIFO calculations</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-cyan-500/20 rounded-lg">
+                          <Globe className="h-5 w-5 text-cyan-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold">DeFi Integration</h4>
+                          <p className="text-gray-300 text-sm">Track staking, liquidity pools, and yield farming</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 bg-pink-500/20 rounded-lg">
+                          <Smartphone className="h-5 w-5 text-pink-400" />
+                        </div>
+                        <div>
+                          <h4 className="text-white font-semibold">Mobile App</h4>
+                          <p className="text-gray-300 text-sm">iOS and Android apps with push notifications</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* FAQ Section */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="text-white text-2xl">Frequently Asked Questions</CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowFAQs(!showFAQs)}
+                      className="text-gray-300 hover:text-white"
+                    >
+                      <HelpCircle className="h-5 w-5 mr-2" />
+                      {showFAQs ? 'Hide' : 'Show'} FAQs
+                      <ChevronDown className={`h-4 w-4 ml-2 transition-transform ${showFAQs ? 'rotate-180' : ''}`} />
+                    </Button>
+                  </div>
+                </CardHeader>
+                {showFAQs && (
+                  <CardContent>
+                    <Accordion type="single" collapsible className="space-y-2">
+                      <AccordionItem value="item-1" className="border-gray-600">
+                        <AccordionTrigger className="text-white hover:text-gray-300">
+                          What exchanges and wallets will be supported?
+                        </AccordionTrigger>
+                        <AccordionContent className="text-gray-300">
+                          We'll support all major exchanges including Binance, Coinbase, Kraken, and 20+ others. 
+                          Wallet support includes MetaMask, Trust Wallet, Ledger, and other popular options.
+                        </AccordionContent>
+                      </AccordionItem>
+                      
+                      <AccordionItem value="item-2" className="border-gray-600">
+                        <AccordionTrigger className="text-white hover:text-gray-300">
+                          Is my data secure and private?
+                        </AccordionTrigger>
+                        <AccordionContent className="text-gray-300">
+                          Absolutely. We use read-only API connections, bank-level encryption, and never store your private keys. 
+                          Your data is encrypted both in transit and at rest.
+                        </AccordionContent>
+                      </AccordionItem>
+                      
+                      <AccordionItem value="item-3" className="border-gray-600">
+                        <AccordionTrigger className="text-white hover:text-gray-300">
+                          Will there be a free tier?
+                        </AccordionTrigger>
+                        <AccordionContent className="text-gray-300">
+                          Yes! The free tier will include basic portfolio tracking for up to 3 connected accounts. 
+                          Premium features like advanced analytics and unlimited connections will require a subscription.
+                        </AccordionContent>
+                      </AccordionItem>
+                      
+                      <AccordionItem value="item-4" className="border-gray-600">
+                        <AccordionTrigger className="text-white hover:text-gray-300">
+                          When will the platform launch?
+                        </AccordionTrigger>
+                        <AccordionContent className="text-gray-300">
+                          We're targeting Q2 2025 for the initial beta release. Early access subscribers will get 
+                          priority access and exclusive features during the beta period.
+                        </AccordionContent>
+                      </AccordionItem>
+                      
+                      <AccordionItem value="item-5" className="border-gray-600">
+                        <AccordionTrigger className="text-white hover:text-gray-300">
+                          Can I import my transaction history?
+                        </AccordionTrigger>
+                        <AccordionContent className="text-gray-300">
+                          Yes, you'll be able to import CSV files from exchanges and use our automated sync tools 
+                          to pull historical data where possible. Manual entry options will also be available.
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                )}
+              </Card>
+
+              {/* Improved Email Subscription */}
+              <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl backdrop-blur-sm">
                 <CardContent className="p-8">
                   <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
-                      <Mail className="h-8 w-8 text-green-400" />
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4">
+                      <Mail className="h-8 w-8 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-white mb-3">Get Early Access</h3>
+                    <p className="text-gray-300 mb-6 max-w-md mx-auto">
+                      Join thousands of crypto investors already on our waitlist. Be the first to know when Portfolio Tracking launches.
+                    </p>
                     <div className="max-w-md mx-auto">
                       <div className="flex flex-col gap-4">
                         <Input
@@ -208,15 +362,32 @@ const PortfolioTracking = () => {
                           placeholder="Enter your email for early access"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-gray-700/50 border-gray-600 text-white"
+                          className="bg-white/10 border-gray-500 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20"
                         />
                         <Button 
                           onClick={handleEmailSubmit}
                           disabled={isLoading || !email}
-                          className="bg-gradient-to-r from-green-500 to-blue-600"
+                          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3"
                         >
-                          {isLoading ? 'Submitting...' : 'Join Early Access List'}
+                          {isLoading ? (
+                            <div className="flex items-center gap-2">
+                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                              Submitting...
+                            </div>
+                          ) : (
+                            'Join Early Access List'
+                          )}
                         </Button>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center gap-6 mt-6 text-sm text-gray-400">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-400" />
+                        <span>No spam, ever</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-400" />
+                        <span>Unsubscribe anytime</span>
                       </div>
                     </div>
                   </div>
