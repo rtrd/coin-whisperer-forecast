@@ -1,52 +1,116 @@
-import React from 'react';
-
-export interface AdConfig {
-  width: number;
-  height: number;
-  position?: 'horizontal' | 'vertical';
-  className?: string;
-}
-
-// Centralized ad configurations
-export const AD_CONFIGS = {
-  header: { width: 728, height: 90, position: 'horizontal' as const },
-  sidebar: { width: 300, height: 250, position: 'vertical' as const },
-  square: { width: 300, height: 300, position: 'horizontal' as const },
-  skyscraper: { width: 300, height: 600, position: 'vertical' as const },
-  leaderboard: { width: 728, height: 120, position: 'horizontal' as const },
-  mobile: { width: 320, height: 100, position: 'horizontal' as const },
-} as const;
+import React, { useEffect } from "react";
 
 interface AdUnitProps {
-  type: keyof typeof AD_CONFIGS;
+  type:
+    | "header"
+    | "sidebar"
+    | "square"
+    | "mobile"
+    | "skyscraper"
+    | "leaderboard";
   className?: string;
 }
 
-export const AdUnit: React.FC<AdUnitProps> = ({ type, className = '' }) => {
-  const config = AD_CONFIGS[type];
-  
-  return (
-    <div 
-      className={`rounded-lg overflow-hidden ${className}`}
-      style={{ 
-        width: `${config.width}px`, 
-        height: `${config.height}px`,
-        maxWidth: '100%'
-      }}
-    >
-      <iframe 
-        data-aa='2395516' 
-        src='//acceptable.a-ads.com/2395516' 
-        style={{
-          border: '0px', 
-          padding: 0, 
-          width: '100%', 
-          height: '100%', 
-          overflow: 'hidden', 
-          backgroundColor: 'transparent'
-        }}
-        title="Advertisement"
-      />
-    </div>
-  );
+const adSlotMap = {
+  header: {
+    slotId: "div-gpt-ad-1752671486022-0",
+    path: "/23308796269/header",
+    sizes: [728, 90],
+  },
+  sidebar: {
+    slotId: "div-gpt-ad-1752671827201-0",
+    path: "/23308796269/leaderboard",
+    sizes: [300, 600],
+  },
+  square: {
+    slotId: "div-gpt-ad-1752672242624-0",
+    path: "/23308796269/square",
+    sizes: [300, 250],
+  },
+  mobile: {
+    slotId: "div-gpt-ad-1752672714102-0",
+    path: "/23308796269/mobilebanner",
+    sizes: [
+      [320, 50],
+      [300, 31],
+      [300, 75],
+      [300, 100],
+      [300, 50],
+    ],
+  },
+  skyscraper: {
+    slotId: "div-gpt-ad-1752673179630-0",
+    path: "/23308796269/skyscraper",
+    sizes: [160, 600],
+  },
+  leaderboard: {
+    slotId: "div-gpt-ad-1752671486022-0",
+    path: "/23308796269/header",
+    sizes: [728, 90],
+  },
+} as const;
+
+declare global {
+  interface Window {
+    googletag: any;
+    _ctScriptLoaded?: boolean;
+  }
+}
+
+export const AdUnit: React.FC<AdUnitProps> = ({ type, className }) => {
+  const slotConfig = adSlotMap[type];
+  if (!slotConfig) {
+    console.warn(`Unknown ad type: ${type}`);
+    return null;
+  }
+
+  const { slotId, path, sizes } = slotConfig;
+  const [width, height] = Array.isArray(sizes[0]) ? sizes[0] : sizes;
+
+  useEffect(() => {
+    // Inject CT verification script only once
+    if (!window._ctScriptLoaded) {
+      const ctScript = document.createElement("script");
+      ctScript.src =
+        "https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV";
+      ctScript.async = true;
+      document.body.appendChild(ctScript);
+      window._ctScriptLoaded = true;
+    }
+
+    const loadGPT = async () => {
+      if (!window.googletag || !window.googletag.apiReady) {
+        const gptScript = document.createElement("script");
+        gptScript.src = "https://securepubads.g.doubleclick.net/tag/js/gpt.js";
+        gptScript.async = true;
+        gptScript.crossOrigin = "anonymous";
+        document.head.appendChild(gptScript);
+        await new Promise((resolve) => {
+          gptScript.onload = resolve;
+        });
+      }
+
+      window.googletag = window.googletag || { cmd: [] };
+      window.googletag.cmd.push(() => {
+        window.googletag._slots = window.googletag._slots || [];
+
+        if (!window.googletag._slots.includes(slotId)) {
+          window.googletag
+            .defineSlot(path, sizes, slotId)
+            .addService(window.googletag.pubads());
+
+          window.googletag.pubads().enableSingleRequest();
+          window.googletag.enableServices();
+
+          window.googletag._slots.push(slotId);
+        }
+
+        window.googletag.display(slotId);
+      });
+    };
+
+    loadGPT();
+  }, [slotId, path, sizes]);
+
+  return <div id={slotId} className={className} style={{ width, height }} />;
 };
