@@ -124,8 +124,8 @@ const MotiMeter = () => {
             </div>
           </div>
 
-          {/* Enhanced Scoring Criteria with better visual hierarchy */}
-          <Card className="mb-12 bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-gray-600 shadow-2xl backdrop-blur-sm">
+          {/* Enhanced Scoring Criteria with better contrast */}
+          <Card className="mb-12 bg-gray-800 border-gray-600 shadow-2xl">
             <CardHeader className="pb-4">
               <CardTitle className="text-white flex items-center gap-3 text-xl">
                 <BarChart3 className="h-6 w-6 text-purple-400" />
@@ -137,61 +137,61 @@ const MotiMeter = () => {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="p-4 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-lg border border-orange-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-orange-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
-                    <strong className="text-orange-400 font-bold">Twitter Interaction</strong>
+                    <strong className="text-orange-300 font-bold">Twitter Interaction</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Viral energy & community hype</p>
+                  <p className="text-gray-200 text-sm">Viral energy & community hype</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-red-500/10 to-red-600/10 rounded-lg border border-red-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-red-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-                    <strong className="text-red-400 font-bold">Good Ticker</strong>
+                    <strong className="text-red-300 font-bold">Good Ticker</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Short, memorable, meme-worthy</p>
+                  <p className="text-gray-200 text-sm">Short, memorable, meme-worthy</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-pink-500/10 to-pink-600/10 rounded-lg border border-pink-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-pink-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></div>
-                    <strong className="text-pink-400 font-bold">Cultural References</strong>
+                    <strong className="text-pink-300 font-bold">Cultural References</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Taps into current memes & trends</p>
+                  <p className="text-gray-200 text-sm">Taps into current memes & trends</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-lg border border-purple-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-purple-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                    <strong className="text-purple-400 font-bold">Age & Maturity</strong>
+                    <strong className="text-purple-300 font-bold">Age & Maturity</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Past first pump, seasoned meme</p>
+                  <p className="text-gray-200 text-sm">Past first pump, seasoned meme</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-lg border border-blue-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-blue-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-                    <strong className="text-blue-400 font-bold">Volume Consistency</strong>
+                    <strong className="text-blue-300 font-bold">Volume Consistency</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">High, stable trading volume</p>
+                  <p className="text-gray-200 text-sm">High, stable trading volume</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-lg border border-green-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-green-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    <strong className="text-green-400 font-bold">Holder Growth</strong>
+                    <strong className="text-green-300 font-bold">Holder Growth</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Growing conviction despite dips</p>
+                  <p className="text-gray-200 text-sm">Growing conviction despite dips</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 rounded-lg border border-yellow-500/20">
+                <div className="p-4 bg-gray-900 rounded-lg border border-yellow-400/30">
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
-                    <strong className="text-yellow-400 font-bold">Higher Lows</strong>
+                    <strong className="text-yellow-300 font-bold">Higher Lows</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Technical trend strength</p>
+                  <p className="text-gray-200 text-sm">Technical trend strength</p>
                 </div>
-                <div className="p-4 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-lg border border-orange-500/30">
+                <div className="p-4 bg-gray-900 rounded-lg border border-orange-400/50">
                   <div className="flex items-center gap-2 mb-2">
                     <Flame className="w-4 h-4 text-orange-400 animate-pulse" />
-                    <strong className="text-orange-400 font-bold">Final MOTI Score</strong>
+                    <strong className="text-orange-300 font-bold">Final MOTI Score</strong>
                   </div>
-                  <p className="text-gray-300 text-sm">Average of all criteria (1-5)</p>
+                  <p className="text-gray-200 text-sm">Average of all criteria (1-5)</p>
                 </div>
               </div>
             </CardContent>
@@ -255,7 +255,7 @@ const MotiMeter = () => {
                      <div className="grid grid-cols-1 gap-6">
                       {motiTokens?.map((token, index) => (
                         <React.Fragment key={token.id}>
-                          <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 border-gray-600 hover:from-gray-800/80 hover:to-gray-900/80 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 backdrop-blur-sm">
+                          <Card className="bg-gray-800 border-gray-600 hover:bg-gray-750 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10">
                             <CardContent className="p-8">
                               <div className="flex items-center justify-between">
                                  <div className="flex items-center gap-6">
@@ -325,51 +325,51 @@ const MotiMeter = () => {
                                 </div>
                               </div>
 
-                               {/* Enhanced Detailed Scoring */}
+                               {/* Enhanced Detailed Scoring with better contrast */}
                               <div className="mt-6 pt-6 border-t border-gray-600">
                                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
-                                  <div className="text-center p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
-                                    <div className="text-2xl font-bold text-orange-400 mb-1">{token.scores.twitterInteraction}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Twitter</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-orange-400/30">
+                                    <div className="text-2xl font-bold text-orange-300 mb-1">{token.scores.twitterInteraction}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Twitter</div>
                                   </div>
-                                  <div className="text-center p-3 bg-red-500/10 rounded-lg border border-red-500/20">
-                                    <div className="text-2xl font-bold text-red-400 mb-1">{token.scores.goodTicker}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Ticker</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-red-400/30">
+                                    <div className="text-2xl font-bold text-red-300 mb-1">{token.scores.goodTicker}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Ticker</div>
                                   </div>
-                                  <div className="text-center p-3 bg-pink-500/10 rounded-lg border border-pink-500/20">
-                                    <div className="text-2xl font-bold text-pink-400 mb-1">{token.scores.culturalRefs}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Culture</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-pink-400/30">
+                                    <div className="text-2xl font-bold text-pink-300 mb-1">{token.scores.culturalRefs}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Culture</div>
                                   </div>
-                                  <div className="text-center p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
-                                    <div className="text-2xl font-bold text-purple-400 mb-1">{token.scores.ageOfProject}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Age</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-purple-400/30">
+                                    <div className="text-2xl font-bold text-purple-300 mb-1">{token.scores.ageOfProject}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Age</div>
                                   </div>
-                                  <div className="text-center p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                                    <div className="text-2xl font-bold text-blue-400 mb-1">{token.scores.volumeConsistency}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Volume</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-blue-400/30">
+                                    <div className="text-2xl font-bold text-blue-300 mb-1">{token.scores.volumeConsistency}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Volume</div>
                                   </div>
-                                  <div className="text-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                                    <div className="text-2xl font-bold text-green-400 mb-1">{token.scores.holderGrowth}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Holders</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-green-400/30">
+                                    <div className="text-2xl font-bold text-green-300 mb-1">{token.scores.holderGrowth}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Holders</div>
                                   </div>
-                                  <div className="text-center p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
-                                    <div className="text-2xl font-bold text-yellow-400 mb-1">{token.scores.higherLows}</div>
-                                    <div className="text-gray-400 text-sm font-medium">Lows</div>
+                                  <div className="text-center p-3 bg-gray-900 rounded-lg border border-yellow-400/30">
+                                    <div className="text-2xl font-bold text-yellow-300 mb-1">{token.scores.higherLows}</div>
+                                    <div className="text-gray-300 text-sm font-medium">Lows</div>
                                   </div>
                                 </div>
                                 
-                                {/* Enhanced AI Summary */}
-                                <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl p-6 border border-purple-500/30 backdrop-blur-sm">
+                                {/* Enhanced AI Summary with better contrast */}
+                                <div className="bg-gray-900 rounded-xl p-6 border border-purple-400/30">
                                   <div className="flex items-start gap-4">
                                     <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                                       <span className="text-white text-sm font-bold">AI</span>
                                     </div>
                                     <div className="flex-1">
-                                      <h4 className="text-purple-400 font-bold text-lg mb-3 flex items-center gap-2">
+                                      <h4 className="text-purple-300 font-bold text-lg mb-3 flex items-center gap-2">
                                         MOTI Analysis
                                         <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
                                       </h4>
-                                      <p className="text-gray-200 text-base leading-relaxed">
+                                      <p className="text-gray-100 text-base leading-relaxed">
                                         {token.aiSummary}
                                       </p>
                                     </div>
