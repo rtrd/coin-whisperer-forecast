@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
+
 interface EmailEntry {
   id: string;
   email: string;
@@ -8,20 +9,65 @@ interface EmailEntry {
 
 const EmailList = () => {
   const [emails, setEmails] = useState<EmailEntry[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [accessGranted, setAccessGranted] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAccessGranted(true); // Will trigger the useEffect to load emails
+  };
 
   useEffect(() => {
-    fetch(`${serverUrl}/get-emails`)
-      .then((res) => res.json())
+    if (!accessGranted) return;
+
+    setLoading(true);
+    fetch(`${serverUrl}/get-emails`, {
+      headers: {
+        "x-access-password": password,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
+      })
       .then((data) => {
         setEmails(data);
         setLoading(false);
       })
       .catch((err) => {
         console.error("Failed to fetch emails:", err);
+        alert("Incorrect password or unable to fetch emails.");
         setLoading(false);
+        setAccessGranted(false);
+        setPassword(""); // Reset password
       });
-  }, []);
+  }, [accessGranted]);
+
+  if (!accessGranted) {
+    return (
+      <div className="max-w-sm mx-auto mt-20 p-6 border rounded shadow">
+        <h2 className="text-lg font-semibold mb-4">
+          Enter Password to View Emails
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="password"
+            className="w-full p-2 border rounded mb-4"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          >
+            Unlock
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-6">
