@@ -65,14 +65,25 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass, s
         </div>
       </div>
 
-      <Button 
-        className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
-        size="sm"
-        onClick={() => openAffiliateLink(token.symbol)}
-      >
-        <ExternalLink className="h-4 w-4 mr-2" />
-        Trade on eToro
-      </Button>
+      <div className="space-y-2">
+        <Button 
+          className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-200"
+          size="sm"
+          onClick={() => openAffiliateLink(token.symbol)}
+        >
+          <ExternalLink className="h-4 w-4 mr-2" />
+          Trade on eToro
+        </Button>
+        
+        <Button 
+          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-200"
+          size="sm"
+          onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+        >
+          <ExternalLink className="h-4 w-4 mr-2" />
+          Trade With AI Agent
+        </Button>
+      </div>
     </div>
   );
 };
