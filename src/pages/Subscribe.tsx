@@ -139,11 +139,11 @@ const Subscribe = () => {
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
 
-      <div className="min-h-screen bg-background relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
         {/* Animated background elements */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-premium/5"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-premium/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(147,51,234,0.1),rgba(255,255,255,0))]"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
         
         <div className="container mx-auto px-4 py-6 relative z-10">
           {/* Homepage Header */}
@@ -157,7 +157,7 @@ const Subscribe = () => {
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Link to="/">
-              <Button variant="outline" size="sm" className="bg-gray-800/50 border-gray-700 text-foreground hover:bg-gray-800/70">
+              <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Dashboard
               </Button>
@@ -166,34 +166,34 @@ const Subscribe = () => {
 
           {/* Hero Section */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-crypto-gold/20 border border-crypto-gold/50 rounded-full px-4 py-2 mb-4">
-              <Star className="h-4 w-4 text-crypto-gold" />
-              <span className="text-crypto-gold font-semibold text-sm">LIMITED TIME OFFER</span>
+            <div className="inline-flex items-center gap-2 bg-yellow-500/20 border border-yellow-500/50 rounded-full px-4 py-2 mb-4">
+              <Star className="h-4 w-4 text-yellow-400" />
+              <span className="text-yellow-400 font-semibold text-sm">LIMITED TIME OFFER</span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-4 leading-tight">
-              <span className="bg-gradient-to-r from-premium to-premium-end bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
+              <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 bg-clip-text text-transparent">
                 Unlock
               </span>
               <br />
               <span className="flex items-center justify-center gap-4 mt-2">
-                <Crown className="h-12 w-12 text-crypto-gold animate-glow" />
+                <Crown className="h-12 w-12 text-yellow-400 animate-glow" />
                 Premium Trading
               </span>
             </h1>
             
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6 leading-relaxed">
-              Join 12,847+ traders making <span className="text-crypto-success font-bold">$2,340+ daily</span> with our AI-powered predictions.
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6 leading-relaxed">
+              Join 12,847+ traders making <span className="text-green-400 font-bold">$2,340+ daily</span> with our AI-powered predictions.
               Get 95% accurate signals and never miss a pump again.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-300 mb-8">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-crypto-success rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                 <span>12,847 Active Users</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-crypto-gold rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
                 <span>847 Signals Today</span>
               </div>
               <div className="flex items-center gap-2">
@@ -209,15 +209,15 @@ const Subscribe = () => {
               <div className="lg:col-span-3">
                 <Card className="bg-gray-800/50 border-gray-700 shadow-2xl max-w-3xl mx-auto">
                   <CardHeader className="text-center">
-                    <div className="inline-flex items-center gap-2 bg-crypto-success/20 border border-crypto-success/50 rounded-full px-4 py-2 mb-4 mx-auto w-fit">
-                      <Crown className="h-4 w-4 text-crypto-success" />
-                      <span className="text-crypto-success font-semibold text-sm">FREE PREMIUM ACCESS</span>
+                    <div className="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/50 rounded-full px-4 py-2 mb-4 mx-auto w-fit">
+                      <Crown className="h-4 w-4 text-green-400" />
+                      <span className="text-green-400 font-semibold text-sm">FREE PREMIUM ACCESS</span>
                     </div>
-                    <CardTitle className="text-3xl text-foreground flex items-center justify-center gap-3 mb-2">
-                      <Rocket className="h-8 w-8 text-premium" />
+                    <CardTitle className="text-3xl text-white flex items-center justify-center gap-3 mb-2">
+                      <Rocket className="h-8 w-8 text-purple-400" />
                       Start Your Premium Journey
                     </CardTitle>
-                    <CardDescription className="text-lg text-muted-foreground max-w-xl mx-auto">
+                    <CardDescription className="text-lg text-gray-300 max-w-xl mx-auto">
                       Join our community by entering your email - No payment required. Premium features unlock instantly.
                     </CardDescription>
                   </CardHeader>
@@ -229,7 +229,7 @@ const Subscribe = () => {
                           placeholder="Enter your email address"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-gray-700/50 border-gray-600 text-foreground text-lg h-14 focus:border-premium transition-colors text-center"
+                          className="bg-gray-700/50 border-gray-600 text-white text-lg h-14 focus:border-purple-400 transition-colors text-center"
                           required
                         />
                       </div>
@@ -237,7 +237,7 @@ const Subscribe = () => {
                       <Button 
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-crypto-success to-premium hover:from-crypto-success/90 hover:to-premium/90 text-lg h-14 shadow-xl font-bold text-primary-foreground"
+                        className="w-full bg-gradient-to-r from-green-500 to-purple-600 hover:from-green-600 hover:to-purple-700 text-lg h-14 shadow-xl font-bold text-white"
                       >
                         {isLoading ? (
                           <div className="flex items-center gap-2">
@@ -255,21 +255,21 @@ const Subscribe = () => {
 
                       <div className="grid grid-cols-3 gap-6 mt-8 max-w-xl mx-auto">
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-foreground">12,847</div>
-                          <div className="text-sm text-muted-foreground">Active Users</div>
+                          <div className="text-2xl font-bold text-white">12,847</div>
+                          <div className="text-sm text-gray-400">Active Users</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-crypto-success">Free</div>
-                          <div className="text-sm text-muted-foreground">Forever</div>
+                          <div className="text-2xl font-bold text-green-400">Free</div>
+                          <div className="text-sm text-gray-400">Forever</div>
                         </div>
                         <div className="text-center">
-                          <div className="text-2xl font-bold text-premium">Instant</div>
-                          <div className="text-sm text-muted-foreground">Access</div>
+                          <div className="text-2xl font-bold text-purple-400">Instant</div>
+                          <div className="text-sm text-gray-400">Access</div>
                         </div>
                       </div>
 
                     <div className="mt-6 p-4 bg-gray-700/50 border border-gray-600 rounded-lg text-center">
-                      <p className="text-foreground font-semibold">
+                      <p className="text-white font-semibold">
                         ✨ <strong>100% Free Premium:</strong> No credit card required, no hidden fees, unlock everything with just your email!
                       </p>
                     </div>
@@ -281,10 +281,10 @@ const Subscribe = () => {
             {/* Premium Features Grid */}
             <div className="mb-10">
               <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-foreground mb-3">
-                  Everything You Need to <span className="text-premium">Dominate</span> Crypto
+                <h2 className="text-3xl font-bold text-white mb-3">
+                  Everything You Need to <span className="text-purple-400">Dominate</span> Crypto
                 </h2>
-                <p className="text-muted-foreground">Professional trading tools used by 12,847+ successful traders</p>
+                <p className="text-gray-300">Professional trading tools used by 12,847+ successful traders</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -303,7 +303,7 @@ const Subscribe = () => {
         </div>
       </div>
       
-      <div className="bg-background">
+      <div className="bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
         <Footer />
       </div>
     </>
