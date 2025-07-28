@@ -19,7 +19,7 @@ const adSlotMap = {
   },
   sidebar: {
     slotId: "div-gpt-ad-1752671827201-0",
-    path: "/23308796269/leaderboard",
+    path: "/23308796269/Leaderboard",
     sizes: [300, 600],
   },
   square: {
@@ -78,39 +78,27 @@ export const AdUnit: React.FC<AdUnitProps> = ({ type, className }) => {
       window._ctScriptLoaded = true;
     }
 
-    const loadGPT = async () => {
-      if (!window.googletag || !window.googletag.apiReady) {
-        const gptScript = document.createElement("script");
-        gptScript.src = "https://securepubads.g.doubleclick.net/tag/js/gpt.js";
-        gptScript.async = true;
-        gptScript.crossOrigin = "anonymous";
-        document.head.appendChild(gptScript);
-        await new Promise((resolve) => {
-          gptScript.onload = resolve;
+    // Simply display the ad - GPT is already loaded and slots are defined in HTML
+    const displayAd = () => {
+      if (window.googletag && window.googletag.cmd) {
+        window.googletag.cmd.push(() => {
+          try {
+            window.googletag.display(slotId);
+            console.log(`Displaying ad slot: ${slotId}`);
+          } catch (error) {
+            console.error(`Error displaying ad slot ${slotId}:`, error);
+          }
         });
+      } else {
+        console.warn('Google Tag Manager not loaded yet');
       }
-
-      window.googletag = window.googletag || { cmd: [] };
-      window.googletag.cmd.push(() => {
-        window.googletag._slots = window.googletag._slots || [];
-
-        if (!window.googletag._slots.includes(slotId)) {
-          window.googletag
-            .defineSlot(path, sizes, slotId)
-            .addService(window.googletag.pubads());
-
-          window.googletag.pubads().enableSingleRequest();
-          window.googletag.enableServices();
-
-          window.googletag._slots.push(slotId);
-        }
-
-        window.googletag.display(slotId);
-      });
     };
 
-    loadGPT();
-  }, [slotId, path, sizes]);
+    // Small delay to ensure GPT is fully loaded
+    const timer = setTimeout(displayAd, 100);
+    
+    return () => clearTimeout(timer);
+  }, [slotId]);
 
   return <div id={slotId} className={className} style={{ width, height }} />;
 };

@@ -70,8 +70,38 @@
       src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
       crossorigin="anonymous"
     ></script>
-
-    <!-- IMPORTANT: Removed the old GPT header ad script as requested -->
+    <script>
+      window.googletag = window.googletag || {cmd: []};
+      
+      // Initialize all ad slots once GPT is loaded
+      googletag.cmd.push(function() {
+        // Header/Leaderboard Ad
+        googletag.defineSlot('/23308796269/header', [728, 90], 'div-gpt-ad-1752671486022-0')
+          .addService(googletag.pubads());
+        
+        // Sidebar/Leaderboard Ad  
+        googletag.defineSlot('/23308796269/Leaderboard', [300, 600], 'div-gpt-ad-1752671827201-0')
+          .addService(googletag.pubads());
+          
+        // Square Ad
+        googletag.defineSlot('/23308796269/square', [300, 250], 'div-gpt-ad-1752672242624-0')
+          .addService(googletag.pubads());
+          
+        // Mobile Banner Ad
+        googletag.defineSlot('/23308796269/mobilebanner', [[320, 50], [300, 31], [300, 75], [300, 100], [300, 50]], 'div-gpt-ad-1752672714102-0')
+          .addService(googletag.pubads());
+          
+        // Skyscraper Ad
+        googletag.defineSlot('/23308796269/skyscraper', [160, 600], 'div-gpt-ad-1752673179630-0')
+          .addService(googletag.pubads());
+        
+        googletag.pubads().enableSingleRequest();
+        googletag.pubads().collapseEmptyDivs();
+        googletag.enableServices();
+        
+        console.log('Google Ad Manager initialized successfully');
+      });
+    </script>
   </head>
 
   <body>
