@@ -207,7 +207,7 @@ const Subscribe = () => {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
               {/* Subscription Form - Full Width */}
               <div className="lg:col-span-3">
-                <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/30 shadow-2xl max-w-3xl mx-auto">
+                <Card className="bg-gray-800/50 border-gray-700 shadow-2xl max-w-3xl mx-auto">
                   <CardHeader className="text-center">
                     <div className="inline-flex items-center gap-2 bg-crypto-success/20 border border-crypto-success/50 rounded-full px-4 py-2 mb-4 mx-auto w-fit">
                       <Crown className="h-4 w-4 text-crypto-success" />
@@ -229,7 +229,7 @@ const Subscribe = () => {
                           placeholder="Enter your email address"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-glass-bg border-glass-border text-foreground text-lg h-14 focus:border-premium transition-colors text-center"
+                          className="bg-gray-700/50 border-gray-600 text-foreground text-lg h-14 focus:border-premium transition-colors text-center"
                           required
                         />
                       </div>
@@ -268,7 +268,7 @@ const Subscribe = () => {
                         </div>
                       </div>
 
-                    <div className="mt-6 p-4 bg-gradient-to-r from-crypto-success/20 to-blue-500/20 border border-crypto-success/50 rounded-lg text-center">
+                    <div className="mt-6 p-4 bg-gray-700/50 border border-gray-600 rounded-lg text-center">
                       <p className="text-foreground font-semibold">
                         ✨ <strong>100% Free Premium:</strong> No credit card required, no hidden fees, unlock everything with just your email!
                       </p>
@@ -298,71 +298,6 @@ const Subscribe = () => {
                   />
                 ))}
               </div>
-            </div>
-
-            {/* Testimonials */}
-            <div className="mb-10">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-foreground mb-3">
-                  Real Traders, Real <span className="text-crypto-success">Profits</span>
-                </h2>
-                <p className="text-muted-foreground">See what our community is saying about their success</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {testimonials.map((testimonial, index) => (
-                  <TestimonialCard key={index} {...testimonial} />
-                ))}
-              </div>
-            </div>
-
-
-            {/* Second Subscription CTA */}
-            <div className="text-center">
-              <Card className="bg-gradient-to-br from-crypto-success/20 to-blue-500/20 border-crypto-success/50 shadow-2xl max-w-2xl mx-auto">
-                <CardContent className="p-8">
-                  <div className="flex justify-center mb-4">
-                    <div className="relative">
-                      <Crown className="h-16 w-16 text-crypto-gold animate-float" />
-                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-crypto-success rounded-full flex items-center justify-center">
-                        <span className="text-xs font-bold text-white">!</span>
-                      </div>
-                    </div>
-                  </div>
-                  <h3 className="text-3xl font-bold text-foreground mb-4">Don't Miss Out!</h3>
-                  <p className="text-muted-foreground mb-6 text-lg">
-                    12,847+ traders are already using our free premium tools. Join the community that's revolutionizing crypto trading.
-                  </p>
-                  
-                  <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
-                    <Input
-                      type="email"
-                      placeholder="Enter your email for instant access"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="bg-glass-bg border-glass-border text-foreground text-lg h-12 focus:border-crypto-success transition-colors text-center"
-                      required
-                    />
-                    <Button 
-                      type="submit"
-                      disabled={isLoading}
-                      className="w-full bg-gradient-to-r from-crypto-success to-premium hover:from-crypto-success/90 hover:to-premium/90 text-primary-foreground font-bold text-lg h-12"
-                    >
-                      {isLoading ? (
-                        <div className="flex items-center gap-2">
-                          <Brain className="h-5 w-5 animate-spin" />
-                          Activating...
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <Rocket className="h-5 w-5" />
-                          Start Trading Smarter - Free
-                        </div>
-                      )}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
