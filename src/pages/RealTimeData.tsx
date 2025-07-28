@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { Helmet } from "react-helmet-async";
 import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
@@ -110,12 +109,8 @@ const RealTimeData = () => {
   }, []);
 
   return (
-    <SidebarProvider>
-      <div className="min-h-screen flex w-full">
-        <RealTimeDataSidebar />
-        <main className="flex-1">
-          <ScrollToTop />
-          <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+      <ScrollToTop />
             {loading ? (
               <div className="flex items-center justify-center min-h-screen">
                 <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
@@ -150,15 +145,16 @@ const RealTimeData = () => {
                 />
 
                 <div className="container mx-auto px-4 pb-8">
-                  {/* Back Button */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <Link to="/">
-                      <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
-                        <ArrowLeft className="h-4 w-4 mr-2" />
-                        Back to Home
-                      </Button>
-                    </Link>
-                  </div>
+        {/* Back Button and FAQs */}
+        <div className="flex items-center justify-between mb-6">
+          <Link to="/">
+            <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Button>
+          </Link>
+          <RealTimeDataSidebar />
+        </div>
 
                   <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                     {/* Main Content */}
@@ -624,10 +620,7 @@ const RealTimeData = () => {
                 <Footer />
               </>
             )}
-          </div>
-        </main>
-      </div>
-    </SidebarProvider>
+    </div>
   );
 };
 

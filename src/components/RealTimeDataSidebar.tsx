@@ -1,18 +1,16 @@
 import { useState } from "react";
-import { HelpCircle, ChevronDown, ChevronRight, Menu } from "lucide-react";
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarTrigger,
-  useSidebar,
-} from "@/components/ui/sidebar";
+import { HelpCircle, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const faqs = [
   {
@@ -50,58 +48,40 @@ const faqs = [
 ];
 
 export function RealTimeDataSidebar() {
-  const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
-  const { state } = useSidebar();
-
-  const toggleFaq = (index: number) => {
-    setExpandedFaq(expandedFaq === index ? null : index);
-  };
-
   return (
-    <Sidebar className="w-80" collapsible="icon">
-      <SidebarTrigger className="m-2 self-end" />
-      
-      <SidebarContent className="p-4">
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-lg font-semibold text-white mb-4">
-            <HelpCircle className="h-5 w-5 mr-2 inline" />
-            {state !== "collapsed" && "Real-Time Data FAQs"}
-          </SidebarGroupLabel>
-          
-          <SidebarGroupContent>
-            <div className="space-y-3">
-                {faqs.map((faq, index) => (
-                  <Card key={index} className="bg-gray-800/50 border-gray-700">
-                    <CardContent className="p-0">
-                      <Button
-                        variant="ghost"
-                        className="w-full p-4 text-left justify-between hover:bg-gray-700/50"
-                        onClick={() => toggleFaq(index)}
-                      >
-                        <span className="text-white text-sm font-medium pr-2">
-                          {faq.question}
-                        </span>
-                        {expandedFaq === index ? (
-                          <ChevronDown className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4 text-gray-400 flex-shrink-0" />
-                        )}
-                      </Button>
-                      
-                      {expandedFaq === index && (
-                        <div className="px-4 pb-4">
-                          <p className="text-gray-300 text-sm leading-relaxed">
-                            {faq.answer}
-                          </p>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline" size="sm" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+          <Menu className="h-4 w-4 mr-2" />
+          FAQs
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="w-[400px] sm:w-[540px] bg-gray-900 border-gray-700">
+        <SheetHeader>
+          <SheetTitle className="text-white flex items-center gap-2">
+            <HelpCircle className="h-5 w-5" />
+            Real-Time Data FAQs
+          </SheetTitle>
+          <SheetDescription className="text-gray-300">
+            Learn about our real-time cryptocurrency data feeds and how they work
+          </SheetDescription>
+        </SheetHeader>
+        
+        <div className="mt-6">
+          <Accordion type="single" collapsible className="space-y-3">
+            {faqs.map((faq, index) => (
+              <AccordionItem key={index} value={`item-${index}`} className="bg-gray-800/50 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
+                <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 }
