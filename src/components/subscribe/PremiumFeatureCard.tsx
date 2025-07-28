@@ -18,8 +18,8 @@ export const PremiumFeatureCard: React.FC<PremiumFeatureCardProps> = ({
     <div className={`
       relative p-6 rounded-xl transition-all duration-300 hover:scale-105
       ${highlight 
-        ? 'bg-gradient-to-br from-premium/20 to-premium-end/20 border-2 border-premium/50 animate-glow' 
-        : 'bg-glass-bg backdrop-blur-sm border border-glass-border'
+        ? 'bg-gray-800/50 border-2 border-premium/50 animate-glow' 
+        : 'bg-gray-800/50 border border-gray-700'
       }
     `}>
       <div className="flex items-start gap-4">
@@ -27,7 +27,7 @@ export const PremiumFeatureCard: React.FC<PremiumFeatureCardProps> = ({
           p-3 rounded-lg
           ${highlight 
             ? 'bg-gradient-to-br from-premium to-premium-end text-primary-foreground' 
-            : 'bg-glass-bg text-premium'
+            : 'bg-gray-700/50 text-premium'
           }
         `}>
           <Icon className="h-6 w-6" />

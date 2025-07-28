@@ -139,11 +139,11 @@ const Subscribe = () => {
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative overflow-hidden">
+      <div className="min-h-screen bg-background relative overflow-hidden">
         {/* Animated background elements */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-premium/5"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-premium/10 rounded-full blur-3xl animate-float"></div>
+        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
         
         <div className="container mx-auto px-4 py-6 relative z-10">
           {/* Homepage Header */}
@@ -157,7 +157,7 @@ const Subscribe = () => {
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Link to="/">
-              <Button variant="outline" size="sm" className="bg-glass-bg backdrop-blur-sm border-glass-border text-white hover:bg-glass-bg/80">
+              <Button variant="outline" size="sm" className="bg-gray-800/50 border-gray-700 text-foreground hover:bg-gray-800/70">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Dashboard
               </Button>
@@ -303,7 +303,7 @@ const Subscribe = () => {
         </div>
       </div>
       
-      <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="bg-background">
         <Footer />
       </div>
     </>
