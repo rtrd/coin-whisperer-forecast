@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Crown, Check, Mail, ArrowLeft, Zap, Shield, TrendingUp, Users, Star, Rocket, Target, DollarSign } from "lucide-react";
+import { Brain, Crown, Check, Mail, ArrowLeft, Zap, TrendingUp, Users, Star, Rocket, Target, DollarSign, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
@@ -82,9 +82,9 @@ const Subscribe = () => {
       description: "50+ professional indicators including RSI, MACD, Bollinger Bands, and proprietary momentum signals."
     },
     {
-      icon: Shield,
-      title: "Portfolio Protection",
-      description: "Smart risk management with stop-loss recommendations and portfolio diversification strategies."
+      icon: MessageCircle,
+      title: "Social Sentiment Analysis",
+      description: "Real-time social media monitoring and sentiment tracking across Twitter, Reddit, and Discord communities."
     },
     {
       icon: Target,
@@ -205,27 +205,31 @@ const Subscribe = () => {
 
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
-              {/* Subscription Form */}
-              <div className="lg:col-span-2">
-                <Card className="bg-glass-bg backdrop-blur-sm border-glass-border shadow-2xl h-full">
-                  <CardHeader className="text-center pb-4">
-                    <CardTitle className="text-xl text-white flex items-center justify-center gap-2">
-                      <Rocket className="h-5 w-5 text-blue-400" />
+              {/* Subscription Form - Full Width */}
+              <div className="lg:col-span-3">
+                <Card className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border-blue-500/30 shadow-2xl max-w-3xl mx-auto">
+                  <CardHeader className="text-center">
+                    <div className="inline-flex items-center gap-2 bg-crypto-success/20 border border-crypto-success/50 rounded-full px-4 py-2 mb-4 mx-auto w-fit">
+                      <Crown className="h-4 w-4 text-crypto-success" />
+                      <span className="text-crypto-success font-semibold text-sm">FREE PREMIUM ACCESS</span>
+                    </div>
+                    <CardTitle className="text-3xl text-white flex items-center justify-center gap-3 mb-2">
+                      <Rocket className="h-8 w-8 text-blue-400" />
                       Start Your Premium Journey
                     </CardTitle>
-                    <CardDescription className="text-gray-300">
-                      Enter your email to unlock AI-powered trading insights
+                    <CardDescription className="text-lg text-gray-300 max-w-xl mx-auto">
+                      Join our community by entering your email - No payment required. Premium features unlock instantly.
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                  <CardContent className="pb-8">
+                    <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
                       <div>
                         <Input
                           type="email"
                           placeholder="Enter your email address"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
-                          className="bg-glass-bg border-glass-border text-white text-lg h-12 focus:border-blue-400 transition-colors"
+                          className="bg-glass-bg border-glass-border text-white text-lg h-14 focus:border-blue-400 transition-colors text-center"
                           required
                         />
                       </div>
@@ -233,73 +237,44 @@ const Subscribe = () => {
                       <Button 
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-lg h-12 shadow-xl font-bold"
+                        className="w-full bg-gradient-to-r from-crypto-success to-blue-500 hover:from-crypto-success/90 hover:to-blue-500/90 text-lg h-14 shadow-xl font-bold text-white"
                       >
                         {isLoading ? (
                           <div className="flex items-center gap-2">
-                            <Brain className="h-5 w-5 animate-spin" />
+                            <Brain className="h-6 w-6 animate-spin" />
                             Activating Premium...
                           </div>
                         ) : (
                           <div className="flex items-center gap-2">
-                            <Crown className="h-5 w-5" />
-                            Get Instant Access - FREE
+                            <Crown className="h-6 w-6" />
+                            Get Instant Free Access
                           </div>
                         )}
                       </Button>
                     </form>
 
-                    <div className="grid grid-cols-3 gap-4 mt-6">
+                    <div className="grid grid-cols-3 gap-6 mt-8 max-w-xl mx-auto">
                       <div className="text-center">
-                        <div className="text-xl font-bold text-crypto-success">$2,340</div>
-                        <div className="text-xs text-gray-400">Avg Daily Profit</div>
+                        <div className="text-2xl font-bold text-white">12,847</div>
+                        <div className="text-sm text-gray-400">Active Users</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-xl font-bold text-crypto-gold">94.8%</div>
-                        <div className="text-xs text-gray-400">Success Rate</div>
+                        <div className="text-2xl font-bold text-crypto-success">Free</div>
+                        <div className="text-sm text-gray-400">Forever</div>
                       </div>
                       <div className="text-center">
-                        <div className="text-xl font-bold text-blue-400">&lt; 5min</div>
-                        <div className="text-xs text-gray-400">Setup Time</div>
+                        <div className="text-2xl font-bold text-blue-400">Instant</div>
+                        <div className="text-sm text-gray-400">Access</div>
                       </div>
                     </div>
 
-                    <div className="mt-4 p-3 bg-gradient-to-r from-crypto-success/20 to-crypto-gold/20 border border-crypto-success/50 rounded-lg">
-                      <p className="text-crypto-success text-sm text-center font-semibold">
-                        🚀 <strong>Limited Time:</strong> Get premium features FREE for early subscribers!
+                    <div className="mt-6 p-4 bg-gradient-to-r from-crypto-success/20 to-blue-500/20 border border-crypto-success/50 rounded-lg text-center">
+                      <p className="text-white font-semibold">
+                        ✨ <strong>100% Free Premium:</strong> No credit card required, no hidden fees, unlock everything with just your email!
                       </p>
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-
-              {/* Right sidebar - Live Stats */}
-              <div className="space-y-6">
-                <LiveStatsWidget />
-                
-                <div className="bg-glass-bg backdrop-blur-sm border border-glass-border rounded-xl p-4 h-fit">
-                  <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-                    <TrendingUp className="h-4 w-4 text-crypto-success" />
-                    Today's Top Signal
-                  </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300 text-sm">PEPE/USDT</span>
-                      <span className="text-crypto-success font-bold text-sm">+847%</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300 text-sm">Entry</span>
-                      <span className="text-white text-sm">$0.00001234</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-300 text-sm">Current</span>
-                      <span className="text-crypto-success text-sm">$0.00011688</span>
-                    </div>
-                    <div className="text-xs text-gray-400 text-center pt-1 border-t border-glass-border">
-                      Signal sent 4 hours ago
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -341,32 +316,51 @@ const Subscribe = () => {
               </div>
             </div>
 
-            {/* Comparison Table */}
-            <div className="mb-10">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-white mb-3">
-                  Free vs <span className="text-blue-400">Premium</span>
-                </h2>
-                <p className="text-gray-300">See exactly what you get with premium access</p>
-              </div>
-              
-              <ComparisonTable />
-            </div>
 
-            {/* Final CTA */}
+            {/* Second Subscription CTA */}
             <div className="text-center">
-              <Card className="bg-gradient-to-br from-blue-500/20 to-purple-500/20 border-blue-500/50 shadow-2xl max-w-2xl mx-auto">
-                <CardContent className="p-6">
-                  <Crown className="h-12 w-12 text-crypto-gold mx-auto mb-4 animate-float" />
-                  <h3 className="text-2xl font-bold text-white mb-3">Ready to 10x Your Portfolio?</h3>
-                  <p className="text-gray-300 mb-4">Join 12,847+ traders who are already making $2,340+ daily with our AI predictions.</p>
-                  <Button 
-                    className="bg-gradient-to-r from-crypto-gold to-crypto-success hover:from-crypto-gold/90 hover:to-crypto-success/90 text-black font-bold px-6 py-3 h-auto"
-                    onClick={() => (document.querySelector('input[type="email"]') as HTMLInputElement)?.focus()}
-                  >
-                    <Rocket className="h-4 w-4 mr-2" />
-                    Get Free Premium Access Now
-                  </Button>
+              <Card className="bg-gradient-to-br from-crypto-success/20 to-blue-500/20 border-crypto-success/50 shadow-2xl max-w-2xl mx-auto">
+                <CardContent className="p-8">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative">
+                      <Crown className="h-16 w-16 text-crypto-gold animate-float" />
+                      <div className="absolute -top-2 -right-2 w-6 h-6 bg-crypto-success rounded-full flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">!</span>
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-3xl font-bold text-white mb-4">Don't Miss Out!</h3>
+                  <p className="text-gray-300 mb-6 text-lg">
+                    12,847+ traders are already using our free premium tools. Join the community that's revolutionizing crypto trading.
+                  </p>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-4 max-w-md mx-auto">
+                    <Input
+                      type="email"
+                      placeholder="Enter your email for instant access"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="bg-glass-bg border-glass-border text-white text-lg h-12 focus:border-crypto-success transition-colors text-center"
+                      required
+                    />
+                    <Button 
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full bg-gradient-to-r from-crypto-success to-blue-500 hover:from-crypto-success/90 hover:to-blue-500/90 text-white font-bold text-lg h-12"
+                    >
+                      {isLoading ? (
+                        <div className="flex items-center gap-2">
+                          <Brain className="h-5 w-5 animate-spin" />
+                          Activating...
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <Rocket className="h-5 w-5" />
+                          Start Trading Smarter - Free
+                        </div>
+                      )}
+                    </Button>
+                  </form>
                 </CardContent>
               </Card>
             </div>
