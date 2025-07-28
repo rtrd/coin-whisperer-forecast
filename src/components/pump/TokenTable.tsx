@@ -31,9 +31,9 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
             {showPrice && <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">Price</TableHead>}
             {showChange && <TableHead className="text-slate-300 font-semibold w-24 px-2 text-center">24h</TableHead>}
             <TableHead className="text-slate-300 font-semibold w-20 px-2 text-center">Score</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">Volume</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-36 px-4 text-right">MCap</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-40 px-4 text-center">Actions</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-24 px-2 text-right">Volume</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-32 px-6 text-center">Market Cap</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-40 px-6 text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -80,10 +80,10 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
               <TableCell className="text-slate-300 font-mono text-sm px-2 text-right group-hover:text-slate-200 font-medium">
                 ${formatNumber(token.volume)}
               </TableCell>
-              <TableCell className="text-slate-300 font-mono text-sm px-4 text-right group-hover:text-slate-200 font-medium">
+              <TableCell className="text-slate-300 font-mono text-sm px-6 text-center group-hover:text-slate-200 font-medium">
                 ${formatNumber(token.marketCap)}
               </TableCell>
-              <TableCell className="px-4">
+              <TableCell className="px-6">
                 <div className="flex flex-col gap-2">
                   <Button 
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-xs h-8 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
