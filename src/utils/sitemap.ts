@@ -80,6 +80,18 @@ export const generateSitemapXML = (): string => {
       changefreq: 'daily',
       priority: '0.7'
     },
+    {
+      loc: `${baseUrl}/subscribe`,
+      lastmod: currentDate,
+      changefreq: 'weekly',
+      priority: '0.6'
+    },
+    {
+      loc: `${baseUrl}/portfolio-tracking`,
+      lastmod: currentDate,
+      changefreq: 'daily',
+      priority: '0.7'
+    },
     // Token detail pages - these are the critical ones for SEO
     ...SUPPORTED_TOKENS.map(tokenId => {
       const tokenInfo = getTokenInfo(tokenId);

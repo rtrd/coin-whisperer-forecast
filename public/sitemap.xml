@@ -2,181 +2,463 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://pumpparade.com</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/tokens</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/blog</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/ai-prediction</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/technical-analysis</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/sentiment-analysis</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/real-time-data</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>always</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/pump-fun</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/moti-meter</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/subscribe</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/portfolio-tracking</loc>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/bitcoin</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/ethereum</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/bnb</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/solana</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/cardano</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/xrp</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/doge</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/shib</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/pepe</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/bonk</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/uniswap</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/aave</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/fetch-ai</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/render-token</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/polygon</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/avalanche-2</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/chainlink</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/polkadot</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/litecoin</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/tron</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://pumpparade.com/token/nexo</loc>
-    <lastmod>2025-01-15</lastmod>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/xlm</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/xmr</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/etc</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/eos</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/xtz</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/vet</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/miota</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/neo</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/dash</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/zec</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/mkr</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/comp</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/sushi</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/cake</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/crv</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/yfi</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/snx</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/1inch</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/grt</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/ftm</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/matic</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/atom</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/luna</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/algo</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/near</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/icp</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/hbar</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/egld</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/hnt</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/theta</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/fil</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/mana</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/sand</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/axs</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/enj</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/gala</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/flow</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/chz</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/bat</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/lrc</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/imx</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/arb</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/op</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/apt</loc>
+    <lastmod>2025-01-28</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://pumpparade.com/token/sui</loc>
+    <lastmod>2025-01-28</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>

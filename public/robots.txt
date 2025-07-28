@@ -1,8 +1,11 @@
+# Robots.txt for Pump Parade
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Twitterbot
 Allow: /
@@ -12,5 +15,16 @@ Allow: /
 
 User-agent: *
 Allow: /
+Crawl-delay: 2
 
+# Block admin areas (if any)
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /api/
+Disallow: /.env
+
+# Sitemaps
 Sitemap: https://pumpparade.com/sitemap.xml
+
+# Host directive (helps with domain canonicalization)
+Host: https://pumpparade.com
