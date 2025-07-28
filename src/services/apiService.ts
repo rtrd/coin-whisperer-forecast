@@ -169,24 +169,36 @@ class ApiService {
     }
   }
 
-  async getEthGasPrice(): Promise<{ gasPrice: number; trend: 'low' | 'normal' | 'high' }> {
+  async getMarketVolatility(): Promise<{ volatility: number; trend: 'low' | 'normal' | 'high' }> {
     try {
-      const response = await fetch('https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=YourApiKeyToken');
+      const response = await fetch(`${this.baseUrl}/global`, {
+        headers: {
+          accept: 'application/json',
+          'key': API_KEY || ''
+        }
+      });
+      
       if (!response.ok) {
-        throw new Error(`Etherscan API error: ${response.status}`);
+        throw new Error(`CoinGecko Global API error: ${response.status}`);
       }
       
       const data = await response.json();
-      const gasPrice = parseInt(data.result.SafeGasPrice);
+      
+      // Calculate volatility based on market cap change and total volume
+      const marketCapChange = Math.abs(data.data.market_cap_change_percentage_24h_usd || 0);
+      const marketCapToVolumeRatio = data.data.total_volume.usd / data.data.total_market_cap.usd;
+      
+      // Create volatility index (0-100) based on market cap change and volume ratio
+      const volatility = Math.min(100, Math.round((marketCapChange * 3) + (marketCapToVolumeRatio * 300)));
       
       let trend: 'low' | 'normal' | 'high' = 'normal';
-      if (gasPrice < 20) trend = 'low';
-      else if (gasPrice > 50) trend = 'high';
+      if (volatility < 25) trend = 'low';
+      else if (volatility > 60) trend = 'high';
       
-      return { gasPrice, trend };
+      return { volatility, trend };
     } catch (error) {
-      console.error('ETH Gas Price fetch error:', error);
-      return { gasPrice: 25, trend: 'normal' }; // Fallback
+      console.error('Market Volatility fetch error:', error);
+      return { volatility: 32, trend: 'normal' }; // Fallback
     }
   }
 

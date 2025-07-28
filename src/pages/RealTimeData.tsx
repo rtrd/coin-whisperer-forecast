@@ -34,7 +34,7 @@ const RealTimeData = () => {
   });
   const [fearGreedIndex, setFearGreedIndex] = useState({ value: 52, classification: 'Neutral' });
   const [defiTVL, setDefiTVL] = useState({ tvl: 127800000000, change24h: 3.2 });
-  const [ethGasPrice, setEthGasPrice] = useState({ gasPrice: 25, trend: 'normal' as 'low' | 'normal' | 'high' });
+  const [marketVolatility, setMarketVolatility] = useState({ volatility: 32, trend: 'normal' as 'low' | 'normal' | 'high' });
   const [loading, setLoading] = useState(true);
   
   const cryptoOptions = [
@@ -104,15 +104,15 @@ const RealTimeData = () => {
 
   const fetchRealTimeMetrics = async () => {
     try {
-      const [fearGreed, tvl, gasPrice] = await Promise.all([
+      const [fearGreed, tvl, volatility] = await Promise.all([
         apiService.getFearGreedIndex(),
         apiService.getDefiTVL(),
-        apiService.getEthGasPrice()
+        apiService.getMarketVolatility()
       ]);
       
       setFearGreedIndex(fearGreed);
       setDefiTVL(tvl);
-      setEthGasPrice(gasPrice);
+      setMarketVolatility(volatility);
     } catch (error) {
       console.error('Error fetching real-time metrics:', error);
     }
@@ -352,14 +352,14 @@ const RealTimeData = () => {
                             <div className="p-6 bg-gradient-to-br from-cyan-600/20 to-blue-600/20 rounded-xl border border-cyan-500/30">
                               <div className="flex items-center justify-between mb-4">
                                 <h4 className="text-white font-semibold flex items-center gap-2">
-                                  <Zap className="h-5 w-5 text-cyan-400" />
-                                  ETH Gas Price
+                                  <ChartLine className="h-5 w-5 text-cyan-400" />
+                                  Market Volatility
                                 </h4>
                                 <div className="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
                               </div>
-                              <p className="text-3xl font-bold text-white mb-2">{ethGasPrice.gasPrice} Gwei</p>
-                              <p className={`text-sm ${ethGasPrice.trend === 'low' ? 'text-green-400' : ethGasPrice.trend === 'high' ? 'text-red-400' : 'text-yellow-400'}`}>
-                                {ethGasPrice.trend === 'low' ? 'Low gas fees' : ethGasPrice.trend === 'high' ? 'High gas fees' : 'Normal gas fees'}
+                              <p className="text-3xl font-bold text-white mb-2">{marketVolatility.volatility}</p>
+                              <p className={`text-sm ${marketVolatility.trend === 'low' ? 'text-green-400' : marketVolatility.trend === 'high' ? 'text-red-400' : 'text-yellow-400'}`}>
+                                {marketVolatility.trend === 'low' ? 'Low volatility' : marketVolatility.trend === 'high' ? 'High volatility' : 'Normal volatility'}
                               </p>
                             </div>
                             
