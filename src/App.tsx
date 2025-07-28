@@ -22,6 +22,7 @@ import RealTimeData from "./pages/RealTimeData";
 import PortfolioTracking from "./pages/PortfolioTracking";
 import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
+import ViewEmails from "./pages/EmailList";
 
 const queryClient = new QueryClient();
 
@@ -34,34 +35,39 @@ const App = () => (
         <AdBlockDetector />
         <AutoRefresh />
         <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/subscribe" element={<Subscribe />} />
-          <Route path="/token/:tokenId" element={<TokenDetail />} />
-          <Route path="/article/:articleId" element={<Article />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/tokens" element={<AllTokens />} />
-          <Route path="/ai-prediction" element={<AIPrediction />} />
-          <Route path="/pump-fun" element={<PumpFun />} />
-          <Route path="/ai-price-prediction" element={<AIPricePrediction />} />
-          <Route
-            path="/technical-analysis"
-            element={<TechnicalAnalysisPage />}
-          />
-          <Route
-            path="/sentiment-analysis"
-            element={<SentimentAnalysisPage />}
-          />
-          <Route path="/real-time-data" element={<RealTimeData />} />
-          <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
-          <Route path="/moti-meter" element={<MotiMeter />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/subscribe" element={<Subscribe />} />
+            <Route path="/token/:tokenId" element={<TokenDetail />} />
+            <Route path="/article/:articleId" element={<Article />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/tokens" element={<AllTokens />} />
+            <Route path="/ai-prediction" element={<AIPrediction />} />
+            <Route path="/pump-fun" element={<PumpFun />} />
+            <Route
+              path="/ai-price-prediction"
+              element={<AIPricePrediction />}
+            />
+            <Route
+              path="/technical-analysis"
+              element={<TechnicalAnalysisPage />}
+            />
+            <Route
+              path="/sentiment-analysis"
+              element={<SentimentAnalysisPage />}
+            />
+            <Route path="/view-emails" element={<ViewEmails />} />
+
+            <Route path="/real-time-data" element={<RealTimeData />} />
+            <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
+            <Route path="/moti-meter" element={<MotiMeter />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
   </HelmetProvider>
 );
 
