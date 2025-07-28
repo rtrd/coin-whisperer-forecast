@@ -334,9 +334,6 @@ const RealTimeData = () => {
                         <p className="text-gray-300 mt-1">Real-time cryptocurrency prices</p>
                       </div>
                     </div>
-                    <Badge variant="outline" className="text-purple-400 border-purple-400 animate-pulse">
-                      STREAMING
-                    </Badge>
                   </div>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -355,7 +352,7 @@ const RealTimeData = () => {
                               <h4 className="text-white font-medium">{crypto.name}</h4>
                               <p className="text-gray-400 text-sm">{crypto.symbol.toUpperCase()}</p>
                             </div>
-                            <Badge variant="outline" className="text-xs">LIVE</Badge>
+                            
                           </div>
                           <div className="text-right">
                             <p className="text-white font-bold">
@@ -364,14 +361,111 @@ const RealTimeData = () => {
                             <p className={`text-sm ${crypto.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {crypto.price_change_percentage_24h >= 0 ? '+' : ''}{crypto.price_change_percentage_24h?.toFixed(2)}% (24h)
                             </p>
-                            <Progress 
-                              value={Math.abs(crypto.price_change_percentage_24h || 0)} 
-                              className="w-24 h-1 mt-1"
-                            />
                           </div>
                         </div>
                       </Link>
                     ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Social Sentiment Intelligence */}
+              <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
+                <CardHeader className="bg-gradient-to-r from-blue-600/10 to-purple-600/10 border-b border-gray-600/50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <MessageCircle className="h-8 w-8 text-blue-400" />
+                      <div>
+                        <CardTitle className="text-2xl text-white">Social Sentiment Intelligence</CardTitle>
+                        <p className="text-gray-300 mt-1">Real-time social data and sentiment analysis from LunarCrush</p>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="text-blue-400 border-blue-400 animate-pulse">
+                      SOCIAL
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                    <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30 hover:shadow-lg transition-all">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
+                        <Users className="h-8 w-8 text-blue-400" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-white mb-2">Social Volume</h3>
+                      <p className="text-gray-300 text-sm">Track social mentions, posts, and engagement across platforms</p>
+                    </div>
+                    
+                    <div className="text-center p-6 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500/30 hover:shadow-lg transition-all">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
+                        <TrendingUp className="h-8 w-8 text-green-400" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-white mb-2">Sentiment Score</h3>
+                      <p className="text-gray-300 text-sm">AI-powered sentiment analysis from social conversations</p>
+                    </div>
+                    
+                    <div className="text-center p-6 bg-gradient-to-br from-purple-600/20 to-pink-600/20 rounded-xl border border-purple-500/30 hover:shadow-lg transition-all">
+                      <div className="inline-flex items-center justify-center w-16 h-16 bg-purple-500/20 rounded-full mb-4">
+                        <Eye className="h-8 w-8 text-purple-400" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-white mb-2">Influencer Impact</h3>
+                      <p className="text-gray-300 text-sm">Monitor key influencer mentions and their market impact</p>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <h4 className="text-lg font-semibold text-white flex items-center gap-2">
+                      <MessageCircle className="h-5 w-5 text-blue-400" />
+                      Why Social Data Matters
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                          <h5 className="text-white font-medium">Early Signal Detection</h5>
+                        </div>
+                        <p className="text-gray-300 text-sm">Social sentiment often precedes price movements, providing early warning signals for market shifts.</p>
+                      </div>
+                      
+                      <div className="p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                          <h5 className="text-white font-medium">Market Psychology</h5>
+                        </div>
+                        <p className="text-gray-300 text-sm">Understand crowd psychology and retail investor sentiment that drives market volatility.</p>
+                      </div>
+                      
+                      <div className="p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+                          <h5 className="text-white font-medium">Risk Management</h5>
+                        </div>
+                        <p className="text-gray-300 text-sm">Identify potential risks by monitoring negative sentiment spikes and FUD campaigns.</p>
+                      </div>
+                      
+                      <div className="p-4 bg-gray-700/30 rounded-lg border border-gray-600/30">
+                        <div className="flex items-center gap-3 mb-2">
+                          <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+                          <h5 className="text-white font-medium">Opportunity Discovery</h5>
+                        </div>
+                        <p className="text-gray-300 text-sm">Discover emerging trends and tokens gaining social traction before they hit mainstream media.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-6 p-4 bg-gradient-to-r from-blue-600/10 to-purple-600/10 rounded-lg border border-blue-500/30">
+                      <div className="flex items-start gap-3">
+                        <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                          <MessageCircle className="h-4 w-4 text-blue-400" />
+                        </div>
+                        <div>
+                          <h5 className="text-white font-medium mb-2">Complete Market Intelligence</h5>
+                          <p className="text-gray-300 text-sm">
+                            By combining real-time price data, on-chain metrics, and social sentiment analysis from LunarCrush, 
+                            you get a 360-degree view of the market. This multi-dimensional approach helps you make more informed 
+                            trading decisions by understanding not just what the market is doing, but why it's moving.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
