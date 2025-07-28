@@ -10,7 +10,7 @@ const API_KEY = import.meta.env.VITE_LUNAR_API;
 const fetchCryptoData = async (
   crypto: string,
   timeframe: string,
-  AllCryptosData: any[]
+  AllCryptosData: []
 ): Promise<PriceData[]> => {
   console.log(`Fetching real ${crypto} data for ${timeframe}`);
   if (timeframe === "7d") {
@@ -175,7 +175,7 @@ const generateMockData = (
 export const useCryptoData = (
   crypto: string,
   timeframe: string,
-  AllCryptosData: any[]
+  AllCryptosData: []
 ) => {
   return useQuery({
     queryKey: ["crypto-data", crypto, timeframe],

@@ -134,12 +134,8 @@ export const generateTechnicalPrediction = async (
   predictionDays,
   crypto
 ): Promise<PredictionResult> => {
+  debugger;
   const type: PredictionType = "technical";
-
-  // Validate input data
-  if (!technicalIndicator || !Array.isArray(technicalIndicator) || technicalIndicator.length === 0) {
-    throw new Error("Invalid or missing technical indicator data");
-  }
 
   // ✅ 1. Check cache first
   const cached = getPredictionCache<PredictionResult>(
@@ -153,13 +149,8 @@ export const generateTechnicalPrediction = async (
   }
 
   // 🧠 2. Calculate inputs for prompt generation
-  const validData = technicalIndicator.filter(d => d && typeof d.price === 'number' && !isNaN(d.price));
-  if (validData.length === 0) {
-    throw new Error("No valid price data found in technical indicators");
-  }
-  
-  const prices = validData.slice(-predictionDays).map((d) => d.price);
-  const volumes = validData
+  const prices = technicalIndicator.slice(-predictionDays).map((d) => d.price);
+  const volumes = technicalIndicator
     .slice(-predictionDays)
     .map((d) => d.volume || 0);
   const currentPrice = prices[prices.length - 1];
@@ -189,34 +180,20 @@ export const generateTechnicalPrediction = async (
     currentMA,
     supportLevel,
     resistanceLevel,
-    avgVolume
+    volumes
   );
 
   try {
-    const response = await fetch(`/api/openrouter-proxy`, {
+    const response = await fetch(`${SERVER_URL}/get-ai-predction`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messages: [
-          {
-            role: "system",
-            content: "You are a cryptocurrency analyst. Provide predictions in the exact format requested."
-          },
-          {
-            role: "user", 
-            content: Prompt
-          }
-        ],
-        model: "openai/gpt-4o-mini",
-        max_tokens: 200,
-        temperature: 0.7
-      }),
+      body: JSON.stringify({ Prompt }),
     });
 
-    if (!response.ok) throw new Error(`AI API error: ${response.status}`);
+    if (!response.ok) throw new Error(`Gemini API error: ${response.status}`);
 
     const result = await response.json();
-    const text = result?.choices?.[0]?.message?.content || "";
+    const text = result?.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
     const trendMatch = text.match(/trend:\s*(bullish|bearish|neutral)/i);
     const confidenceMatch = text.match(/confidence:\s*(\d+(\.\d+)?)/i);
