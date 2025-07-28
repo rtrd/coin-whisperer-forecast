@@ -163,7 +163,7 @@ const PortfolioTracking = () => {
                     </div>
                     <h2 className="text-3xl font-bold text-white mb-3">Professional Portfolio Tracking</h2>
                     <Badge variant="outline" className="text-yellow-400 border-yellow-400 px-4 py-2 text-sm mb-4">
-                      LAUNCHING Q2 2025
+                      COMING SOON
                     </Badge>
                   </div>
                   
@@ -284,63 +284,63 @@ const PortfolioTracking = () => {
                 </CardHeader>
                 <CardContent className="p-6">
                   <Accordion type="single" collapsible className="space-y-3">
-                    <AccordionItem value="supported-exchanges" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
+                    <AccordionItem value="real-time-tracking" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
                       <AccordionTrigger className="text-white hover:text-green-400 font-medium">
-                        What exchanges and wallets will be supported?
+                        How does real-time portfolio tracking work?
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                        We'll support all major exchanges including Binance, Coinbase, Kraken, and 20+ others. 
-                        Wallet support includes MetaMask, Trust Wallet, Ledger, and other popular options with read-only API connections for maximum security.
+                        Our portfolio tracking automatically syncs with your exchange accounts and wallets using secure read-only API connections. 
+                        Your portfolio value, gains/losses, and asset allocation are updated in real-time as market prices change, giving you instant visibility into your investment performance.
                       </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value="data-security" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
+                    <AccordionItem value="performance-analytics" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
                       <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
-                        Is my data secure and private?
+                        What kind of performance analytics will I get?
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                        Absolutely. We use read-only API connections, bank-level encryption, and never store your private keys. 
-                        Your data is encrypted both in transit and at rest, and we follow SOC 2 compliance standards.
+                        You'll get comprehensive analytics including total portfolio value, individual asset performance, profit/loss calculations, percentage gains, 
+                        risk metrics, correlation analysis, and historical performance charts. Track your investment strategy effectiveness with detailed breakdowns by time periods.
                       </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value="pricing-tiers" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-purple-500/50 transition-colors">
+                    <AccordionItem value="multi-platform-support" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-purple-500/50 transition-colors">
                       <AccordionTrigger className="text-white hover:text-purple-400 font-medium">
-                        Will there be a free tier?
+                        Can I track assets across multiple exchanges and wallets?
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                        Yes! The free tier will include basic portfolio tracking for up to 3 connected accounts. 
-                        Premium features like advanced analytics, unlimited connections, and tax optimization will require a subscription starting at $9.99/month.
+                        Yes! Connect multiple exchanges, hardware wallets, and DeFi protocols in one unified dashboard. 
+                        Get a complete view of your entire crypto portfolio regardless of where your assets are stored, with automatic aggregation and consolidated reporting.
                       </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value="launch-timeline" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-orange-500/50 transition-colors">
+                    <AccordionItem value="risk-management" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-orange-500/50 transition-colors">
                       <AccordionTrigger className="text-white hover:text-orange-400 font-medium">
-                        When will the platform launch?
+                        How does portfolio tracking help with risk management?
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                        We're targeting Q2 2025 for the initial beta release. Early access subscribers will get 
-                        priority access and exclusive features during the beta period, plus a 50% discount on the first year.
+                        Our tracking provides risk metrics like portfolio volatility, asset correlation, and concentration risk alerts. 
+                        Set up custom alerts for significant price movements, portfolio rebalancing suggestions, and diversification recommendations to help optimize your investment strategy.
                       </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value="transaction-history" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-cyan-500/50 transition-colors">
+                    <AccordionItem value="tax-reporting" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-cyan-500/50 transition-colors">
                       <AccordionTrigger className="text-white hover:text-cyan-400 font-medium">
-                        Can I import my transaction history?
+                        How does it help with tax reporting and record keeping?
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                        Yes, you'll be able to import CSV files from exchanges and use our automated sync tools 
-                        to pull historical data where possible. Manual entry options will also be available for complete flexibility.
+                        Automatically track cost basis, realized/unrealized gains, and generate tax-ready reports. 
+                        The system maintains detailed transaction history, calculates holding periods, and provides export functionality for popular tax software, making crypto tax season much simpler.
                       </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value="mobile-access" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-pink-500/50 transition-colors">
+                    <AccordionItem value="privacy-security" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-pink-500/50 transition-colors">
                       <AccordionTrigger className="text-white hover:text-pink-400 font-medium">
-                        Will there be mobile apps?
+                        How secure is my portfolio data and what about privacy?
                       </AccordionTrigger>
                       <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                        iOS and Android native apps are planned for Q3 2025, following the web platform launch. 
-                        The web platform will be fully responsive and mobile-optimized from day one.
+                        We use bank-level encryption and never store your private keys or trading credentials. All connections are read-only, 
+                        your data is encrypted both in transit and at rest, and we follow strict privacy policies. You maintain full control over your assets while getting comprehensive tracking insights.
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
