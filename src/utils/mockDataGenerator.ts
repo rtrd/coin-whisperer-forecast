@@ -1,71 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { PriceData } from "@/types/crypto";
 
-interface PriceData {
-  timestamp: number;
-  price: number;
-  volume?: number;
-}
-const API_KEY = import.meta.env.VITE_LUNAR_API;
-
-const fetchCryptoData = async (
-  crypto: string,
-  timeframe: string,
-  AllCryptosData: any[]
-): Promise<PriceData[]> => {
-  console.log(`Fetching real ${crypto} data for ${timeframe}`);
-  if (timeframe === "7d") {
-    timeframe = "1w";
-  }
-  if (timeframe === "30d") {
-    timeframe = "1m";
-  } else if (timeframe === "90d") {
-    timeframe = "3m";
-  }
-  try {
-    // Use Supabase Edge Function instead of direct API call
-    const response = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=${timeframe}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Proxy API error: ${response.status}`);
-    }
-
-    const priceData = await response.json();
-    console.log(
-      `Successfully fetched ${priceData.length} data points for ${crypto}`
-    );
-    const data: PriceData[] = [];
-    data.push(
-      ...priceData.data.map((item: any) => ({
-        timestamp: item.time,
-        price: item.close,
-        volume: item.volume_24h,
-      }))
-    );
-    const hasValidPrice = data.some(
-      (d) => typeof d.price === "number" && !isNaN(d.price)
-    );
-
-    if (!hasValidPrice) {
-      return generateMockData(crypto, timeframe, AllCryptosData);
-    }
-    return data;
-  } catch (error) {
-    console.error("Error fetching from secure proxy:", error);
-
-    // Fallback to mock data if proxy fails
-    return generateMockData(crypto, timeframe, AllCryptosData);
-  }
-};
-
-const generateMockData = (
+export const generateMockData = (
   crypto: string,
   timeframe: string,
   AllCryptosData: any[]
@@ -170,17 +105,4 @@ const generateMockData = (
   }
 
   return data;
-};
-
-export const useCryptoData = (
-  crypto: string,
-  timeframe: string,
-  AllCryptosData: any[]
-) => {
-  return useQuery({
-    queryKey: ["crypto-data", crypto, timeframe],
-    queryFn: () => fetchCryptoData(crypto, timeframe, AllCryptosData),
-    // staleTime: 60000,
-    // refetchInterval: 30000,
-  });
 };
