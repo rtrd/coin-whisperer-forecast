@@ -32,14 +32,14 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
             {showChange && <TableHead className="text-slate-300 font-semibold w-24 px-2 text-center">24h</TableHead>}
             <TableHead className="text-slate-300 font-semibold w-20 px-2 text-center">Score</TableHead>
             <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">Volume</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-28 px-2 text-right">MCap</TableHead>
-            <TableHead className="text-slate-300 font-semibold w-36 px-2 text-center">Actions</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-36 px-4 text-right">MCap</TableHead>
+            <TableHead className="text-slate-300 font-semibold w-40 px-4 text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {tokens.map((token, index) => (
             <TableRow key={index} className="border-slate-700/30 hover:bg-gradient-to-r hover:from-slate-800/30 hover:to-slate-700/30 transition-all duration-200 group">
-              <TableCell className="text-slate-400 text-sm font-medium px-3 text-center group-hover:text-slate-300">
+              <TableCell className="text-slate-400 text-sm font-medium px-2 text-center group-hover:text-slate-300">
                 #{index + 1}
               </TableCell>
               <TableCell className="px-3">
@@ -80,10 +80,10 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
               <TableCell className="text-slate-300 font-mono text-sm px-2 text-right group-hover:text-slate-200 font-medium">
                 ${formatNumber(token.volume)}
               </TableCell>
-              <TableCell className="text-slate-300 font-mono text-sm px-2 text-right group-hover:text-slate-200 font-medium">
+              <TableCell className="text-slate-300 font-mono text-sm px-4 text-right group-hover:text-slate-200 font-medium">
                 ${formatNumber(token.marketCap)}
               </TableCell>
-              <TableCell className="px-2">
+              <TableCell className="px-4">
                 <div className="flex flex-col gap-2">
                   <Button 
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-xs h-8 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
