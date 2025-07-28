@@ -51,6 +51,7 @@ const faqs = [
 
 export function RealTimeDataSidebar() {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+  const { state } = useSidebar();
 
   const toggleFaq = (index: number) => {
     setExpandedFaq(expandedFaq === index ? null : index);
@@ -64,7 +65,7 @@ export function RealTimeDataSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel className="text-lg font-semibold text-white mb-4">
             <HelpCircle className="h-5 w-5 mr-2 inline" />
-            {!collapsed && "Real-Time Data FAQs"}
+            {state !== "collapsed" && "Real-Time Data FAQs"}
           </SidebarGroupLabel>
           
           <SidebarGroupContent>
@@ -96,9 +97,9 @@ export function RealTimeDataSidebar() {
                       )}
                     </CardContent>
                   </Card>
+                ))}
               </div>
             </SidebarGroupContent>
-          </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
