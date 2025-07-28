@@ -246,6 +246,96 @@ const RealTimeData = () => {
                         </CardContent>
                       </Card>
 
+                      {/* Real-Time Data FAQ */}
+                      <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
+                        <CardHeader className="bg-gradient-to-r from-blue-600/10 to-green-600/10 border-b border-gray-600/50">
+                          <div className="flex items-center gap-3 mb-2">
+                            <Activity className="h-8 w-8 text-blue-400" />
+                            <div>
+                              <CardTitle className="text-2xl text-white">
+                                Real-Time Data FAQ
+                              </CardTitle>
+                              <p className="text-gray-300 mt-2">Learn about our real-time cryptocurrency data feeds and how they work</p>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="p-6">
+                          <Accordion type="single" collapsible className="space-y-3">
+                            <AccordionItem value="what-is-realtime" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
+                                What is real-time market data?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                Real-time market data provides live price updates, trading volumes, and market metrics updated within seconds of market movements. This data is essential for making informed trading decisions and understanding market dynamics as they happen.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="update-frequency" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-green-400 font-medium">
+                                How often is the data updated?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                Our platform updates cryptocurrency prices and market data every 30 seconds to 1 minute, depending on the data source. Social sentiment data from LunarCrush is updated multiple times per hour to capture the latest social media trends.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="data-sources" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-purple-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-purple-400 font-medium">
+                                What sources do you use for market data?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                We aggregate data from multiple premium sources including CoinGecko Pro API for price and market data, and LunarCrush API for social sentiment analysis. This multi-source approach ensures accuracy and comprehensive coverage.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="sentiment-analysis" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-orange-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-orange-400 font-medium">
+                                What is social sentiment analysis?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                Social sentiment analysis uses AI to analyze millions of social media posts, news articles, and online discussions about cryptocurrencies. It provides insights into market psychology and can often predict price movements before they occur.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="prediction-accuracy" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-cyan-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-cyan-400 font-medium">
+                                How accurate are the market predictions?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                Our AI models combine real-time price data, technical indicators, and social sentiment to generate predictions. While no prediction is guaranteed, our multi-factor approach historically shows higher accuracy than single-metric models.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="automated-trading" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-pink-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-pink-400 font-medium">
+                                Can I use this data for automated trading?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                Yes, our real-time data feeds are designed to support both manual analysis and automated trading strategies. The low-latency updates and comprehensive metrics make it suitable for algorithmic trading applications.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="what-makes-different" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-yellow-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-yellow-400 font-medium">
+                                What makes your data different?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                We provide a unique combination of on-chain metrics, real-time price data, and social sentiment analysis all in one platform. This 360-degree view of the market gives traders and investors a significant advantage.
+                              </AccordionContent>
+                            </AccordionItem>
+
+                            <AccordionItem value="api-availability" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-indigo-500/50 transition-colors">
+                              <AccordionTrigger className="text-white hover:text-indigo-400 font-medium">
+                                Is there an API available?
+                              </AccordionTrigger>
+                              <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
+                                Currently, our real-time data is available through our web platform. We're developing API access for premium subscribers to integrate our data feeds directly into their own applications and trading systems.
+                              </AccordionContent>
+                            </AccordionItem>
+                          </Accordion>
+                        </CardContent>
+                      </Card>
+
                       {/* Live Price Feed */}
                       <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
                         <CardHeader className="bg-gradient-to-r from-purple-600/10 to-pink-600/10 border-b border-gray-600/50">
@@ -634,96 +724,6 @@ const RealTimeData = () => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Real-Time Data FAQ */}
-                  <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm mt-12">
-                    <CardHeader className="bg-gradient-to-r from-blue-600/10 to-green-600/10 border-b border-gray-600/50">
-                      <div className="flex items-center gap-3 mb-2">
-                        <Activity className="h-8 w-8 text-blue-400" />
-                        <div>
-                          <CardTitle className="text-2xl text-white">
-                            Real-Time Data FAQ
-                          </CardTitle>
-                          <p className="text-gray-300 mt-2">Learn about our real-time cryptocurrency data feeds and how they work</p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      <Accordion type="single" collapsible className="space-y-3">
-                        <AccordionItem value="what-is-realtime" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-blue-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-blue-400 font-medium">
-                            What is real-time market data?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            Real-time market data provides live price updates, trading volumes, and market metrics updated within seconds of market movements. This data is essential for making informed trading decisions and understanding market dynamics as they happen.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="update-frequency" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-green-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-green-400 font-medium">
-                            How often is the data updated?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            Our platform updates cryptocurrency prices and market data every 30 seconds to 1 minute, depending on the data source. Social sentiment data from LunarCrush is updated multiple times per hour to capture the latest social media trends.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="data-sources" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-purple-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-purple-400 font-medium">
-                            What sources do you use for market data?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            We aggregate data from multiple premium sources including CoinGecko Pro API for price and market data, and LunarCrush API for social sentiment analysis. This multi-source approach ensures accuracy and comprehensive coverage.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="sentiment-analysis" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-orange-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-orange-400 font-medium">
-                            What is social sentiment analysis?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            Social sentiment analysis uses AI to analyze millions of social media posts, news articles, and online discussions about cryptocurrencies. It provides insights into market psychology and can often predict price movements before they occur.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="prediction-accuracy" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-cyan-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-cyan-400 font-medium">
-                            How accurate are the market predictions?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            Our AI models combine real-time price data, technical indicators, and social sentiment to generate predictions. While no prediction is guaranteed, our multi-factor approach historically shows higher accuracy than single-metric models.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="automated-trading" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-pink-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-pink-400 font-medium">
-                            Can I use this data for automated trading?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            Yes, our real-time data feeds are designed to support both manual analysis and automated trading strategies. The low-latency updates and comprehensive metrics make it suitable for algorithmic trading applications.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="what-makes-different" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-yellow-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-yellow-400 font-medium">
-                            What makes your data different?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            We provide a unique combination of on-chain metrics, real-time price data, and social sentiment analysis all in one platform. This 360-degree view of the market gives traders and investors a significant advantage.
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="api-availability" className="bg-gray-700/30 rounded-lg px-4 border border-gray-600/50 hover:border-indigo-500/50 transition-colors">
-                          <AccordionTrigger className="text-white hover:text-indigo-400 font-medium">
-                            Is there an API available?
-                          </AccordionTrigger>
-                          <AccordionContent className="text-gray-300 pt-4 leading-relaxed">
-                            Currently, our real-time data is available through our web platform. We're developing API access for premium subscribers to integrate our data feeds directly into their own applications and trading systems.
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </CardContent>
-                  </Card>
 
                   {/* Google Ad Manager - Bottom Ad */}
                   <GAMAdUnit
