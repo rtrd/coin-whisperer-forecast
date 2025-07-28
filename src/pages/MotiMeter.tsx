@@ -103,86 +103,127 @@ const MotiMeter = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            {/* Main Content */}
-            <div className="lg:col-span-3">
-              {/* MOTI Meter Header */}
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <Flame className="h-10 w-10 text-orange-400" />
-                  <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-pink-400 bg-clip-text text-transparent">
-                    MOTI METER
-                  </h1>
-                  <Flame className="h-10 w-10 text-orange-400" />
-                </div>
-                <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                  The Ultimate Meme Coin Momentum Indicator - Ranking the hottest memecoins based on 
-                  viral energy, community conviction, and market momentum
-                </p>
+          {/* MOTI Meter Header - Enhanced with animations and gradients */}
+          <div className="text-center mb-12 relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 via-red-500/10 to-pink-500/10 blur-3xl -z-10"></div>
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <Flame className="h-12 w-12 text-orange-400 animate-pulse" />
+              <h1 className="text-5xl md:text-7xl font-black bg-gradient-to-r from-orange-400 via-red-400 to-pink-400 bg-clip-text text-transparent drop-shadow-2xl">
+                MOTI METER
+              </h1>
+              <Flame className="h-12 w-12 text-orange-400 animate-pulse" />
+            </div>
+            <p className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+              The Ultimate Meme Coin Momentum Indicator - Ranking the hottest memecoins based on 
+              viral energy, community conviction, and market momentum
+            </p>
+            <div className="mt-6 flex justify-center">
+              <div className="px-6 py-2 bg-gradient-to-r from-orange-500/20 to-pink-500/20 border border-orange-500/30 rounded-full">
+                <span className="text-orange-300 font-semibold">🔥 Live Rankings Updated Every Hour 🔥</span>
               </div>
+            </div>
+          </div>
 
-              {/* Scoring Criteria */}
-              <Card className="mb-8 bg-gray-800/50 border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-purple-400" />
-                    MOTI Scoring Criteria
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Twitter Interaction</strong><br />
-                      Viral energy & community hype
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Good Ticker</strong><br />
-                      Short, memorable, meme-worthy
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Cultural References</strong><br />
-                      Taps into current memes & trends
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Age & Maturity</strong><br />
-                      Past first pump, seasoned meme
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Volume Consistency</strong><br />
-                      High, stable trading volume
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Holder Growth</strong><br />
-                      Growing conviction despite dips
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Higher Lows</strong><br />
-                      Technical trend strength
-                    </div>
-                    <div className="text-gray-300">
-                      <strong className="text-orange-400">Final Score</strong><br />
-                      Average of all criteria (1-5)
-                    </div>
+          {/* Enhanced Scoring Criteria with better visual hierarchy */}
+          <Card className="mb-12 bg-gradient-to-br from-gray-800/80 to-gray-900/80 border-gray-600 shadow-2xl backdrop-blur-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-white flex items-center gap-3 text-xl">
+                <BarChart3 className="h-6 w-6 text-purple-400" />
+                MOTI Scoring Criteria
+                <div className="ml-auto">
+                  <Badge className="bg-purple-600 text-white">AI Powered</Badge>
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="p-4 bg-gradient-to-br from-orange-500/10 to-orange-600/10 rounded-lg border border-orange-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-orange-400 rounded-full animate-pulse"></div>
+                    <strong className="text-orange-400 font-bold">Twitter Interaction</strong>
                   </div>
-                </CardContent>
-              </Card>
+                  <p className="text-gray-300 text-sm">Viral energy & community hype</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-red-500/10 to-red-600/10 rounded-lg border border-red-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+                    <strong className="text-red-400 font-bold">Good Ticker</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">Short, memorable, meme-worthy</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-pink-500/10 to-pink-600/10 rounded-lg border border-pink-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></div>
+                    <strong className="text-pink-400 font-bold">Cultural References</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">Taps into current memes & trends</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-lg border border-purple-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                    <strong className="text-purple-400 font-bold">Age & Maturity</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">Past first pump, seasoned meme</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-lg border border-blue-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                    <strong className="text-blue-400 font-bold">Volume Consistency</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">High, stable trading volume</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-lg border border-green-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <strong className="text-green-400 font-bold">Holder Growth</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">Growing conviction despite dips</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-yellow-500/10 to-yellow-600/10 rounded-lg border border-yellow-500/20">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <strong className="text-yellow-400 font-bold">Higher Lows</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">Technical trend strength</p>
+                </div>
+                <div className="p-4 bg-gradient-to-br from-orange-500/20 to-pink-500/20 rounded-lg border border-orange-500/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Flame className="w-4 h-4 text-orange-400 animate-pulse" />
+                    <strong className="text-orange-400 font-bold">Final MOTI Score</strong>
+                  </div>
+                  <p className="text-gray-300 text-sm">Average of all criteria (1-5)</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-              {/* Time Period Tabs */}
-              <Tabs value={selectedPeriod} onValueChange={(value) => setSelectedPeriod(value as '24h' | '5d' | '7d')} className="mb-8">
-                <TabsList className="grid w-full grid-cols-3 bg-gray-800 border-gray-700">
-                  <TabsTrigger value="24h" className="data-[state=active]:bg-purple-600">
-                    <Clock className="h-4 w-4 mr-2" />
-                    24 Hours
-                  </TabsTrigger>
-                  <TabsTrigger value="5d" className="data-[state=active]:bg-purple-600">
-                    <TrendingUp className="h-4 w-4 mr-2" />
-                    5 Days
-                  </TabsTrigger>
-                  <TabsTrigger value="7d" className="data-[state=active]:bg-purple-600">
-                    <Users className="h-4 w-4 mr-2" />
-                    7 Days
-                  </TabsTrigger>
-                </TabsList>
+          {/* Enhanced Time Period Tabs */}
+          <Tabs value={selectedPeriod} onValueChange={(value) => setSelectedPeriod(value as '24h' | '5d' | '7d')} className="mb-10">
+            <div className="flex justify-center">
+              <TabsList className="grid grid-cols-3 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-600 rounded-xl p-1 shadow-2xl">
+                <TabsTrigger 
+                  value="24h" 
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+                >
+                  <Clock className="h-4 w-4 mr-2" />
+                  24 Hours
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="5d" 
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+                >
+                  <TrendingUp className="h-4 w-4 mr-2" />
+                  5 Days
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="7d" 
+                  className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  7 Days
+                </TabsTrigger>
+              </TabsList>
+            </div>
 
                 <TabsContent value={selectedPeriod} className="mt-6">
                   {isLoading ? (
@@ -211,114 +252,124 @@ const MotiMeter = () => {
                       </CardContent>
                     </Card>
                   ) : (
-                    <div className="grid grid-cols-1 gap-4">
+                     <div className="grid grid-cols-1 gap-6">
                       {motiTokens?.map((token, index) => (
                         <React.Fragment key={token.id}>
-                          <Card className="bg-gray-800/50 border-gray-700 hover:bg-gray-800/70 transition-all">
-                            <CardContent className="p-6">
+                          <Card className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 border-gray-600 hover:from-gray-800/80 hover:to-gray-900/80 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-500/10 backdrop-blur-sm">
+                            <CardContent className="p-8">
                               <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                  <div className="flex flex-col items-center">
-                                    <div className="text-2xl font-bold text-white mb-1">#{index + 1}</div>
-                                    <Badge className={`${getMotiColor(token.motiScore)} text-white px-2 py-1 text-xs`}>
-                                      {getMotiLabel(token.motiScore)}
-                                    </Badge>
-                                  </div>
+                                 <div className="flex items-center gap-6">
+                                   <div className="flex flex-col items-center">
+                                     <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center mb-2 shadow-lg">
+                                       <span className="text-2xl font-black text-white">#{index + 1}</span>
+                                     </div>
+                                     <Badge className={`${getMotiColor(token.motiScore)} text-white px-3 py-1 text-sm font-bold shadow-lg`}>
+                                       {getMotiLabel(token.motiScore)}
+                                     </Badge>
+                                   </div>
                                   
-                                  <div className="flex items-center gap-3">
-                                    <img 
-                                      src={token.image || '/placeholder.svg'} 
-                                      alt={token.name}
-                                      className="w-12 h-12 rounded-full"
-                                      onError={(e) => {
-                                        e.currentTarget.src = '/placeholder.svg';
-                                      }}
-                                    />
-                                    <div>
-                                      <h3 className="text-lg font-semibold text-white">{token.name}</h3>
-                                      <p className="text-gray-400 text-sm uppercase">${token.symbol}</p>
-                                    </div>
-                                  </div>
+                                   <div className="flex items-center gap-4">
+                                     <div className="relative">
+                                       <img 
+                                         src={token.image || '/placeholder.svg'} 
+                                         alt={token.name}
+                                         className="w-16 h-16 rounded-full shadow-lg ring-4 ring-purple-500/20"
+                                         onError={(e) => {
+                                           e.currentTarget.src = '/placeholder.svg';
+                                         }}
+                                       />
+                                       <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-gradient-to-r from-orange-400 to-pink-400 rounded-full flex items-center justify-center">
+                                         <Flame className="w-3 h-3 text-white" />
+                                       </div>
+                                     </div>
+                                     <div>
+                                       <h3 className="text-xl font-bold text-white mb-1">{token.name}</h3>
+                                       <p className="text-gray-400 text-base font-semibold uppercase tracking-wider">${token.symbol}</p>
+                                     </div>
+                                   </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
-                                  <div className="text-right">
-                                    <div className="text-2xl font-bold text-orange-400 mb-1">
-                                      {token.motiScore.toFixed(1)}
-                                    </div>
-                                    <div className="text-sm text-gray-400">
-                                      ${token.current_price?.toFixed(6) || 'N/A'}
-                                    </div>
-                                    <div className={`text-sm ${token.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                      {token.price_change_percentage_24h >= 0 ? '+' : ''}{token.price_change_percentage_24h?.toFixed(2) || '0'}%
-                                    </div>
-                                  </div>
+                                 <div className="flex items-center gap-6">
+                                   <div className="text-right">
+                                     <div className="text-4xl font-black text-transparent bg-gradient-to-r from-orange-400 to-pink-400 bg-clip-text mb-2">
+                                       {token.motiScore.toFixed(1)}
+                                     </div>
+                                     <div className="text-lg text-gray-300 font-semibold">
+                                       ${token.current_price?.toFixed(6) || 'N/A'}
+                                     </div>
+                                     <div className={`text-base font-bold ${token.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                       {token.price_change_percentage_24h >= 0 ? '+' : ''}{token.price_change_percentage_24h?.toFixed(2) || '0'}%
+                                     </div>
+                                   </div>
                                   
-                                  {/* Buy/Sell Buttons */}
-                                  <div className="flex flex-col gap-2">
-                                    <Button
-                                      size="sm"
-                                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1"
-                                      onClick={() => handleBuyToken(token)}
-                                    >
-                                      <ShoppingCart className="h-3 w-3 mr-1" />
-                                      Buy
-                                    </Button>
-                                    <Button
-                                      size="sm"
-                                      variant="outline"
-                                      className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1"
-                                      onClick={() => handleSellToken(token)}
-                                    >
-                                      <TrendingDown className="h-3 w-3 mr-1" />
-                                      Sell
-                                    </Button>
-                                  </div>
+                                   {/* Enhanced Buy/Sell Buttons */}
+                                   <div className="flex flex-col gap-3">
+                                     <Button
+                                       size="lg"
+                                       className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white px-6 py-3 shadow-lg hover:shadow-green-500/25 transition-all duration-300"
+                                       onClick={() => handleBuyToken(token)}
+                                     >
+                                       <ShoppingCart className="h-4 w-4 mr-2" />
+                                       Buy Now
+                                     </Button>
+                                     <Button
+                                       size="lg"
+                                       variant="outline"
+                                       className="border-red-500 text-red-400 hover:bg-gradient-to-r hover:from-red-600 hover:to-red-700 hover:text-white px-6 py-3 hover:border-transparent transition-all duration-300"
+                                       onClick={() => handleSellToken(token)}
+                                     >
+                                       <TrendingDown className="h-4 w-4 mr-2" />
+                                       Sell
+                                     </Button>
+                                   </div>
                                 </div>
                               </div>
 
-                              {/* Detailed Scoring */}
-                              <div className="mt-4 pt-4 border-t border-gray-700">
-                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2 text-xs mb-4">
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.twitterInteraction}</div>
-                                    <div className="text-gray-500">Twitter</div>
+                               {/* Enhanced Detailed Scoring */}
+                              <div className="mt-6 pt-6 border-t border-gray-600">
+                                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-6">
+                                  <div className="text-center p-3 bg-orange-500/10 rounded-lg border border-orange-500/20">
+                                    <div className="text-2xl font-bold text-orange-400 mb-1">{token.scores.twitterInteraction}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Twitter</div>
                                   </div>
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.goodTicker}</div>
-                                    <div className="text-gray-500">Ticker</div>
+                                  <div className="text-center p-3 bg-red-500/10 rounded-lg border border-red-500/20">
+                                    <div className="text-2xl font-bold text-red-400 mb-1">{token.scores.goodTicker}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Ticker</div>
                                   </div>
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.culturalRefs}</div>
-                                    <div className="text-gray-500">Culture</div>
+                                  <div className="text-center p-3 bg-pink-500/10 rounded-lg border border-pink-500/20">
+                                    <div className="text-2xl font-bold text-pink-400 mb-1">{token.scores.culturalRefs}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Culture</div>
                                   </div>
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.ageOfProject}</div>
-                                    <div className="text-gray-500">Age</div>
+                                  <div className="text-center p-3 bg-purple-500/10 rounded-lg border border-purple-500/20">
+                                    <div className="text-2xl font-bold text-purple-400 mb-1">{token.scores.ageOfProject}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Age</div>
                                   </div>
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.volumeConsistency}</div>
-                                    <div className="text-gray-500">Volume</div>
+                                  <div className="text-center p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
+                                    <div className="text-2xl font-bold text-blue-400 mb-1">{token.scores.volumeConsistency}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Volume</div>
                                   </div>
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.holderGrowth}</div>
-                                    <div className="text-gray-500">Holders</div>
+                                  <div className="text-center p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                                    <div className="text-2xl font-bold text-green-400 mb-1">{token.scores.holderGrowth}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Holders</div>
                                   </div>
-                                  <div className="text-center">
-                                    <div className="text-orange-400 font-semibold">{token.scores.higherLows}</div>
-                                    <div className="text-gray-500">Lows</div>
+                                  <div className="text-center p-3 bg-yellow-500/10 rounded-lg border border-yellow-500/20">
+                                    <div className="text-2xl font-bold text-yellow-400 mb-1">{token.scores.higherLows}</div>
+                                    <div className="text-gray-400 text-sm font-medium">Lows</div>
                                   </div>
                                 </div>
                                 
-                                {/* AI Summary */}
-                                <div className="bg-gray-900/50 rounded-lg p-4 border-l-4 border-purple-500">
-                                  <div className="flex items-start gap-2 mb-2">
-                                    <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                      <span className="text-white text-xs font-bold">AI</span>
+                                {/* Enhanced AI Summary */}
+                                <div className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl p-6 border border-purple-500/30 backdrop-blur-sm">
+                                  <div className="flex items-start gap-4">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+                                      <span className="text-white text-sm font-bold">AI</span>
                                     </div>
-                                    <div>
-                                      <h4 className="text-purple-400 font-semibold text-sm mb-1">MOTI Analysis</h4>
-                                      <p className="text-gray-300 text-sm leading-relaxed">
+                                    <div className="flex-1">
+                                      <h4 className="text-purple-400 font-bold text-lg mb-3 flex items-center gap-2">
+                                        MOTI Analysis
+                                        <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                                      </h4>
+                                      <p className="text-gray-200 text-base leading-relaxed">
                                         {token.aiSummary}
                                       </p>
                                     </div>
@@ -413,20 +464,9 @@ const MotiMeter = () => {
                 </TabsContent>
               </Tabs>
 
-              {/* Trending Articles Widget - moved inside main content */}
-              <div className="mt-8">
-                <WordPressIntegration />
-              </div>
-            </div>
-
-            {/* Sticky Sidebar */}
-            <div className="hidden lg:block lg:col-span-1">
-              <div className="sticky top-8 space-y-8">
-                <AdUnit type="skyscraper" />
-                
-                <MarketWinnersWidget topGainnersandLoosers={topGainersAndLosers} />
-              </div>
-            </div>
+          {/* Trending Articles Widget - Full width */}
+          <div className="mt-12">
+            <WordPressIntegration />
           </div>
         </div>
 
