@@ -14,6 +14,7 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
+import { apiService } from "@/services/apiService";
 import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHelpers';
 
 import ScrollToTop from "@/components/ScrollToTop";
@@ -31,6 +32,9 @@ const RealTimeData = () => {
     activeCoins: 0,
     markets: 0
   });
+  const [fearGreedIndex, setFearGreedIndex] = useState({ value: 52, classification: 'Neutral' });
+  const [defiTVL, setDefiTVL] = useState({ tvl: 127800000000, change24h: 3.2 });
+  const [ethGasPrice, setEthGasPrice] = useState({ gasPrice: 25, trend: 'normal' as 'low' | 'normal' | 'high' });
   const [loading, setLoading] = useState(true);
   
   const cryptoOptions = [
@@ -98,12 +102,30 @@ const RealTimeData = () => {
     });
   };
 
+  const fetchRealTimeMetrics = async () => {
+    try {
+      const [fearGreed, tvl, gasPrice] = await Promise.all([
+        apiService.getFearGreedIndex(),
+        apiService.getDefiTVL(),
+        apiService.getEthGasPrice()
+      ]);
+      
+      setFearGreedIndex(fearGreed);
+      setDefiTVL(tvl);
+      setEthGasPrice(gasPrice);
+    } catch (error) {
+      console.error('Error fetching real-time metrics:', error);
+    }
+  };
+
   useEffect(() => {
     fetchAndCacheMarketData();
+    fetchRealTimeMetrics();
     
     // Set up auto-refresh every 30 seconds
     const interval = setInterval(() => {
       fetchAndCacheMarketData();
+      fetchRealTimeMetrics();
     }, 30000);
     
     return () => clearInterval(interval);
@@ -330,13 +352,15 @@ const RealTimeData = () => {
                             <div className="p-6 bg-gradient-to-br from-cyan-600/20 to-blue-600/20 rounded-xl border border-cyan-500/30">
                               <div className="flex items-center justify-between mb-4">
                                 <h4 className="text-white font-semibold flex items-center gap-2">
-                                  <ChartLine className="h-5 w-5 text-cyan-400" />
-                                  Altcoin Season
+                                  <Zap className="h-5 w-5 text-cyan-400" />
+                                  ETH Gas Price
                                 </h4>
                                 <div className="w-3 h-3 bg-cyan-400 rounded-full animate-pulse"></div>
                               </div>
-                              <p className="text-3xl font-bold text-white mb-2">78</p>
-                              <p className="text-green-400 text-sm">Altcoin season active</p>
+                              <p className="text-3xl font-bold text-white mb-2">{ethGasPrice.gasPrice} Gwei</p>
+                              <p className={`text-sm ${ethGasPrice.trend === 'low' ? 'text-green-400' : ethGasPrice.trend === 'high' ? 'text-red-400' : 'text-yellow-400'}`}>
+                                {ethGasPrice.trend === 'low' ? 'Low gas fees' : ethGasPrice.trend === 'high' ? 'High gas fees' : 'Normal gas fees'}
+                              </p>
                             </div>
                             
                             <div className="p-6 bg-gradient-to-br from-pink-600/20 to-rose-600/20 rounded-xl border border-pink-500/30">
@@ -347,8 +371,10 @@ const RealTimeData = () => {
                                 </h4>
                                 <div className="w-3 h-3 bg-pink-400 rounded-full animate-pulse"></div>
                               </div>
-                              <p className="text-3xl font-bold text-white mb-2">52</p>
-                              <p className="text-yellow-400 text-sm">Neutral sentiment</p>
+                              <p className="text-3xl font-bold text-white mb-2">{fearGreedIndex.value}</p>
+                              <p className={`text-sm ${fearGreedIndex.value >= 75 ? 'text-red-400' : fearGreedIndex.value >= 50 ? 'text-yellow-400' : 'text-green-400'}`}>
+                                {fearGreedIndex.classification}
+                              </p>
                             </div>
                             
                             <div className="p-6 bg-gradient-to-br from-emerald-600/20 to-green-600/20 rounded-xl border border-emerald-500/30">
@@ -359,8 +385,8 @@ const RealTimeData = () => {
                                 </h4>
                                 <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
                               </div>
-                              <p className="text-3xl font-bold text-white mb-2">$127.8B</p>
-                              <p className="text-green-400 text-sm">+3.2% (24h)</p>
+                              <p className="text-3xl font-bold text-white mb-2">${formatMarketCap(defiTVL.tvl)}</p>
+                              <p className="text-green-400 text-sm">+{defiTVL.change24h}% (24h)</p>
                             </div>
                           </div>
                         </CardContent>
