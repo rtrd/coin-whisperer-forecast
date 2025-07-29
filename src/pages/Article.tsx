@@ -234,6 +234,11 @@ const Article = () => {
           <div className="flex justify-center mt-6 mb-8">
             <AdUnit type="header" />
           </div>
+
+          {/* Additional Header Ad Placement */}
+          <div className="flex justify-center mb-8">
+            <AdUnit type="leaderboard" />
+          </div>
         </div>
 
         <div className="container mx-auto px-4 pb-8">
@@ -281,6 +286,9 @@ const Article = () => {
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
                 />
+                
+                {/* Ad placement below Market Movers */}
+                <AdUnit type="square" />
               </div>
             </div>
           </div>
