@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
+import { adRefreshService } from '@/services/adRefreshService';
 
 interface AdUnitProps {
   type:
@@ -9,6 +10,7 @@ interface AdUnitProps {
     | "skyscraper"
     | "leaderboard";
   className?: string;
+  refreshKey?: string | number;
 }
 
 const adSlotMap = {
@@ -57,8 +59,10 @@ declare global {
   }
 }
 
-export const AdUnit: React.FC<AdUnitProps> = ({ type, className }) => {
+export const AdUnit: React.FC<AdUnitProps> = ({ type, className, refreshKey }) => {
   const slotConfig = adSlotMap[type];
+  const isDisplayedRef = useRef(false);
+  
   if (!slotConfig) {
     console.warn(`Unknown ad type: ${type}`);
     return null;
@@ -83,7 +87,11 @@ export const AdUnit: React.FC<AdUnitProps> = ({ type, className }) => {
       if (window.googletag && window.googletag.cmd) {
         window.googletag.cmd.push(() => {
           try {
-            window.googletag.display(slotId);
+            if (!isDisplayedRef.current) {
+              window.googletag.display(slotId);
+              isDisplayedRef.current = true;
+            }
+            adRefreshService.markSlotAsDisplayed(slotId);
             console.log(`Displaying ad slot: ${slotId}`);
           } catch (error) {
             console.error(`Error displaying ad slot ${slotId}:`, error);
@@ -99,6 +107,17 @@ export const AdUnit: React.FC<AdUnitProps> = ({ type, className }) => {
     
     return () => clearTimeout(timer);
   }, [slotId]);
+
+  // Handle refresh when refreshKey changes
+  useEffect(() => {
+    if (refreshKey && isDisplayedRef.current) {
+      const timer = setTimeout(() => {
+        adRefreshService.refreshSlot(slotId);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [refreshKey, slotId]);
 
   return <div id={slotId} className={className} style={{ width, height }} />;
 };

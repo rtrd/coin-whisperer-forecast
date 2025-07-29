@@ -7,6 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { AdBlockDetector } from "@/components/ads/AdBlockDetector";
 import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
+import { useAdRefresh } from "./hooks/useAdRefresh";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Subscribe from "./pages/Subscribe";
@@ -27,18 +28,11 @@ import ViewEmails from "./pages/EmailList";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <HeadImprovements />
-        <Toaster />
-        <Sonner />
-        <AdBlockDetector />
-        <AutoRefresh />
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
+const AppRoutes = () => {
+  useAdRefresh(); // Initialize ad refresh functionality
+
+  return (
+    <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/subscribe" element={<Subscribe />} />
             <Route path="/token/:tokenId" element={<TokenDetail />} />
@@ -64,9 +58,24 @@ const App = () => (
             <Route path="/real-time-data" element={<RealTimeData />} />
             <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
             <Route path="/moti-meter" element={<MotiMeter />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+};
+
+const App = () => (
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <HeadImprovements />
+        <Toaster />
+        <Sonner />
+        <AdBlockDetector />
+        <AutoRefresh />
+        <BrowserRouter>
+          <ScrollToTop />
+          <AppRoutes />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
