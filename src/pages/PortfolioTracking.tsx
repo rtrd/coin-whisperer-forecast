@@ -269,6 +269,15 @@ const PortfolioTracking = () => {
                 </CardContent>
               </Card>
 
+              {/* Ad Banner After Section 1 */}
+              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+                <GAMAdUnit
+                  adUnitId="div-gpt-ad-1752654531765-3"
+                  size={[728, 120]}
+                  className="max-w-full h-full"
+                />
+              </div>
+
               {/* Portfolio Tracking FAQ */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
                 <CardHeader className="bg-gradient-to-r from-green-600/10 to-blue-600/10 border-b border-gray-600/50">
@@ -346,6 +355,15 @@ const PortfolioTracking = () => {
                   </Accordion>
                 </CardContent>
               </Card>
+
+              {/* Ad Banner After Section 2 */}
+              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
+                <GAMAdUnit
+                  adUnitId="div-gpt-ad-1752654531765-4"
+                  size={[728, 120]}
+                  className="max-w-full h-full"
+                />
+              </div>
 
               {/* Improved Email Subscription */}
               <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl backdrop-blur-sm">

@@ -15,6 +15,7 @@ import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import WordPressIntegration from "@/components/WordPressIntegration";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 declare global {
   interface Window {
@@ -196,6 +197,15 @@ const MotiMeter = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Ad Banner After Section 1 */}
+          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mb-8">
+            <GAMAdUnit
+              adUnitId="div-gpt-ad-1752654531765-3"
+              size={[728, 120]}
+              className="max-w-full h-full"
+            />
+          </div>
 
           {/* Enhanced Time Period Tabs */}
           <Tabs value={selectedPeriod} onValueChange={(value) => setSelectedPeriod(value as '24h' | '5d' | '7d')} className="mb-10">
@@ -473,6 +483,15 @@ const MotiMeter = () => {
                   )}
                 </TabsContent>
               </Tabs>
+
+          {/* Ad Banner After Section 2 */}
+          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-8 mb-8">
+            <GAMAdUnit
+              adUnitId="div-gpt-ad-1752654531765-4"
+              size={[728, 120]}
+              className="max-w-full h-full"
+            />
+          </div>
 
           {/* Trending Articles Widget - Full width */}
           <div className="mt-12">

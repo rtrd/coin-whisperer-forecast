@@ -14,6 +14,7 @@ import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import { MarketDataFilters, FilterType } from "@/components/MarketDataFilters";
 import { generateAllTokensSEO } from "@/utils/pageSeo";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
@@ -197,6 +198,13 @@ const AllTokens = () => {
             priceChange={2.5}
           />
 
+          {/* Ad Banner After Header */}
+          <GAMAdUnit
+            adUnitId="div-gpt-ad-1752654531765-0"
+            size={[728, 90]}
+            className="mb-6 md:mb-8"
+          />
+
           <div className="mb-6">
             <Link to="/">
               <Button
@@ -276,6 +284,13 @@ const AllTokens = () => {
               </div>
             </CardContent>
           </Card>
+          
+          {/* Ad Banner Before Footer */}
+          <GAMAdUnit
+            adUnitId="div-gpt-ad-1752654531765-1"
+            size={[728, 90]}
+            className="mt-6 mb-6"
+          />
         </div>
 
         <Footer />

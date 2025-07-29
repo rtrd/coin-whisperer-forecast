@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 const serverUrl = import.meta.env.VITE_SERVER_URL;
 
 interface EmailEntry {
@@ -71,6 +72,13 @@ const EmailList = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
+      {/* Ad Banner After Header */}
+      <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-0"
+        size={[728, 90]}
+        className="mb-6"
+      />
+      
       <h2 className="text-2xl font-bold mb-4 text-gray-800">📧 Saved Emails</h2>
 
       {loading ? (
@@ -92,6 +100,13 @@ const EmailList = () => {
           ))}
         </div>
       )}
+      
+      {/* Ad Banner Before Footer */}
+      <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-1"
+        size={[728, 90]}
+        className="mt-6"
+      />
     </div>
   );
 };

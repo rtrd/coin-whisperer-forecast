@@ -10,6 +10,7 @@ import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { getWordPressPost } from "../../utils/api";
 import { formatArticleForDisplay, getFeaturedArticle } from "@/utils/articleUtils";
 import { generateBlogSEO } from "@/utils/pageSeo";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
@@ -203,10 +204,25 @@ const Blog = () => {
 
       <BlogLayout cryptoOptions={cryptoOptions}>
         <BlogHeader />
+        
+        {/* Ad Banner After Header */}
+        <GAMAdUnit
+          adUnitId="div-gpt-ad-1752654531765-0"
+          size={[728, 90]}
+          className="mb-6 md:mb-8"
+        />
+        
         <BlogFeaturedSection featuredArticle={featuredArticle} />
         <BlogTrendingSection trendingArticles={trendingArticles} />
         <BlogLatestSection latestArticles={latestArticles} />
         <BlogCategoriesSection categories={categories} />
+        
+        {/* Ad Banner Before Footer */}
+        <GAMAdUnit
+          adUnitId="div-gpt-ad-1752654531765-1"
+          size={[728, 90]}
+          className="mt-6 mb-6 md:mb-8"
+        />
       </BlogLayout>
     </>
   );

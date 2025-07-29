@@ -70,6 +70,13 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       {/* Navigation Cards to Other Features */}
       <IndexNavigationCards />
 
+      {/* Ad Banner Before Footer */}
+      <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-1"
+        size={[728, 90]}
+        className="mb-6 md:mb-8"
+      />
+
       {/* Footer */}
       <Footer />
     </div>

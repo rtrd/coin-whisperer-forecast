@@ -16,6 +16,7 @@ import { TestimonialCard } from "@/components/subscribe/TestimonialCard";
 import { LiveStatsWidget } from "@/components/subscribe/LiveStatsWidget";
 import { ComparisonTable } from "@/components/subscribe/ComparisonTable";
 import { useAdScript } from "@/hooks/useAdScript";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const Subscribe = () => {
   const [email, setEmail] = useState('');
@@ -152,6 +153,13 @@ const Subscribe = () => {
             cryptoOptions={cryptoOptions}
             currentPrice={50000}
             priceChange={2.5}
+          />
+
+          {/* Ad Banner After Header */}
+          <GAMAdUnit
+            adUnitId="div-gpt-ad-1752654531765-0"
+            size={[728, 90]}
+            className="mb-6 md:mb-8"
           />
 
           {/* Header */}
@@ -296,6 +304,15 @@ const Subscribe = () => {
               </div>
             </div>
           </div>
+        </div>
+        
+        {/* Ad Banner Before Footer */}
+        <div className="container mx-auto px-4 py-6">
+          <GAMAdUnit
+            adUnitId="div-gpt-ad-1752654531765-1"
+            size={[728, 90]}
+            className="mb-6"
+          />
         </div>
       </div>
       

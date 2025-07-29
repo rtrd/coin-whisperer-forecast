@@ -8,6 +8,7 @@ import { TokenDetailAnalysis } from "./TokenDetailAnalysis";
 import { TokenSidebar } from "./TokenSidebar";
 import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -104,6 +105,15 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             handlePredict={handlePredict}
             handleClearPrediction={handleClearPrediction}
           />
+
+          {/* Ad Banner After Price Chart - Centered */}
+          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
+            <GAMAdUnit
+              adUnitId="div-gpt-ad-1752654531765-2"
+              size={[728, 120]}
+              className="max-w-full h-full"
+            />
+          </div>
 
           {/* Ad Banner After Price Chart - Centered */}
           {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
