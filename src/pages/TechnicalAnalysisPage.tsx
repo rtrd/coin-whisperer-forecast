@@ -162,10 +162,19 @@ const TechnicalAnalysisPage = () => {
                     <p className="text-gray-300 text-sm">AI-powered detection of head & shoulders, triangles, flags</p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+            </CardContent>
+          </Card>
 
-            {/* Technical Analysis Calculations */}
+          {/* Ad Banner After Section 1 */}
+          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
+            <GAMAdUnit
+              adUnitId="div-gpt-ad-1752654531765-2"
+              size={[728, 120]}
+              className="max-w-full h-full"
+            />
+          </div>
+
+          {/* Technical Analysis Calculations */}
             <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
               <CardHeader className="bg-gradient-to-r from-green-600/10 to-blue-600/10 border-b border-gray-600/50">
                 <div className="flex items-center gap-3 mb-2">
@@ -246,6 +255,15 @@ const TechnicalAnalysisPage = () => {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Ad Banner After Section 2 */}
+            <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
+              <GAMAdUnit
+                adUnitId="div-gpt-ad-1752654531765-3"
+                size={[728, 120]}
+                className="max-w-full h-full"
+              />
+            </div>
 
             {/* Technical Analysis FAQ */}
             <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
