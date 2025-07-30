@@ -55,8 +55,8 @@ const Footer = () => {
                 <Linkedin className="h-5 w-5" />
               </a>
               <a href="https://www.producthunt.com/products/pump-parade" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M13.604 9.474H9.8v5.052h3.804c1.398 0 2.526-1.128 2.526-2.526s-1.128-2.526-2.526-2.526zM12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm1.604 16.526H9.8V19H7.8V5h5.804c2.498 0 4.526 2.028 4.526 4.526a4.53 4.53 0 01-4.526 4.526z"/>
+                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 40 40">
+                  <path d="M20 40C8.954 40 0 31.046 0 20S8.954 0 20 0s20 8.954 20 20-8.954 20-20 20zm9.032-21.936c0-3.584-2.912-6.496-6.496-6.496H12.8v16h3.2v-3.2h6.336c3.584 0 6.496-2.912 6.496-6.496v-2.208zm-3.2 2.208c0 1.792-1.408 3.2-3.296 3.2H16v-8.736h6.336c1.888 0 3.296 1.408 3.296 3.2v2.336z"/>
                 </svg>
               </a>
               <a href="https://www.reddit.com/r/PumpParade/" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors">
