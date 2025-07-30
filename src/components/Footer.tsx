@@ -73,6 +73,13 @@ const Footer = () => {
                 <Mail className="h-5 w-5" />
               </a>
             </div>
+            
+            {/* Product Hunt Badge */}
+            <div className="mt-4">
+              <a href="https://www.producthunt.com/products/pump-parade?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-pump&#0045;parade" target="_blank">
+                <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=984296&theme=light&t=1753864643402" alt="Pump&#0032;Parade - AI&#0045;powered&#0032;crypto&#0032;research&#0032;tools&#0032;for&#0032;smarter&#0032;decisions | Product Hunt" style={{ width: '250px', height: '54px' }} width="250" height="54" />
+              </a>
+            </div>
           </div>
         </div>
 
