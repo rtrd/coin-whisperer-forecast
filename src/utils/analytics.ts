@@ -215,15 +215,7 @@ export const trackError = (errorType: string, errorMessage: string, context?: st
   });
 };
 
-// Performance tracking
-export const trackPerformance = (metric: string, value: number, context?: string) => {
-  trackEvent('performance', {
-    metric_name: metric,
-    metric_value: value,
-    context,
-    event_category: 'performance',
-  });
-};
+// Performance tracking removed
 
 // Debug function to test tracking
 export const testTracking = () => {

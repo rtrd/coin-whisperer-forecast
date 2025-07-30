@@ -4,14 +4,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import App from './App.tsx'
 import './index.css'
 
-// Initialize web vitals tracking
-import { trackWebVitals, trackResourceTiming } from '@/utils/webVitals';
-
-// Performance observer for Core Web Vitals
-if (typeof window !== 'undefined') {
-  trackWebVitals();
-  trackResourceTiming();
-}
+// Web vitals tracking removed
 
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
