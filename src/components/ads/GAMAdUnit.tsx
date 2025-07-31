@@ -6,7 +6,6 @@ interface GAMAdUnitProps {
   className?: string;
 }
 
-// Global maps to track defined and displayed slots
 const definedSlots = new Set<string>();
 const displayedSlots = new Set<string>();
 
@@ -18,9 +17,11 @@ export const GAMAdUnit = ({
   const adRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!adRef.current || !window.googletag?.cmd) return;
+    if (!window.googletag?.cmd) return;
 
     const initAd = () => {
+      if (!adRef.current) return; // extra safety
+
       if (!definedSlots.has(adUnitId)) {
         const slot = window.googletag
           .defineSlot(`/23308796269/${adUnitId}`, size, adUnitId)
@@ -38,8 +39,12 @@ export const GAMAdUnit = ({
       }
     };
 
-    // Run only after DOM has mounted
-    window.googletag.cmd.push(initAd);
+    // Use requestAnimationFrame to ensure div is mounted
+    const id = requestAnimationFrame(() => {
+      window.googletag.cmd.push(initAd);
+    });
+
+    return () => cancelAnimationFrame(id);
   }, [adUnitId, size]);
 
   return (

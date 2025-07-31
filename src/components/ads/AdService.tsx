@@ -56,27 +56,31 @@ export const AdUnit = ({ type, className }: AdUnitProps) => {
 
     if (!node || !window.googletag?.cmd) return;
 
-    // Push ad logic to GPT command queue
-    window.googletag.cmd.push(() => {
-      if (!node) return;
+    // Defer GPT logic until next animation frame to ensure the div is in DOM
+    const frame = requestAnimationFrame(() => {
+      window.googletag.cmd.push(() => {
+        if (!document.getElementById(slotId)) return;
 
-      const definedSlots = window.googletag.pubads().getSlots();
-      const isSlotDefined = definedSlots.some(
-        (slot) => slot.getSlotElementId() === slotId
-      );
+        const definedSlots = window.googletag.pubads().getSlots();
+        const isSlotDefined = definedSlots.some(
+          (slot) => slot.getSlotElementId() === slotId
+        );
 
-      if (!isSlotDefined) {
-        window.googletag
-          .defineSlot(path, size, slotId)
-          .addService(window.googletag.pubads());
-        window.googletag.enableServices();
-      }
+        if (!isSlotDefined) {
+          window.googletag
+            .defineSlot(path, size, slotId)
+            .addService(window.googletag.pubads());
+          window.googletag.enableServices();
+        }
 
-      if (!displayedSlots.has(slotId)) {
-        window.googletag.display(slotId);
-        displayedSlots.add(slotId);
-      }
+        if (!displayedSlots.has(slotId)) {
+          window.googletag.display(slotId);
+          displayedSlots.add(slotId);
+        }
+      });
     });
+
+    return () => cancelAnimationFrame(frame);
   }, [slotId, path, size]);
 
   return (
