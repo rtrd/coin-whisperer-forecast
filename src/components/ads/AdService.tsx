@@ -44,29 +44,38 @@ const adSlotMap = {
   },
 };
 
+// Track displayed ad slots to prevent re-rendering
+const displayedSlots = new Set<string>();
+
 export const AdUnit = ({ type, className }: AdUnitProps) => {
   const adRef = useRef<HTMLDivElement | null>(null);
   const { slotId, path, size } = adSlotMap[type];
 
   useEffect(() => {
-    if (!window.googletag?.cmd || !adRef.current) return;
+    const node = adRef.current;
 
+    if (!node || !window.googletag?.cmd) return;
+
+    // Push ad logic to GPT command queue
     window.googletag.cmd.push(() => {
-      const existingSlot = window.googletag
-        .pubads()
-        .getSlots()
-        .find((slot) => slot.getSlotElementId() === slotId);
+      if (!node) return;
 
-      // Define the slot only once
-      if (!existingSlot) {
+      const definedSlots = window.googletag.pubads().getSlots();
+      const isSlotDefined = definedSlots.some(
+        (slot) => slot.getSlotElementId() === slotId
+      );
+
+      if (!isSlotDefined) {
         window.googletag
           .defineSlot(path, size, slotId)
           .addService(window.googletag.pubads());
         window.googletag.enableServices();
       }
 
-      // Now display it
-      window.googletag.display(slotId);
+      if (!displayedSlots.has(slotId)) {
+        window.googletag.display(slotId);
+        displayedSlots.add(slotId);
+      }
     });
   }, [slotId, path, size]);
 

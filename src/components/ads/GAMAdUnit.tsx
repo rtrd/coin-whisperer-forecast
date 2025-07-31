@@ -6,38 +6,40 @@ interface GAMAdUnitProps {
   className?: string;
 }
 
+// Global maps to track defined and displayed slots
+const definedSlots = new Set<string>();
+const displayedSlots = new Set<string>();
+
 export const GAMAdUnit = ({
   adUnitId,
   size,
   className = "",
 }: GAMAdUnitProps) => {
-  const adRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!window.googletag?.cmd || !adRef.current) return;
+    if (!adRef.current || !window.googletag?.cmd) return;
 
-    const existingSlot = window.googletag
-      ?.pubads()
-      ?.getSlots()
-      ?.find((slot: any) => slot.getSlotElementId() === adUnitId);
+    const initAd = () => {
+      if (!definedSlots.has(adUnitId)) {
+        const slot = window.googletag
+          .defineSlot(`/23308796269/${adUnitId}`, size, adUnitId)
+          ?.addService(window.googletag.pubads());
 
-    if (existingSlot) {
-      console.warn(
-        `Slot with ID "${adUnitId}" already exists. Skipping defineSlot.`
-      );
-      return;
-    }
-
-    window.googletag.cmd.push(() => {
-      const slot = window.googletag
-        .defineSlot(`/23308796269/${adUnitId}`, size, adUnitId)
-        ?.addService(window.googletag.pubads());
-
-      if (slot) {
-        window.googletag.enableServices();
-        window.googletag.display(adUnitId);
+        if (slot) {
+          definedSlots.add(adUnitId);
+          window.googletag.enableServices();
+        }
       }
-    });
+
+      if (!displayedSlots.has(adUnitId)) {
+        window.googletag.display(adUnitId);
+        displayedSlots.add(adUnitId);
+      }
+    };
+
+    // Run only after DOM has mounted
+    window.googletag.cmd.push(initAd);
   }, [adUnitId, size]);
 
   return (
