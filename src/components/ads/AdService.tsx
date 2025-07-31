@@ -44,30 +44,43 @@ const adSlotMap = {
   },
 };
 
+// Track displayed ad slots to prevent re-rendering
+const displayedSlots = new Set<string>();
+
 export const AdUnit = ({ type, className }: AdUnitProps) => {
   const adRef = useRef<HTMLDivElement | null>(null);
   const { slotId, path, size } = adSlotMap[type];
 
   useEffect(() => {
-    if (!window.googletag?.cmd || !adRef.current) return;
+    const node = adRef.current;
 
-    window.googletag.cmd.push(() => {
-      const existingSlot = window.googletag
-        .pubads()
-        .getSlots()
-        .find((slot) => slot.getSlotElementId() === slotId);
+    if (!node || !window.googletag?.cmd) return;
 
-      // Define the slot only once
-      if (!existingSlot) {
-        window.googletag
-          .defineSlot(path, size, slotId)
-          .addService(window.googletag.pubads());
-        window.googletag.enableServices();
-      }
+    // Defer GPT logic until next animation frame to ensure the div is in DOM
+    const frame = requestAnimationFrame(() => {
+      window.googletag.cmd.push(() => {
+        if (!document.getElementById(slotId)) return;
 
-      // Now display it
-      window.googletag.display(slotId);
+        const definedSlots = window.googletag.pubads().getSlots();
+        const isSlotDefined = definedSlots.some(
+          (slot) => slot.getSlotElementId() === slotId
+        );
+
+        if (!isSlotDefined) {
+          window.googletag
+            .defineSlot(path, size, slotId)
+            .addService(window.googletag.pubads());
+          window.googletag.enableServices();
+        }
+
+        if (!displayedSlots.has(slotId)) {
+          window.googletag.display(slotId);
+          displayedSlots.add(slotId);
+        }
+      });
     });
+
+    return () => cancelAnimationFrame(frame);
   }, [slotId, path, size]);
 
   return (

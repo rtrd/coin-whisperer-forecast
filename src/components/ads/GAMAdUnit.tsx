@@ -6,38 +6,45 @@ interface GAMAdUnitProps {
   className?: string;
 }
 
+const definedSlots = new Set<string>();
+const displayedSlots = new Set<string>();
+
 export const GAMAdUnit = ({
   adUnitId,
   size,
   className = "",
 }: GAMAdUnitProps) => {
-  const adRef = useRef<HTMLDivElement>(null);
+  const adRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (!window.googletag?.cmd || !adRef.current) return;
+    if (!window.googletag?.cmd) return;
 
-    const existingSlot = window.googletag
-      ?.pubads()
-      ?.getSlots()
-      ?.find((slot: any) => slot.getSlotElementId() === adUnitId);
+    const initAd = () => {
+      if (!adRef.current) return; // extra safety
 
-    if (existingSlot) {
-      console.warn(
-        `Slot with ID "${adUnitId}" already exists. Skipping defineSlot.`
-      );
-      return;
-    }
+      if (!definedSlots.has(adUnitId)) {
+        const slot = window.googletag
+          .defineSlot(`/23308796269/${adUnitId}`, size, adUnitId)
+          ?.addService(window.googletag.pubads());
 
-    window.googletag.cmd.push(() => {
-      const slot = window.googletag
-        .defineSlot(`/23308796269/${adUnitId}`, size, adUnitId)
-        ?.addService(window.googletag.pubads());
-
-      if (slot) {
-        window.googletag.enableServices();
-        window.googletag.display(adUnitId);
+        if (slot) {
+          definedSlots.add(adUnitId);
+          window.googletag.enableServices();
+        }
       }
+
+      if (!displayedSlots.has(adUnitId)) {
+        window.googletag.display(adUnitId);
+        displayedSlots.add(adUnitId);
+      }
+    };
+
+    // Use requestAnimationFrame to ensure div is mounted
+    const id = requestAnimationFrame(() => {
+      window.googletag.cmd.push(initAd);
     });
+
+    return () => cancelAnimationFrame(id);
   }, [adUnitId, size]);
 
   return (
