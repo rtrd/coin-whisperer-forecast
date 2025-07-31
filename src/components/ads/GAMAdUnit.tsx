@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from 'react';
-import { adRefreshService } from '@/services/adRefreshService';
+import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
@@ -9,65 +8,60 @@ declare global {
 
 interface GAMAdUnitProps {
   adUnitId: string;
-  size: [number, number];
+  size: number[] | number[][];
   className?: string;
-  refreshKey?: string | number; // Optional prop to force refresh
 }
 
-export const GAMAdUnit: React.FC<GAMAdUnitProps> = ({
+export const GAMAdUnit = ({
   adUnitId,
   size,
-  className = '',
-  refreshKey
-}) => {
+  className = "",
+}: GAMAdUnitProps) => {
   const adRef = useRef<HTMLDivElement>(null);
-  const isDisplayedRef = useRef(false);
 
   useEffect(() => {
-    const displayAd = () => {
-      if (window.googletag && window.googletag.cmd) {
-        window.googletag.cmd.push(() => {
-          try {
-            if (!isDisplayedRef.current) {
-              window.googletag.display(adUnitId);
-              isDisplayedRef.current = true;
-            }
-            adRefreshService.markSlotAsDisplayed(adUnitId);
-          } catch (error) {
-            console.error(`Error displaying ad ${adUnitId}:`, error);
-          }
-        });
-      }
+    if (!window.googletag) {
+      window.googletag = { cmd: [] };
+    }
+
+    const loadGPTScript = () => {
+      const gptScriptId = "gpt-script";
+      if (document.getElementById(gptScriptId)) return;
+
+      const script = document.createElement("script");
+      script.id = gptScriptId;
+      script.src = "https://securepubads.g.doubleclick.net/tag/js/gpt.js";
+      script.async = true;
+      document.head.appendChild(script);
     };
 
-    // Small delay to ensure GPT is loaded
-    const timer = setTimeout(displayAd, 100);
+    loadGPTScript();
 
-    return () => clearTimeout(timer);
-  }, [adUnitId]);
+    window.googletag.cmd.push(() => {
+      const slotExists = window.googletag
+        .pubads()
+        .getSlots()
+        .some((slot: any) => slot.getSlotElementId() === adUnitId);
 
-  // Handle refresh when refreshKey changes
-  useEffect(() => {
-    if (refreshKey && isDisplayedRef.current) {
-      const timer = setTimeout(() => {
-        adRefreshService.refreshSlot(adUnitId);
-      }, 100);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [refreshKey, adUnitId]);
+      if (!slotExists) {
+        window.googletag
+          .defineSlot("/23308796269/leaderboard", size, adUnitId)
+          .addService(window.googletag.pubads());
+        window.googletag.enableServices();
+      }
+
+      window.googletag.display(adUnitId);
+    });
+  }, [adUnitId, size]);
 
   return (
-    <div className={`flex justify-center ${className}`}>
-      <div
-        ref={adRef}
-        id={adUnitId}
-        style={{
-          minWidth: `${size[0]}px`,
-          minHeight: `${size[1]}px`,
-          display: 'block'
-        }}
-      />
-    </div>
+    <div
+      ref={adRef}
+      id={adUnitId}
+      className={className}
+      style={{ width: "100%", height: "auto" }}
+    />
   );
 };
+
+export default GAMAdUnit;
