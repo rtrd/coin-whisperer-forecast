@@ -1,14 +1,8 @@
 import { useEffect, useRef } from "react";
 
-declare global {
-  interface Window {
-    googletag: any;
-  }
-}
-
 interface GAMAdUnitProps {
   adUnitId: string;
-  size: number[] | number[][];
+  size: [number, number] | [number, number][];
   className?: string;
 }
 
@@ -20,46 +14,38 @@ export const GAMAdUnit = ({
   const adRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!window.googletag) {
-      window.googletag = { cmd: [] };
+    if (!window.googletag?.cmd || !adRef.current) return;
+
+    const existingSlot = window.googletag
+      ?.pubads()
+      ?.getSlots()
+      ?.find((slot: any) => slot.getSlotElementId() === adUnitId);
+
+    if (existingSlot) {
+      console.warn(
+        `Slot with ID "${adUnitId}" already exists. Skipping defineSlot.`
+      );
+      return;
     }
 
-    const loadGPTScript = () => {
-      const gptScriptId = "gpt-script";
-      if (document.getElementById(gptScriptId)) return;
-
-      const script = document.createElement("script");
-      script.id = gptScriptId;
-      script.src = "https://securepubads.g.doubleclick.net/tag/js/gpt.js";
-      script.async = true;
-      document.head.appendChild(script);
-    };
-
-    loadGPTScript();
-
     window.googletag.cmd.push(() => {
-      const slotExists = window.googletag
-        .pubads()
-        .getSlots()
-        .some((slot: any) => slot.getSlotElementId() === adUnitId);
+      const slot = window.googletag
+        .defineSlot(`/23308796269/${adUnitId}`, size, adUnitId)
+        ?.addService(window.googletag.pubads());
 
-      if (!slotExists) {
-        window.googletag
-          .defineSlot("/23308796269/leaderboard", size, adUnitId)
-          .addService(window.googletag.pubads());
+      if (slot) {
         window.googletag.enableServices();
+        window.googletag.display(adUnitId);
       }
-
-      window.googletag.display(adUnitId);
     });
   }, [adUnitId, size]);
 
   return (
     <div
-      ref={adRef}
       id={adUnitId}
+      ref={adRef}
       className={className}
-      style={{ width: "100%", height: "auto" }}
+      style={{ minHeight: "100px" }}
     />
   );
 };
