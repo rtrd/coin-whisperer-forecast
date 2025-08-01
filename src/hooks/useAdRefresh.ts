@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { adRefreshService } from '@/services/adRefreshService';
+import { bitmedialAdService } from '@/services/bitmedialAdService';
 
 export const useAdRefresh = () => {
   const location = useLocation();
@@ -17,7 +18,9 @@ export const useAdRefresh = () => {
 
       // Delay refresh slightly to allow new page to render
       refreshTimeoutRef.current = setTimeout(() => {
+        // Refresh both Google and Bitmedia ads
         adRefreshService.refreshAllVisibleSlots();
+        bitmedialAdService.refreshAds();
       }, 1000);
     }
     
@@ -37,6 +40,7 @@ export const useAdRefresh = () => {
       if (event.persisted || performance.navigation.type === 1) {
         setTimeout(() => {
           adRefreshService.refreshAllVisibleSlots();
+          bitmedialAdService.refreshAds();
         }, 1500);
       }
     };
@@ -60,6 +64,7 @@ export const useAdRefresh = () => {
 
   const refreshAllSlots = () => {
     adRefreshService.refreshAllVisibleSlots();
+    bitmedialAdService.refreshAds();
   };
 
   return {

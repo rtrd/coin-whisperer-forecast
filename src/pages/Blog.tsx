@@ -200,8 +200,6 @@ const Blog = () => {
         <meta name="twitter:image" content={seoData.twitter.image} />
       </Helmet>
 
-      <script async src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"></script>
-
       <BlogLayout cryptoOptions={cryptoOptions}>
         <BlogHeader />
         

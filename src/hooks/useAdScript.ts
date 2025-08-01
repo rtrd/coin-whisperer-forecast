@@ -1,29 +1,28 @@
 import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { bitmedialAdService } from '@/services/bitmedialAdService';
 
 export const useAdScript = () => {
+  const location = useLocation();
+
   useEffect(() => {
-    // Remove existing script if it exists
-    const existingScript = document.querySelector('script[src*="appsha-prm.ctengine.io"]');
-    if (existingScript) {
-      existingScript.remove();
-    }
+    // Initialize Bitmedia ads on first load
+    bitmedialAdService.initializeAds();
 
-    // Create and append new script
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = 'https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV';
-    
-    // Add timestamp to prevent caching
-    script.src += `&t=${Date.now()}`;
-    
-    document.head.appendChild(script);
-
-    // Cleanup function to remove script when component unmounts
+    // Cleanup on unmount
     return () => {
-      const scriptToRemove = document.querySelector('script[src*="appsha-prm.ctengine.io"]');
-      if (scriptToRemove) {
-        scriptToRemove.remove();
-      }
+      bitmedialAdService.cleanup();
     };
-  }, []); // Empty dependency array means this runs on every mount
+  }, []);
+
+  useEffect(() => {
+    // Refresh Bitmedia ads on route change (except initial load)
+    if (location.pathname) {
+      const timer = setTimeout(() => {
+        bitmedialAdService.refreshAds();
+      }, 1000); // Delay to let page content load first
+
+      return () => clearTimeout(timer);
+    }
+  }, [location.pathname]);
 };
