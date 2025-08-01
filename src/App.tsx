@@ -74,12 +74,12 @@ const App = () => (
         <Sonner />
         <AdBlockDetector />
         <AutoRefresh />
-        <BitmedialAdManager>
-          <BrowserRouter>
+        <BrowserRouter>
+          <BitmedialAdManager>
             <ScrollToTop />
             <AppRoutes />
-          </BrowserRouter>
-        </BitmedialAdManager>
+          </BitmedialAdManager>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   </HelmetProvider>
