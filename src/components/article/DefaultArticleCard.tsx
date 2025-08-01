@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
 import { trackArticleClick } from "@/utils/analytics";
+import { OptimizedImage } from "@/components/seo/ImageOptimizer";
 
 interface DefaultArticleCardProps {
   article: {
@@ -34,10 +35,13 @@ export const DefaultArticleCard: React.FC<DefaultArticleCardProps> = ({
     >
       <div className="bg-gray-700/50 rounded-lg overflow-hidden border border-gray-600 hover:border-blue-500 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20">
         <div className="aspect-video bg-gradient-to-br from-blue-600 to-purple-600 relative overflow-hidden">
-          <img
+          <OptimizedImage
             src={article.image}
-            alt={article.title}
+            alt={`${article.title} - ${article.category} article cover image`}
             className="w-full h-full object-cover"
+            width={400}
+            height={225}
+            loading="lazy"
           />
           <div className="absolute bottom-2 left-2">
             <Badge className="bg-black/50 text-white text-xs">

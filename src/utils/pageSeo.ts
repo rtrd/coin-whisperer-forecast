@@ -44,15 +44,51 @@ export const generateHomepageSEO = (): PageSEOData => {
     },
     structuredData: {
       "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Pump Parade",
-      "url": "https://pumpparade.com",
-      "description": "AI-powered cryptocurrency analysis and price predictions",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://pumpparade.com/token/{search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://pumpparade.com/#website",
+          "name": "Pump Parade",
+          "url": "https://pumpparade.com",
+          "description": "AI-powered cryptocurrency analysis and price predictions",
+          "publisher": {
+            "@id": "https://pumpparade.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://pumpparade.com/token/{search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://pumpparade.com/#organization",
+          "name": "Pump Parade",
+          "url": "https://pumpparade.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://pumpparade.com/og-image.jpg",
+            "width": 1200,
+            "height": 630
+          },
+          "sameAs": [
+            "https://twitter.com/PumpParade"
+          ]
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://pumpparade.com/#webpage",
+          "url": "https://pumpparade.com",
+          "name": "Pump Parade | AI Crypto Analysis & Price Predictions",
+          "description": "Get AI-powered cryptocurrency analysis, price predictions, and trading signals. Track market trends, sentiment analysis, and technical indicators for informed crypto investing.",
+          "isPartOf": {
+            "@id": "https://pumpparade.com/#website"
+          },
+          "about": {
+            "@id": "https://pumpparade.com/#organization"
+          }
+        }
+      ]
     }
   };
 };

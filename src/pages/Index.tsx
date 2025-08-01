@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
+import { BreadcrumbSchema, generateBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
+import { FAQSchema, cryptoFAQs } from "@/components/seo/FAQSchema";
 import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
 import { useCryptoData } from "@/hooks/useCryptoData";
@@ -7,14 +9,17 @@ import { usePrediction } from "@/hooks/usePrediction";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 import { generateHomepageSEO } from "@/utils/pageSeo";
 import { useAdScript } from "@/hooks/useAdScript";
+import { useLocation } from "react-router-dom";
 
 const Index = () => {
   const [selectedCrypto, setSelectedCrypto] = useState("bitcoin");
   const [timeframe, setTimeframe] = useState("7d");
   const [predictionDays, setPredictionDays] = useState(7);
   const [modelType, setModelType] = useState("advanced");
-
+  
+  const location = useLocation();
   const seoData = generateHomepageSEO();
+  const breadcrumbs = generateBreadcrumbs(location.pathname);
   
   // Initialize ad script on page load
   useAdScript();
@@ -76,32 +81,9 @@ const Index = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-        <meta name="keywords" content={seoData.keywords} />
-        <link rel="canonical" href={seoData.canonical} />
-        
-        {/* Open Graph tags */}
-        <meta property="og:title" content={seoData.openGraph.title} />
-        <meta property="og:description" content={seoData.openGraph.description} />
-        <meta property="og:type" content={seoData.openGraph.type} />
-        <meta property="og:url" content={seoData.openGraph.url} />
-        <meta property="og:image" content={seoData.openGraph.image} />
-        
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content={seoData.twitter.card} />
-        <meta name="twitter:title" content={seoData.twitter.title} />
-        <meta name="twitter:description" content={seoData.twitter.description} />
-        <meta name="twitter:image" content={seoData.twitter.image} />
-        
-        {/* Structured Data */}
-        {seoData.structuredData && (
-          <script type="application/ld+json">
-            {JSON.stringify(seoData.structuredData)}
-          </script>
-        )}
-      </Helmet>
+      <EnhancedSEOHead seoData={seoData} />
+      <BreadcrumbSchema items={breadcrumbs} />
+      <FAQSchema faqs={cryptoFAQs} />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <ins className="688243f4cd78b050d770b5b9" style={{display:"inline-block",width:"1px",height:"1px"}}></ins>

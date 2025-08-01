@@ -55,37 +55,37 @@ const WordPressIntegration = () => {
     }
   };
 
+  const handleViewAllClick = () => {
+    window.location.href = '/blog';
+  };
+
   return (
-    <Link to="/blog" className="block">
-      <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl hover:bg-gray-800/70 transition-colors cursor-pointer">
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="text-white flex items-center gap-2">
-              <ExternalLink className="h-5 w-5 text-blue-400" />
-              Our Latest Articles
-              <Badge className="bg-blue-600">Live Feed</Badge>
-            </CardTitle>
-            <Button 
-              variant="outline"
-              className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-              onClick={(e) => e.stopPropagation()}
-            >
-              View All Articles
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-            {articles.map((article) => (
-              <div key={article.id} onClick={(e) => e.stopPropagation()}>
-                <ArticleCard article={article} />
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-    </Link>
+    <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl hover:bg-gray-800/70 transition-colors">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-white flex items-center gap-2">
+            <ExternalLink className="h-5 w-5 text-blue-400" />
+            Our Latest Articles
+            <Badge className="bg-blue-600">Live Feed</Badge>
+          </CardTitle>
+          <Button 
+            variant="outline"
+            className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+            onClick={handleViewAllClick}
+          >
+            View All Articles
+            <ArrowRight className="h-4 w-4 ml-2" />
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          {articles.map((article) => (
+            <ArticleCard key={article.id} article={article} />
+          ))}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
