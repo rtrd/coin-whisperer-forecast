@@ -231,46 +231,64 @@ export const PopularMemecoins = () => {
             ))}
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-1">
+            {/* Header Row */}
+            <div className="grid grid-cols-12 gap-4 px-4 py-2 text-xs font-medium text-muted-foreground border-b border-border/20">
+              <div className="col-span-3">Token</div>
+              <div className="col-span-1 text-center">Score</div>
+              <div className="col-span-2 text-right">Price</div>
+              <div className="col-span-2 text-right">24h Change</div>
+              <div className="col-span-2 text-right">Volume</div>
+              <div className="col-span-1 text-center">Rank</div>
+              <div className="col-span-1"></div>
+            </div>
+            
+            {/* Data Rows */}
             {memecoins.map((coin, index) => (
               <Card 
                 key={coin.id}
-                className="bg-gray-700/30 border-gray-600 hover:bg-gray-700/50 transition-all duration-300"
+                className="border-border/30 hover:bg-muted/50 transition-all duration-200"
               >
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="flex items-center gap-3">
-                        <div className="relative">
-                          <img 
-                            src={coin.image} 
-                            alt={coin.name}
-                            className="w-10 h-10 rounded-full"
-                            onError={(e) => {
-                              e.currentTarget.src = '/placeholder.svg';
-                            }}
-                          />
-                          {getRankBadge(coin.market_cap_rank) && (
-                            <div className="absolute -top-1 -right-1 bg-gray-800 rounded-full p-1">
-                              {getRankBadge(coin.market_cap_rank)}
-                            </div>
-                          )}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-white text-sm">{coin.symbol}</h4>
-                          <p className="text-gray-400 text-xs">{coin.name}</p>
-                        </div>
+                <CardContent className="p-0">
+                  <div className="grid grid-cols-12 gap-4 items-center px-4 py-3">
+                    {/* Token Info */}
+                    <div className="col-span-3 flex items-center gap-3">
+                      <div className="relative">
+                        <img 
+                          src={coin.image} 
+                          alt={coin.name}
+                          className="w-8 h-8 rounded-full"
+                          onError={(e) => {
+                            e.currentTarget.src = '/placeholder.svg';
+                          }}
+                        />
+                        {getRankBadge(coin.market_cap_rank) && (
+                          <div className="absolute -top-1 -right-1 bg-background rounded-full p-0.5">
+                            {getRankBadge(coin.market_cap_rank)}
+                          </div>
+                        )}
                       </div>
-                      
+                      <div className="min-w-0 flex-1">
+                        <div className="font-semibold text-foreground text-sm">{coin.symbol}</div>
+                        <div className="text-xs text-muted-foreground truncate">{coin.name}</div>
+                      </div>
+                    </div>
+                    
+                    {/* Pump Score */}
+                    <div className="col-span-1 flex justify-center">
                       <Badge className={`text-xs px-2 py-1 ${getPumpScoreColor(coin.pumpScore)}`}>
                         {coin.pumpScore.toFixed(1)}
                       </Badge>
-                      
-                      <div className="text-white font-mono text-sm">
-                        {formatPrice(coin.current_price)}
-                      </div>
-                      
-                      <div className={`flex items-center gap-1 text-sm ${
+                    </div>
+                    
+                    {/* Price */}
+                    <div className="col-span-2 text-right">
+                      <div className="font-mono text-sm text-foreground">{formatPrice(coin.current_price)}</div>
+                    </div>
+                    
+                    {/* 24h Change */}
+                    <div className="col-span-2 text-right">
+                      <div className={`flex items-center justify-end gap-1 text-sm ${
                         coin.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
                         {coin.price_change_percentage_24h >= 0 ? (
@@ -283,27 +301,33 @@ export const PopularMemecoins = () => {
                           {coin.price_change_percentage_24h.toFixed(1)}%
                         </span>
                       </div>
-                      
-                      <div className="flex items-center gap-1 text-gray-300 text-sm">
+                    </div>
+                    
+                    {/* Volume */}
+                    <div className="col-span-2 text-right">
+                      <div className="flex items-center justify-end gap-1 text-sm text-muted-foreground">
                         <Volume2 className="h-3 w-3" />
                         <span className="font-mono">${formatNumber(coin.total_volume)}</span>
                       </div>
-                      
-                      <div className="text-gray-300 text-sm font-mono">
-                        ${formatNumber(coin.market_cap)}
-                      </div>
-                      
-                      <Badge variant="outline" className="text-xs border-gray-500 text-gray-300">
+                    </div>
+                    
+                    {/* Rank */}
+                    <div className="col-span-1 flex justify-center">
+                      <Badge variant="outline" className="text-xs">
                         #{coin.market_cap_rank}
                       </Badge>
                     </div>
                     
-                    <Button
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-xs h-8 px-4 font-semibold"
-                      onClick={() => openAffiliateLink(coin.symbol)}
-                    >
-                      Trade on eToro
-                    </Button>
+                    {/* Trade Button */}
+                    <div className="col-span-1 flex justify-end">
+                      <Button
+                        size="sm"
+                        className="h-7 px-3 text-xs bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                        onClick={() => openAffiliateLink(coin.symbol)}
+                      >
+                        Trade
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
