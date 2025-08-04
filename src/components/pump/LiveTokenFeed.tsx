@@ -125,7 +125,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                         onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
                       >
                         <Rocket className="h-3 w-3 mr-1" />
-                        AI Agent
+                        Trade With AI Agent
                       </Button>
                       <Button
                         size="sm"
