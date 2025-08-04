@@ -184,7 +184,7 @@ export const generateTechnicalPrediction = async (
   );
 
   try {
-    const response = await fetch(`${SERVER_URL}/get-ai-predction`, {
+    const response = await fetch(`http://localhost:3001/get-ai-predction`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ Prompt }),
@@ -738,38 +738,22 @@ function mapTrend(trend: string): "positive" | "negative" | "neutral" {
 export const fetchSentimentData = async (topic = "bitcoin") => {
   try {
     console.log(`Fetching sentiment data for topic: ${topic}`);
-    console.log(
-      `Using API key: ${import.meta.env.VITE_LUNAR_API ? "Present" : "Missing"}`
+    const response = await fetch(
+      `${SERVER_URL}/api/sentiment?topic=${encodeURIComponent(topic)}`
     );
-
-    const url = `https://lunarcrush.com/api4/public/topic/${encodeURIComponent(
-      topic
-    )}/v1`;
-
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_LUNAR_API}`,
-      },
-    });
-
     console.log(`API Response status: ${response.status}`);
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`API Error ${response.status}:`, errorText);
-      throw new Error(
-        `LunarCrush API error: ${response.status} - ${errorText}`
-      );
+      throw new Error(`Backend API error: ${response.status} - ${errorText}`);
     }
 
     const json = await response.json();
-    console.log("Raw LunarCrush API response:", json);
-
     return json;
   } catch (err) {
-    console.error("Error fetching LunarCrush sentiment data:", err);
+    console.error("Error fetching sentiment data from backend:", err);
 
-    // Return fallback data structure
+    // Return fallback data for UI stability
     return {
       data: {
         sentiment: Math.random() * 100,
@@ -795,35 +779,21 @@ export const fetchTechnicalIndicators = async (
   timeframe = "3m"
 ) => {
   try {
+    debugger;
     const res = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${topic}/time-series/v2?bucket=day&interval=${timeframe}`,
-      {
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_LUNAR_API}`,
-        },
-      }
+      `${SERVER_URL}/api/technicalindicators?topic=${encodeURIComponent(
+        topic
+      )}&timeframe=${encodeURIComponent(timeframe)}`
     );
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status} – ensure your token and permissions`);
-    }
-    const json = await res.json();
-    const data: PriceData[] = [];
-    data.push(
-      ...json.data.map((item: any) => ({
-        timestamp: item.time,
-        price: item.close,
-        volume: item.volume_24h,
-      }))
-    );
-    const prices: number[] = json.data
-      .map((d: any) => d.close)
-      .filter((val: number | undefined) => typeof val === "number");
 
-    // const currentPrice = prices.at(-1)!;
-    // const rsi = calculateRSI(prices);
-    return data;
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} – Backend API error`);
+    }
+
+    const json = await res.json();
+    return json.data; // Already shaped to { timestamp, price, volume }
   } catch (err) {
-    console.error("Failed to fetch indicators from LunarCrush:", err);
+    console.error("Failed to fetch indicators from backend:", err);
     return [];
   }
 };
