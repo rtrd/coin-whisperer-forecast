@@ -1,5 +1,5 @@
 import React from "react";
-import { AITradingSignals } from "@/components/AITradingSignals";
+import { LazyAITradingSignals } from "@/components/lazy/LazyAITradingSignals";
 import { SignupLock } from "@/components/SignupLock";
 import { AITradingSignalsSkeleton } from "@/components/SkeletonData";
 
@@ -10,7 +10,7 @@ export const LockedAITradingSignals: React.FC = () => {
       description="Live market data: Fear & Greed Index, DeFi TVL, volume alerts, and AI-powered trading recommendations"
       skeletonData={<AITradingSignalsSkeleton />}
     >
-      <AITradingSignals />
+      <LazyAITradingSignals />
     </SignupLock>
   );
 };

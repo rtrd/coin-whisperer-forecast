@@ -12,7 +12,7 @@ import { MotiToken } from "@/types/motiMeter";
 import { IndexHeader } from "@/components/IndexHeader";
 import { AdUnit } from "@/components/ads/AdService";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
-import WordPressIntegration from "@/components/WordPressIntegration";
+import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
@@ -495,7 +495,7 @@ const MotiMeter = () => {
 
           {/* Trending Articles Widget - Full width */}
           <div className="mt-12">
-            <WordPressIntegration />
+            <LazyWordPressIntegration />
           </div>
         </div>
 

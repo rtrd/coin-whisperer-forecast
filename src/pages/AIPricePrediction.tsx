@@ -13,7 +13,7 @@ import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
-import { LiveAIPredictions } from "@/components/LiveAIPredictions";
+import { LazyLiveAIPredictions } from "@/components/lazy/LazyLiveAIPredictions";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 
@@ -224,7 +224,7 @@ const AIPricePrediction = () => {
       </div>
 
       {/* Live Predictions */}
-      <LiveAIPredictions />
+      <LazyLiveAIPredictions />
     </div>
   );
 

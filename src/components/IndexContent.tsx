@@ -7,11 +7,10 @@ declare global {
 }
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
-import WordPressIntegration from "@/components/WordPressIntegration";
-import { AITradingSignals } from "@/components/AITradingSignals";
+import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { CryptoFilters } from "@/components/CryptoFilters";
-import { MarketDataWidget } from "@/components/MarketDataWidget";
+import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
 
@@ -51,7 +50,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       />
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
-      <WordPressIntegration />
+      <LazyWordPressIntegration />
 
       <div className="mb-8">
         <LockedAITradingSignals />
@@ -61,7 +60,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <CryptoFilters onFilterChange={handleFilterChange} />
 
       {/* Market Data Widget - Top 10 by Market Cap */}
-      <MarketDataWidget
+      <LazyMarketDataWidget
         onMarketDataFilter={handleFilterChange}
         cryptoOptions={filteredCryptos}
         AllCryptosData={AllCryptosData}
