@@ -20,6 +20,8 @@ import {
 import { getAllCryptos, getWordPressPost } from "../../utils/api";
 import { CryptoToken } from "@/types/crypto";
 import { generateArticleSEO } from "@/utils/pageSeo";
+import { BitmedialAdContainer } from "@/components/ads/BitmedialAdContainer";
+import { bitmedialAdService } from "@/services/bitmedialAdService";
 
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
@@ -34,6 +36,17 @@ const Article = () => {
   );
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+
+  // Register Bitmedia ad containers
+  useEffect(() => {
+    bitmedialAdService.registerContainer('article-top');
+    bitmedialAdService.registerContainer('article-sidebar');
+
+    return () => {
+      bitmedialAdService.unregisterContainer('article-top');
+      bitmedialAdService.unregisterContainer('article-sidebar');
+    };
+  }, []);
 
   const articles = (() => {
     // Prioritize state data if available
@@ -232,6 +245,13 @@ const Article = () => {
             <AdUnit type="header" />
           </div>
 
+          {/* Bitmedia Ad - Top */}
+          <BitmedialAdContainer
+            id="article-top"
+            size="leaderboard"
+            className="mb-6 md:mb-8"
+          />
+
           {/* Additional Header Ad Placement */}
           <div className="flex justify-center mb-8">
             <AdUnit type="leaderboard" />
@@ -280,6 +300,14 @@ const Article = () => {
               <div className="sticky top-8 space-y-8">
                 <ArticleIndex content={article.content} />
                 <AdUnit type="skyscraper" />
+                
+                {/* Bitmedia Ad - Sidebar */}
+                <BitmedialAdContainer
+                  id="article-sidebar"
+                  size="rectangle"
+                  className="mx-auto"
+                />
+                
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
                 />
