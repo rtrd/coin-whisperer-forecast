@@ -233,7 +233,7 @@ export const PopularMemecoins = () => {
         ) : (
           <div className="space-y-0">
             {/* Header Row */}
-            <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-muted-foreground border-b border-border/20 bg-muted/20">
+            <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-foreground/70 border-b border-border/20">
               <div className="col-span-3">Token</div>
               <div className="col-span-1 text-center">Score</div>
               <div className="col-span-2 text-right">Price</div>
@@ -267,8 +267,8 @@ export const PopularMemecoins = () => {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-foreground text-sm">{coin.symbol}</div>
-                    <div className="text-xs text-muted-foreground truncate">{coin.name}</div>
+                    <div className="font-semibold text-foreground text-sm">{coin.symbol}</div>
+                    <div className="text-xs text-foreground/60 truncate">{coin.name}</div>
                   </div>
                 </div>
                 
@@ -303,7 +303,7 @@ export const PopularMemecoins = () => {
                 
                 {/* Volume */}
                 <div className="col-span-2 text-right">
-                  <div className="flex items-center justify-end gap-1 text-sm text-muted-foreground">
+                  <div className="flex items-center justify-end gap-1 text-sm text-foreground/80">
                     <Volume2 className="h-3 w-3" />
                     <span className="font-mono">${formatNumber(coin.total_volume)}</span>
                   </div>
