@@ -145,14 +145,41 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
         });
       }
 
-      // Top gainer recommendation
-      if (topGainers.length > 0) {
-        const topGainer = topGainers[0];
+      // Altcoins market analysis (excluding BTC and ETH)
+      const altcoins = cryptoData.filter(token => 
+        !['btc', 'eth'].includes(token.symbol.toLowerCase()) && 
+        (token.rank || 999) <= 100
+      );
+      
+      if (altcoins.length > 0) {
+        const altcoinGainers = altcoins.filter(token => token.price_change_percentage_24h > 0);
+        const avgAltcoinChange = altcoins.reduce((sum, token) => sum + token.price_change_percentage_24h, 0) / altcoins.length;
+        const altcoinDominance = altcoins.reduce((sum, token) => sum + (token.market_cap || 0), 0);
+        
+        let action: 'buy' | 'sell' | 'hold' = 'hold';
+        let confidence = 60;
+        let reason = 'Mixed altcoin performance';
+        
+        if (avgAltcoinChange > 3 && altcoinGainers.length > altcoins.length * 0.6) {
+          action = 'buy';
+          confidence = Math.min(85, 60 + avgAltcoinChange * 3);
+          reason = `Strong altcoin rally: ${altcoinGainers.length}/${altcoins.length} coins positive, avg +${avgAltcoinChange.toFixed(1)}%`;
+        } else if (avgAltcoinChange < -3 && altcoinGainers.length < altcoins.length * 0.4) {
+          action = 'sell';
+          confidence = Math.min(85, 60 + Math.abs(avgAltcoinChange) * 3);
+          reason = `Altcoin weakness: broad selling pressure, avg ${avgAltcoinChange.toFixed(1)}%`;
+        } else if (avgAltcoinChange > 0 && sentiment === 'bullish') {
+          action = 'buy';
+          confidence = 70;
+          reason = 'Bullish market supporting altcoin rotation';
+        }
+        
         newRecommendations.push({
-          action: 'hold',
-          asset: topGainer.symbol.toUpperCase(),
-          confidence: 70,
-          reason: `Strong momentum but consider taking profits at ${topGainer.price_change_percentage_24h.toFixed(1)}% gain`
+          action,
+          asset: 'ALTCOINS',
+          confidence,
+          reason,
+          targetPrice: avgAltcoinChange > 0 ? 1.1 : avgAltcoinChange < -2 ? 0.9 : 1.05
         });
       }
 
