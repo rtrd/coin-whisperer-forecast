@@ -59,43 +59,51 @@ class BitmedialAdService {
 
   async refreshAds(): Promise<void> {
     if (!this.canRefresh()) {
+      console.log('BitmedialAdService: Refresh rate limited, skipping refresh');
       return;
     }
 
+    console.log('BitmedialAdService: Starting ad refresh...');
     this.isLoading = true;
 
     try {
       // Wait a bit for any existing ads to finish loading
       await new Promise(resolve => setTimeout(resolve, 100));
       
+      console.log('BitmedialAdService: Removing existing script and reloading...');
       // Remove and reload the Bitmedia script
       await this.createBitmedialScript();
       
       // Additional delay to allow ads to initialize
       await new Promise(resolve => setTimeout(resolve, 500));
       
+      console.log('BitmedialAdService: Ad refresh completed successfully');
     } catch (error) {
-      console.warn('Bitmedia ad refresh failed:', error);
+      console.warn('BitmedialAdService: Ad refresh failed:', error);
       this.isLoading = false;
     }
   }
 
   async initializeAds(): Promise<void> {
     if (this.scriptElement) {
+      console.log('BitmedialAdService: Already initialized, skipping');
       return; // Already initialized
     }
 
+    console.log('BitmedialAdService: Initializing ads...');
     this.isLoading = true;
     
     try {
       await this.createBitmedialScript();
+      console.log('BitmedialAdService: Ad initialization completed successfully');
     } catch (error) {
-      console.warn('Bitmedia ad initialization failed:', error);
+      console.warn('BitmedialAdService: Ad initialization failed:', error);
       this.isLoading = false;
     }
   }
 
   cleanup(): void {
+    console.log('BitmedialAdService: Cleaning up ads...');
     this.removeExistingScript();
     this.lastRefreshTime = 0;
     this.isLoading = false;

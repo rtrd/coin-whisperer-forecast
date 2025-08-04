@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet-async";
-import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,8 +18,6 @@ import { toast } from "sonner";
 import { getAllCryptos } from "../../utils/api";
 
 const PortfolioTracking = () => {
-  // Initialize ad script on page load
-  useAdScript();
   
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);

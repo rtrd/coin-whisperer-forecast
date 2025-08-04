@@ -8,7 +8,6 @@ import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 import { generateHomepageSEO } from "@/utils/pageSeo";
-import { useAdScript } from "@/hooks/useAdScript";
 import { useLocation } from "react-router-dom";
 
 const Index = () => {
@@ -21,8 +20,6 @@ const Index = () => {
   const seoData = generateHomepageSEO();
   const breadcrumbs = generateBreadcrumbs(location.pathname);
   
-  // Initialize ad script on page load
-  useAdScript();
 
   const {
     filteredCryptos,

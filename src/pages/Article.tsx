@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useAdScript } from "@/hooks/useAdScript";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -28,8 +27,6 @@ const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
   
-  // Initialize ad script on page load
-  useAdScript();
   const [articlesData, setArticlesData] = useState<any[]>([]);
   const [allArticlesData, setallArticlesData] = useState<any[]>([]);
   const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>(
