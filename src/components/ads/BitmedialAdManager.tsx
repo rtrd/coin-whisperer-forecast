@@ -7,17 +7,12 @@ interface BitmedialAdManagerProps {
 
 export const BitmedialAdManager: React.FC<BitmedialAdManagerProps> = ({ children }) => {
   useEffect(() => {
-    // Initialize Bitmedia ads after a short delay to allow containers to register
-    console.log('BitmedialAdManager: Starting ad initialization process');
-    
-    const initTimer = setTimeout(() => {
-      console.log('BitmedialAdManager: Initializing Bitmedia ads');
-      bitmedialAdService.initializeAds();
-    }, 500);
+    // Initialize Bitmedia ads only once when the manager loads
+    console.log('BitmedialAdManager: Initializing Bitmedia ads');
+    bitmedialAdService.initializeAds();
 
     // Cleanup on unmount
     return () => {
-      clearTimeout(initTimer);
       console.log('BitmedialAdManager: Cleaning up Bitmedia ads');
       bitmedialAdService.cleanup();
     };

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { bitmedialAdService } from "@/services/bitmedialAdService";
 
 declare global {
   interface Window {
@@ -10,7 +9,6 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
-import { BitmedialAdContainer } from "@/components/ads/BitmedialAdContainer";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
@@ -35,18 +33,6 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   AllCryptosData,
   handleFilterChange,
 }) => {
-  useEffect(() => {
-    // Register ad containers for this page
-    bitmedialAdService.registerContainer('home-top');
-    bitmedialAdService.registerContainer('home-bottom');
-
-    return () => {
-      // Unregister containers when component unmounts
-      bitmedialAdService.unregisterContainer('home-top');
-      bitmedialAdService.unregisterContainer('home-bottom');
-    };
-  }, []);
-
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
       <IndexHeader
@@ -60,13 +46,6 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <GAMAdUnit
         adUnitId="div-gpt-ad-1752654531765-0"
         size={[728, 90]}
-        className="mb-6 md:mb-8"
-      />
-
-      {/* Bitmedia Ad - Top */}
-      <BitmedialAdContainer
-        id="home-top"
-        size="leaderboard"
         className="mb-6 md:mb-8"
       />
 
@@ -94,13 +73,6 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <GAMAdUnit
         adUnitId="div-gpt-ad-1752654531765-1"
         size={[728, 90]}
-        className="mb-6 md:mb-8"
-      />
-
-      {/* Bitmedia Ad - Bottom */}
-      <BitmedialAdContainer
-        id="home-bottom"
-        size="leaderboard"
         className="mb-6 md:mb-8"
       />
 

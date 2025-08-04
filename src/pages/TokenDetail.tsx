@@ -7,8 +7,6 @@ import { ArrowLeft } from "lucide-react";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { TokenProvider } from "@/contexts/TokenContext";
 import { TokenDetailLayout } from "@/components/token/TokenDetailLayout";
-import { BitmedialAdContainer } from "@/components/ads/BitmedialAdContainer";
-import { bitmedialAdService } from "@/services/bitmedialAdService";
 import { TokenDataService } from "@/services/tokenDataService";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
@@ -58,17 +56,6 @@ const TokenDetail = () => {
       trackPageView(`/token/${tokenId}`);
     }
   }, [tokenId, selectedToken, tokenmarketstats?.current_price]);
-
-  // Register Bitmedia ad containers
-  React.useEffect(() => {
-    bitmedialAdService.registerContainer('token-top');
-    bitmedialAdService.registerContainer('token-sidebar');
-
-    return () => {
-      bitmedialAdService.unregisterContainer('token-top');
-      bitmedialAdService.unregisterContainer('token-sidebar');
-    };
-  }, []);
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
   const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
@@ -379,14 +366,6 @@ const TokenDetail = () => {
           {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
         </script>
       </Helmet>
-      
-      {/* Bitmedia Ad - Top */}
-      <BitmedialAdContainer
-        id="token-top"
-        size="leaderboard"
-        className="mb-6 md:mb-8 mx-auto"
-      />
-
       <TokenProvider
         tokenId={tokenId || "bitcoin"}
         cryptoOptions={cryptoOptions}

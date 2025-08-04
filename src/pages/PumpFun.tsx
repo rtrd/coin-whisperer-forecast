@@ -9,20 +9,8 @@ import Footer from "@/components/Footer";
 import { PumpFunIntegration } from "@/components/PumpFunIntegration";
 import { generatePumpFunSEO } from "@/utils/pageSeo";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
-import { BitmedialAdContainer } from "@/components/ads/BitmedialAdContainer";
-import { bitmedialAdService } from "@/services/bitmedialAdService";
 
 const PumpFun = () => {
-  // Register Bitmedia ad containers
-  React.useEffect(() => {
-    bitmedialAdService.registerContainer('pumpfun-top');
-    bitmedialAdService.registerContainer('pumpfun-bottom');
-
-    return () => {
-      bitmedialAdService.unregisterContainer('pumpfun-top');
-      bitmedialAdService.unregisterContainer('pumpfun-bottom');
-    };
-  }, []);
   
   const seoData = generatePumpFunSEO();
   const cryptoOptions = [
@@ -59,13 +47,6 @@ const PumpFun = () => {
             adUnitId="div-gpt-ad-1752654531765-0"
             className="mb-8 flex justify-center"
             size={[728, 90]}
-          />
-
-          {/* Bitmedia Ad - Top */}
-          <BitmedialAdContainer
-            id="pumpfun-top"
-            size="leaderboard"
-            className="mb-6 md:mb-8"
           />
 
           {/* Homepage Header */}
@@ -119,13 +100,6 @@ const PumpFun = () => {
             adUnitId="div-gpt-ad-1752654531765-1"
             className="mt-8 mb-8 flex justify-center"
             size={[728, 90]}
-          />
-
-          {/* Bitmedia Ad - Bottom */}
-          <BitmedialAdContainer
-            id="pumpfun-bottom"
-            size="leaderboard"
-            className="mt-6 md:mt-8 mb-6 md:mb-8"
           />
         </div>
         
