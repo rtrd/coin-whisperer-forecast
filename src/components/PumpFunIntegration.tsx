@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, TrendingUp, TrendingDown, Sparkles, LayoutList, LayoutGrid, Wifi, WifiOff, AlertCircle } from "lucide-react";
-import { TokenSection } from "./pump/TokenSection";
-import { MemecoinCarousel } from "./pump/MemecoinCarousel";
+import { LiveTokenFeed } from "./pump/LiveTokenFeed";
+import { PopularMemecoins } from "./pump/PopularMemecoins";
 import { usePumpPortalData } from "@/hooks/usePumpPortalData";
 
 export const PumpFunIntegration = () => {
@@ -67,19 +67,17 @@ export const PumpFunIntegration = () => {
               <span className="text-red-300 text-sm">{error}</span>
             </div>
           )}
-          <TokenSection
-            title="New Launches"
-            icon={<Sparkles className="h-4 w-4 text-yellow-400" />}
-            tokens={newLaunches}
-            changeColorClass="text-green-400"
-            viewMode={viewMode}
-            showPrice={false}
-            showChange={false}
+          <LiveTokenFeed 
+            tokens={newLaunches} 
+            isConnected={isConnected}
           />
-
-          <MemecoinCarousel />
         </CardContent>
       </Card>
+
+      {/* Popular Memecoins Section */}
+      <div className="mb-6">
+        <PopularMemecoins />
+      </div>
     </div>
   );
 };
