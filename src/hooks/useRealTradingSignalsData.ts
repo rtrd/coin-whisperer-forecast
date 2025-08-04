@@ -146,10 +146,11 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
       }
 
       // Altcoins market analysis (excluding BTC and ETH)
-      const altcoins = cryptoData.filter(token => 
-        !['btc', 'eth'].includes(token.symbol.toLowerCase()) && 
-        (token.rank || 999) <= 100
-      );
+      const altcoins = cryptoData
+        .filter(token => !['bitcoin', 'ethereum'].includes(token.id.toLowerCase()))
+        .slice(0, 50); // Take top 50 altcoins by market cap
+      
+      console.log('Altcoins found:', altcoins.length, altcoins.slice(0, 3).map(t => t.symbol));
       
       if (altcoins.length > 0) {
         const altcoinGainers = altcoins.filter(token => token.price_change_percentage_24h > 0);
