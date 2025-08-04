@@ -7,7 +7,7 @@ import { MarketSentimentOverview } from "@/components/trading/MarketSentimentOve
 import { LiveMarketAlerts } from "@/components/trading/LiveMarketAlerts";
 import { TradingRecommendations } from "@/components/trading/TradingRecommendations";
 import { MarketNarratives } from "@/components/trading/MarketNarratives";
-import { useTradingSignalsData } from "@/hooks/useTradingSignalsData";
+import { useRealTradingSignalsData } from "@/hooks/useRealTradingSignalsData";
 import { MarketAnalysis } from '@/types/tradingSignals';
 
 export const AITradingSignals = () => {
@@ -20,7 +20,7 @@ export const AITradingSignals = () => {
     recommendations,
     marketNarratives,
     isAnalyzing
-  } = useTradingSignalsData();
+  } = useRealTradingSignalsData();
 
   const marketAnalysis: MarketAnalysis = {
     bullish: {

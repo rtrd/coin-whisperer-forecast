@@ -7,7 +7,7 @@ export const LockedAITradingSignals: React.FC = () => {
   return (
     <SignupLock
       title="AI Trading Signals"
-      description="Real-time AI-powered market signals, sentiment analysis, and trading recommendations"
+      description="Live market data: Fear & Greed Index, DeFi TVL, volume alerts, and AI-powered trading recommendations"
       skeletonData={<AITradingSignalsSkeleton />}
     >
       <AITradingSignals />
