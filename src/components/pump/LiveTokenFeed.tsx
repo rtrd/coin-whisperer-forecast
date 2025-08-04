@@ -96,30 +96,30 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
 
       <div className="space-y-3 relative">
         {recentTokens.length === 0 ? (
-          <Card className="border-border/30">
+          <Card className="bg-gray-800/50 border-gray-700">
             <CardContent className="p-6 text-center">
-              <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">Waiting for new token launches...</p>
+              <Clock className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+              <p className="text-gray-400">Waiting for new token launches...</p>
             </CardContent>
           </Card>
         ) : (
           recentTokens.map((token, index) => (
             <Card 
               key={token.id}
-              className="border-border/30 hover:bg-muted/30 transition-colors duration-200 overflow-hidden relative"
+              className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-colors duration-200 overflow-hidden relative"
             >
               
-              <CardContent className="p-3">
+              <CardContent className="p-2">
                 <div className="flex items-center justify-between">
                   {/* Token Info */}
                   <div className="flex items-center gap-3 flex-1">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center text-lg border border-border/50">
+                    <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center text-lg border border-gray-600/50">
                       {token.icon}
                     </div>
                     
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-foreground text-sm">{token.symbol}</h4>
+                        <h4 className="font-semibold text-white text-sm">{token.symbol}</h4>
                         <Badge 
                           className={`text-xs px-1.5 py-0.5 ${
                             token.pumpScore >= 8 
@@ -133,19 +133,19 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                           {token.pumpScore.toFixed(1)}
                         </Badge>
                       </div>
-                      <p className="text-muted-foreground text-xs truncate mb-2">{token.name}</p>
+                      <p className="text-gray-400 text-xs truncate mb-2">{token.name}</p>
                       
                       {/* Inline Stats */}
-                      <div className="flex items-center gap-3 text-xs text-foreground/60">
+                      <div className="flex items-center gap-3 text-xs text-gray-300">
                         <div className="flex items-center gap-1">
                           <Volume2 className="h-3 w-3" />
                           <span>Vol:</span>
-                          <span className="font-mono text-foreground/80">${formatNumber(token.volume)}</span>
+                          <span className="font-mono text-gray-200">${formatNumber(token.volume)}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <TrendingUp className="h-3 w-3" />
                           <span>MCap:</span>
-                          <span className="font-mono text-foreground/80">${formatNumber(token.marketCap)}</span>
+                          <span className="font-mono text-gray-200">${formatNumber(token.marketCap)}</span>
                         </div>
                         {token.change24h !== 0 && (
                           <span className={`font-mono ${
@@ -160,7 +160,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
 
                   {/* Time and Actions */}
                   <div className="flex flex-col items-end gap-2 ml-3">
-                    <span className="text-xs text-muted-foreground">
+                    <span className="text-xs text-gray-400">
                       {formatTimeAgo(Date.now() - (index * 60000))}
                     </span>
                     <div className="flex gap-1">
@@ -174,7 +174,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                       <Button
                         size="sm"
                         variant="outline"
-                        className="h-6 px-2 text-xs border-border/50 hover:bg-muted/50"
+                        className="h-6 px-2 text-xs border-gray-600/50 hover:bg-gray-600/50 text-gray-200 hover:text-white"
                         onClick={() => openAffiliateLink(token.symbol)}
                       >
                         Trade on eToro
