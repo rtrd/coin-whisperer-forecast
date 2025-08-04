@@ -58,6 +58,8 @@ class BitmedialAdService {
   }
 
   private clearAdContainers(): void {
+    console.log('BitmedialAdService: Starting aggressive ad container cleanup...');
+    
     // Clear the static ad containers from index.html
     const adContainers = [
       '688243f4cd78b050d770b5b9', 
@@ -65,48 +67,75 @@ class BitmedialAdService {
     ];
     
     adContainers.forEach(className => {
-      const adElement = document.querySelector(`ins.${className}`);
-      if (adElement) {
-        // Clear the ad content by removing and recreating the element
+      const adElements = document.querySelectorAll(`ins.${className}`);
+      adElements.forEach(adElement => {
+        // Complete removal and recreation to force fresh ad requests
         const parent = adElement.parentNode;
-        const newAdElement = adElement.cloneNode(false) as HTMLElement;
-        parent?.replaceChild(newAdElement, adElement);
-        console.log(`BitmedialAdService: Cleared ad container ${className}`);
-      }
+        if (parent) {
+          // Create completely new ad element with fresh attributes
+          const newAdElement = document.createElement('ins');
+          newAdElement.className = className;
+          newAdElement.setAttribute('data-revive-zoneid', adElement.getAttribute('data-revive-zoneid') || '');
+          newAdElement.setAttribute('data-revive-id', adElement.getAttribute('data-revive-id') || '');
+          
+          // Force browser to treat as new element by adding timestamp
+          newAdElement.setAttribute('data-refresh-time', Date.now().toString());
+          
+          parent.replaceChild(newAdElement, adElement);
+          console.log(`BitmedialAdService: Aggressively cleared and recreated ad container ${className}`);
+        }
+      });
     });
   }
 
-  private reloadBitmedialScripts(): Promise<void> {
+  private forceAdRefresh(): Promise<void> {
     return new Promise((resolve) => {
-      // Remove existing bmcdn6 scripts
-      const existingScripts = document.querySelectorAll('script[src*="bmcdn6.com"]');
-      existingScripts.forEach(script => script.remove());
+      console.log('BitmedialAdService: Starting forced ad refresh with cache busting...');
+      
+      // Remove ALL existing Bitmedia-related scripts
+      const existingScripts = document.querySelectorAll('script[src*="bmcdn6.com"], script[src*="ctengine.io"]');
+      existingScripts.forEach(script => {
+        const scriptElement = script as HTMLScriptElement;
+        console.log(`BitmedialAdService: Removing script: ${scriptElement.src}`);
+        script.remove();
+      });
 
-      // Reload the bmcdn6 scripts with new timestamps
+      // Clear any Bitmedia globals that might prevent refresh
+      if (window && (window as any).bmRevive) {
+        delete (window as any).bmRevive;
+        console.log('BitmedialAdService: Cleared bmRevive global');
+      }
+
+      // Reload the bmcdn6 scripts with aggressive cache busting
       const scriptConfigs = [
         { className: '688243f4cd78b050d770b5b9', domain: 'cdn.bmcdn6.com' },
         { className: '688245f4f6b31129f0439a03', domain: 'cdn.bmcdn6.com' }
       ];
 
+      const timestamp = Date.now();
+      const randomId = Math.random().toString(36).substring(7);
+      
       let loadedScripts = 0;
       scriptConfigs.forEach(config => {
         const script = document.createElement('script');
         script.async = true;
-        script.src = `https://${config.domain}/js/${config.className}.js?v=${Date.now()}`;
+        // Aggressive cache busting with timestamp AND random ID
+        script.src = `https://${config.domain}/js/${config.className}.js?v=${timestamp}&r=${randomId}&force=1`;
         
         script.onload = () => {
           loadedScripts++;
-          console.log(`BitmedialAdService: Reloaded script for ${config.className}`);
+          console.log(`BitmedialAdService: Force-reloaded script for ${config.className} with cache buster`);
           if (loadedScripts === scriptConfigs.length) {
-            resolve();
+            // Additional delay to let scripts initialize
+            setTimeout(resolve, 500);
           }
         };
 
         script.onerror = () => {
           loadedScripts++;
-          console.warn(`BitmedialAdService: Failed to reload script for ${config.className}`);
+          console.warn(`BitmedialAdService: Failed to force-reload script for ${config.className}`);
           if (loadedScripts === scriptConfigs.length) {
-            resolve();
+            setTimeout(resolve, 500);
           }
         };
 
@@ -121,31 +150,32 @@ class BitmedialAdService {
       return;
     }
 
-    console.log('BitmedialAdService: Starting comprehensive ad refresh...');
+    console.log('BitmedialAdService: ===== STARTING AGGRESSIVE AD REFRESH =====');
     this.isLoading = true;
 
     try {
-      // Step 1: Clear existing ad containers
-      console.log('BitmedialAdService: Clearing existing ad containers...');
+      // Step 1: Aggressively clear existing ad containers
+      console.log('BitmedialAdService: Phase 1 - Aggressive container cleanup...');
       this.clearAdContainers();
       
       // Step 2: Wait for DOM cleanup
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 300));
       
-      // Step 3: Reload bmcdn6 scripts to refresh static ads
-      console.log('BitmedialAdService: Reloading bmcdn6 ad scripts...');
-      await this.reloadBitmedialScripts();
+      // Step 3: Force complete script refresh with cache busting
+      console.log('BitmedialAdService: Phase 2 - Force script refresh...');
+      await this.forceAdRefresh();
       
-      // Step 4: Refresh the appsha-prm script as well
-      console.log('BitmedialAdService: Refreshing appsha-prm script...');
+      // Step 4: Refresh the main appsha-prm script with cache busting
+      console.log('BitmedialAdService: Phase 3 - Refreshing main ad script...');
       await this.createBitmedialScript();
       
-      // Step 5: Final delay to allow all ads to initialize
-      await new Promise(resolve => setTimeout(resolve, 800));
+      // Step 5: Extended delay to allow fresh ads to load
+      console.log('BitmedialAdService: Phase 4 - Waiting for fresh ads to initialize...');
+      await new Promise(resolve => setTimeout(resolve, 1200));
       
-      console.log('BitmedialAdService: Comprehensive ad refresh completed successfully');
+      console.log('BitmedialAdService: ===== AGGRESSIVE AD REFRESH COMPLETED =====');
     } catch (error) {
-      console.warn('BitmedialAdService: Ad refresh failed:', error);
+      console.warn('BitmedialAdService: Aggressive ad refresh failed:', error);
       this.isLoading = false;
     }
   }
