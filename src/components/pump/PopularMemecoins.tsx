@@ -165,8 +165,8 @@ export const PopularMemecoins = () => {
                         )}
                       </div>
                       <div>
-                        <h4 className="font-bold text-foreground text-sm">{coin.symbol}</h4>
-                        <p className="text-foreground/60 text-xs truncate max-w-20">{coin.name}</p>
+                        <h4 className="font-bold text-white text-sm">{coin.symbol}</h4>
+                        <p className="text-gray-300 text-xs truncate max-w-20">{coin.name}</p>
                       </div>
                     </div>
                     <Badge className={`text-xs px-2 py-1 ${getPumpScoreColor(coin.pumpScore)}`}>
@@ -176,12 +176,12 @@ export const PopularMemecoins = () => {
 
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-foreground/70 text-xs">Price</span>
-                      <span className="text-foreground font-mono text-sm">{formatPrice(coin.current_price)}</span>
+                      <span className="text-gray-300 text-xs">Price</span>
+                      <span className="text-white font-mono text-sm">{formatPrice(coin.current_price)}</span>
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-foreground/70 text-xs">24h Change</span>
+                      <span className="text-gray-300 text-xs">24h Change</span>
                       <div className={`flex items-center gap-1 text-sm ${
                         coin.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
@@ -198,21 +198,21 @@ export const PopularMemecoins = () => {
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-foreground/70 text-xs flex items-center gap-1">
+                      <span className="text-gray-300 text-xs flex items-center gap-1">
                         <Volume2 className="h-3 w-3" />
                         Volume
                       </span>
-                      <span className="text-foreground font-mono text-sm">${formatNumber(coin.total_volume)}</span>
+                      <span className="text-white font-mono text-sm">${formatNumber(coin.total_volume)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-foreground/70 text-xs">Market Cap</span>
-                      <span className="text-foreground font-mono text-sm">${formatNumber(coin.market_cap)}</span>
+                      <span className="text-gray-300 text-xs">Market Cap</span>
+                      <span className="text-white font-mono text-sm">${formatNumber(coin.market_cap)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-foreground/70 text-xs">Rank</span>
-                      <Badge variant="outline" className="text-xs border-border text-foreground/80">
+                      <span className="text-gray-300 text-xs">Rank</span>
+                      <Badge variant="outline" className="text-xs border-gray-600 text-gray-200">
                         #{coin.market_cap_rank}
                       </Badge>
                     </div>
