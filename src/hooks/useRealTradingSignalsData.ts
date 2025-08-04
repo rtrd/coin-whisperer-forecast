@@ -3,7 +3,12 @@ import { MarketSignal, LiveSignal, TradingRecommendation, MarketNarrative } from
 import { apiService } from '@/services/apiService';
 import { CryptoToken } from '@/types/crypto';
 
-export const useRealTradingSignalsData = () => {
+interface UseRealTradingSignalsDataOptions {
+  enabled?: boolean;
+}
+
+export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOptions = {}) => {
+  const { enabled = true } = options;
   const [marketSentiment, setMarketSentiment] = useState<'bullish' | 'bearish' | 'neutral'>('neutral');
   const [sentimentScore, setSentimentScore] = useState(50);
   const [signals, setSignals] = useState<MarketSignal[]>([]);
@@ -237,13 +242,15 @@ export const useRealTradingSignalsData = () => {
   };
 
   useEffect(() => {
+    if (!enabled) return;
+    
     generateSignalsFromRealData();
     
     // Refresh data every 60 seconds (reduced from 30s to avoid API rate limits)
     const interval = setInterval(generateSignalsFromRealData, 60000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [enabled]);
 
   return {
     marketSentiment,
