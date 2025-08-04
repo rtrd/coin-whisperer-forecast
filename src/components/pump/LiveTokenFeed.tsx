@@ -12,6 +12,8 @@ interface LiveTokenFeedProps {
 }
 
 export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnected }) => {
+  // Limit to 5 most recent tokens
+  const recentTokens = tokens.slice(0, 5);
   const formatTimeAgo = (timestamp: number) => {
     const now = Date.now();
     const diff = now - timestamp;
@@ -51,8 +53,8 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
         )}
       </div>
 
-      <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-        {tokens.length === 0 ? (
+      <div className="space-y-3">
+        {recentTokens.length === 0 ? (
           <Card className="bg-gray-800/30 border-gray-700">
             <CardContent className="p-4 text-center">
               <Clock className="h-8 w-8 text-gray-400 mx-auto mb-2" />
@@ -60,7 +62,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
             </CardContent>
           </Card>
         ) : (
-          tokens.map((token, index) => (
+          recentTokens.map((token, index) => (
             <Card 
               key={`${token.contractAddress}-${index}`}
               className="bg-gray-800/40 border-gray-700 hover:bg-gray-800/60 transition-all duration-300 animate-fade-in"
@@ -116,14 +118,22 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                     <span className="text-xs text-gray-400">
                       {formatTimeAgo(Date.now() - (index * 60000))} {/* Mock time for demo */}
                     </span>
-                    <div className="flex gap-1">
+                    <div className="flex flex-col gap-1">
+                      <Button
+                        size="sm"
+                        className="h-7 px-2 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
+                        onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+                      >
+                        <Rocket className="h-3 w-3 mr-1" />
+                        AI Agent
+                      </Button>
                       <Button
                         size="sm"
                         className="h-7 px-2 text-xs bg-purple-600 hover:bg-purple-700"
                         onClick={() => openAffiliateLink(token.symbol)}
                       >
                         <ExternalLink className="h-3 w-3 mr-1" />
-                        Trade
+                        Trade on eToro
                       </Button>
                     </div>
                   </div>
