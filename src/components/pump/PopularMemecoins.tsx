@@ -144,7 +144,7 @@ export const PopularMemecoins = () => {
             {memecoins.map((coin, index) => (
               <Card 
                 key={coin.id}
-                className="bg-card border-border hover:bg-muted/30 transition-all duration-300 hover:scale-105"
+                className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 hover:scale-105"
               >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">

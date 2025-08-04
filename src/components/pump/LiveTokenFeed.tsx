@@ -173,8 +173,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                       </Button>
                       <Button
                         size="sm"
-                        variant="outline"
-                        className="h-6 px-2 text-xs border-gray-600/50 hover:bg-gray-600/50 text-gray-200 hover:text-white"
+                        className="h-6 px-2 text-xs bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
                         onClick={() => openAffiliateLink(token.symbol)}
                       >
                         Trade on eToro
