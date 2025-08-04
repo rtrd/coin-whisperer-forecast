@@ -144,7 +144,7 @@ export const PopularMemecoins = () => {
             {memecoins.map((coin, index) => (
               <Card 
                 key={coin.id}
-                className="bg-gray-700/30 border-gray-600 hover:bg-gray-700/50 transition-all duration-300 hover:scale-105"
+                className="bg-card border-border hover:bg-muted/30 transition-all duration-300 hover:scale-105"
               >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
@@ -159,14 +159,14 @@ export const PopularMemecoins = () => {
                           }}
                         />
                         {getRankBadge(coin.market_cap_rank) && (
-                          <div className="absolute -top-1 -right-1 bg-gray-800 rounded-full p-1">
+                          <div className="absolute -top-1 -right-1 bg-background rounded-full p-1">
                             {getRankBadge(coin.market_cap_rank)}
                           </div>
                         )}
                       </div>
                       <div>
-                        <h4 className="font-bold text-white text-sm">{coin.symbol}</h4>
-                        <p className="text-gray-400 text-xs truncate max-w-20">{coin.name}</p>
+                        <h4 className="font-bold text-foreground text-sm">{coin.symbol}</h4>
+                        <p className="text-foreground/60 text-xs truncate max-w-20">{coin.name}</p>
                       </div>
                     </div>
                     <Badge className={`text-xs px-2 py-1 ${getPumpScoreColor(coin.pumpScore)}`}>
@@ -176,12 +176,12 @@ export const PopularMemecoins = () => {
 
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">Price</span>
-                      <span className="text-white font-mono text-sm">{formatPrice(coin.current_price)}</span>
+                      <span className="text-foreground/70 text-xs">Price</span>
+                      <span className="text-foreground font-mono text-sm">{formatPrice(coin.current_price)}</span>
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">24h Change</span>
+                      <span className="text-foreground/70 text-xs">24h Change</span>
                       <div className={`flex items-center gap-1 text-sm ${
                         coin.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
@@ -198,21 +198,21 @@ export const PopularMemecoins = () => {
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs flex items-center gap-1">
+                      <span className="text-foreground/70 text-xs flex items-center gap-1">
                         <Volume2 className="h-3 w-3" />
                         Volume
                       </span>
-                      <span className="text-gray-300 text-sm font-mono">${formatNumber(coin.total_volume)}</span>
+                      <span className="text-foreground font-mono text-sm">${formatNumber(coin.total_volume)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">Market Cap</span>
-                      <span className="text-gray-300 text-sm font-mono">${formatNumber(coin.market_cap)}</span>
+                      <span className="text-foreground/70 text-xs">Market Cap</span>
+                      <span className="text-foreground font-mono text-sm">${formatNumber(coin.market_cap)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">Rank</span>
-                      <Badge variant="outline" className="text-xs border-gray-500 text-gray-300">
+                      <span className="text-foreground/70 text-xs">Rank</span>
+                      <Badge variant="outline" className="text-xs border-border text-foreground/80">
                         #{coin.market_cap_rank}
                       </Badge>
                     </div>

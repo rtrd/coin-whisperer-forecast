@@ -136,20 +136,22 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                       <p className="text-muted-foreground text-xs truncate mb-2">{token.name}</p>
                       
                       {/* Inline Stats */}
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-3 text-xs text-foreground/60">
                         <div className="flex items-center gap-1">
                           <Volume2 className="h-3 w-3" />
-                          <span className="font-mono">${formatNumber(token.volume)}</span>
+                          <span>Vol:</span>
+                          <span className="font-mono text-foreground/80">${formatNumber(token.volume)}</span>
                         </div>
                         <div className="flex items-center gap-1">
                           <TrendingUp className="h-3 w-3" />
-                          <span className="font-mono">${formatNumber(token.marketCap)}</span>
+                          <span>MCap:</span>
+                          <span className="font-mono text-foreground/80">${formatNumber(token.marketCap)}</span>
                         </div>
                         {token.change24h !== 0 && (
                           <span className={`font-mono ${
                             token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
                           }`}>
-                            {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%
+                            24h: {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%
                           </span>
                         )}
                       </div>
