@@ -115,63 +115,37 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                   <div className="flex items-center gap-2 w-1/4 min-w-0">
                     <div className="flex items-center gap-2 min-w-0">
                       <h4 className="font-semibold text-white text-sm truncate">{token.symbol}</h4>
-                      <Badge 
-                        className={`text-xs px-1.5 py-0.5 flex-shrink-0 ${
-                          token.pumpScore >= 8 
-                            ? 'bg-green-600/20 text-green-400 border-green-500/30' 
-                            : token.pumpScore >= 6
-                            ? 'bg-orange-600/20 text-orange-400 border-orange-500/30'
-                            : 'bg-purple-600/20 text-purple-400 border-purple-500/30'
-                        }`}
-                      >
-                        {getPumpIcon(token.pumpScore)}
-                        {token.pumpScore.toFixed(1)}
-                      </Badge>
                     </div>
                     <p className="text-gray-400 text-xs truncate">{token.name}</p>
                   </div>
 
-                  {/* Volume - 20% */}
-                  <div className="w-1/5 text-right">
+                  {/* Volume - 25% */}
+                  <div className="w-1/4 text-right">
                     <div className="text-xs text-gray-400 mb-0.5">Volume</div>
                     <div className="font-mono text-sm text-white">${formatNumber(token.volume)}</div>
                   </div>
 
-                  {/* Market Cap - 20% */}
-                  <div className="w-1/5 text-right">
+                  {/* Market Cap - 25% */}
+                  <div className="w-1/4 text-right">
                     <div className="text-xs text-gray-400 mb-0.5">MCap</div>
                     <div className="font-mono text-sm text-white">${formatNumber(token.marketCap)}</div>
                   </div>
 
-                  {/* 24h Change - 15% */}
-                  <div className="w-[15%] text-right">
-                    <div className="text-xs text-gray-400 mb-0.5">24h</div>
-                    {token.change24h !== 0 ? (
-                      <div className={`font-mono text-sm ${
-                        token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
-                      }`}>
-                        {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%
-                      </div>
-                    ) : (
-                      <div className="font-mono text-sm text-gray-400">-</div>
-                    )}
-                  </div>
-
-                  {/* Actions - 20% */}
-                  <div className="w-1/5 flex justify-end gap-1">
+                  {/* Actions - 25% */}
+                  <div className="w-1/4 flex justify-end gap-1">
                     <Button
                       size="sm"
                       className="h-6 px-2 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
                       onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
                     >
-                      AI Agent
+                      Trade With AI Agent
                     </Button>
                     <Button
                       size="sm"
-                      className="h-6 px-2 text-xs bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+                      className="h-6 px-2 text-xs bg-green-600 border-green-600 text-white hover:bg-green-700"
                       onClick={() => openAffiliateLink(token.symbol)}
                     >
-                      eToro
+                      Trade on eToro
                     </Button>
                   </div>
                 </div>
