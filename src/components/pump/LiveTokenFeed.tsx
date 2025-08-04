@@ -109,76 +109,70 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
               className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-colors duration-200 overflow-hidden relative"
             >
               
-              <CardContent className="p-2">
-                <div className="flex items-center justify-between">
-                  {/* Token Info */}
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center text-lg border border-gray-600/50">
-                      {token.icon}
+              <CardContent className="py-1.5 px-3">
+                <div className="flex items-center w-full">
+                  {/* Token Info - 25% */}
+                  <div className="flex items-center gap-2 w-1/4 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <h4 className="font-semibold text-white text-sm truncate">{token.symbol}</h4>
+                      <Badge 
+                        className={`text-xs px-1.5 py-0.5 flex-shrink-0 ${
+                          token.pumpScore >= 8 
+                            ? 'bg-green-600/20 text-green-400 border-green-500/30' 
+                            : token.pumpScore >= 6
+                            ? 'bg-orange-600/20 text-orange-400 border-orange-500/30'
+                            : 'bg-purple-600/20 text-purple-400 border-purple-500/30'
+                        }`}
+                      >
+                        {getPumpIcon(token.pumpScore)}
+                        {token.pumpScore.toFixed(1)}
+                      </Badge>
                     </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-semibold text-white text-sm">{token.symbol}</h4>
-                        <Badge 
-                          className={`text-xs px-1.5 py-0.5 ${
-                            token.pumpScore >= 8 
-                              ? 'bg-green-600/20 text-green-400 border-green-500/30' 
-                              : token.pumpScore >= 6
-                              ? 'bg-orange-600/20 text-orange-400 border-orange-500/30'
-                              : 'bg-purple-600/20 text-purple-400 border-purple-500/30'
-                          }`}
-                        >
-                          {getPumpIcon(token.pumpScore)}
-                          {token.pumpScore.toFixed(1)}
-                        </Badge>
-                      </div>
-                      <p className="text-gray-400 text-xs truncate mb-2">{token.name}</p>
-                      
-                      {/* Inline Stats */}
-                      <div className="flex items-center gap-3 text-xs text-gray-300">
-                        <div className="flex items-center gap-1">
-                          <Volume2 className="h-3 w-3" />
-                          <span>Vol:</span>
-                          <span className="font-mono text-gray-200">${formatNumber(token.volume)}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <TrendingUp className="h-3 w-3" />
-                          <span>MCap:</span>
-                          <span className="font-mono text-gray-200">${formatNumber(token.marketCap)}</span>
-                        </div>
-                        {token.change24h !== 0 && (
-                          <span className={`font-mono ${
-                            token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
-                          }`}>
-                            24h: {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                    <p className="text-gray-400 text-xs truncate">{token.name}</p>
                   </div>
 
-                  {/* Time and Actions */}
-                  <div className="flex flex-col items-end gap-2 ml-3">
-                    <span className="text-xs text-gray-400">
-                      {formatTimeAgo(Date.now() - (index * 60000))}
-                    </span>
-                    <div className="flex gap-1">
-                      <Button
-                        size="sm"
-                        className="h-6 px-2 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                        onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
-                      >
-                        Trade With AI Agent
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="h-6 px-2 text-xs bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-                        onClick={() => openAffiliateLink(token.symbol)}
-                      >
-                        Trade on eToro
-                      </Button>
-                    </div>
+                  {/* Volume - 20% */}
+                  <div className="w-1/5 text-right">
+                    <div className="text-xs text-gray-400 mb-0.5">Volume</div>
+                    <div className="font-mono text-sm text-white">${formatNumber(token.volume)}</div>
+                  </div>
+
+                  {/* Market Cap - 20% */}
+                  <div className="w-1/5 text-right">
+                    <div className="text-xs text-gray-400 mb-0.5">MCap</div>
+                    <div className="font-mono text-sm text-white">${formatNumber(token.marketCap)}</div>
+                  </div>
+
+                  {/* 24h Change - 15% */}
+                  <div className="w-[15%] text-right">
+                    <div className="text-xs text-gray-400 mb-0.5">24h</div>
+                    {token.change24h !== 0 ? (
+                      <div className={`font-mono text-sm ${
+                        token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
+                      }`}>
+                        {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%
+                      </div>
+                    ) : (
+                      <div className="font-mono text-sm text-gray-400">-</div>
+                    )}
+                  </div>
+
+                  {/* Actions - 20% */}
+                  <div className="w-1/5 flex justify-end gap-1">
+                    <Button
+                      size="sm"
+                      className="h-6 px-2 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+                    >
+                      AI Agent
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="h-6 px-2 text-xs bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
+                      onClick={() => openAffiliateLink(token.symbol)}
+                    >
+                      eToro
+                    </Button>
                   </div>
                 </div>
               </CardContent>
