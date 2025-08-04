@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -18,6 +19,8 @@ import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
   
+  // Initialize ad script on page load
+  useAdScript();
   const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
   const location = useLocation();
   const { AllCryptosData } = location.state || { AllCryptosData: [] };

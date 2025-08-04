@@ -1,22 +1,13 @@
 import { useEffect } from 'react';
-import { bitmedialAdService } from '@/services/bitmedialAdService';
+import { useAdScript } from '@/hooks/useAdScript';
 
 interface BitmedialAdManagerProps {
   children?: React.ReactNode;
 }
 
 export const BitmedialAdManager: React.FC<BitmedialAdManagerProps> = ({ children }) => {
-  useEffect(() => {
-    // Initialize Bitmedia ads only once when the manager loads
-    console.log('BitmedialAdManager: Initializing Bitmedia ads');
-    bitmedialAdService.initializeAds();
-
-    // Cleanup on unmount
-    return () => {
-      console.log('BitmedialAdManager: Cleaning up Bitmedia ads');
-      bitmedialAdService.cleanup();
-    };
-  }, []);
+  // Use the enhanced ad script hook that handles refreshing
+  useAdScript();
 
   return <>{children}</>;
 };

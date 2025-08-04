@@ -1,5 +1,6 @@
 import React from 'react';
 import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Rocket, ArrowLeft, AlertCircle } from "lucide-react";
@@ -11,6 +12,8 @@ import { generatePumpFunSEO } from "@/utils/pageSeo";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const PumpFun = () => {
+  // Initialize ad script on page load
+  useAdScript();
   
   const seoData = generatePumpFunSEO();
   const cryptoOptions = [

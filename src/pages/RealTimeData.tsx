@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,8 @@ import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHe
 import ScrollToTop from "@/components/ScrollToTop";
 
 const RealTimeData = () => {
+  // Initialize ad script on page load
+  useAdScript();
   
   const [marketData, setMarketData] = useState([]);
   const [liveStats, setLiveStats] = useState({

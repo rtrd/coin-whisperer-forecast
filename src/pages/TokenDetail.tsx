@@ -29,6 +29,7 @@ import {
 } from "@/utils/seo";
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 import { PriceData } from "@/types/crypto";
+import { useAdScript } from "@/hooks/useAdScript";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -44,6 +45,8 @@ const TokenDetail = () => {
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
   const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
 
+  // Initialize ad script on page load
+  useAdScript();
 
   // Track token page view
   React.useEffect(() => {
