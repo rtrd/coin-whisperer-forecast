@@ -55,16 +55,26 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
   }, [tokens]);
   
   const recentTokens = animatedTokens;
-  const formatTimeAgo = (timestamp: number) => {
-    const now = Date.now();
-    const diff = now - timestamp;
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
+  const formatLaunchTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const isToday = date.toDateString() === now.toDateString();
     
-    if (minutes < 1) return 'just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    return 'yesterday';
+    if (isToday) {
+      return date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+    } else {
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+    }
   };
 
   const formatNumber = (num: number) => {
@@ -111,22 +121,28 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
               
               <CardContent className="py-1.5 px-3">
                 <div className="flex items-center w-full">
-                  {/* Token Info - 25% */}
-                  <div className="flex items-center gap-2 w-1/4 min-w-0">
+                  {/* Launch Time - 15% */}
+                  <div className="w-[15%] min-w-0">
+                    <div className="text-xs text-gray-400 mb-0.5">Launched</div>
+                    <div className="font-mono text-xs text-white">{formatLaunchTime(token.timestamp)}</div>
+                  </div>
+
+                  {/* Token Info - 20% */}
+                  <div className="flex items-center gap-2 w-1/5 min-w-0">
                     <div className="flex items-center gap-2 min-w-0">
                       <h4 className="font-semibold text-white text-sm truncate">{token.symbol}</h4>
                     </div>
                     <p className="text-gray-400 text-xs truncate">{token.name}</p>
                   </div>
 
-                  {/* Volume - 25% */}
-                  <div className="w-1/4 text-right">
+                  {/* Volume - 20% */}
+                  <div className="w-1/5 text-right">
                     <div className="text-xs text-gray-400 mb-0.5">Volume</div>
                     <div className="font-mono text-sm text-white">${formatNumber(token.volume)}</div>
                   </div>
 
-                  {/* Market Cap - 25% */}
-                  <div className="w-1/4 text-right">
+                  {/* Market Cap - 20% */}
+                  <div className="w-1/5 text-right">
                     <div className="text-xs text-gray-400 mb-0.5">MCap</div>
                     <div className="font-mono text-sm text-white">${formatNumber(token.marketCap)}</div>
                   </div>
