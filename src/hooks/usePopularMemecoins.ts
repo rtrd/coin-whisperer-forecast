@@ -18,11 +18,17 @@ export interface PopularMemecoin {
 
 export type SortOption = 'volume' | 'market_cap' | 'price_change_24h' | 'pump_score';
 
-const MEMECOIN_CATEGORIES = [
-  'meme-token',
-  'binance-smart-chain',
-  'ethereum-ecosystem',
-  'solana-ecosystem'
+// Known memecoin IDs and patterns for filtering
+const KNOWN_MEMECOINS = [
+  'dogecoin', 'shiba-inu', 'pepe', 'floki', 'bonk', 'dogwifcoin', 'meme',
+  'baby-doge-coin', 'dogelon-mars', 'samoyedcoin', 'kishu-inu', 'akita-inu',
+  'hokkaido-inu', 'cat-in-a-dogs-world', 'book-of-meme', 'myro', 'jeo-boden',
+  'popcat', 'mog-coin', 'brett-based', 'pajamas-cat', 'based-brett'
+];
+
+const MEMECOIN_KEYWORDS = [
+  'doge', 'shib', 'pepe', 'inu', 'cat', 'dog', 'meme', 'bonk', 'floki',
+  'elon', 'wojak', 'chad', 'based', 'moon', 'rocket', 'safe', 'baby'
 ];
 
 export const usePopularMemecoins = () => {
@@ -40,26 +46,29 @@ export const usePopularMemecoins = () => {
     return Math.min(volumeScore + priceChangeScore + marketCapScore + rankBonus, 10);
   };
 
+  const isMemecoin = (coin: any): boolean => {
+    // Check if it's in our known memecoins list
+    if (KNOWN_MEMECOINS.includes(coin.id.toLowerCase())) {
+      return true;
+    }
+    
+    // Check if name or symbol contains memecoin keywords
+    const nameCheck = MEMECOIN_KEYWORDS.some(keyword => 
+      coin.name.toLowerCase().includes(keyword) || 
+      coin.symbol.toLowerCase().includes(keyword)
+    );
+    
+    return nameCheck;
+  };
+
   const fetchMemecoins = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      // First try to get trending meme coins
-      const trendingResponse = await fetch(
-        'https://api.coingecko.com/api/v3/search/trending'
-      );
-      
-      if (!trendingResponse.ok) {
-        throw new Error('Failed to fetch trending data');
-      }
-
-      const trendingData = await trendingResponse.json();
-      const trendingIds = trendingData.coins?.slice(0, 10).map((coin: any) => coin.item.id).join(',') || '';
-
-      // Get additional popular memecoins by category
+      // Get meme tokens by category
       const marketResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=meme-token&order=volume_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h,7d`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=meme-token&order=volume_desc&per_page=50&page=1&sparkline=false&price_change_percentage=24h,7d`
       );
 
       if (!marketResponse.ok) {
@@ -68,32 +77,11 @@ export const usePopularMemecoins = () => {
 
       const marketData = await marketResponse.json();
 
-      // If we have trending IDs, get detailed data for them
-      let detailedTrendingData = [];
-      if (trendingIds) {
-        try {
-          const detailedResponse = await fetch(
-            `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${trendingIds}&order=volume_desc&per_page=10&page=1&sparkline=false&price_change_percentage=24h,7d`
-          );
-          if (detailedResponse.ok) {
-            detailedTrendingData = await detailedResponse.json();
-          }
-        } catch (err) {
-          console.warn('Failed to fetch detailed trending data, continuing with market data only');
-        }
-      }
-
-      // Combine and deduplicate the data
-      const combinedData = [...detailedTrendingData, ...marketData];
-      const uniqueCoins = combinedData.reduce((acc: any[], coin: any) => {
-        if (!acc.find(c => c.id === coin.id)) {
-          acc.push(coin);
-        }
-        return acc;
-      }, []);
+      // Filter to only include actual memecoins
+      const filteredMemecoins = marketData.filter(isMemecoin);
 
       // Transform to our format and calculate pump scores
-      const transformedCoins: PopularMemecoin[] = uniqueCoins.slice(0, 20).map((coin: any) => {
+      const transformedCoins: PopularMemecoin[] = filteredMemecoins.slice(0, 18).map((coin: any) => {
         const memecoin: PopularMemecoin = {
           id: coin.id,
           symbol: coin.symbol.toUpperCase(),

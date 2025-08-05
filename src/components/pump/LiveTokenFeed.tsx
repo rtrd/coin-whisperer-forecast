@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles, TrendingUp, Clock, Flame, Rocket, ExternalLink, Volume2 } from "lucide-react";
+import { Sparkles, TrendingUp, Clock, Flame, Rocket, ExternalLink, Volume2, Zap } from "lucide-react";
 import { PumpToken } from "@/hooks/usePumpPortalData";
 import { openAffiliateLink } from "@/utils/affiliateLinks";
 
@@ -11,7 +11,50 @@ interface LiveTokenFeedProps {
   isConnected: boolean;
 }
 
+interface AnimatedToken extends PumpToken {
+  id: string;
+  isNew?: boolean;
+}
+
 export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnected }) => {
+  const [animatedTokens, setAnimatedTokens] = useState<AnimatedToken[]>([]);
+  
+  // Manage token feed with animations
+  useEffect(() => {
+    const latestTokens = tokens.slice(0, 5).map((token, index) => ({
+      ...token,
+      id: `${token.contractAddress}-${index}-${Date.now()}`,
+      isNew: false
+    }));
+    
+    if (animatedTokens.length === 0) {
+      setAnimatedTokens(latestTokens);
+      return;
+    }
+    
+    // Check for new tokens
+    const newTokenIds = new Set(latestTokens.map(t => t.contractAddress));
+    const oldTokenIds = new Set(animatedTokens.map(t => t.contractAddress));
+    
+    const hasNewTokens = !latestTokens.every(token => oldTokenIds.has(token.contractAddress));
+    
+    if (hasNewTokens) {
+      // Mark new tokens and animate them in
+      const tokensWithAnimation = latestTokens.map(token => ({
+        ...token,
+        isNew: !oldTokenIds.has(token.contractAddress)
+      }));
+      
+      setAnimatedTokens(tokensWithAnimation);
+      
+      // Remove new flag after animation
+      setTimeout(() => {
+        setAnimatedTokens(prev => prev.map(token => ({ ...token, isNew: false })));
+      }, 500);
+    }
+  }, [tokens]);
+  
+  const recentTokens = animatedTokens;
   const formatTimeAgo = (timestamp: number) => {
     const now = Date.now();
     const diff = now - timestamp;
@@ -51,32 +94,48 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
         )}
       </div>
 
-      <div className="space-y-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-        {tokens.length === 0 ? (
-          <Card className="bg-gray-800/30 border-gray-700">
-            <CardContent className="p-4 text-center">
-              <Clock className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-gray-400 text-sm">Waiting for new token launches...</p>
+      <div className="space-y-3 relative">
+        {recentTokens.length === 0 ? (
+          <Card className="border-border/30">
+            <CardContent className="p-6 text-center">
+              <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
+              <p className="text-muted-foreground">Waiting for new token launches...</p>
             </CardContent>
           </Card>
         ) : (
-          tokens.map((token, index) => (
+          recentTokens.map((token, index) => (
             <Card 
-              key={`${token.contractAddress}-${index}`}
-              className="bg-gray-800/40 border-gray-700 hover:bg-gray-800/60 transition-all duration-300 animate-fade-in"
+              key={token.id}
+              className={`border-border/30 hover:bg-muted/30 transition-all duration-500 overflow-hidden relative ${
+                token.isNew 
+                  ? 'animate-[slideInFromTop_0.5s_ease-out] border-primary/50 shadow-lg shadow-primary/20' 
+                  : 'animate-fade-in'
+              }`}
             >
+              {token.isNew && (
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent animate-pulse"></div>
+              )}
+              
               <CardContent className="p-4">
                 <div className="flex items-start justify-between">
                   {/* Token Info */}
-                  <div className="flex items-start gap-3 flex-1">
-                    <div className="text-2xl bg-gray-700/50 p-2 rounded-lg">
-                      {token.icon}
+                  <div className="flex items-start gap-4 flex-1">
+                    <div className="relative">
+                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center text-xl border border-border/50">
+                        {token.icon}
+                      </div>
+                      {token.isNew && (
+                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center animate-pulse">
+                          <Zap className="h-2 w-2 text-background" />
+                        </div>
+                      )}
                     </div>
+                    
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-white text-sm">{token.symbol}</h4>
+                      <div className="flex items-center gap-2 mb-2">
+                        <h4 className="font-bold text-foreground text-base">{token.symbol}</h4>
                         <Badge 
-                          className={`text-xs px-2 py-0.5 ${
+                          className={`text-xs px-2 py-1 ${
                             token.pumpScore >= 8 
                               ? 'bg-green-600/20 text-green-400 border-green-500/30' 
                               : token.pumpScore >= 6
@@ -87,43 +146,65 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                           {getPumpIcon(token.pumpScore)}
                           {token.pumpScore.toFixed(1)}
                         </Badge>
-                      </div>
-                      <p className="text-gray-400 text-xs truncate mb-2">{token.name}</p>
-                      
-                      {/* Stats */}
-                      <div className="flex items-center gap-4 text-xs">
-                        <div className="flex items-center gap-1">
-                          <Volume2 className="h-3 w-3 text-blue-400" />
-                          <span className="text-gray-300">${formatNumber(token.volume)}</span>
-                        </div>
-                        <div className="text-gray-300">
-                          MC: ${formatNumber(token.marketCap)}
-                        </div>
-                        {token.change24h !== 0 && (
-                          <div className={`flex items-center gap-1 ${
-                            token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
-                          }`}>
-                            <TrendingUp className={`h-3 w-3 ${token.change24h < 0 ? 'rotate-180' : ''}`} />
-                            <span>{token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%</span>
-                          </div>
+                        {token.isNew && (
+                          <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse">
+                            NEW
+                          </Badge>
                         )}
                       </div>
+                      <p className="text-muted-foreground text-sm truncate mb-3">{token.name}</p>
+                      
+                      {/* Stats Grid */}
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-2">
+                          <Volume2 className="h-4 w-4 text-blue-400" />
+                          <div>
+                            <div className="text-xs text-muted-foreground">Volume</div>
+                            <div className="font-mono text-foreground">${formatNumber(token.volume)}</div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-2">
+                          <TrendingUp className="h-4 w-4 text-green-400" />
+                          <div>
+                            <div className="text-xs text-muted-foreground">Market Cap</div>
+                            <div className="font-mono text-foreground">${formatNumber(token.marketCap)}</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {token.change24h !== 0 && (
+                        <div className={`flex items-center gap-1 mt-2 text-sm ${
+                          token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
+                        }`}>
+                          <TrendingUp className={`h-3 w-3 ${token.change24h < 0 ? 'rotate-180' : ''}`} />
+                          <span className="font-mono">24h: {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   {/* Time and Actions */}
-                  <div className="flex flex-col items-end gap-2 ml-4">
-                    <span className="text-xs text-gray-400">
-                      {formatTimeAgo(Date.now() - (index * 60000))} {/* Mock time for demo */}
+                  <div className="flex flex-col items-end gap-3 ml-4">
+                    <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">
+                      {formatTimeAgo(Date.now() - (index * 60000))}
                     </span>
-                    <div className="flex gap-1">
+                    <div className="flex flex-col gap-2">
                       <Button
                         size="sm"
-                        className="h-7 px-2 text-xs bg-purple-600 hover:bg-purple-700"
+                        className="h-8 px-3 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 font-medium"
+                        onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+                      >
+                        <Rocket className="h-3 w-3 mr-1" />
+                        Trade With AI Agent
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-8 px-3 text-xs border-primary/30 text-primary hover:bg-primary/10"
                         onClick={() => openAffiliateLink(token.symbol)}
                       >
                         <ExternalLink className="h-3 w-3 mr-1" />
-                        Trade
+                        Trade on eToro
                       </Button>
                     </div>
                   </div>

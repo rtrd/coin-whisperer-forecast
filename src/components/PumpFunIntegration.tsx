@@ -6,13 +6,15 @@ import { Rocket, TrendingUp, TrendingDown, Sparkles, LayoutList, LayoutGrid, Wif
 import { LiveTokenFeed } from "./pump/LiveTokenFeed";
 import { PopularMemecoins } from "./pump/PopularMemecoins";
 import { usePumpPortalData } from "@/hooks/usePumpPortalData";
+import { GAMAdUnit } from "./ads/GAMAdUnit";
 
 export const PumpFunIntegration = () => {
   const { newLaunches, isConnected, error } = usePumpPortalData();
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
 
   return (
-    <div className="mb-6">
+    <div className="space-y-8">
+      {/* Live Token Feed Section */}
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
@@ -32,32 +34,6 @@ export const PumpFunIntegration = () => {
                 </>
               )}
             </CardTitle>
-            <div className="flex items-center gap-2">
-              <Button
-                variant={viewMode === "list" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewMode("list")}
-                className={`${
-                  viewMode === "list" 
-                    ? "text-white" 
-                    : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
-                }`}
-              >
-                <LayoutList className="h-4 w-4" />
-              </Button>
-              <Button
-                variant={viewMode === "grid" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setViewMode("grid")}
-                className={`${
-                  viewMode === "grid" 
-                    ? "text-white" 
-                    : "text-gray-300 border-gray-600 bg-gray-700/50 hover:bg-gray-600/50 hover:text-white"
-                }`}
-              >
-                <LayoutGrid className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -74,10 +50,19 @@ export const PumpFunIntegration = () => {
         </CardContent>
       </Card>
 
-      {/* Popular Memecoins Section */}
-      <div className="mb-6">
-        <PopularMemecoins />
+      {/* Ad Section */}
+      <div className="flex justify-center py-6">
+        <div className="w-full max-w-2xl">
+          <GAMAdUnit 
+            adUnitId="lovable_leaderboard"
+            size={[728, 90]}
+            className="mx-auto bg-gray-800/20 rounded-lg p-4 border border-gray-700/30"
+          />
+        </div>
       </div>
+
+      {/* Popular Memecoins Section */}
+      <PopularMemecoins />
     </div>
   );
 };
