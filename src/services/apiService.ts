@@ -8,7 +8,8 @@ class ApiService {
 
   async getAllCryptos(): Promise<CryptoToken[]> {
     try {
-      const response = await fetch(`${SERVER_URL}/api/cryptos`, {
+      // ✅ Call your backend route instead of CoinGecko directly
+      const response = await fetch(`http://localhost:3001/api/cryptos`, {
         headers: {
           accept: "application/json",
         },
@@ -19,10 +20,39 @@ class ApiService {
       }
 
       const data = await response.json();
-      return Array.isArray(data) ? data : [];
+
+      // ✅ Transform data if needed
+      const transformedData = data.map((coin: any) => ({
+        id: coin.id,
+        symbol: coin.symbol,
+        name: coin.name,
+        image: coin.image,
+        current_price: coin.current_price,
+        market_cap: coin.market_cap,
+        market_cap_rank: coin.market_cap_rank,
+        total_volume: coin.total_volume,
+        high_24h: coin.high_24h,
+        low_24h: coin.low_24h,
+        price_change_24h: coin.price_change_24h,
+        price_change_percentage_24h: coin.price_change_percentage_24h,
+        market_cap_change_24h: coin.market_cap_change_24h,
+        market_cap_change_percentage_24h: coin.market_cap_change_percentage_24h,
+        circulating_supply: coin.circulating_supply,
+        total_supply: coin.total_supply,
+        max_supply: coin.max_supply,
+        ath: coin.ath,
+        ath_change_percentage: coin.ath_change_percentage,
+        ath_date: coin.ath_date,
+        atl: coin.atl,
+        atl_change_percentage: coin.atl_change_percentage,
+        atl_date: coin.atl_date,
+        last_updated: coin.last_updated,
+      }));
+
+      return transformedData;
     } catch (error) {
       console.error("API fetch error:", error);
-      throw error;
+      return []; // fallback
     }
   }
 
