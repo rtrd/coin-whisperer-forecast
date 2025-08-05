@@ -132,7 +132,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(
             label="Support Level"
             value={`$${analysis.supportLevel.toLocaleString("en-US", {
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              maximumFractionDigits: 5,
             })}`}
             tooltipText="Key support price level based on technical analysis"
           />
@@ -141,7 +141,7 @@ export const DynamicTokenAnalysis: React.FC<TokenAnalysisProps> = React.memo(
             label="Resistance Level"
             value={`$${analysis.resistanceLevel.toLocaleString("en-US", {
               minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
+              maximumFractionDigits: 5,
             })}`}
             tooltipText="Key resistance price level based on technical analysis"
           />

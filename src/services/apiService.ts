@@ -8,9 +8,11 @@ class ApiService {
 
   async getAllCryptos(): Promise<CryptoToken[]> {
     try {
-      const response = await fetch(`${SERVER_URL}/api/cryptos`, {
+      // Use CoinGecko API directly since we don't have a backend server
+      const response = await fetch(`${this.baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h`, {
         headers: {
           accept: "application/json",
+          ...(API_KEY && { "x-cg-demo-api-key": API_KEY }),
         },
       });
 
@@ -19,20 +21,51 @@ class ApiService {
       }
 
       const data = await response.json();
-      return Array.isArray(data) ? data : [];
+      
+      // Transform CoinGecko data to match our CryptoToken interface
+      const transformedData = data.map((coin: any) => ({
+        id: coin.id,
+        symbol: coin.symbol,
+        name: coin.name,
+        image: coin.image,
+        current_price: coin.current_price,
+        market_cap: coin.market_cap,
+        market_cap_rank: coin.market_cap_rank,
+        total_volume: coin.total_volume,
+        high_24h: coin.high_24h,
+        low_24h: coin.low_24h,
+        price_change_24h: coin.price_change_24h,
+        price_change_percentage_24h: coin.price_change_percentage_24h,
+        market_cap_change_24h: coin.market_cap_change_24h,
+        market_cap_change_percentage_24h: coin.market_cap_change_percentage_24h,
+        circulating_supply: coin.circulating_supply,
+        total_supply: coin.total_supply,
+        max_supply: coin.max_supply,
+        ath: coin.ath,
+        ath_change_percentage: coin.ath_change_percentage,
+        ath_date: coin.ath_date,
+        atl: coin.atl,
+        atl_change_percentage: coin.atl_change_percentage,
+        atl_date: coin.atl_date,
+        last_updated: coin.last_updated
+      }));
+
+      return transformedData;
     } catch (error) {
       console.error("API fetch error:", error);
-      throw error;
+      return []; // Return empty array as fallback
     }
   }
 
   async getTokenInfo(tokenId: string): Promise<TokenInfo> {
     try {
+      // Use CoinGecko API directly for token info
       const response = await fetch(
-        `${SERVER_URL}/api/token-info/${encodeURIComponent(tokenId)}`,
+        `${this.baseUrl}/coins/${encodeURIComponent(tokenId)}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`,
         {
           headers: {
             accept: "application/json",
+            ...(API_KEY && { "x-cg-demo-api-key": API_KEY }),
           },
         }
       );
@@ -45,7 +78,20 @@ class ApiService {
       }
 
       const data = await response.json();
-      return data;
+      
+      // Transform CoinGecko data to match our TokenInfo interface
+      return {
+        id: data.id,
+        symbol: data.symbol,
+        name: data.name,
+        image: data.image?.large || data.image?.small || '',
+        current_price: data.market_data?.current_price?.usd || 0,
+        market_cap: data.market_data?.market_cap?.usd || 0,
+        total_volume: data.market_data?.total_volume?.usd || 0,
+        price_change_percentage_24h: data.market_data?.price_change_percentage_24h || 0,
+        description: data.description?.en || '',
+        market_cap_rank: data.market_cap_rank || 0
+      };
     } catch (error) {
       console.error(`Token info fetch error for ${tokenId}:`, error);
       throw error;

@@ -39,7 +39,7 @@ export const TradingRecommendations: React.FC<TradingRecommendationsProps> = ({ 
                   </span>
                 )}
                 <span className="text-xs text-blue-300">
-                  {rec.confidence}% confident
+                  {Math.round(rec.confidence)}% confident
                 </span>
               </div>
             </div>

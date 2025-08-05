@@ -13,7 +13,7 @@ export const PumpFunIntegration = () => {
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4">
       {/* Live Token Feed Section */}
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader className="pb-4">
@@ -51,7 +51,7 @@ export const PumpFunIntegration = () => {
       </Card>
 
       {/* Ad Section */}
-      <div className="flex justify-center py-6">
+      <div className="flex justify-center py-2">
         <div className="w-full max-w-2xl">
           <GAMAdUnit 
             adUnitId="lovable_leaderboard"

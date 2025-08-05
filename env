@@ -1,1 +1,3 @@
 VITE_TOKEN_KEY=CG-fRsEMvVNHLdQy1eBcC2WkhAs
+VITE_SERVER_URL=https://api.coingecko.com/api/v3
+VITE_LUNAR_API=demo-api-key

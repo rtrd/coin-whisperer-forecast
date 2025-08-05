@@ -55,16 +55,26 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
   }, [tokens]);
   
   const recentTokens = animatedTokens;
-  const formatTimeAgo = (timestamp: number) => {
-    const now = Date.now();
-    const diff = now - timestamp;
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
+  const formatLaunchTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const isToday = date.toDateString() === now.toDateString();
     
-    if (minutes < 1) return 'just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    return 'yesterday';
+    if (isToday) {
+      return date.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: false 
+      });
+    } else {
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+    }
   };
 
   const formatNumber = (num: number) => {
@@ -96,117 +106,63 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
 
       <div className="space-y-3 relative">
         {recentTokens.length === 0 ? (
-          <Card className="border-border/30">
+          <Card className="bg-gray-800/50 border-gray-700">
             <CardContent className="p-6 text-center">
-              <Clock className="h-12 w-12 text-muted-foreground mx-auto mb-3" />
-              <p className="text-muted-foreground">Waiting for new token launches...</p>
+              <Clock className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+              <p className="text-gray-400">Waiting for new token launches...</p>
             </CardContent>
           </Card>
         ) : (
           recentTokens.map((token, index) => (
             <Card 
               key={token.id}
-              className={`border-border/30 hover:bg-muted/30 transition-all duration-500 overflow-hidden relative ${
-                token.isNew 
-                  ? 'animate-[slideInFromTop_0.5s_ease-out] border-primary/50 shadow-lg shadow-primary/20' 
-                  : 'animate-fade-in'
-              }`}
+              className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-colors duration-200 overflow-hidden relative"
             >
-              {token.isNew && (
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent animate-pulse"></div>
-              )}
               
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between">
-                  {/* Token Info */}
-                  <div className="flex items-start gap-4 flex-1">
-                    <div className="relative">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl flex items-center justify-center text-xl border border-border/50">
-                        {token.icon}
-                      </div>
-                      {token.isNew && (
-                        <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center animate-pulse">
-                          <Zap className="h-2 w-2 text-background" />
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-bold text-foreground text-base">{token.symbol}</h4>
-                        <Badge 
-                          className={`text-xs px-2 py-1 ${
-                            token.pumpScore >= 8 
-                              ? 'bg-green-600/20 text-green-400 border-green-500/30' 
-                              : token.pumpScore >= 6
-                              ? 'bg-orange-600/20 text-orange-400 border-orange-500/30'
-                              : 'bg-purple-600/20 text-purple-400 border-purple-500/30'
-                          }`}
-                        >
-                          {getPumpIcon(token.pumpScore)}
-                          {token.pumpScore.toFixed(1)}
-                        </Badge>
-                        {token.isNew && (
-                          <Badge className="bg-primary/20 text-primary border-primary/30 animate-pulse">
-                            NEW
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-muted-foreground text-sm truncate mb-3">{token.name}</p>
-                      
-                      {/* Stats Grid */}
-                      <div className="grid grid-cols-2 gap-3 text-sm">
-                        <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-2">
-                          <Volume2 className="h-4 w-4 text-blue-400" />
-                          <div>
-                            <div className="text-xs text-muted-foreground">Volume</div>
-                            <div className="font-mono text-foreground">${formatNumber(token.volume)}</div>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2 bg-muted/30 rounded-lg p-2">
-                          <TrendingUp className="h-4 w-4 text-green-400" />
-                          <div>
-                            <div className="text-xs text-muted-foreground">Market Cap</div>
-                            <div className="font-mono text-foreground">${formatNumber(token.marketCap)}</div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {token.change24h !== 0 && (
-                        <div className={`flex items-center gap-1 mt-2 text-sm ${
-                          token.change24h >= 0 ? 'text-green-400' : 'text-red-400'
-                        }`}>
-                          <TrendingUp className={`h-3 w-3 ${token.change24h < 0 ? 'rotate-180' : ''}`} />
-                          <span className="font-mono">24h: {token.change24h >= 0 ? '+' : ''}{token.change24h.toFixed(1)}%</span>
-                        </div>
-                      )}
-                    </div>
+              <CardContent className="py-1.5 px-3">
+                <div className="flex items-center w-full">
+                  {/* Launch Time - 15% */}
+                  <div className="w-[15%] min-w-0">
+                    <div className="text-xs text-gray-400 mb-0.5">Launched</div>
+                    <div className="font-mono text-xs text-white">{formatLaunchTime(token.timestamp)}</div>
                   </div>
 
-                  {/* Time and Actions */}
-                  <div className="flex flex-col items-end gap-3 ml-4">
-                    <span className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded-full">
-                      {formatTimeAgo(Date.now() - (index * 60000))}
-                    </span>
-                    <div className="flex flex-col gap-2">
-                      <Button
-                        size="sm"
-                        className="h-8 px-3 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0 font-medium"
-                        onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
-                      >
-                        <Rocket className="h-3 w-3 mr-1" />
-                        Trade With AI Agent
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="h-8 px-3 text-xs border-primary/30 text-primary hover:bg-primary/10"
-                        onClick={() => openAffiliateLink(token.symbol)}
-                      >
-                        <ExternalLink className="h-3 w-3 mr-1" />
-                        Trade on eToro
-                      </Button>
+                  {/* Token Info - 20% */}
+                  <div className="flex items-center gap-2 w-1/5 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <h4 className="font-semibold text-white text-sm truncate">{token.symbol}</h4>
                     </div>
+                    <p className="text-gray-400 text-xs truncate">{token.name}</p>
+                  </div>
+
+                  {/* Volume - 20% */}
+                  <div className="w-1/5 text-right">
+                    <div className="text-xs text-gray-400 mb-0.5">Volume</div>
+                    <div className="font-mono text-sm text-white">${formatNumber(token.volume)}</div>
+                  </div>
+
+                  {/* Market Cap - 20% */}
+                  <div className="w-1/5 text-right">
+                    <div className="text-xs text-gray-400 mb-0.5">MCap</div>
+                    <div className="font-mono text-sm text-white">${formatNumber(token.marketCap)}</div>
+                  </div>
+
+                  {/* Actions - 25% */}
+                  <div className="w-1/4 flex justify-end gap-1">
+                    <Button
+                      size="sm"
+                      className="h-6 px-2 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                      onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+                    >
+                      Trade With AI Agent
+                    </Button>
+                    <Button
+                      size="sm"
+                      className="h-6 px-2 text-xs bg-green-600 border-green-600 text-white hover:bg-green-700"
+                      onClick={() => openAffiliateLink(token.symbol)}
+                    >
+                      Trade on eToro
+                    </Button>
                   </div>
                 </div>
               </CardContent>

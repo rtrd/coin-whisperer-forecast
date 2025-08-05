@@ -144,7 +144,7 @@ export const PopularMemecoins = () => {
             {memecoins.map((coin, index) => (
               <Card 
                 key={coin.id}
-                className="bg-gray-700/30 border-gray-600 hover:bg-gray-700/50 transition-all duration-300 hover:scale-105"
+                className="bg-gray-800/50 border-gray-700 hover:bg-gray-700/50 transition-all duration-300 hover:scale-105"
               >
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between mb-3">
@@ -159,14 +159,14 @@ export const PopularMemecoins = () => {
                           }}
                         />
                         {getRankBadge(coin.market_cap_rank) && (
-                          <div className="absolute -top-1 -right-1 bg-gray-800 rounded-full p-1">
+                          <div className="absolute -top-1 -right-1 bg-background rounded-full p-1">
                             {getRankBadge(coin.market_cap_rank)}
                           </div>
                         )}
                       </div>
                       <div>
                         <h4 className="font-bold text-white text-sm">{coin.symbol}</h4>
-                        <p className="text-gray-400 text-xs truncate max-w-20">{coin.name}</p>
+                        <p className="text-gray-300 text-xs truncate max-w-20">{coin.name}</p>
                       </div>
                     </div>
                     <Badge className={`text-xs px-2 py-1 ${getPumpScoreColor(coin.pumpScore)}`}>
@@ -176,12 +176,12 @@ export const PopularMemecoins = () => {
 
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">Price</span>
+                      <span className="text-gray-300 text-xs">Price</span>
                       <span className="text-white font-mono text-sm">{formatPrice(coin.current_price)}</span>
                     </div>
                     
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">24h Change</span>
+                      <span className="text-gray-300 text-xs">24h Change</span>
                       <div className={`flex items-center gap-1 text-sm ${
                         coin.price_change_percentage_24h >= 0 ? 'text-green-400' : 'text-red-400'
                       }`}>
@@ -198,21 +198,21 @@ export const PopularMemecoins = () => {
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs flex items-center gap-1">
+                      <span className="text-gray-300 text-xs flex items-center gap-1">
                         <Volume2 className="h-3 w-3" />
                         Volume
                       </span>
-                      <span className="text-gray-300 text-sm font-mono">${formatNumber(coin.total_volume)}</span>
+                      <span className="text-white font-mono text-sm">${formatNumber(coin.total_volume)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">Market Cap</span>
-                      <span className="text-gray-300 text-sm font-mono">${formatNumber(coin.market_cap)}</span>
+                      <span className="text-gray-300 text-xs">Market Cap</span>
+                      <span className="text-white font-mono text-sm">${formatNumber(coin.market_cap)}</span>
                     </div>
 
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-400 text-xs">Rank</span>
-                      <Badge variant="outline" className="text-xs border-gray-500 text-gray-300">
+                      <span className="text-gray-300 text-xs">Rank</span>
+                      <Badge variant="outline" className="text-xs border-gray-600 text-gray-200">
                         #{coin.market_cap_rank}
                       </Badge>
                     </div>
@@ -233,7 +233,7 @@ export const PopularMemecoins = () => {
         ) : (
           <div className="space-y-0">
             {/* Header Row */}
-            <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-muted-foreground border-b border-border/20 bg-muted/20">
+            <div className="grid grid-cols-12 gap-3 px-3 py-2 text-xs font-medium text-gray-300 border-b border-gray-700/30">
               <div className="col-span-3">Token</div>
               <div className="col-span-1 text-center">Score</div>
               <div className="col-span-2 text-right">Price</div>
@@ -247,7 +247,7 @@ export const PopularMemecoins = () => {
             {memecoins.map((coin, index) => (
               <div 
                 key={coin.id}
-                className="grid grid-cols-12 gap-3 items-center px-3 py-2 border-b border-border/10 hover:bg-muted/30 transition-colors duration-150"
+                className="grid grid-cols-12 gap-3 items-center px-3 py-2 border-b border-gray-700/20 hover:bg-gray-700/50 transition-colors duration-150"
               >
                 {/* Token Info */}
                 <div className="col-span-3 flex items-center gap-2">
@@ -261,14 +261,14 @@ export const PopularMemecoins = () => {
                       }}
                     />
                     {getRankBadge(coin.market_cap_rank) && (
-                      <div className="absolute -top-0.5 -right-0.5 bg-background rounded-full p-0.5">
+                      <div className="absolute -top-0.5 -right-0.5 bg-gray-800 rounded-full p-0.5">
                         {getRankBadge(coin.market_cap_rank)}
                       </div>
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-medium text-foreground text-sm">{coin.symbol}</div>
-                    <div className="text-xs text-muted-foreground truncate">{coin.name}</div>
+                    <div className="font-semibold text-white text-sm">{coin.symbol}</div>
+                    <div className="text-xs text-gray-300 truncate">{coin.name}</div>
                   </div>
                 </div>
                 
@@ -281,7 +281,7 @@ export const PopularMemecoins = () => {
                 
                 {/* Price */}
                 <div className="col-span-2 text-right">
-                  <div className="font-mono text-sm text-foreground">{formatPrice(coin.current_price)}</div>
+                  <div className="font-mono text-sm text-white">{formatPrice(coin.current_price)}</div>
                 </div>
                 
                 {/* 24h Change */}
@@ -303,7 +303,7 @@ export const PopularMemecoins = () => {
                 
                 {/* Volume */}
                 <div className="col-span-2 text-right">
-                  <div className="flex items-center justify-end gap-1 text-sm text-muted-foreground">
+                  <div className="flex items-center justify-end gap-1 text-sm text-gray-200">
                     <Volume2 className="h-3 w-3" />
                     <span className="font-mono">${formatNumber(coin.total_volume)}</span>
                   </div>
@@ -311,7 +311,7 @@ export const PopularMemecoins = () => {
                 
                 {/* Rank */}
                 <div className="col-span-1 flex justify-center">
-                  <Badge variant="outline" className="text-xs border-border/50">
+                  <Badge variant="outline" className="text-xs border-gray-600/50 text-gray-300">
                     #{coin.market_cap_rank}
                   </Badge>
                 </div>

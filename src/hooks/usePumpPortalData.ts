@@ -10,6 +10,7 @@ export interface PumpToken {
   icon: string;
   pumpScore: number;
   contractAddress?: string;
+  timestamp: number;
 }
 
 interface TokenTradeEvent {
@@ -77,7 +78,8 @@ export const usePumpPortalData = () => {
       marketCap: marketCapUSD,
       icon: getRandomIcon(),
       pumpScore: 5.0, // Start with neutral score for new tokens
-      contractAddress: data.mint
+      contractAddress: data.mint,
+      timestamp: data.timestamp
     };
 
     tokenDataMap.current.set(data.mint, token);
