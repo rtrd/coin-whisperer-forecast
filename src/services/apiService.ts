@@ -9,7 +9,7 @@ class ApiService {
   async getAllCryptos(): Promise<CryptoToken[]> {
     try {
       // ✅ Call your backend route instead of CoinGecko directly
-      const response = await fetch(`http://localhost:3001/api/cryptos`, {
+      const response = await fetch(`${SERVER_URL}/api/cryptos`, {
         headers: {
           accept: "application/json",
         },
