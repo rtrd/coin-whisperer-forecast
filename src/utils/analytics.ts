@@ -195,15 +195,6 @@ export const trackFeatureUsage = (featureName: string, action: string, metadata?
   });
 };
 
-// Subscription and monetization tracking
-export const trackSubscriptionEvent = (action: string, plan?: string, source?: string) => {
-  trackEvent('subscription', {
-    action, // 'view_plans', 'start_checkout', 'complete', 'cancel'
-    plan,
-    source,
-    event_category: 'monetization',
-  });
-};
 
 // Error tracking
 export const trackError = (errorType: string, errorMessage: string, context?: string) => {

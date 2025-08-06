@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
-import { trackFormSubmission, trackFormError, trackSubscriptionEvent, trackPageView } from "@/utils/analytics";
+import { trackFormSubmission, trackFormError, trackPageView } from "@/utils/analytics";
 import { generateSubscribeSEO } from "@/utils/pageSeo";
 import { PremiumFeatureCard } from "@/components/subscribe/PremiumFeatureCard";
 import { TestimonialCard } from "@/components/subscribe/TestimonialCard";
@@ -30,7 +30,7 @@ const Subscribe = () => {
   // Track page view on component mount
   React.useEffect(() => {
     trackPageView('/subscribe');
-    trackSubscriptionEvent('view_plans', 'premium', 'subscribe_page');
+    
   }, []);
 
   const cryptoOptions = [
@@ -47,7 +47,7 @@ const Subscribe = () => {
     }
 
     setIsLoading(true);
-    trackSubscriptionEvent("start_checkout", "premium", "subscribe_page");
+    
     
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 2000));
@@ -58,7 +58,7 @@ const Subscribe = () => {
     
     // Track successful subscription
     trackFormSubmission("subscribe_page", true);
-    trackSubscriptionEvent("complete", "premium", "subscribe_page");
+    
   };
 
   const premiumFeatures = [
