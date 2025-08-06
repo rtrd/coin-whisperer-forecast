@@ -4,26 +4,22 @@ import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { ArrowLeft, Mail, Briefcase, TrendingUp, BarChart3, Target, PieChart, DollarSign, Calculator, AlertTriangle, Wallet, Shield, Activity, Zap, Users, Globe, CreditCard, Smartphone, Bell, Settings, ChevronDown, Plus, MessageCircle, HelpCircle, Star, Calendar, Layers, Lock, Unlock, CheckCircle } from "lucide-react";
-import { formatPrice, formatVolume, formatMarketCap } from "@/utils/marketDataHelpers";
+import { ArrowLeft, Briefcase, BarChart3, Target, Calculator, Wallet, Shield, Activity, Globe, Smartphone, Bell } from "lucide-react";
 import { AdUnit } from "@/components/ads/AdService";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
-import { toast } from "sonner";
 import { getAllCryptos } from "../../utils/api";
 
 const PortfolioTracking = () => {
   // Initialize ad script on page load
   useAdScript();
   
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [marketData, setMarketData] = useState([]);
   const [portfolioDemo, setPortfolioDemo] = useState({
     totalValue: 125430.50,
@@ -110,21 +106,6 @@ const PortfolioTracking = () => {
     }));
   };
 
-  const handleEmailSubmit = async () => {
-    if (!email) {
-      toast.error("Please enter your email address");
-      return;
-    }
-
-    setIsLoading(true);
-    
-    // Simulate email sending
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    toast.success("Thank you! We'll notify you when Portfolio Tracking is ready!");
-    setIsLoading(false);
-    setEmail('');
-  };
 
   return (
     <>
@@ -365,55 +346,6 @@ const PortfolioTracking = () => {
                 />
               </div>
 
-              {/* Improved Email Subscription */}
-              <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-gray-600 shadow-2xl backdrop-blur-sm">
-                <CardContent className="p-8">
-                  <div className="text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mb-4">
-                      <Mail className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-3">Get Early Access</h3>
-                    <p className="text-gray-300 mb-6 max-w-md mx-auto">
-                      Join thousands of crypto investors already on our waitlist. Be the first to know when Portfolio Tracking launches.
-                    </p>
-                    <div className="max-w-md mx-auto">
-                      <div className="flex flex-col gap-4">
-                        <Input
-                          type="email"
-                          placeholder="Enter your email for early access"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className="bg-white/10 border-gray-500 text-white placeholder:text-gray-400 focus:border-blue-400 focus:ring-blue-400/20"
-                        />
-                        <Button 
-                          onClick={handleEmailSubmit}
-                          disabled={isLoading || !email}
-                          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-3"
-                        >
-                          {isLoading ? (
-                            <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                              Submitting...
-                            </div>
-                          ) : (
-                            'Join Early Access List'
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center gap-6 mt-6 text-sm text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-400" />
-                        <span>No spam, ever</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-400" />
-                        <span>Unsubscribe anytime</span>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
             </div>
 
             <div className="hidden lg:block">
