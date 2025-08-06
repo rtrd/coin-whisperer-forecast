@@ -21,18 +21,6 @@ export const PumpFunIntegration = () => {
             <CardTitle className="text-white flex items-center gap-2 text-lg">
               <Rocket className="h-5 w-5 text-purple-400" />
               Solana Memecoin Insights
-              {isConnected ? (
-                <>
-                  <Badge className="bg-green-600 text-white">LIVE</Badge>
-                  <Wifi className="h-4 w-4 text-green-400" />
-                  <div className="w-2 h-2 bg-green-600 rounded-full animate-pulse"></div>
-                </>
-              ) : (
-                <>
-                  <Badge className="bg-red-600 text-white">OFFLINE</Badge>
-                  <WifiOff className="h-4 w-4 text-red-400" />
-                </>
-              )}
             </CardTitle>
           </div>
         </CardHeader>

@@ -131,12 +131,6 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
           <Sparkles className="h-5 w-5 text-yellow-400" />
           <h3 className="text-lg font-semibold text-white">Live Token Feed</h3>
         </div>
-        {isConnected && (
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span className="text-xs text-green-400 font-medium">LIVE</span>
-          </div>
-        )}
       </div>
 
       <div className="space-y-3 relative">
