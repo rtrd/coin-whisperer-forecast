@@ -56,24 +56,59 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
   
   const recentTokens = animatedTokens;
   const formatLaunchTime = (timestamp: number) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const isToday = date.toDateString() === now.toDateString();
-    
-    if (isToday) {
-      return date.toLocaleTimeString('en-US', { 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false 
-      });
-    } else {
-      return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      });
+    try {
+      // Validate timestamp
+      if (!timestamp || typeof timestamp !== 'number' || isNaN(timestamp)) {
+        return 'Just now';
+      }
+      
+      const date = new Date(timestamp);
+      
+      // Check if date is valid
+      if (isNaN(date.getTime())) {
+        return 'Just now';
+      }
+      
+      const now = new Date();
+      const timeDiff = now.getTime() - timestamp;
+      
+      // If less than 1 minute ago
+      if (timeDiff < 60000) {
+        return 'Just now';
+      }
+      
+      // If less than 1 hour ago
+      if (timeDiff < 3600000) {
+        const minutes = Math.floor(timeDiff / 60000);
+        return `${minutes}m ago`;
+      }
+      
+      // If less than 24 hours ago
+      if (timeDiff < 86400000) {
+        const hours = Math.floor(timeDiff / 3600000);
+        return `${hours}h ago`;
+      }
+      
+      const isToday = date.toDateString() === now.toDateString();
+      
+      if (isToday) {
+        return date.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: false 
+        });
+      } else {
+        return date.toLocaleDateString('en-US', { 
+          month: 'short', 
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        });
+      }
+    } catch (error) {
+      console.error('Error formatting timestamp:', timestamp, error);
+      return 'Unknown';
     }
   };
 

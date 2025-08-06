@@ -65,9 +65,35 @@ export const usePumpPortalData = () => {
     return icons[Math.floor(Math.random() * icons.length)];
   };
 
+  const validateAndNormalizeTimestamp = (timestamp: any): number => {
+    // Handle missing or invalid timestamp
+    if (!timestamp || typeof timestamp !== 'number') {
+      console.warn('Invalid timestamp received:', timestamp, 'using current time');
+      return Date.now();
+    }
+    
+    // Check if timestamp is in seconds (Unix timestamp) and convert to milliseconds
+    if (timestamp < 1e12) {
+      return timestamp * 1000;
+    }
+    
+    // Validate the timestamp is reasonable (not too far in future/past)
+    const now = Date.now();
+    const oneYearMs = 365 * 24 * 60 * 60 * 1000;
+    if (timestamp < now - oneYearMs || timestamp > now + oneYearMs) {
+      console.warn('Timestamp outside reasonable range:', timestamp, 'using current time');
+      return now;
+    }
+    
+    return timestamp;
+  };
+
   const processNewToken = (data: NewTokenEvent) => {
     const price = data.vSolInBondingCurve / data.vTokensInBondingCurve;
     const marketCapUSD = data.marketCapSol * 150; // Rough SOL to USD conversion
+    const validTimestamp = validateAndNormalizeTimestamp(data.timestamp);
+    
+    console.log('Processing new token:', data.symbol, 'timestamp:', data.timestamp, 'normalized:', validTimestamp);
     
     const token: PumpToken = {
       name: data.name || `Token ${data.symbol}`,
@@ -79,7 +105,7 @@ export const usePumpPortalData = () => {
       icon: getRandomIcon(),
       pumpScore: 5.0, // Start with neutral score for new tokens
       contractAddress: data.mint,
-      timestamp: data.timestamp
+      timestamp: validTimestamp
     };
 
     tokenDataMap.current.set(data.mint, token);
