@@ -90,31 +90,24 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
           />
         </div>
 
-        {/* Volatility */}
+        {/* Market Volume */}
         <div className="bg-gray-800/60 rounded-xl p-5 border border-gray-700/40 backdrop-blur-sm h-full">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-gray-400" />
-              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Volatility</span>
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Volume</span>
             </div>
-            <div className={`w-2.5 h-2.5 rounded-full ${
-              volatilityTrend === 'high' ? 'bg-red-400' : 
-              volatilityTrend === 'low' ? 'bg-green-400' : 'bg-yellow-400'
-            }`}></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-blue-400"></div>
           </div>
-          <div className="text-2xl font-bold text-white mb-1">{volatility}%</div>
-          <div className={`text-xs font-medium mb-3 capitalize ${
-            volatilityTrend === 'high' ? 'text-red-400' : 
-            volatilityTrend === 'low' ? 'text-green-400' : 'text-yellow-400'
-          }`}>
-            {volatilityTrend} Risk
+          <div className="text-2xl font-bold text-white mb-1">$2.4B</div>
+          <div className="text-xs font-medium mb-3 text-blue-400">
+            24h Trading
           </div>
           <Progress 
-            value={volatility} 
+            value={75} 
             className="h-1.5"
             style={{
-              '--progress-foreground': volatilityTrend === 'high' ? '#f87171' : 
-                                       volatilityTrend === 'low' ? '#4ade80' : '#facc15'
+              '--progress-foreground': '#60a5fa'
             } as React.CSSProperties}
           />
         </div>
@@ -181,8 +174,8 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
       {/* Two Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Left Column - Risk Assessment */}
-        <div className="space-y-4">
-          <div className="bg-gray-800/60 rounded-xl p-5 border border-gray-700/40 backdrop-blur-sm">
+        <div className="h-full">
+          <div className="bg-gray-800/60 rounded-xl p-5 border border-gray-700/40 backdrop-blur-sm h-full flex flex-col">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center">
                 <Shield className="h-4 w-4 text-red-400" />
@@ -193,7 +186,7 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
               </div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4 flex-1">
               <div className="flex items-center justify-between">
                 <span className="text-white font-medium text-sm">Risk Level</span>
                 <Badge variant="outline" className={`${riskAssessment.color} border-current text-xs`}>
@@ -216,7 +209,7 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
                 />
               </div>
 
-              <div className="p-3 bg-gray-700/40 rounded-lg border border-gray-600/30">
+              <div className="p-3 bg-gray-700/40 rounded-lg border border-gray-600/30 flex-1">
                 <p className="text-xs text-gray-300 leading-relaxed">
                   {volatilityTrend === 'high' 
                     ? `High volatility (${volatility}%) indicates increased market uncertainty. Risk management and position sizing are crucial in the current environment.`
@@ -231,8 +224,8 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
         </div>
 
         {/* Right Column - AI Market Summary */}
-        <div className="space-y-4">
-          <div className="bg-gray-800/60 rounded-xl p-5 border border-gray-700/40 backdrop-blur-sm">
+        <div className="h-full">
+          <div className="bg-gray-800/60 rounded-xl p-5 border border-gray-700/40 backdrop-blur-sm h-full flex flex-col">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
                 <Globe className="h-4 w-4 text-blue-400" />
@@ -243,8 +236,8 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
               </div>
             </div>
 
-            <div className="space-y-3">
-              <div className="p-3 bg-gray-700/40 rounded-lg border border-gray-600/30">
+            <div className="space-y-4 flex-1">
+              <div className="p-3 bg-gray-700/40 rounded-lg border border-gray-600/30 flex-1">
                 <h4 className="text-white font-medium mb-2 flex items-center gap-2 text-sm">
                   <div className="w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
                   Current Market State
@@ -263,8 +256,8 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div className="p-2.5 bg-gray-700/30 rounded-lg border border-gray-600/20">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
                   <div className="text-xs text-gray-400 mb-1 uppercase tracking-wide">Sentiment</div>
                   <div className={`text-xs font-semibold ${
                     fearGreedValue > 60 ? 'text-green-400' : 
@@ -272,10 +265,10 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
                   }`}>
                     {fearGreedClassification}
                   </div>
-                  <div className="text-xs text-gray-500">{fearGreedValue}/100</div>
+                  <div className="text-xs text-gray-500 mt-1">{fearGreedValue}/100</div>
                 </div>
                 
-                <div className="p-2.5 bg-gray-700/30 rounded-lg border border-gray-600/20">
+                <div className="p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
                   <div className="text-xs text-gray-400 mb-1 uppercase tracking-wide">Phase</div>
                   <div className={`text-xs font-semibold ${
                     cyclePhase.color.includes('green') ? 'text-green-400' : 
@@ -284,7 +277,7 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
                   }`}>
                     {cyclePhase.phase.split(' ')[0]}
                   </div>
-                  <div className="text-xs text-gray-500">{cyclePhase.confidence}% Confidence</div>
+                  <div className="text-xs text-gray-500 mt-1">{cyclePhase.confidence}% Confidence</div>
                 </div>
               </div>
             </div>
