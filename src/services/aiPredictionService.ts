@@ -27,33 +27,47 @@ const generateTechnicalPrompt = (
   currentMA: number,
   supportLevel?: number,
   resistanceLevel?: number,
-  volumes?: number
+  volumes?: number[]
 ): string => {
-  return `You are a financial AI model focused on technical analysis.
+  return `You are a professional trading AI specialized in technical analysis.
 
-Based on the following technical indicators for ${crypto}, predict the price trend over the next ${predictionDays} days:
+Your job is to forecast the price trend of ${crypto} for the next ${predictionDays} days using the following technical indicators:
 
+📈 Technical Indicators:
 - Current Price: $${currentPrice.toFixed(2)}
-- RSI (Relative Strength Index): ${rsi.toFixed(2)}
-- 20-day Moving Average: ${currentMA.toFixed(2)}
+- RSI (Relative Strength Index): ${rsi.toFixed(
+    2
+  )} (overbought > 70, oversold < 30)
+- 20-day Moving Average: $${currentMA.toFixed(2)}
 - Price Change (past ${predictionDays} days): ${priceChange.toFixed(2)}%
-- Trend Slope: ${slope.toFixed(4)}
-- Volatility Index: ${volatility.toFixed(2)}
- - Volumes: ${Array.isArray(volumes) ? volumes.join(", ") : "N/A"}
-
+- Trend Slope (Momentum): ${slope.toFixed(
+    4
+  )} (positive = upward trend, negative = downward)
+- Volatility Index: ${volatility.toFixed(2)} (higher = more price fluctuation)
+- Volume Data: ${
+    Array.isArray(volumes) && volumes.length > 0
+      ? volumes.map((v) => v.toFixed(0)).join(", ")
+      : "N/A"
+  }
 ${supportLevel ? `- Support Level: $${supportLevel.toFixed(2)}` : ""}
-${resistanceLevel ? `- Resistance Level: $${resistanceLevel.toFixed(2)}` : ""}
+${resistanceLevel ? `\n- Resistance Level: $${resistanceLevel.toFixed(2)}` : ""}
 
-Instructions:
-1. Predict the overall price trend (bullish, bearish, or neutral)
-2. Estimate the confidence (a value between 0 and 1)
-3. Estimate the expected percentage price change over ${predictionDays} days
+🎯 Instructions:
+1. Analyze the indicators to determine the predicted price trend: bullish, bearish, or neutral.
+2. Estimate your confidence level between 0 and 1.
+3. Estimate the percentage change in price over the next ${predictionDays} days.
 
-Return only:
-- Predicted Trend:
-- Confidence:
-- Expected Change (%):`;
+✍️ Output format (strict):
+Predicted Trend: bullish | bearish | neutral  
+Confidence: <decimal between 0 and 1>  
+Expected Change (%): <signed percentage with 2 decimals>
+
+Example Output:  
+Predicted Trend: bearish  
+Confidence: 0.68  
+Expected Change (%): -3.20`;
 };
+
 const generateSentimentPrompt = (
   crypto: string,
   predictionDays: number,
@@ -65,27 +79,35 @@ const generateSentimentPrompt = (
   engagement: number,
   fearGreedIndex: number
 ): string => {
-  return `You are a sentiment analysis AI model.
+  return `You are a crypto prediction AI specializing in social and market sentiment analysis.
 
-Based on the following social sentiment data for ${crypto}, predict the price trend over the next ${predictionDays} days:
+Use the following sentiment metrics to predict the ${predictionDays}-day trend for ${crypto}. Consider community emotion, engagement, and market psychology:
 
+📢 Sentiment Indicators:
 - Current Price: $${currentPrice.toFixed(2)}
-- Social Sentiment Score: ${sentimentScore}
+- Sentiment Score: ${sentimentScore.toFixed(2)} (bullish > 0.6, bearish < 0.4)
 - Twitter Mentions: ${twitterMentions}
 - Reddit Activity: ${redditActivity}
-- News Sentiment: ${newsSentiment}
-- Community Engagement: ${engagement}
-- Fear-Greed Index: ${fearGreedIndex}
+- News Sentiment Score: ${newsSentiment.toFixed(
+    2
+  )} (positive > 0.6, negative < 0.4)
+- Community Engagement Score: ${engagement}
+- Fear-Greed Index: ${fearGreedIndex} (fear < 40, greed > 60)
 
-Instructions:
-1. Predict the overall trend (bullish, bearish, or neutral)
-2. Provide a confidence score (0 to 1)
-3. Estimate expected price change (%)
+🎯 Instructions:
+1. Predict the overall price trend: bullish, bearish, or neutral.
+2. Provide a confidence score (between 0 and 1).
+3. Estimate the expected percentage price change over the next ${predictionDays} days.
 
-Return only:
-- Predicted Trend:
-- Confidence:
-- Expected Change (%):`;
+✍️ Output format (strict):
+Predicted Trend: bullish | bearish | neutral  
+Confidence: <decimal between 0 and 1>  
+Expected Change (%): <signed percentage with 2 decimals>
+
+Example Output:  
+Predicted Trend: bullish  
+Confidence: 0.79  
+Expected Change (%): +2.65`;
 };
 
 const generateHybridPrompt = (
@@ -101,32 +123,40 @@ const generateHybridPrompt = (
   engagement: number,
   fearGreedIndex: number
 ): string => {
-  return `You are an AI model that combines both technical and social sentiment data.
+  return `You are an advanced crypto prediction AI model that integrates both technical analysis and social sentiment indicators to forecast short-term trends.
 
-Based on the following data for ${crypto}, predict its price trend over the next ${predictionDays} days:
+Your task is to analyze the provided indicators for ${crypto} and predict its price trend over the next ${predictionDays} days. Consider both market signals and community sentiment strength.
 
-📉 Technical:
+📊 Technical Indicators:
 - Current Price: $${currentPrice.toFixed(2)}
-- RSI: ${rsi.toFixed(2)}
-- 20-day MA: ${currentMA.toFixed(2)}
-- Price Change (%): ${priceChange.toFixed(2)}
-- Volatility Index: ${volatility.toFixed(2)}
-- Trend Slope: ${slope.toFixed(4)}
+- RSI (Relative Strength Index): ${rsi.toFixed(
+    2
+  )} (overbought > 70, oversold < 30)
+- 20-day Moving Average: $${currentMA.toFixed(2)}
+- Recent Price Change (%): ${priceChange.toFixed(2)}%
+- Volatility (Standard Deviation): ${volatility.toFixed(2)}
+- Trend Slope (Price Momentum): ${slope.toFixed(4)}
 
-📢 Sentiment:
-- Sentiment Score: ${sentimentScore}
+💬 Social & Sentiment Metrics:
+- Sentiment Score (0–1): ${sentimentScore.toFixed(
+    2
+  )} (bullish > 0.6, bearish < 0.4)
 - Community Engagement: ${engagement}
-- Fear-Greed Index: ${fearGreedIndex}
+- Fear-Greed Index (0–100): ${fearGreedIndex} (greedy > 60, fearful < 40)
 
-Instructions:
-1. Predict trend (bullish, bearish, neutral)
-2. Confidence score (0 to 1)
-3. Expected change (%)
+Your Output:
+Analyze the combination of signals to provide a directional forecast. Be conservative if signals are mixed or contradictory.
 
-Return only:
-- Predicted Trend:
-- Confidence:
-- Expected Change (%):`;
+🎯 Return ONLY the following output format:
+Predicted Trend: bullish | bearish | neutral  
+Confidence: <value between 0 and 1>  
+Expected Change (%): <numeric percentage change with sign>
+
+Example Output:  
+Predicted Trend: bullish  
+Confidence: 0.82  
+Expected Change (%): +4.25
+`;
 };
 
 export const generateTechnicalPrediction = async (
@@ -135,7 +165,6 @@ export const generateTechnicalPrediction = async (
   crypto
 ): Promise<PredictionResult> => {
   const type: PredictionType = "technical";
-
   // ✅ 1. Check cache first
   const cached = getPredictionCache<PredictionResult>(
     type,
@@ -143,17 +172,23 @@ export const generateTechnicalPrediction = async (
     predictionDays
   );
   if (cached) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return cached;
   }
 
-  // 🧠 2. Calculate inputs for prompt generation
   const prices = technicalIndicator.slice(-predictionDays).map((d) => d.price);
+  const volumes = technicalIndicator
+    .slice(-predictionDays)
+    .map((d) => d.volume || 0);
   const currentPrice = prices[prices.length - 1];
+  const avgVolume = volumes.reduce((sum, v) => sum + v, 0) / volumes.length;
 
   const rsi = calculateRSI(prices);
   const volatility = calculateVolatility(prices);
   const ma20 = calculateMovingAverage(prices, Math.min(20, prices.length - 1));
   const currentMA = ma20[ma20.length - 1] || currentPrice;
+  const supportLevel = Math.min(...prices);
+  const resistanceLevel = Math.max(...prices);
   const priceChange =
     prices.length > 1 ? ((currentPrice - prices[0]) / prices[0]) * 100 : 0;
 
@@ -161,65 +196,104 @@ export const generateTechnicalPrediction = async (
     technicalIndicator.map((d, index) => ({ x: index, y: d.price }))
   );
 
+  const Prompt = generateTechnicalPrompt(
+    crypto,
+    predictionDays,
+    currentPrice,
+    rsi,
+    volatility,
+    priceChange,
+    slope,
+    currentMA,
+    supportLevel,
+    resistanceLevel,
+    volumes
+  );
+
   try {
-    // Use OpenRouter proxy instead of localhost
-    const response = await fetch('/functions/v1/openrouter-proxy', {
+    const response = await fetch(`${SERVER_URL}/get-ai-predction`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ 
-        crypto,
-        currentPrice,
-        rsi,
-        volatility,
-        priceChange,
-        predictionDays
-      }),
+      body: JSON.stringify({ Prompt }),
     });
 
-    if (!response.ok) throw new Error(`API error: ${response.status}`);
+    if (!response.ok) throw new Error(`AI API error: ${response.status}`);
 
-    const aiResult = await response.json();
-    
-    // Generate dynamic price predictions based on AI response
-    const baseChange = aiResult.prediction_percentage || (Math.random() * 20 - 10); // ±10% fallback
-    const trend = aiResult.trend || (baseChange > 2 ? "bullish" : baseChange < -2 ? "bearish" : "neutral");
-    const confidence = aiResult.confidence || (0.65 + Math.random() * 0.25);
+    const result = await response.json();
+    const text = result?.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
 
-    // Create realistic price progression over prediction days
-    const baseTimestamp = Date.now() + 24 * 60 * 60 * 1000; // Start tomorrow
-    const predictions: PredictionData[] = Array.from({ length: predictionDays }, (_, i) => {
-      // Add some randomness and progressive change
-      const dayProgress = (i + 1) / predictionDays;
-      const randomFactor = (Math.random() - 0.5) * 0.02; // ±1% daily randomness
-      const totalChange = (baseChange / 100) * dayProgress + randomFactor;
-      
-      return {
-        timestamp: baseTimestamp + i * 24 * 60 * 60 * 1000,
-        predictedPrice: currentPrice * (1 + totalChange),
-        confidence: confidence * (0.9 + Math.random() * 0.2), // Vary confidence slightly
-      };
-    });
+    console.log("AI Raw Response:\n", text);
+
+    const trendMatch = text.match(/trend:\s*(bullish|bearish|neutral)/i);
+    const confidenceMatch = text.match(/confidence:\s*(\d+(\.\d+)?)/i);
+    const predictedPriceMatch = text.match(
+      /predicted price[:=]?\s*\$?([\d,\.]+)/i
+    );
+
+    const trend =
+      (trendMatch?.[1]?.toLowerCase() as "bullish" | "bearish" | "neutral") ||
+      "neutral";
+    const confidence = parseFloat(confidenceMatch?.[1]) || 0.75;
+
+    const parsedPredictedPrice = predictedPriceMatch?.[1]
+      ? parseFloat(predictedPriceMatch[1].replace(/,/g, ""))
+      : null;
+
+    const finalPrice =
+      parsedPredictedPrice && !isNaN(parsedPredictedPrice)
+        ? parsedPredictedPrice
+        : currentPrice * (1 + priceChange / 100);
+
+    const totalChange = ((finalPrice - currentPrice) / currentPrice) * 100;
+    const dailyGrowthRate =
+      Math.pow(1 + totalChange / 100, 1 / predictionDays) - 1;
+
+    const baseTimestamp = new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate() + 1
+      )
+    ).getTime();
+
+    const predictions: PredictionData[] = Array.from(
+      { length: predictionDays },
+      (_, i) => {
+        const timestamp = baseTimestamp + i * 24 * 60 * 60 * 1000;
+        const predictedPrice = currentPrice * Math.pow(1 + dailyGrowthRate, i);
+        return {
+          timestamp,
+          predictedPrice: parseFloat(predictedPrice.toFixed(2)),
+          confidence,
+        };
+      }
+    );
 
     const factors = [
       {
-        name: "RSI Analysis",
-        weight: 35,
-        impact: rsi > 70 ? "negative" : rsi < 30 ? "positive" : "neutral",
+        name: "Technical Indicators",
+        weight: 70,
+        impact:
+          rsi > 70 || slope < 0
+            ? "negative"
+            : rsi < 30 || slope > 0
+            ? "positive"
+            : "neutral",
       },
       {
-        name: "Price Momentum",
-        weight: 30,
-        impact: slope > 0.01 ? "positive" : slope < -0.01 ? "negative" : "neutral",
-      },
-      {
-        name: "Moving Average Position",
+        name: "Price Trend",
         weight: 20,
-        impact: currentPrice > currentMA ? "positive" : currentPrice < currentMA ? "negative" : "neutral",
+        impact:
+          priceChange > 5
+            ? "positive"
+            : priceChange < -5
+            ? "negative"
+            : "neutral",
       },
       {
-        name: "Volatility Impact",
-        weight: 15,
-        impact: volatility > 0.05 ? "negative" : "neutral",
+        name: "Volume Analysis",
+        weight: 10,
+        impact: "neutral",
       },
     ] as {
       name: string;
@@ -234,37 +308,26 @@ export const generateTechnicalPrediction = async (
       factors,
     };
 
-    // ✅ 3. Save result to cache
     setPredictionCache(type, crypto, predictionDays, finalResult);
 
     return finalResult;
   } catch (error) {
-    console.error("Technical Prediction API error:", error);
-
-    // Enhanced fallback with more realistic predictions
-    const fallbackChange = priceChange * 0.3 + (Math.random() * 10 - 5); // Use recent trend + randomness
-    const fallbackTrend = fallbackChange > 2 ? "bullish" : fallbackChange < -2 ? "bearish" : "neutral";
-    
-    const predictions: PredictionData[] = Array.from({ length: predictionDays }, (_, i) => {
-      const dayProgress = (i + 1) / predictionDays;
-      const totalChange = (fallbackChange / 100) * dayProgress;
-      
-      return {
-        timestamp: Date.now() + (i + 1) * 24 * 60 * 60 * 1000,
-        predictedPrice: currentPrice * (1 + totalChange),
-        confidence: 0.65,
-      };
-    });
+    console.error("Gemini Technical Prediction API error:", error);
 
     return {
-      predictions,
-      accuracy: 0.65,
-      trend: fallbackTrend,
+      predictions: technicalIndicator.slice(-predictionDays).map((item) => ({
+        timestamp: item.timestamp || item.date || "",
+        predictedPrice: item.close || item.price || 0,
+        confidence: 0.75,
+      })),
+      accuracy: 0.75,
+      trend:
+        priceChange > 5 ? "bullish" : priceChange < -5 ? "bearish" : "neutral",
       factors: [
         {
-          name: "Technical Fallback Analysis",
+          name: "Fallback Weighted Factors",
           weight: 100,
-          impact: fallbackChange > 0 ? "positive" : fallbackChange < 0 ? "negative" : "neutral",
+          impact: "neutral",
         },
       ],
     };
@@ -278,7 +341,6 @@ export const generateSentimentPrediction = async (
   currentPrice
 ): Promise<PredictionResult> => {
   const type: PredictionType = "sentiment";
-
   // ✅ 1. Check cache first
   const cached = getPredictionCache<PredictionResult>(
     type,
@@ -286,108 +348,183 @@ export const generateSentimentPrediction = async (
     predictionDays
   );
   if (cached) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return cached;
   }
 
-  // 🧠 2. Extract sentiment values with more realistic defaults
   const {
-    sentimentScore = 0.5 + (Math.random() * 0.4 - 0.2), // Random between 0.3-0.7
-    twitterMentions = Math.floor(Math.random() * 5000),
-    redditActivity = Math.floor(Math.random() * 1000),
-    newsSentiment = 0.5 + (Math.random() * 0.3 - 0.15),
-    engagement = Math.floor(Math.random() * 100),
-    fearGreedIndex = 40 + Math.random() * 40, // Random between 40-80
+    sentimentScore = 0.5,
+    twitterMentions = 0,
+    redditActivity = 0,
+    newsSentiment = 0.5,
+    engagement = 0,
+    fearGreedIndex = 50,
   } = sentimentData || {};
 
-  try {
-    // Generate sentiment-based prediction with higher volatility
-    const sentimentImpact = (sentimentScore - 0.5) * 30; // Scale sentiment to ±15%
-    const newsImpact = (newsSentiment - 0.5) * 20; // Scale news sentiment to ±10%
-    const fearGreedImpact = (fearGreedIndex - 50) * 0.2; // Scale fear/greed to ±10%
-    
-    const totalSentimentChange = sentimentImpact + newsImpact + fearGreedImpact + (Math.random() * 10 - 5);
-    const trend = totalSentimentChange > 3 ? "bullish" : totalSentimentChange < -3 ? "bearish" : "neutral";
-    const confidence = 0.6 + Math.abs(totalSentimentChange) * 0.01; // Higher confidence with stronger sentiment
+  const Prompt = generateSentimentPrompt(
+    crypto,
+    predictionDays,
+    currentPrice,
+    sentimentScore,
+    twitterMentions,
+    redditActivity,
+    newsSentiment,
+    engagement,
+    fearGreedIndex
+  );
 
-    const baseTimestamp = Date.now() + 24 * 60 * 60 * 1000;
-    const predictions: PredictionData[] = Array.from({ length: predictionDays }, (_, i) => {
-      const dayProgress = (i + 1) / predictionDays;
-      const sentimentDecay = Math.pow(0.95, i); // Sentiment impact decays over time
-      const randomVolatility = (Math.random() - 0.5) * 0.03; // ±1.5% daily randomness
-      const totalChange = (totalSentimentChange / 100) * dayProgress * sentimentDecay + randomVolatility;
-      
-      return {
-        timestamp: baseTimestamp + i * 24 * 60 * 60 * 1000,
-        predictedPrice: currentPrice * (1 + totalChange),
-        confidence: confidence * (0.85 + Math.random() * 0.3),
-      };
+  try {
+    const response = await fetch(`${SERVER_URL}/get-ai-predction`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Prompt }),
     });
 
-    const factors = [
-      {
-        name: "Social Sentiment",
-        weight: 40,
-        impact: sentimentScore > 0.6 ? "positive" : sentimentScore < 0.4 ? "negative" : "neutral",
-      },
-      {
-        name: "News Sentiment",
-        weight: 25,
-        impact: newsSentiment > 0.6 ? "positive" : newsSentiment < 0.4 ? "negative" : "neutral",
-      },
-      {
-        name: "Fear & Greed Index",
-        weight: 20,
-        impact: fearGreedIndex > 60 ? "positive" : fearGreedIndex < 40 ? "negative" : "neutral",
-      },
-      {
-        name: "Community Engagement",
-        weight: 15,
-        impact: engagement > 70 ? "positive" : engagement < 30 ? "negative" : "neutral",
-      },
-    ] as {
+    if (!response.ok) throw new Error(`AI API error: ${response.status}`);
+
+    const result = await response.json();
+    const text = result?.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    console.log("AI Raw Response:\n", text);
+
+    const trendMatch = text.match(/trend\s*[:=]?\s*(bullish|bearish|neutral)/i);
+    const confidenceMatch = text.match(/confidence\s*[:=]?\s*(\d+(\.\d+)?)/i);
+    const changeMatch = text.match(/change\s*[:=]?\s*(-?\d+(\.\d+)?)%?/i);
+    const predictedPriceMatch = text.match(
+      /predicted price\s*[:=]?\s*\$?(\d+(\.\d+)?)/i
+    );
+
+    const trend =
+      (trendMatch?.[1]?.toLowerCase() as "bullish" | "bearish" | "neutral") ||
+      "neutral";
+    const confidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : null;
+
+    let predictedPrice =
+      predictedPriceMatch && !isNaN(parseFloat(predictedPriceMatch[1]))
+        ? parseFloat(predictedPriceMatch[1])
+        : null;
+
+    let changePercent = changeMatch ? parseFloat(changeMatch[1]) : null;
+
+    // Fallback: If predicted price is not explicitly given, derive it using change %
+    if (!predictedPrice && changePercent !== null) {
+      predictedPrice = currentPrice * (1 + changePercent / 100);
+    }
+
+    // If both are missing, fallback to flat prediction
+    const finalPredictedPrice =
+      predictedPrice && !isNaN(predictedPrice) ? predictedPrice : currentPrice;
+
+    // Daily growth calculation
+    const dailyGrowthRate =
+      Math.pow(finalPredictedPrice / currentPrice, 1 / predictionDays) - 1;
+
+    const baseTimestamp = new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate() + 1
+      )
+    ).getTime();
+
+    const predictions: PredictionData[] = Array.from(
+      { length: predictionDays },
+      (_, i) => {
+        const timestamp = baseTimestamp + i * 24 * 60 * 60 * 1000;
+        const price = currentPrice * Math.pow(1 + dailyGrowthRate, i);
+        return {
+          timestamp,
+          predictedPrice: parseFloat(price.toFixed(2)),
+          confidence: confidence ?? 0.75,
+        };
+      }
+    );
+
+    const factorMatches = [
+      ...text.matchAll(
+        /factor:\s*(.+?)\s+weight:\s*([\d.]+)\s+impact:\s*(positive|negative|neutral)/gi
+      ),
+    ];
+
+    const factors: {
       name: string;
       weight: number;
       impact: "positive" | "negative" | "neutral";
-    }[];
+    }[] =
+      factorMatches.length > 0
+        ? factorMatches.map((match) => ({
+            name: match[1].trim(),
+            weight: parseFloat(match[2]),
+            impact: (["positive", "negative", "neutral"].includes(
+              match[3]?.toLowerCase()
+            )
+              ? match[3].toLowerCase()
+              : "neutral") as "positive" | "negative" | "neutral",
+          }))
+        : [
+            {
+              name: "Social Sentiment Score",
+              weight: 60,
+              impact:
+                sentimentScore > 0.6
+                  ? "positive"
+                  : sentimentScore < 0.4
+                  ? "negative"
+                  : "neutral",
+            },
+            {
+              name: "News Sentiment",
+              weight: 25,
+              impact:
+                newsSentiment > 0.6
+                  ? "positive"
+                  : newsSentiment < 0.4
+                  ? "negative"
+                  : "neutral",
+            },
+            {
+              name: "Community Engagement",
+              weight: 15,
+              impact:
+                engagement > 50
+                  ? "positive"
+                  : engagement < 10
+                  ? "negative"
+                  : "neutral",
+            },
+          ];
 
     const finalResult: PredictionResult = {
       predictions,
-      accuracy: confidence,
+      accuracy: confidence ?? 0.75,
       trend,
       factors,
     };
 
-    // ✅ 3. Save to cache
     setPredictionCache(type, crypto, predictionDays, finalResult);
 
     return finalResult;
   } catch (error) {
-    console.error("Sentiment Prediction error:", error);
-
-    // Enhanced fallback with sentiment-based variation
-    const fallbackChange = (sentimentScore - 0.5) * 15 + (Math.random() * 8 - 4);
-    const fallbackTrend = fallbackChange > 2 ? "bullish" : fallbackChange < -2 ? "bearish" : "neutral";
-    
-    const predictions: PredictionData[] = Array.from({ length: predictionDays }, (_, i) => {
-      const dayProgress = (i + 1) / predictionDays;
-      const totalChange = (fallbackChange / 100) * dayProgress;
-      
-      return {
-        timestamp: Date.now() + (i + 1) * 24 * 60 * 60 * 1000,
-        predictedPrice: currentPrice * (1 + totalChange),
-        confidence: 0.6,
-      };
-    });
+    console.error("Gemini Sentiment Prediction API error:", error);
 
     return {
-      predictions,
-      accuracy: 0.6,
-      trend: fallbackTrend,
+      predictions: Array.from({ length: predictionDays }, (_, i) => ({
+        timestamp: Date.now() + i * 24 * 60 * 60 * 1000,
+        predictedPrice: currentPrice,
+        confidence: 0.75,
+      })),
+      accuracy: 0.75,
+      trend: "neutral",
       factors: [
         {
-          name: "Sentiment Fallback Analysis",
-          weight: 100,
-          impact: sentimentScore > 0.5 ? "positive" : sentimentScore < 0.5 ? "negative" : "neutral",
+          name: "Fallback Sentiment Score",
+          weight: sentimentScore * 100,
+          impact:
+            sentimentScore > 0.6
+              ? "positive"
+              : sentimentScore < 0.4
+              ? "negative"
+              : "neutral",
         },
       ],
     };
@@ -400,8 +537,7 @@ export const generateHybridPrediction = async (
   predictionDays,
   crypto
 ): Promise<PredictionResult> => {
-  const type: PredictionType = "hybrid"; // Fix: use correct cache type
-
+  const type: PredictionType = "hybrid";
   // ✅ 1. Check cache first
   const cached = getPredictionCache<PredictionResult>(
     type,
@@ -409,8 +545,10 @@ export const generateHybridPrediction = async (
     predictionDays
   );
   if (cached) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     return cached;
   }
+
   const prices = technicalIndicator.slice(-predictionDays).map((d) => d.price);
   const currentPrice = prices[prices.length - 1];
   const rsi = calculateRSI(prices);
@@ -424,131 +562,204 @@ export const generateHybridPrediction = async (
   );
 
   const {
-    sentimentScore = 0.5 + (Math.random() * 0.4 - 0.2),
-    engagement = Math.floor(Math.random() * 100),
-    fearGreedIndex = 40 + Math.random() * 40,
+    sentimentScore = 0.5,
+    engagement = 0,
+    fearGreedIndex = 50,
   } = sentimentData || {};
 
+  const Prompt = generateHybridPrompt(
+    crypto,
+    predictionDays,
+    currentPrice,
+    rsi,
+    volatility,
+    priceChange,
+    slope,
+    currentMA,
+    sentimentScore,
+    engagement,
+    fearGreedIndex
+  );
+
   try {
-    // Hybrid model combines technical and sentiment with different weightings
-    const technicalWeight = 0.6;
-    const sentimentWeight = 0.4;
-    
-    // Technical component
-    const technicalChange = (slope * 1000) + (rsi > 70 ? -5 : rsi < 30 ? 5 : 0);
-    const volatilityFactor = volatility > 0.05 ? -2 : 0;
-    const trendFactor = priceChange * 0.3;
-    
-    // Sentiment component  
-    const sentimentChange = (sentimentScore - 0.5) * 20;
-    const fearGreedChange = (fearGreedIndex - 50) * 0.15;
-    const engagementChange = engagement > 75 ? 3 : engagement < 25 ? -2 : 0;
-    
-    // Combine with weights
-    const hybridChange = (
-      (technicalChange + volatilityFactor + trendFactor) * technicalWeight +
-      (sentimentChange + fearGreedChange + engagementChange) * sentimentWeight
-    ) + (Math.random() * 8 - 4); // Add some randomness
-    
-    const trend = hybridChange > 3 ? "bullish" : hybridChange < -3 ? "bearish" : "neutral";
-    const confidence = 0.7 + Math.abs(hybridChange) * 0.02; // Higher confidence with stronger signals
-    
-    const baseTimestamp = Date.now() + 24 * 60 * 60 * 1000;
-    const predictions: PredictionData[] = Array.from({ length: predictionDays }, (_, i) => {
-      const dayProgress = (i + 1) / predictionDays;
-      const technicalDecay = Math.pow(0.98, i); // Technical signals decay slowly
-      const sentimentDecay = Math.pow(0.95, i); // Sentiment decays faster
-      const randomFactor = (Math.random() - 0.5) * 0.025; // ±1.25% daily randomness
-      
-      const totalChange = (
-        (hybridChange / 100) * dayProgress * 
-        (technicalWeight * technicalDecay + sentimentWeight * sentimentDecay)
-      ) + randomFactor;
-      
-      return {
-        timestamp: baseTimestamp + i * 24 * 60 * 60 * 1000,
-        predictedPrice: currentPrice * (1 + totalChange),
-        confidence: confidence * (0.85 + Math.random() * 0.3),
-      };
+    const response = await fetch(`${SERVER_URL}/get-ai-predction`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ Prompt }),
     });
 
-    const factors = [
-      {
-        name: "Technical Analysis (60%)",
-        weight: 35,
-        impact: technicalChange > 0 ? "positive" : technicalChange < 0 ? "negative" : "neutral",
-      },
-      {
-        name: "Market Sentiment (40%)",
-        weight: 25,
-        impact: sentimentScore > 0.6 ? "positive" : sentimentScore < 0.4 ? "negative" : "neutral",
-      },
-      {
-        name: "RSI Momentum",
-        weight: 15,
-        impact: rsi > 70 ? "negative" : rsi < 30 ? "positive" : "neutral",
-      },
-      {
-        name: "Fear & Greed Impact",
-        weight: 15,
-        impact: fearGreedIndex > 60 ? "positive" : fearGreedIndex < 40 ? "negative" : "neutral",
-      },
-      {
-        name: "Price Trend Direction",
-        weight: 10,
-        impact: priceChange > 2 ? "positive" : priceChange < -2 ? "negative" : "neutral",
-      },
-    ] as {
+    if (!response.ok) throw new Error(`Gemini API error: ${response.status}`);
+
+    const result = await response.json();
+    const text = result?.data?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    const trendMatch = text.match(
+      /Predicted Trend:\s*(bullish|bearish|neutral)/i
+    );
+    const accuracyMatch = text.match(/Confidence:\s*(\d+(\.\d+)?)/i);
+    const changeMatch = text.match(
+      /Expected Change\s*\(%\):\s*([+-]?\d+(\.\d+)?)/i
+    );
+    const factorMatches = [
+      ...text.matchAll(
+        /factor:\s*(.+?)\s+weight:\s*([\d.]+)\s+impact:\s*(positive|negative|neutral)/gi
+      ),
+    ];
+
+    const trend =
+      (trendMatch?.[1]?.toLowerCase() as "bullish" | "bearish" | "neutral") ??
+      "neutral";
+    const accuracy = accuracyMatch ? parseFloat(accuracyMatch[1]) : 0.75;
+    const predictedChange = changeMatch ? parseFloat(changeMatch[1]) : 0;
+
+    const dailyGrowthRate =
+      Math.pow(1 + predictedChange / 100, 1 / predictionDays) - 1;
+
+    const baseTimestamp = new Date(
+      Date.UTC(
+        new Date().getUTCFullYear(),
+        new Date().getUTCMonth(),
+        new Date().getUTCDate() + 1
+      )
+    ).getTime();
+
+    const predictions: PredictionData[] = Array.from(
+      { length: predictionDays },
+      (_, index) => {
+        const timestamp = baseTimestamp + index * 24 * 60 * 60 * 1000;
+        const predictedPrice =
+          currentPrice * Math.pow(1 + dailyGrowthRate, index);
+        return {
+          timestamp,
+          predictedPrice: parseFloat(predictedPrice.toFixed(2)),
+          confidence: accuracy,
+        };
+      }
+    );
+
+    const factors: {
       name: string;
       weight: number;
       impact: "positive" | "negative" | "neutral";
-    }[];
+    }[] =
+      factorMatches.length > 0
+        ? factorMatches.map((match) => {
+            const name = match[1]?.trim() ?? "Unknown Factor";
+            const weight = parseFloat(match[2]) || 0;
+            const rawImpact = match[4]?.toLowerCase() || "neutral";
+
+            const impact = ["positive", "negative", "neutral"].includes(
+              rawImpact
+            )
+              ? (rawImpact as "positive" | "negative" | "neutral")
+              : "neutral";
+
+            return { name, weight, impact };
+          })
+        : [
+            {
+              name: "Sentiment Score",
+              weight: 35,
+              impact:
+                sentimentScore > 0.6
+                  ? "positive"
+                  : sentimentScore < 0.4
+                  ? "negative"
+                  : "neutral",
+            },
+            {
+              name: "Fear-Greed Index",
+              weight: 15,
+              impact:
+                fearGreedIndex > 60
+                  ? "positive"
+                  : fearGreedIndex < 40
+                  ? "negative"
+                  : "neutral",
+            },
+            {
+              name: "Price Change",
+              weight: 25,
+              impact:
+                priceChange > 0
+                  ? "positive"
+                  : priceChange < 0
+                  ? "negative"
+                  : "neutral",
+            },
+            {
+              name: "Volatility",
+              weight: 10,
+              impact: "neutral",
+            },
+            {
+              name: "RSI",
+              weight: 15,
+              impact: rsi > 70 ? "negative" : rsi < 30 ? "positive" : "neutral",
+            },
+          ];
 
     const finalResult: PredictionResult = {
       predictions,
-      accuracy: confidence,
+      accuracy,
       trend,
       factors,
     };
 
-    // ✅ Save to cache
     setPredictionCache(type, crypto, predictionDays, finalResult);
-
     return finalResult;
   } catch (error) {
-    console.error("Hybrid Prediction error:", error);
+    console.error("Gemini Hybrid Prediction API error:", error);
 
-    // Enhanced fallback combining both approaches
-    const fallbackTechnical = priceChange * 0.2;
-    const fallbackSentiment = (sentimentScore - 0.5) * 10;
-    const combinedFallback = fallbackTechnical + fallbackSentiment + (Math.random() * 6 - 3);
-    const fallbackTrend = combinedFallback > 1.5 ? "bullish" : combinedFallback < -1.5 ? "bearish" : "neutral";
-    
-    const predictions: PredictionData[] = Array.from({ length: predictionDays }, (_, i) => {
-      const dayProgress = (i + 1) / predictionDays;
-      const totalChange = (combinedFallback / 100) * dayProgress;
-      
-      return {
-        timestamp: Date.now() + (i + 1) * 24 * 60 * 60 * 1000,
-        predictedPrice: currentPrice * (1 + totalChange),
-        confidence: 0.65,
-      };
-    });
+    const fallbackAccuracy = parseFloat(
+      (Math.random() * 0.15 + 0.7).toFixed(2)
+    ); // Random accuracy between 70%–85%
+    const fallbackChange = priceChange || Math.random() * 4 - 2; // ±2%
+    const fallbackGrowthRate =
+      Math.pow(1 + fallbackChange / 100, 1 / predictionDays) - 1;
+
+    const fallbackPredictions = Array.from(
+      { length: predictionDays },
+      (_, index) => {
+        const predictedPrice =
+          currentPrice * Math.pow(1 + fallbackGrowthRate, index);
+        return {
+          timestamp: Date.now() + index * 24 * 60 * 60 * 1000,
+          predictedPrice: parseFloat(predictedPrice.toFixed(2)),
+          confidence: fallbackAccuracy,
+        };
+      }
+    );
 
     return {
-      predictions,
-      accuracy: 0.65,
-      trend: fallbackTrend,
+      predictions: fallbackPredictions,
+      accuracy: fallbackAccuracy,
+      trend:
+        fallbackChange > 0
+          ? "bullish"
+          : fallbackChange < 0
+          ? "bearish"
+          : "neutral",
       factors: [
         {
-          name: "Hybrid Fallback Analysis",
-          weight: 60,
-          impact: combinedFallback > 0 ? "positive" : combinedFallback < 0 ? "negative" : "neutral",
+          name: "Fallback Sentiment Score",
+          weight: sentimentScore * 100,
+          impact:
+            sentimentScore > 0.6
+              ? "positive"
+              : sentimentScore < 0.4
+              ? "negative"
+              : "neutral",
         },
         {
-          name: "Technical Trend Component",
-          weight: 40,
-          impact: priceChange > 0 ? "positive" : priceChange < 0 ? "negative" : "neutral",
+          name: "Fallback Price Trend",
+          weight: Math.abs(priceChange),
+          impact:
+            priceChange > 0
+              ? "positive"
+              : priceChange < 0
+              ? "negative"
+              : "neutral",
         },
       ],
     };
@@ -564,7 +775,6 @@ export const generateAIPrediction = async (
   sentimentData?: any,
   Alltokenmarketstats?: any
 ): Promise<PredictionResult> => {
-  debugger;
   let aiPrediction: PredictionResult;
 
   if (modelType === "technical" && technicalIndicator.length > 0) {
@@ -666,7 +876,6 @@ export const fetchTechnicalIndicators = async (
   timeframe = "3m"
 ) => {
   try {
-    debugger;
     const res = await fetch(
       `${SERVER_URL}/api/technicalindicators?topic=${encodeURIComponent(
         topic

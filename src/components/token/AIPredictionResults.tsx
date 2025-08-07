@@ -17,23 +17,27 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
   currentPrice,
 }) => {
   if (!prediction) return null;
-  
+
   // Helper function to safely get predicted price
   const getLastPredictedPrice = () => {
-    if (!prediction.predictions || prediction.predictions.length === 0) return null;
-    const lastPrediction = prediction.predictions[prediction.predictions.length - 1];
+    if (!prediction.predictions || prediction.predictions.length === 0)
+      return null;
+    const lastPrediction =
+      prediction.predictions[prediction.predictions.length - 1];
     const price = lastPrediction?.predictedPrice;
     // Handle the case where predictedPrice is an object with _type: "undefined"
-    if (typeof price === 'object' && price?._type === 'undefined') return null;
-    return typeof price === 'number' && !isNaN(price) ? price : null;
+    if (typeof price === "object" && price?._type === "undefined") return null;
+    return typeof price === "number" && !isNaN(price) ? price : null;
   };
-  
+
   const predictedPrice = getLastPredictedPrice();
-  
+
   console.log({
     predictedPrice,
     currentPrice,
-    change: predictedPrice ? ((predictedPrice - currentPrice) / currentPrice) * 100 : NaN,
+    change: predictedPrice
+      ? ((predictedPrice - currentPrice) / currentPrice) * 100
+      : NaN,
   });
 
   return (
@@ -52,28 +56,35 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
           <p className="text-gray-200 text-base leading-relaxed">
             Based on our {modelType} analysis model, {cryptoId.toUpperCase()}{" "}
             shows{" "}
-            {prediction.predictions && prediction.predictions.length > 0 && predictedPrice != null
+            {prediction.predictions &&
+            prediction.predictions.length > 0 &&
+            predictedPrice != null
               ? ((predictedPrice - currentPrice) / currentPrice) * 100 >= 0
                 ? "bullish"
                 : "bearish"
               : "neutral"}{" "}
             momentum for the next {predictionDays} days.
-            {prediction.predictions && prediction.predictions.length > 0 && predictedPrice != null && (
-              <>
-                {" "}
-                The model predicts a price target of{" "}
-                {formatPrice(predictedPrice)}
-                , representing a{" "}
-                {(((predictedPrice - currentPrice) / currentPrice) * 100).toFixed(2)}
-                % change from current levels. Key factors driving this forecast
-                include technical indicators and market sentiment patterns with{" "}
-                {(
-                  prediction.predictions[prediction.predictions.length - 1]
-                    .confidence * 100
-                ).toFixed(0)}
-                % confidence.
-              </>
-            )}
+            {prediction.predictions &&
+              prediction.predictions.length > 0 &&
+              predictedPrice != null && (
+                <>
+                  {" "}
+                  The model predicts a price target of{" "}
+                  {formatPrice(predictedPrice)}, representing a{" "}
+                  {(
+                    ((predictedPrice - currentPrice) / currentPrice) *
+                    100
+                  ).toFixed(2)}
+                  % change from current levels. Key factors driving this
+                  forecast include technical indicators and market sentiment
+                  patterns with{" "}
+                  {(
+                    prediction.predictions[prediction.predictions.length - 1]
+                      .confidence * 100
+                  ).toFixed(0)}
+                  % confidence.
+                </>
+              )}
           </p>
         </div>
 
@@ -114,81 +125,92 @@ export const AIPredictionResults: React.FC<AIPredictionResultsProps> = ({
               <div className="flex justify-center">
                 <div
                   className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full border text-sm font-medium w-fit ${
-                    prediction.trend === "bullish"
+                    (predictedPrice - currentPrice) / currentPrice >= 0
                       ? "text-green-400 border-green-400 bg-green-500/10"
-                      : prediction.trend === "bearish"
-                      ? "text-red-400 border-red-400 bg-red-500/10"
-                      : "text-yellow-400 border-yellow-400 bg-yellow-500/10"
+                      : "text-red-400 border-red-400 bg-red-500/10"
                   }`}
                 >
-                  {prediction.trend === "bullish"
+                  {(predictedPrice - currentPrice) / currentPrice >= 0
                     ? "↗"
-                    : prediction.trend === "bearish"
-                    ? "↘"
-                    : "→"}
-                  <span className="capitalize">{prediction.trend}</span>
+                    : "↘"}
+                  <span className="capitalize">
+                    {(predictedPrice - currentPrice) / currentPrice >= 0
+                      ? "bullish"
+                      : "bearish"}
+                  </span>
                 </div>
               </div>
             </div>
           </div>
 
-          {prediction.predictions && prediction.predictions.length > 0 && predictedPrice != null && (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                <div className="text-gray-400 text-sm font-medium mb-1">
-                  Confidence
-                </div>
-                <div className="text-green-400 font-bold text-lg">
-                  {(
-                    prediction.predictions[prediction.predictions.length - 1]
-                      .confidence * 100
-                  ).toFixed(0)}
-                  %
-                </div>
-              </div>
-
-              <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                <div className="text-gray-400 text-sm font-medium mb-1">
-                  Current Price
-                </div>
-                <div className="text-gray-200 font-bold text-lg">
-                  {formatPrice(currentPrice)}
-                </div>
-              </div>
-
-              <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                <div className="text-gray-400 text-sm font-medium mb-1">
-                  Predicted Price
-                </div>
-                <div className="text-blue-400 font-bold text-lg">
-                  {formatPrice(predictedPrice)}
-                </div>
-              </div>
-
-              <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
-                <div className="text-gray-400 text-sm font-medium mb-1">
-                  Expected Change
-                </div>
-                <div
-                  className={`font-bold text-lg flex items-center justify-center gap-1 ${
-                    ((predictedPrice - currentPrice) / currentPrice) * 100 >= 0
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  <>
-                    {((predictedPrice - currentPrice) / currentPrice) * 100 >= 0
-                      ? "↗"
-                      : "↘"}
-                    {Math.abs(
-                      ((predictedPrice - currentPrice) / currentPrice) * 100
-                    ).toFixed(2)}
+          {prediction.predictions &&
+            prediction.predictions.length > 0 &&
+            predictedPrice != null && (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                  <div className="text-gray-400 text-sm font-medium mb-1">
+                    Confidence
+                  </div>
+                  <div className="text-green-400 font-bold text-lg">
+                    {(
+                      prediction.predictions[prediction.predictions.length - 1]
+                        .confidence * 100
+                    ).toFixed(0)}
                     %
-                  </>
+                  </div>
+                </div>
+
+                <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                  <div className="text-gray-400 text-sm font-medium mb-1">
+                    Current Price
+                  </div>
+                  <div className="text-gray-200 font-bold text-lg">
+                    {formatPrice(currentPrice)}
+                  </div>
+                </div>
+
+                <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                  <div className="text-gray-400 text-sm font-medium mb-1">
+                    Predicted Price
+                  </div>
+                  <div className="text-blue-400 font-bold text-lg">
+                    {formatPrice(predictedPrice)}
+                  </div>
+                </div>
+
+                <div className="bg-gray-800/40 rounded-lg p-4 text-center border border-gray-600/30">
+                  <div className="text-gray-400 text-sm font-medium mb-1">
+                    Expected Change
+                  </div>
+                  <div
+                    className={`font-bold text-lg flex items-center justify-center gap-1 ${
+                      ((predictedPrice - currentPrice) / currentPrice) * 100 >=
+                      0
+                        ? "text-green-400"
+                        : "text-red-400"
+                    }`}
+                  >
+                    <>
+                      {((predictedPrice - currentPrice) / currentPrice) * 100 >=
+                      0
+                        ? "↗"
+                        : "↘"}
+                      {(() => {
+                        const percentChange = Math.abs(
+                          ((predictedPrice - currentPrice) / currentPrice) * 100
+                        );
+                        if (percentChange < 0.0001)
+                          return percentChange.toFixed(6);
+                        if (percentChange < 0.01)
+                          return percentChange.toFixed(4);
+                        return percentChange.toFixed(2);
+                      })()}
+                      %
+                    </>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
 
         {/* Key Factors */}
