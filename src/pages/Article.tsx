@@ -27,7 +27,7 @@ const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
-  
+
   // Initialize ad script on page load
   useAdScript();
   const [articlesData, setArticlesData] = useState<any[]>([]);
@@ -46,14 +46,12 @@ const Article = () => {
         : [formatArticleForDisplay(location.state.article)];
       return stateArticle;
     }
-    
+
     // Fallback to fetched data
     const fallbackArticle = allArticlesData.find(
       (a) => a.id === Number(articleId)
     );
-    return fallbackArticle
-      ? [formatArticleForDisplay(fallbackArticle)]
-      : [];
+    return fallbackArticle ? [formatArticleForDisplay(fallbackArticle)] : [];
   })();
 
   const cryptoOptions = [
@@ -179,7 +177,7 @@ const Article = () => {
       </div>
     );
   }
-  
+
   if (!article) {
     return <ArticleNotFound />;
   }
@@ -195,20 +193,26 @@ const Article = () => {
           <meta name="description" content={seoData.description} />
           <meta name="keywords" content={seoData.keywords} />
           <link rel="canonical" href={seoData.canonical} />
-          
+
           {/* Open Graph tags */}
           <meta property="og:title" content={seoData.openGraph.title} />
-          <meta property="og:description" content={seoData.openGraph.description} />
+          <meta
+            property="og:description"
+            content={seoData.openGraph.description}
+          />
           <meta property="og:type" content={seoData.openGraph.type} />
           <meta property="og:url" content={seoData.openGraph.url} />
           <meta property="og:image" content={seoData.openGraph.image} />
-          
+
           {/* Twitter Card tags */}
           <meta name="twitter:card" content={seoData.twitter.card} />
           <meta name="twitter:title" content={seoData.twitter.title} />
-          <meta name="twitter:description" content={seoData.twitter.description} />
+          <meta
+            name="twitter:description"
+            content={seoData.twitter.description}
+          />
           <meta name="twitter:image" content={seoData.twitter.image} />
-          
+
           {/* Structured Data */}
           {seoData.structuredData && (
             <script type="application/ld+json">
@@ -217,8 +221,6 @@ const Article = () => {
           )}
         </Helmet>
       )}
-
-      
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         {/* Header like homepage */}
@@ -229,15 +231,15 @@ const Article = () => {
             currentPrice={45000}
             priceChange={2.5}
           />
-          
+
           {/* Header Ad - below header description */}
           <div className="flex justify-center mt-6 mb-8">
-            <AdUnit type="header" />
+            <AdUnit type="header" className="ad-click" />
           </div>
 
           {/* Additional Header Ad Placement */}
           <div className="flex justify-center mb-8">
-            <AdUnit type="leaderboard" />
+            <AdUnit type="leaderboard" className="ad-click" />
           </div>
         </div>
 
@@ -267,10 +269,10 @@ const Article = () => {
               {/* Square Ads between tags and related articles */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <div className="flex justify-center">
-                  <AdUnit type="square" />
+                  <AdUnit type="square" className="ad-click" />
                 </div>
                 <div className="flex justify-center">
-                  <AdUnit type="square" />
+                  <AdUnit type="square" className="ad-click" />
                 </div>
               </div>
 
@@ -282,13 +284,13 @@ const Article = () => {
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
                 <ArticleIndex content={article.content} />
-                <AdUnit type="skyscraper" />
+                <AdUnit type="skyscraper" className="ad-click" />
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
                 />
-                
+
                 {/* Ad placement below Market Movers */}
-                <AdUnit type="square" />
+                <AdUnit type="square" className="ad-click" />
               </div>
             </div>
           </div>

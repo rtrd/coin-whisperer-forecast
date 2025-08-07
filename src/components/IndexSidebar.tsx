@@ -1,5 +1,4 @@
-
-import React from 'react';
+import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle } from "lucide-react";
@@ -23,13 +22,13 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
   priceChange,
   cryptoData,
   dataLoading,
-  cryptoOptions
+  cryptoOptions,
 }) => {
   return (
     <div className="space-y-6">
       {/* Side Ad - Full width to match other components */}
       <div className="w-full min-h-[250px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
-        <AdUnit type="sidebar" className="w-full h-full" />
+        <AdUnit type="sidebar" className="w-full h-full ad-click" />
       </div>
 
       {/* Dynamic Prediction Adjuster */}
@@ -41,18 +40,24 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
 
       <Tabs defaultValue="technical" className="w-full">
         <TabsList className="grid w-full grid-cols-2 bg-gray-800 border-gray-700">
-          <TabsTrigger value="technical" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
+          <TabsTrigger
+            value="technical"
+            className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700"
+          >
             Technical
           </TabsTrigger>
-          <TabsTrigger value="sentiment" className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700">
+          <TabsTrigger
+            value="sentiment"
+            className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-700"
+          >
             Sentiment
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="technical">
           <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
         </TabsContent>
-        
+
         <TabsContent value="sentiment">
           <LockedSentimentAnalysis crypto={selectedCrypto} sentimentData={[]} />
         </TabsContent>
@@ -64,10 +69,13 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
           <div className="flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-yellow-400 mt-0.5" />
             <div>
-              <p className="text-sm text-yellow-200 font-medium mb-1">Investment Disclaimer</p>
+              <p className="text-sm text-yellow-200 font-medium mb-1">
+                Investment Disclaimer
+              </p>
               <p className="text-xs text-yellow-300">
-                AI predictions are for educational purposes only. Cryptocurrency investments carry high risk. 
-                Always do your own research before making investment decisions.
+                AI predictions are for educational purposes only. Cryptocurrency
+                investments carry high risk. Always do your own research before
+                making investment decisions.
               </p>
             </div>
           </div>
