@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Target, Eye, TrendingUp as TrendUp, Shield, RotateCcw, Newspaper, Globe, Radar } from "lucide-react";
+import React from 'react';
+import { Target, Eye, TrendingUp as TrendUp, Shield, RotateCcw, Globe, Radar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { MarketNarrative } from '@/types/tradingSignals';
-import { apiService } from '@/services/apiService';
 
 interface MarketNarrativesProps {
   marketNarratives: MarketNarrative[];
@@ -21,19 +20,6 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
   volatilityTrend = 'normal',
   defiTVLChange = 0
 }) => {
-  const [blogPosts, setBlogPosts] = useState<any[]>([]);
-
-  useEffect(() => {
-    const fetchBlogPosts = async () => {
-      try {
-        const posts = await apiService.getWordPressPost();
-        setBlogPosts(posts.slice(0, 2));
-      } catch (error) {
-        console.error('Failed to fetch blog posts:', error);
-      }
-    };
-    fetchBlogPosts();
-  }, []);
 
   // Calculate market cycle phase from Fear & Greed
   const getMarketCyclePhase = (value: number) => {
@@ -56,7 +42,7 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
   const riskAssessment = getRiskLevel(volatility, volatilityTrend);
 
   return (
-    <div className="bg-gradient-to-br from-gray-800/60 via-gray-800/40 to-gray-900/60 rounded-xl p-6 border border-gray-700/50 backdrop-blur-sm">
+    <div className="bg-gradient-to-br from-slate-800/80 via-slate-800/60 to-slate-900/80 rounded-2xl p-8 border border-slate-600/40 backdrop-blur-md shadow-2xl">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-white font-bold flex items-center gap-3 text-xl">
           <div className="relative">
@@ -71,9 +57,9 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
         </Badge>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Trend & Risk Analysis */}
-        <div className="lg:col-span-2 space-y-4">
+      <div className="space-y-6">
+        {/* Market Analysis Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Trend Analysis - Real Data */}
           <div className="bg-gradient-to-r from-blue-900/30 to-cyan-900/30 rounded-lg p-4 border border-blue-500/30">
             <div className="flex items-center justify-between mb-3">
@@ -189,111 +175,95 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
           </div>
         </div>
 
-        {/* Right Column - News & Narratives */}
-        <div className="space-y-4">
-          {/* Breaking News - Real Data */}
-          <div className="bg-gradient-to-b from-green-900/30 to-emerald-900/30 rounded-lg p-4 border border-green-500/30">
-            <div className="flex items-center gap-2 mb-3">
-              <Newspaper className="h-5 w-5 text-green-400" />
-              <span className="text-green-200 font-semibold">Latest News</span>
-              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
+        {/* Market Insights Summary */}
+        <div className="bg-gradient-to-br from-indigo-900/40 via-purple-900/30 to-pink-900/40 rounded-xl p-6 border border-indigo-500/30">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="relative">
+              <Globe className="h-6 w-6 text-indigo-400" />
+              <div className="absolute -top-1 -right-1 w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></div>
             </div>
-            <div className="space-y-3">
-              {blogPosts.length > 0 ? (
-                blogPosts.map((post, index) => (
-                  <div key={post.id} className={`border-l-2 pl-3 ${index === 0 ? 'border-green-400' : 'border-blue-400'}`}>
-                    <h4 className="text-white font-medium text-sm mb-1" dangerouslySetInnerHTML={{ 
-                      __html: post.title?.rendered || 'Untitled Post' 
-                    }}></h4>
-                    <p className="text-gray-300 text-xs mb-1" dangerouslySetInnerHTML={{ 
-                      __html: post.excerpt?.rendered?.replace(/<[^>]*>/g, '').substring(0, 100) + '...' || 'No excerpt available'
-                    }}></p>
-                    <div className="flex justify-between text-xs">
-                      <span className={index === 0 ? 'text-green-400' : 'text-blue-400'}>Pump Parade</span>
-                      <span className="text-gray-500">
-                        {new Date(post.date).toLocaleDateString()} {new Date(post.date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="border-l-2 border-yellow-400 pl-3">
-                  <h4 className="text-white font-medium text-sm mb-1">Market Update</h4>
-                  <p className="text-gray-300 text-xs mb-1">
-                    Fear & Greed Index at {fearGreedValue} indicates {fearGreedClassification.toLowerCase()} market sentiment
-                  </p>
-                  <div className="flex justify-between text-xs">
-                    <span className="text-yellow-400">Alternative.me</span>
-                    <span className="text-gray-500">Live</span>
-                  </div>
-                </div>
-              )}
-            </div>
+            <span className="text-indigo-200 font-bold text-lg">AI Market Summary</span>
           </div>
-
-          {/* Market Narratives - Real Data */}
-          <div className="bg-gradient-to-b from-cyan-900/30 to-teal-900/30 rounded-lg p-4 border border-cyan-500/30">
-            <div className="flex items-center gap-2 mb-3">
-              <Globe className="h-5 w-5 text-cyan-400" />
-              <span className="text-cyan-200 font-semibold">Live Narratives</span>
+          
+          <div className="space-y-4">
+            <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <h4 className="text-white font-semibold mb-2 flex items-center gap-2">
+                <div className="w-2 h-2 bg-cyan-400 rounded-full"></div>
+                Current Market State
+              </h4>
+              <p className="text-gray-200 text-sm leading-relaxed">
+                {fearGreedValue < 30 
+                  ? "Extreme fear dominates with potential accumulation opportunities emerging. Smart money positioning for recovery."
+                  : fearGreedValue < 50 
+                  ? "Fear-driven conditions creating selective value opportunities. Market consolidation expected."
+                  : fearGreedValue < 70 
+                  ? "Balanced sentiment with growing optimism. Trend continuation likely with healthy corrections."
+                  : fearGreedValue < 90 
+                  ? "Strong bullish momentum driving expansion. Monitor for overheating signals."
+                  : "Extreme greed suggests caution. Distribution phase may be approaching."
+                }
+              </p>
             </div>
-            <div className="space-y-3">
-              {marketNarratives.length > 0 ? (
-                marketNarratives.slice(0, 2).map((narrative, index) => (
-                  <div key={index} className="bg-cyan-900/20 rounded p-3 border border-cyan-500/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-cyan-400 text-sm font-medium">{narrative.title}</span>
-                      <div className={`w-4 h-4 ${narrative.impact === 'high' ? 'text-red-400' : narrative.impact === 'medium' ? 'text-yellow-400' : 'text-green-400'}`}>
-                        {narrative.impact === 'high' ? '⚠' : narrative.impact === 'medium' ? '→' : '↗'}
-                      </div>
-                    </div>
-                    <p className="text-gray-300 text-xs leading-relaxed">
-                      {narrative.content}
-                    </p>
-                    <div className="flex justify-between text-xs mt-2">
-                      <span className="text-cyan-300">{narrative.source}</span>
-                      <span className={`${narrative.impact === 'high' ? 'text-red-400' : narrative.impact === 'medium' ? 'text-yellow-400' : 'text-green-400'}`}>
-                        {narrative.impact.charAt(0).toUpperCase() + narrative.impact.slice(1)} Impact
-                      </span>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="bg-cyan-900/20 rounded p-3 border border-cyan-500/20">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-cyan-400 text-sm font-medium">Market Analysis</span>
-                    <div className="w-4 h-4 text-yellow-400">→</div>
-                  </div>
-                  <p className="text-gray-300 text-xs leading-relaxed">
-                    Real-time market analysis based on current sentiment and volatility data. 
-                    {volatilityTrend === 'high' ? ' High volatility environment requires careful risk management.' : ' Stable conditions support current trends.'}
-                  </p>
-                  <div className="flex justify-between text-xs mt-2">
-                    <span className="text-cyan-300">AI Analysis</span>
-                    <span className="text-yellow-400">Medium Impact</span>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-black/20 rounded-lg p-3 border border-gray-600/30">
+                <div className="text-xs text-gray-400 mb-1">Market Sentiment</div>
+                <div className={`text-sm font-semibold ${
+                  fearGreedValue > 60 ? 'text-green-400' : 
+                  fearGreedValue < 40 ? 'text-red-400' : 'text-yellow-400'
+                }`}>
+                  {fearGreedClassification}
+                </div>
+                <div className="text-xs text-gray-500">{fearGreedValue}/100</div>
+              </div>
+              
+              <div className="bg-black/20 rounded-lg p-3 border border-gray-600/30">
+                <div className="text-xs text-gray-400 mb-1">Risk Level</div>
+                <div className={`text-sm font-semibold ${riskAssessment.color}`}>
+                  {riskAssessment.level.replace(' Risk', '')}
+                </div>
+                <div className="text-xs text-gray-500">{volatility}% Vol</div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-purple-900/30 to-indigo-900/30 rounded-lg p-3 border border-purple-500/20">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="text-xs text-purple-300 mb-1">Cycle Phase</div>
+                  <div className={`text-sm font-semibold ${cyclePhase.color}`}>
+                    {cyclePhase.phase}
                   </div>
                 </div>
-              )}
+                <div className="text-right">
+                  <div className="text-xs text-gray-400">Confidence</div>
+                  <div className="text-sm font-semibold text-purple-300">
+                    {cyclePhase.confidence}%
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Status Bar */}
-      <div className="mt-6 pt-4 border-t border-gray-600/30">
+      {/* Enhanced Status Bar */}
+      <div className="mt-8 pt-6 border-t border-slate-600/40">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-gray-300">Live Data Stream Active</span>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="w-3 h-3 bg-emerald-400 rounded-full animate-pulse"></div>
+                <div className="absolute inset-0 w-3 h-3 bg-emerald-400 rounded-full animate-ping opacity-30"></div>
+              </div>
+              <span className="text-sm text-slate-300 font-medium">Live Data Stream Active</span>
             </div>
-            <div className="text-xs text-gray-400">
-              Last Updated: {new Date().toLocaleTimeString()}
+            <div className="text-sm text-slate-400">
+              Last Updated: {new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'})}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Radar className="h-4 w-4 text-cyan-400 animate-spin" />
-            <span className="text-xs text-cyan-400">AI Processing...</span>
+          <div className="flex items-center gap-3">
+            <Radar className="h-5 w-5 text-cyan-400 animate-spin" />
+            <span className="text-sm text-cyan-400 font-medium">AI Processing...</span>
           </div>
         </div>
       </div>
