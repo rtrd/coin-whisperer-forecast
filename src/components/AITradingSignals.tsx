@@ -22,6 +22,11 @@ export const AITradingSignals = () => {
     isAnalyzing
   } = useRealTradingSignalsData();
 
+  // Extract real market data for MarketNarratives component
+  const fearGreedSignal = signals.find(s => s.timeframe === 'SENTIMENT');
+  const volatilitySignal = signals.find(s => s.timeframe === 'VOLATILITY');
+  const defiSignal = signals.find(s => s.timeframe === 'DEFI');
+
   const marketAnalysis: MarketAnalysis = {
     bullish: {
       title: "Bulls in Control",
@@ -87,7 +92,17 @@ export const AITradingSignals = () => {
               <TradingRecommendations recommendations={recommendations} />
 
               {/* AI-Powered Market Narratives */}
-              <MarketNarratives marketNarratives={marketNarratives} />
+              <MarketNarratives 
+                marketNarratives={marketNarratives}
+                fearGreedValue={sentimentScore}
+                fearGreedClassification={fearGreedSignal?.description.includes('extreme greed') ? 'Extreme Greed' : 
+                                       fearGreedSignal?.description.includes('greed') ? 'Greed' :
+                                       fearGreedSignal?.description.includes('fear') ? 'Fear' : 'Neutral'}
+                volatility={volatilitySignal ? Math.round(100 - volatilitySignal.strength) : 50}
+                volatilityTrend={volatilitySignal?.description.includes('high') ? 'high' : 
+                               volatilitySignal?.description.includes('low') ? 'low' : 'normal'}
+                defiTVLChange={defiSignal ? (defiSignal.type === 'bullish' ? 2.5 : defiSignal.type === 'bearish' ? -2.5 : 0) : 0}
+              />
 
               {/* Disclaimer */}
               <div className="bg-red-900/20 border border-red-700/50 rounded-lg p-3">
