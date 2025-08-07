@@ -56,16 +56,16 @@ export const AITradingSignals = () => {
   return (
     <div className="mb-6">
       <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card className={`bg-gradient-to-br ${currentAnalysis.bgColor} ${currentAnalysis.borderColor} border`}>
+        <Card className="bg-gray-900/95 border border-gray-700/50 backdrop-blur-md shadow-2xl">
           <CollapsibleTrigger asChild>
-            <CardHeader className="pb-4 cursor-pointer hover:bg-white/5 transition-colors">
-              <CardTitle className="text-slate-600 flex items-center justify-between text-lg">
+            <CardHeader className="pb-4 cursor-pointer hover:bg-gray-800/50 transition-colors">
+              <CardTitle className="text-white flex items-center justify-between text-lg">
                 <div className="flex items-center gap-2">
-                  <Brain className="h-5 w-5 text-purple-400" />
+                  <Brain className="h-5 w-5 text-blue-400" />
                   AI Trading Insights
-                  {isAnalyzing && <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>}
+                  {isAnalyzing && <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>}
                 </div>
-                <Button variant="ghost" size="sm" className="text-slate-600 hover:bg-gray-700/50 hover:text-white flex items-center gap-1">
+                <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700/50 hover:text-white flex items-center gap-1">
                   {isOpen ? 'Hide Insights' : 'Show Insights'}
                   {isOpen ? (
                     <ChevronUp className="h-4 w-4" />
@@ -105,8 +105,8 @@ export const AITradingSignals = () => {
               />
 
               {/* Disclaimer */}
-              <div className="bg-red-900/20 border border-red-700/50 rounded-lg p-3">
-                <p className="text-xs text-white flex items-start gap-2 px-2">
+              <div className="bg-gray-800/60 border border-gray-700/40 rounded-lg p-3">
+                <p className="text-xs text-gray-300 flex items-start gap-2">
                   <AlertTriangle className="h-3 w-3 mt-0.5 text-red-400" />
                   AI-generated signals are for educational purposes only. Always conduct your own research and consider risk management before trading.
                 </p>
