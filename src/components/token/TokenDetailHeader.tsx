@@ -1,6 +1,5 @@
-
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -17,7 +16,7 @@ export const TokenDetailHeader: React.FC<TokenDetailHeaderProps> = ({
   cryptoId,
   cryptoOptions,
   currentPrice,
-  priceChange
+  priceChange,
 }) => {
   return (
     <>
@@ -44,7 +43,7 @@ export const TokenDetailHeader: React.FC<TokenDetailHeaderProps> = ({
 
       {/* Ad Banner Before Price Chart - Centered with more bottom margin */}
       <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6 mb-8">
-        <AdUnit type="leaderboard" className="max-w-full h-full" />
+        <AdUnit type="leaderboard" className="max-w-full h-full ad-click" />
       </div>
     </>
   );
