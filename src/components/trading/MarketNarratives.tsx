@@ -11,6 +11,9 @@ interface MarketNarrativesProps {
   volatility?: number;
   volatilityTrend?: 'high' | 'normal' | 'low';
   defiTVLChange?: number;
+  totalTVL?: number;
+  volumeChange24h?: number;
+  totalVolume24h?: number;
 }
 
 export const MarketNarratives: React.FC<MarketNarrativesProps> = ({ 
@@ -19,7 +22,10 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
   fearGreedClassification = 'Neutral',
   volatility = 50,
   volatilityTrend = 'normal',
-  defiTVLChange = 0
+  defiTVLChange = 0,
+  totalTVL = 0,
+  volumeChange24h = 0,
+  totalVolume24h = 0
 }) => {
 
   // Calculate market cycle phase from Fear & Greed
@@ -97,17 +103,21 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
               <BarChart3 className="h-4 w-4 text-gray-400" />
               <span className="text-xs font-medium text-gray-400 uppercase tracking-wide">Volume</span>
             </div>
-            <div className="w-2.5 h-2.5 rounded-full bg-blue-400"></div>
+            {volumeChange24h > 0 ? <ArrowUp className="h-4 w-4 text-green-400" /> : <ArrowDown className="h-4 w-4 text-red-400" />}
           </div>
-          <div className="text-2xl font-bold text-white mb-1">$2.4B</div>
-          <div className="text-xs font-medium mb-3 text-blue-400">
-            24h Trading
+          <div className="text-2xl font-bold text-white mb-1">
+            ${totalVolume24h >= 1e9 ? `${(totalVolume24h / 1e9).toFixed(1)}B` : `${(totalVolume24h / 1e6).toFixed(0)}M`}
+          </div>
+          <div className={`text-xs font-medium mb-3 ${
+            volumeChange24h > 0 ? 'text-green-400' : volumeChange24h < 0 ? 'text-red-400' : 'text-gray-400'
+          }`}>
+            {volumeChange24h > 0 ? '+' : ''}{volumeChange24h.toFixed(1)}% 24h
           </div>
           <Progress 
-            value={75} 
+            value={Math.min(100, Math.abs(volumeChange24h) * 10)} 
             className="h-1.5"
             style={{
-              '--progress-foreground': '#60a5fa'
+              '--progress-foreground': volumeChange24h > 0 ? '#4ade80' : '#f87171'
             } as React.CSSProperties}
           />
         </div>
@@ -122,12 +132,12 @@ export const MarketNarratives: React.FC<MarketNarrativesProps> = ({
             {defiTVLChange > 0 ? <ArrowUp className="h-4 w-4 text-green-400" /> : <ArrowDown className="h-4 w-4 text-red-400" />}
           </div>
           <div className="text-2xl font-bold text-white mb-1">
-            {defiTVLChange > 0 ? '+' : ''}{defiTVLChange.toFixed(1)}%
+            ${totalTVL >= 1e9 ? `${(totalTVL / 1e9).toFixed(1)}B` : `${(totalTVL / 1e6).toFixed(0)}M`}
           </div>
           <div className={`text-xs font-medium mb-3 ${
             defiTVLChange > 0 ? 'text-green-400' : defiTVLChange < 0 ? 'text-red-400' : 'text-gray-400'
           }`}>
-            24h Change
+            {defiTVLChange > 0 ? '+' : ''}{defiTVLChange.toFixed(1)}% 24h
           </div>
           <Progress 
             value={Math.abs(defiTVLChange) * 10} 

@@ -19,7 +19,11 @@ export const AITradingSignals = () => {
     liveSignals,
     recommendations,
     marketNarratives,
-    isAnalyzing
+    isAnalyzing,
+    volumeChange24h,
+    totalVolume24h,
+    totalTVL,
+    defiTVLChange
   } = useRealTradingSignalsData();
 
   // Extract real market data for MarketNarratives component
@@ -101,7 +105,10 @@ export const AITradingSignals = () => {
                 volatility={volatilitySignal ? Math.round(100 - volatilitySignal.strength) : 50}
                 volatilityTrend={volatilitySignal?.description.includes('high') ? 'high' : 
                                volatilitySignal?.description.includes('low') ? 'low' : 'normal'}
-                defiTVLChange={defiSignal ? (defiSignal.type === 'bullish' ? 2.5 : defiSignal.type === 'bearish' ? -2.5 : 0) : 0}
+                defiTVLChange={defiTVLChange}
+                totalTVL={totalTVL}
+                volumeChange24h={volumeChange24h}
+                totalVolume24h={totalVolume24h}
               />
 
               {/* Disclaimer */}

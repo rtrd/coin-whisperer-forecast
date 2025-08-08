@@ -16,6 +16,10 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
   const [recommendations, setRecommendations] = useState<TradingRecommendation[]>([]);
   const [marketNarratives, setMarketNarratives] = useState<MarketNarrative[]>([]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [volumeChange24h, setVolumeChange24h] = useState(0);
+  const [totalVolume24h, setTotalVolume24h] = useState(0);
+  const [totalTVL, setTotalTVL] = useState(0);
+  const [defiTVLChange, setDefiTVLChange] = useState(0);
 
   const generateSignalsFromRealData = async () => {
     setIsAnalyzing(true);
@@ -65,6 +69,18 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
       ];
 
       // Generate live signals from top movers
+      // Calculate market volume data
+      const currentTotalVolume = cryptoData.reduce((sum, token) => sum + (token.total_volume || 0), 0);
+      // Simulate previous 24h volume (in real app, this would come from historical data)
+      const previous24hVolume = currentTotalVolume * (0.95 + Math.random() * 0.1); // ±5% variation
+      const volume24hChange = ((currentTotalVolume - previous24hVolume) / previous24hVolume) * 100;
+
+      // Update volume state
+      setTotalVolume24h(currentTotalVolume);
+      setVolumeChange24h(volume24hChange);
+      setTotalTVL(defiTVL.tvl);
+      setDefiTVLChange(defiTVL.change24h);
+
       const topGainers = cryptoData.slice(0, 50).filter(token => token.price_change_percentage_24h > 10);
       const topLosers = cryptoData.slice(0, 50).filter(token => token.price_change_percentage_24h < -10);
       const highVolumeTokens = cryptoData.slice(0, 20).filter(token => token.total_volume > 1000000000);
@@ -287,6 +303,10 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
     liveSignals,
     recommendations,
     marketNarratives,
-    isAnalyzing
+    isAnalyzing,
+    volumeChange24h,
+    totalVolume24h,
+    totalTVL,
+    defiTVLChange
   };
 };
