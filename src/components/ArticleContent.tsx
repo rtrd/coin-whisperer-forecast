@@ -7,12 +7,72 @@ import { Tag } from "lucide-react";
 interface ArticleContentProps {
   content: string;
   tags: string[];
+  articleId?: number | string;
+  articleTitle?: string;
 }
 
-export const ArticleContent: React.FC<ArticleContentProps> = ({ content, tags }) => {
+export const ArticleContent: React.FC<ArticleContentProps> = ({ content, tags, articleId, articleTitle }) => {
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  // Delegate clicks: only push when a link inside a blockquote is clicked
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (!target) return;
+
+    const link = target.closest('a');
+    if (!link) return;
+
+    // Ensure the link is within a blockquote
+    const inBlockquote = link.closest('blockquote');
+    if (!inBlockquote) return;
+
+    const href = (link as HTMLAnchorElement).href || '';
+    const text = (link.textContent || '').trim();
+    const url = (() => {
+      try { return new URL(href); } catch { return null; }
+    })();
+
+    const payload = {
+      event: 'gtm.click',
+      event_source: 'article_content',
+      is_blockquote: true,
+      element_url: href,
+      element_text: text,
+      element_domain: url?.hostname || '',
+      element_id: (link as HTMLElement).id || '',
+      element_classes: (link as HTMLElement).className || '',
+      element_target: (link as HTMLAnchorElement).target || '',
+      article_id: articleId ?? '',
+      article_title: articleTitle ?? '',
+    };
+
+    const w: any = window as any;
+    w.dataLayer = w.dataLayer || [];
+    w.dataLayer.push(payload);
+  };
+
+  // Annotate blockquote links for GTM targeting and safety
+  React.useEffect(() => {
+    const root = containerRef.current;
+    if (!root) return;
+    const links = root.querySelectorAll('blockquote a');
+    links.forEach((a) => {
+      const el = a as HTMLAnchorElement;
+      el.setAttribute('data-gtm', 'blockquote-link');
+      if (el.target === '_blank') {
+        const existingRel = el.getAttribute('rel') || '';
+        if (!existingRel.includes('noopener')) {
+          el.setAttribute('rel', `${existingRel} noopener noreferrer`.trim());
+        }
+      }
+    });
+  }, [content]);
+
   return (
     <CardContent className="p-4 md:p-8">
       <div
+        ref={containerRef}
+        onClick={handleClick}
         className="prose prose-invert max-w-none text-gray-200 
         prose-headings:text-shadow-lg prose-h1:text-4xl prose-h1:font-bold prose-h1:mb-6 prose-h1:text-white
         prose-h2:text-2xl prose-h2:font-semibold prose-h2:mb-4 prose-h2:mt-8 prose-h2:text-white

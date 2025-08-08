@@ -263,7 +263,12 @@ const Article = () => {
               {/* Article Content with Header */}
               <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
                 <ArticleHeader article={article} />
-                <ArticleContent content={article.content} tags={article.tags} />
+                <ArticleContent 
+                  content={article.content} 
+                  tags={article.tags} 
+                  articleId={article.id}
+                  articleTitle={article.title}
+                />
               </Card>
 
               {/* Square Ads between tags and related articles */}
