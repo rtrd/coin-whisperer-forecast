@@ -7,6 +7,7 @@ import { BlogFeaturedSection } from "@/components/blog/BlogFeaturedSection";
 import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
 import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
 import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
+import { BlogIndexSection } from "@/components/blog/BlogIndexSection";
 import { getWordPressPost } from "../../utils/api";
 import { decodeHtmlEntities } from "@/utils/htmlUtils";
 import { formatArticleForDisplay, getFeaturedArticle } from "@/utils/articleUtils";
@@ -215,6 +216,9 @@ const Blog = () => {
         <BlogTrendingSection trendingArticles={trendingArticles} />
         <BlogLatestSection latestArticles={latestArticles} />
         <BlogCategoriesSection categories={categories} />
+        
+        {/* All Articles Index Section */}
+        <BlogIndexSection articles={articles} />
         
         {/* Ad Banner Before Footer */}
         <GAMAdUnit
