@@ -2,7 +2,7 @@ import { CryptoToken } from "@/types/crypto";
 import { TokenInfo } from "@/hooks/useTokenInfo";
 
 const API_KEY = import.meta.env.VITE_TOKEN_KEY;
-const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+const SERVER_URL = "https://server.pumpparade.com/";;
 class ApiService {
   private baseUrl = "https://api.coingecko.com/api/v3";
 
