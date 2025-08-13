@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { getWordPressPost } from "../../../utils/api";
 import { trackArticleClick } from "@/utils/analytics";
+import { decodeHtmlEntities } from "@/utils/htmlUtils";
 
 interface TokenSidebarProps {
   currentTokenId: string;
@@ -61,9 +62,9 @@ export function TokenSidebar({
       if (Array.isArray(articleData)) {
         const formattedArticles = articleData.slice(0, 6).map((post: any) => ({
           id: post.id,
-          title: post.title?.rendered || "No Title",
+          title: decodeHtmlEntities(post.title?.rendered || "No Title"),
           excerpt:
-            post.excerpt?.rendered?.replace(/<[^>]+>/g, "").slice(0, 120) +
+            decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "").slice(0, 120)) +
               "..." || "",
           author: post._embedded?.author?.[0]?.name || "Unknown",
           date: new Date(post.date).toISOString().split("T")[0],

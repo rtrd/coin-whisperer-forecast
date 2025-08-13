@@ -19,6 +19,7 @@ import {
   getRelatedArticles,
 } from "@/utils/articleUtils";
 import { getAllCryptos, getWordPressPost } from "../../utils/api";
+import { decodeHtmlEntities } from "@/utils/htmlUtils";
 import { CryptoToken } from "@/types/crypto";
 import { generateArticleSEO } from "@/utils/pageSeo";
 
@@ -107,8 +108,8 @@ const Article = () => {
 
   const transformArticles = (posts: any[]) => {
     return posts.map((post) => {
-      const title = post.title?.rendered || "No Title";
-      const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
+      const title = decodeHtmlEntities(post.title?.rendered || "No Title");
+      const excerpt = decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "");
       const date = new Date(post.date).toISOString().split("T")[0];
       const author = post._embedded?.author?.[0]?.name || "Unknown";
       const image =
@@ -116,7 +117,7 @@ const Article = () => {
         post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
         "https://via.placeholder.com/300";
       const url = post.link;
-      const content = post.content?.rendered || ""; // full HTML content
+      const content = decodeHtmlEntities(post.content?.rendered || ""); // full HTML content
       const tagname = post.tagNames?.filter((t: string) => t)?.join(", ");
 
       return {
@@ -156,13 +157,13 @@ const Article = () => {
   const transformallArticles = (articles: any[]): any[] => {
     return articles.map((a) => ({
       id: a.id,
-      title: a.title?.rendered || "Untitled",
+      title: decodeHtmlEntities(a.title?.rendered || "Untitled"),
       author: a.author || "Unknown",
       date: a.date || "",
       category: a.category || "Blog",
       readTime: a.readTime || "3 min read",
       image: a.image || a.jetpack_featured_media_url || "",
-      content: a.content?.rendered || "",
+      content: decodeHtmlEntities(a.content?.rendered || ""),
       tags:
         a.tags?.filter(
           (t: string) => typeof t === "string" && t.trim() !== ""

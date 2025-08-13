@@ -6,14 +6,15 @@ import { Button } from "@/components/ui/button";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { ArticleCard } from "./ArticleCard";
 import { getWordPressPost } from "../../utils/api";
+import { decodeHtmlEntities } from "@/utils/htmlUtils";
 
 const WordPressIntegration = () => {
   const [articles, setArticles] = useState<any[]>([]);
 
   const transformArticles = (posts: any[]) => {
     return posts.map((post) => {
-      const title = post.title?.rendered || "No Title";
-      const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
+      const title = decodeHtmlEntities(post.title?.rendered || "No Title");
+      const excerpt = decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "");
       const date = new Date(post.date).toISOString().split("T")[0];
       const author = post._embedded?.author?.[0]?.name || "Unknown";
       const image =
@@ -21,7 +22,7 @@ const WordPressIntegration = () => {
         post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
         "https://via.placeholder.com/300";
       const url = post.link;
-      const content = post.content?.rendered || ""; // full HTML content
+      const content = decodeHtmlEntities(post.content?.rendered || ""); // full HTML content
       const tagname = post.tagNames?.filter((t: string) => t)?.join(", ") || "";
 
       return {

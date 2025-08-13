@@ -8,6 +8,7 @@ import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
 import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
 import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { getWordPressPost } from "../../utils/api";
+import { decodeHtmlEntities } from "@/utils/htmlUtils";
 import { formatArticleForDisplay, getFeaturedArticle } from "@/utils/articleUtils";
 import { generateBlogSEO } from "@/utils/pageSeo";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
@@ -54,15 +55,15 @@ const Blog = () => {
         console.log("🔍 Processing", articleData.length, "WordPress posts");
         
         const formattedArticles = articleData.map((post, index) => {
-          const title = post.title?.rendered || "No Title";
-          const excerpt = post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "";
+          const title = decodeHtmlEntities(post.title?.rendered || "No Title");
+          const excerpt = decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "");
           const date = new Date(post.date).toISOString().split("T")[0];
           const author = post._embedded?.author?.[0]?.name || "Unknown";
           const image =
             post.jetpack_featured_media_url ||
             post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
             "https://via.placeholder.com/800x400";
-          const content = post.content?.rendered || "";
+          const content = decodeHtmlEntities(post.content?.rendered || "");
 
           // Debug raw WordPress tag data
           console.log(`🔍 Post ${index + 1}: "${title}"`);
