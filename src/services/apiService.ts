@@ -2,10 +2,10 @@ import { CryptoToken } from "@/types/crypto";
 import { TokenInfo } from "@/hooks/useTokenInfo";
 
 const API_KEY = import.meta.env.VITE_TOKEN_KEY;
-const SERVER_URL = "https://server.pumpparade.com/";;
+
 class ApiService {
   private baseUrl = "https://api.coingecko.com/api/v3";
-
+  const SERVER_URL = "https://server.pumpparade.com/";
   async getAllCryptos(): Promise<CryptoToken[]> {
     try {
       // ✅ Call your backend route instead of CoinGecko directly
