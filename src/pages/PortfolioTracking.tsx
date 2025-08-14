@@ -114,7 +114,7 @@ const PortfolioTracking = () => {
         <meta name="description" content="Track your cryptocurrency portfolio with real-time data, performance analytics, and professional-grade tools. Get early access to our portfolio tracking platform." />
       </Helmet>
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-x-hidden">
         <div className="container mx-auto px-4 py-4 md:py-8">
           <IndexHeader
             selectedCrypto="bitcoin"
