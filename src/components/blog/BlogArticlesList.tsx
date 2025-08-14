@@ -39,7 +39,7 @@ export const BlogArticlesList: React.FC<BlogArticlesListProps> = ({
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => onViewModeChange('grid')}
-              className="h-8 px-3"
+              className={`h-8 px-3 ${viewMode !== 'grid' ? 'text-gray-300' : ''}`}
             >
               <Grid className="h-4 w-4 mr-1" />
               Grid
@@ -48,7 +48,7 @@ export const BlogArticlesList: React.FC<BlogArticlesListProps> = ({
               variant={viewMode === 'table' ? 'default' : 'ghost'}
               size="sm"
               onClick={() => onViewModeChange('table')}
-              className="h-8 px-3"
+              className={`h-8 px-3 ${viewMode !== 'table' ? 'text-gray-300' : ''}`}
             >
               <List className="h-4 w-4 mr-1" />
               Table
