@@ -33,7 +33,7 @@ export const BlogArticlesList: React.FC<BlogArticlesListProps> = ({
       {/* View Mode Toggle */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">View:</span>
+          <span className="text-sm text-foreground font-medium">View:</span>
           <div className="flex border border-border/30 rounded-lg p-1">
             <Button
               variant={viewMode === 'grid' ? 'default' : 'ghost'}
