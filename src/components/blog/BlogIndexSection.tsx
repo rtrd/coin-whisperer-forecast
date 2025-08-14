@@ -115,11 +115,11 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
   return (
     <div className="mb-12 mt-12">
       <div className="flex items-center gap-2 mb-8">
-        <BookOpen className="h-6 w-6 text-primary" />
-        <h2 className="text-2xl font-bold text-foreground">Blog Archive</h2>
+        <BookOpen className="h-6 w-6 text-blue-400" />
+        <h2 className="text-2xl font-bold text-white">Blog Archive</h2>
       </div>
       
-      <Card className="bg-card border-border">
+      <Card className="bg-gray-800/50 border-gray-700">
         <CardContent className="p-6">
           {/* Filters */}
           <BlogArticleFilters
@@ -143,15 +143,15 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
             />
           ) : (
             <div className="text-center py-12">
-              <div className="text-foreground text-lg mb-4">
+              <div className="text-white text-lg mb-4">
                 No articles found matching your criteria
               </div>
-              <p className="text-muted-foreground mb-6">
+              <p className="text-gray-400 mb-6">
                 Try adjusting your filters or search terms
               </p>
               <button
                 onClick={resetFilters}
-                className="text-primary hover:text-primary/80 underline"
+                className="text-blue-400 hover:text-blue-300 underline"
               >
                 Clear all filters
               </button>
