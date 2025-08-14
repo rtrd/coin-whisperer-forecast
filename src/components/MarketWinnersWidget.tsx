@@ -27,10 +27,7 @@ export const MarketWinnersWidget = ({ topGainnersandLoosers }) => {
     }));
 
   return (
-    <Card
-      className="bg-gray-800/60 border-gray-600/50 backdrop-blur-sm shadow-xl"
-      style={{ width: "300px" }}
-    >
+    <Card className="w-full max-w-sm mx-auto lg:w-80 bg-gray-800/60 border-gray-600/50 backdrop-blur-sm shadow-xl">
       <CardHeader className="pb-3 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-b border-gray-600/50">
         <CardTitle className="text-white text-lg flex items-center gap-2 font-semibold">
           <TrendingUp className="h-5 w-5 text-green-400" />
@@ -52,25 +49,23 @@ export const MarketWinnersWidget = ({ topGainnersandLoosers }) => {
                   state={{ token }}
                   className="block"
                 >
-                  <div className="flex items-center justify-between p-2 hover:bg-gray-700/50 rounded-lg transition-all duration-200 group">
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg">
-                        <img
-                          src={token.image}
-                          alt={token.name}
-                          className="w-6 h-6 rounded-full inline-block mr-2"
-                        />
-                      </span>
-                      <div>
-                        <div className="text-white font-medium text-sm group-hover:text-blue-400 transition-colors">
+                  <div className="flex items-center justify-between p-3 sm:p-2 hover:bg-gray-700/50 rounded-lg transition-all duration-200 group min-h-[44px]">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                      <img
+                        src={token.image}
+                        alt={token.name}
+                        className="w-8 h-8 sm:w-6 sm:h-6 rounded-full flex-shrink-0"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-white font-medium text-sm sm:text-xs group-hover:text-blue-400 transition-colors truncate">
                           {token.symbol.toUpperCase()}
                         </div>
-                        <div className="text-gray-400 text-xs">
+                        <div className="text-gray-400 text-xs truncate">
                           ${token.current_price}
                         </div>
                       </div>
                     </div>
-                    <div className="text-green-400 font-semibold text-sm bg-green-400/10 px-2 py-1 rounded">
+                    <div className="text-green-400 font-semibold text-xs sm:text-sm bg-green-400/10 px-2 py-1 rounded flex-shrink-0">
                       +{token.price_change_percentage_24h.toFixed(2)}%
                     </div>
                   </div>
@@ -92,25 +87,23 @@ export const MarketWinnersWidget = ({ topGainnersandLoosers }) => {
                   state={{ token }}
                   className="block"
                 >
-                  <div className="flex items-center justify-between p-2 hover:bg-gray-700/50 rounded-lg transition-all duration-200 group">
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg">
-                        <img
-                          src={token.image}
-                          alt={token.name}
-                          className="w-6 h-6 rounded-full inline-block mr-2"
-                        />
-                      </span>
-                      <div>
-                        <div className="text-white font-medium text-sm group-hover:text-blue-400 transition-colors">
+                  <div className="flex items-center justify-between p-3 sm:p-2 hover:bg-gray-700/50 rounded-lg transition-all duration-200 group min-h-[44px]">
+                    <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                      <img
+                        src={token.image}
+                        alt={token.name}
+                        className="w-8 h-8 sm:w-6 sm:h-6 rounded-full flex-shrink-0"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-white font-medium text-sm sm:text-xs group-hover:text-blue-400 transition-colors truncate">
                           {token.symbol.toUpperCase()}
                         </div>
-                        <div className="text-gray-400 text-xs">
+                        <div className="text-gray-400 text-xs truncate">
                           ${token.current_price}
                         </div>
                       </div>
                     </div>
-                    <div className="text-red-400 font-semibold text-sm bg-red-400/10 px-2 py-1 rounded">
+                    <div className="text-red-400 font-semibold text-xs sm:text-sm bg-red-400/10 px-2 py-1 rounded flex-shrink-0">
                       {token.price_change_percentage_24h.toFixed(2)}%
                     </div>
                   </div>

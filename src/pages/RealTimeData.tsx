@@ -178,9 +178,9 @@ const RealTimeData = () => {
           </Link>
         </div>
 
-                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
                     {/* Main Content */}
-                    <div className="lg:col-span-3 space-y-8">
+                    <div className="lg:col-span-3 space-y-4 sm:space-y-6 lg:space-y-8">
                       {/* Real-Time Features Section */}
                       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
                         <CardContent className="p-8">
@@ -194,13 +194,13 @@ const RealTimeData = () => {
                             </p>
                           </div>
                           
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30 hover:shadow-lg transition-all">
-                              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
-                                <Radio className="h-8 w-8 text-blue-400" />
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                            <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30 hover:shadow-lg transition-all">
+                              <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-500/20 rounded-full mb-3 sm:mb-4">
+                                <Radio className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
                               </div>
-                              <h3 className="text-xl font-semibold text-white mb-2">Live Data Streams</h3>
-                              <p className="text-gray-300 text-sm">Real-time price feeds updated every second via WebSocket connections</p>
+                              <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">Live Data Streams</h3>
+                              <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">Real-time price feeds updated every second via WebSocket connections</p>
                             </div>
                             
                             <div className="text-center p-6 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500/30 hover:shadow-lg transition-all">

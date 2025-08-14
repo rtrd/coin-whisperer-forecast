@@ -106,16 +106,16 @@ export function TokenSidebar({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Token Analysis - Reformatted */}
+    <div className="space-y-4 sm:space-y-6">
+      {/* Token Analysis - Mobile Optimized */}
       <Card className="bg-gray-800/50 border-gray-700">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-white flex items-center gap-2 text-lg">
-            <BarChart3 className="h-5 w-5 text-purple-400" />
+        <CardHeader className="pb-3 sm:pb-4">
+          <CardTitle className="text-white flex items-center gap-2 text-base sm:text-lg">
+            <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
             Token Analysis
           </CardTitle>
         </CardHeader>
-        <CardContent className="pt-0">
+        <CardContent className="pt-0 px-3 sm:px-6">
           {Array.isArray(cryptoData) && cryptoData.length > 0 ? (
             <DynamicTokenAnalysis
               selectedCrypto={selectedCrypto}
@@ -126,7 +126,7 @@ export function TokenSidebar({
               technicalIndicator={technicalIndicator}
             />
           ) : (
-            <div>Loading data...</div>
+            <div className="text-sm text-gray-400">Loading data...</div>
           )}
         </CardContent>
       </Card>
@@ -141,20 +141,20 @@ export function TokenSidebar({
         />
       </div> */}
 
-      {/* Articles Section */}
+      {/* Articles Section - Mobile Optimized */}
       <Card className="bg-gray-800/50 border-gray-700">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-white flex items-center gap-2 text-lg">
-            <FileText className="h-5 w-5 text-blue-400" />
+        <CardHeader className="pb-3 sm:pb-4">
+          <CardTitle className="text-white flex items-center gap-2 text-base sm:text-lg">
+            <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" />
             Latest Articles
           </CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           {currentArticle ? (
             <div className="relative group">
-              {/* Article Image - Clickable */}
+              {/* Article Image - Mobile Optimized */}
               <div
-                className="relative h-48 overflow-hidden rounded-t-lg cursor-pointer"
+                className="relative h-40 sm:h-48 overflow-hidden rounded-t-lg cursor-pointer"
                 onClick={() => {
                   trackArticleClick(currentArticle.title, currentArticleIndex);
                   navigate(`/article/${currentArticle.id}`, {
@@ -166,6 +166,7 @@ export function TokenSidebar({
                   src={currentArticle.image}
                   alt={currentArticle.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent" />
 
@@ -175,24 +176,24 @@ export function TokenSidebar({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                      className="absolute left-1 sm:left-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-10 w-10 sm:h-8 sm:w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity z-10"
                       onClick={(e) => {
                         e.stopPropagation();
                         prevArticle();
                       }}
                     >
-                      <ChevronLeft className="h-4 w-4" />
+                      <ChevronLeft className="h-5 w-5 sm:h-4 sm:w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                      className="absolute right-1 sm:right-2 top-1/2 transform -translate-y-1/2 bg-gray-900/50 text-white hover:bg-gray-900/70 h-10 w-10 sm:h-8 sm:w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity z-10"
                       onClick={(e) => {
                         e.stopPropagation();
                         nextArticle();
                       }}
                     >
-                      <ChevronRight className="h-4 w-4" />
+                      <ChevronRight className="h-5 w-5 sm:h-4 sm:w-4" />
                     </Button>
                   </>
                 )}
@@ -205,11 +206,11 @@ export function TokenSidebar({
                 )}
               </div>
 
-              {/* Article Content */}
-              <div className="p-4">
+              {/* Article Content - Mobile Optimized */}
+              <div className="p-3 sm:p-4">
                 {/* Clickable Headline */}
                 <h4
-                  className="text-white text-sm font-semibold line-clamp-2 mb-2 animate-fade-in cursor-pointer hover:text-blue-400 transition-colors"
+                  className="text-white text-sm sm:text-base font-semibold line-clamp-2 mb-2 animate-fade-in cursor-pointer hover:text-blue-400 transition-colors leading-tight"
                   onClick={() => {
                     trackArticleClick(
                       currentArticle.title,
@@ -222,14 +223,14 @@ export function TokenSidebar({
                 >
                   {currentArticle.title}
                 </h4>
-                <p className="text-gray-400 text-xs line-clamp-3 mb-3 animate-fade-in">
+                <p className="text-gray-400 text-xs sm:text-sm line-clamp-3 mb-3 animate-fade-in leading-relaxed">
                   {currentArticle.excerpt}
                 </p>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-xs">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-gray-500">
                     {currentArticle.readTime}
                   </span>
-                  <span className="text-gray-500 text-xs">
+                  <span className="text-gray-500">
                     {currentArticle.date}
                   </span>
                 </div>

@@ -145,18 +145,18 @@ const AIPricePrediction = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="text-center p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30 hover:shadow-lg transition-all">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-500/20 rounded-full mb-4">
-                <Zap className="h-8 w-8 text-blue-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">
-                Real-Time Analysis
-              </h3>
-              <p className="text-gray-300 text-sm">
-                Predictions updated every 15 minutes using live market data
-              </p>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+             <div className="text-center p-4 sm:p-6 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-xl border border-blue-500/30 hover:shadow-lg transition-all">
+               <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-500/20 rounded-full mb-3 sm:mb-4">
+                 <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
+               </div>
+               <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
+                 Real-Time Analysis
+               </h3>
+               <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
+                 Predictions updated every 15 minutes using live market data
+               </p>
+             </div>
 
             <div className="text-center p-6 bg-gradient-to-br from-green-600/20 to-emerald-600/20 rounded-xl border border-green-500/30 hover:shadow-lg transition-all">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
@@ -400,7 +400,7 @@ const AIPricePrediction = () => {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {/* Main Content with SignupLock */}
             <SignupLock
               title="Unlock AI Price Predictions"
@@ -409,11 +409,13 @@ const AIPricePrediction = () => {
               {lockedContent}
             </SignupLock>
 
-            {/* Sticky Sidebar */}
-            <div className="hidden lg:block">
-              <div className="sticky top-8 space-y-8">
+            {/* Responsive Sidebar */}
+            <div className="lg:col-span-1 order-first lg:order-last">
+              <div className="lg:sticky lg:top-8 space-y-4 sm:space-y-6 lg:space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <AdUnit type="skyscraper" className="ad-click" />
+                <div className="hidden lg:block">
+                  <AdUnit type="skyscraper" className="ad-click" />
+                </div>
               </div>
             </div>
           </div>

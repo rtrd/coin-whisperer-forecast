@@ -106,12 +106,12 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             handleClearPrediction={handleClearPrediction}
           />
 
-          {/* Ad Banner After Price Chart - Centered */}
-          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
+          {/* Ad Banner After Price Chart - Responsive */}
+          <div className="w-full min-h-[90px] sm:min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
             <GAMAdUnit
               adUnitId="div-gpt-ad-1752654531765-2"
               size={[728, 120]}
-              className="max-w-full h-full"
+              className="max-w-full h-auto"
             />
           </div>
 
@@ -127,9 +127,9 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         </div>
 
         {/* Market Analysis and Sidebar Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
           {/* Market Analysis - 3/4 width */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-3 order-2 lg:order-1">
             <TokenDetailAnalysis
               cryptoId={cryptoId}
               cryptoData={cryptoData}
@@ -140,7 +140,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           </div>
 
           {/* Sidebar - 1/4 width */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 order-1 lg:order-2">
             <TokenSidebar
               currentTokenId={tokenId}
               selectedCrypto={cryptoId}

@@ -196,12 +196,17 @@ export const PriceChart: React.FC<PriceChartProps> = ({
           </div>
         )}
 
-        {/* Chart */}
-        <div className="h-80 md:h-[500px] p-2 md:p-4">
+        {/* Chart - Mobile Optimized */}
+        <div className="h-64 sm:h-80 md:h-[500px] p-1 sm:p-2 md:p-4">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={chartData}
-              margin={{ top: 20, right: 30, left: 0, bottom: 20 }}
+              margin={{ 
+                top: window.innerWidth < 768 ? 10 : 20, 
+                right: window.innerWidth < 768 ? 10 : 30, 
+                left: 0, 
+                bottom: window.innerWidth < 768 ? 30 : 20 
+              }}
             >
               <defs>
                 {/* Enhanced gradients */}
@@ -240,37 +245,37 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 vertical={false}
               />
 
-              <XAxis
+               <XAxis
                 dataKey="date"
                 stroke="#9CA3AF"
-                fontSize={window.innerWidth < 768 ? 10 : 12}
-                interval={0}
-                angle={-30}
+                fontSize={10}
+                interval={window.innerWidth < 768 ? "preserveEnd" : 0}
+                angle={window.innerWidth < 768 ? -45 : -30}
                 textAnchor="end"
-                height={40}
+                height={window.innerWidth < 768 ? 50 : 40}
                 tick={{
                   fill: "#D1D5DB",
                   fontWeight: 500,
-                  fontSize: window.innerWidth < 768 ? 10 : 12,
+                  fontSize: window.innerWidth < 768 ? 9 : 12,
                 }}
                 axisLine={{ stroke: "#4B5563", strokeWidth: 1 }}
                 tickLine={{ stroke: "#6B7280", strokeWidth: 1 }}
-                tickMargin={4}
+                tickMargin={window.innerWidth < 768 ? 2 : 4}
               />
 
-              <YAxis
+               <YAxis
                 stroke="#9CA3AF"
                 tickFormatter={formatPrice}
-                fontSize={window.innerWidth < 768 ? 10 : 12}
+                fontSize={9}
                 tick={{
                   fill: "#D1D5DB",
                   fontWeight: 500,
-                  fontSize: window.innerWidth < 768 ? 10 : 12,
+                  fontSize: window.innerWidth < 768 ? 9 : 12,
                 }}
-                width={window.innerWidth < 768 ? 50 : 60}
+                width={window.innerWidth < 768 ? 45 : 60}
                 axisLine={{ stroke: "#4B5563", strokeWidth: 1 }}
                 tickLine={{ stroke: "#6B7280", strokeWidth: 1 }}
-                tickCount={8}
+                tickCount={window.innerWidth < 768 ? 6 : 8}
                 domain={["dataMin * 0.98", "dataMax * 1.02"]}
               />
 
@@ -306,12 +311,12 @@ export const PriceChart: React.FC<PriceChartProps> = ({
           </ResponsiveContainer>
         </div>
 
-        {/* Enhanced Legend */}
-        <div className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm border-t border-gray-600/30 px-6 py-4">
-          <div className="flex flex-wrap justify-center gap-8 text-sm">
-            <div className="flex items-center gap-3 px-4 py-2 bg-blue-500/15 rounded-xl border border-blue-500/30 backdrop-blur-sm">
+        {/* Enhanced Legend - Mobile Optimized */}
+        <div className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm border-t border-gray-600/30 px-3 sm:px-6 py-3 sm:py-4">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm">
+            <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-blue-500/15 rounded-xl border border-blue-500/30 backdrop-blur-sm">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
+                <div className="w-4 h-1 sm:w-6 sm:h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
               </div>
               <span className="text-blue-300 font-semibold">
                 Historical Price
@@ -319,9 +324,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({
             </div>
 
             {prediction && prediction.length > 0 && (
-              <div className="flex items-center gap-3 px-4 py-2 bg-green-500/15 rounded-xl border border-green-500/30 backdrop-blur-sm">
+              <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-green-500/15 rounded-xl border border-green-500/30 backdrop-blur-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-6 h-1 border-t-2 border-dashed border-green-400 rounded"></div>
+                  <div className="w-4 h-1 sm:w-6 sm:h-1 border-t-2 border-dashed border-green-400 rounded"></div>
                 </div>
                 <span className="text-green-300 font-semibold">
                   AI Prediction
