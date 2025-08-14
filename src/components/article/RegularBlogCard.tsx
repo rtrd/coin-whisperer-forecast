@@ -53,6 +53,7 @@ export const RegularBlogCard: React.FC<RegularBlogCardProps> = ({
             src={article.image} 
             alt={article.title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
           <div className="absolute bottom-1 left-1">
             <Badge className={`bg-black/50 text-white text-xs px-1 py-0`}>

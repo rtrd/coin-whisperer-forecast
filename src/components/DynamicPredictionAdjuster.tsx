@@ -139,8 +139,8 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-gray-300 text-base font-medium">Confidence:</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+              <span className="text-gray-300 text-sm sm:text-base font-medium">Confidence:</span>
               <div className="flex-1 relative">
                 <Progress 
                   value={overallConfidence} 
@@ -150,7 +150,7 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
                   } as React.CSSProperties}
                 />
               </div>
-              <span className="text-gray-200 text-base font-bold min-w-[50px]">{overallConfidence}%</span>
+              <span className="text-gray-200 text-sm sm:text-base font-bold">{overallConfidence}%</span>
             </div>
           </div>
 
@@ -168,18 +168,18 @@ export const DynamicPredictionAdjuster: React.FC<DynamicPredictionAdjusterProps>
                   </div>
                 </div>
                 <p className="text-gray-400 text-xs mb-3">{adjustment.reason}</p>
-                <div className="flex items-center gap-3">
-                  <span className="text-gray-300 text-base font-medium">Confidence:</span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                  <span className="text-gray-300 text-xs sm:text-sm font-medium">Confidence:</span>
                   <div className="flex-1 relative">
                     <Progress 
                       value={adjustment.confidence} 
-                      className="h-3 bg-gray-700"
+                      className="h-2 sm:h-3 bg-gray-700"
                       style={{
                         '--progress-foreground': getProgressBarColor(adjustment.confidence)
                       } as React.CSSProperties}
                     />
                   </div>
-                  <span className="text-gray-200 text-base font-bold min-w-[50px]">{adjustment.confidence}%</span>
+                  <span className="text-gray-200 text-xs sm:text-sm font-bold">{adjustment.confidence}%</span>
                 </div>
               </div>
             ))}

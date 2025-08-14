@@ -69,7 +69,7 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Search */}
         <div>
           <label className="text-sm font-medium text-gray-300 mb-2 block">
@@ -135,7 +135,7 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
       </div>
 
       {/* Date Range */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="text-sm font-medium text-gray-300 mb-2 block">
             <Calendar className="h-4 w-4 inline mr-1" />
@@ -166,7 +166,7 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
       </div>
 
       {/* Selected Tags Display & Reset */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex flex-wrap gap-2">
           {filters.tags.length > 0 && (
             <div className="flex flex-wrap gap-1">
