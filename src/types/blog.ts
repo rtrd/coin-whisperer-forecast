@@ -18,7 +18,6 @@ export interface ArticleFilterState {
   searchTerm: string;
   category: string;
   tags: string[];
-  author: string;
   dateRange: {
     start: string;
     end: string;

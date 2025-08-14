@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, User, Clock, ExternalLink } from "lucide-react";
+import { Calendar, Clock, ExternalLink } from "lucide-react";
 import { Article } from "@/types/blog";
 import { trackArticleClick } from "@/utils/analytics";
 
@@ -23,23 +23,22 @@ export const BlogArticlesTable: React.FC<BlogArticlesTableProps> = ({ articles }
   };
 
   return (
-    <div className="bg-card/50 backdrop-blur-sm border border-border/20 rounded-lg overflow-hidden">
+    <div className="bg-gray-800/30 border border-gray-700 rounded-lg overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="border-border/20">
-            <TableHead className="text-muted-foreground">Article</TableHead>
-            <TableHead className="text-muted-foreground">Category</TableHead>
-            <TableHead className="text-muted-foreground">Author</TableHead>
-            <TableHead className="text-muted-foreground">Date</TableHead>
-            <TableHead className="text-muted-foreground">Read Time</TableHead>
-            <TableHead className="text-muted-foreground w-12"></TableHead>
+          <TableRow className="border-gray-700">
+            <TableHead className="text-gray-300">Article</TableHead>
+            <TableHead className="text-gray-300">Category</TableHead>
+            <TableHead className="text-gray-300">Date</TableHead>
+            <TableHead className="text-gray-300">Read Time</TableHead>
+            <TableHead className="text-gray-300 w-12"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {articles.map((article) => (
             <TableRow 
               key={article.id} 
-              className="border-border/20 hover:bg-muted/20 transition-colors"
+              className="border-gray-700 hover:bg-gray-700/50 transition-colors"
             >
               <TableCell className="font-medium">
                 <div className="flex items-start gap-3">
@@ -53,28 +52,22 @@ export const BlogArticlesTable: React.FC<BlogArticlesTableProps> = ({ articles }
                     <Link
                       to={`/article/${article.id}`}
                       onClick={() => handleArticleClick(article)}
-                      className="text-foreground hover:text-primary transition-colors line-clamp-2 font-medium block"
+                      className="text-white hover:text-blue-400 transition-colors line-clamp-2 font-medium block"
                     >
                       {article.title}
                     </Link>
-                    <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
+                    <p className="text-sm text-gray-400 mt-1 line-clamp-1">
                       {article.excerpt}
                     </p>
                   </div>
                 </div>
               </TableCell>
               <TableCell>
-                <Badge variant="secondary" className="text-xs">
+                <Badge variant="outline" className="text-gray-300 border-gray-600">
                   {article.category}
                 </Badge>
               </TableCell>
-              <TableCell className="text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <User className="h-3 w-3" />
-                  <span className="text-sm">{article.author}</span>
-                </div>
-              </TableCell>
-              <TableCell className="text-muted-foreground">
+              <TableCell className="text-gray-400">
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   <span className="text-sm">
@@ -86,7 +79,7 @@ export const BlogArticlesTable: React.FC<BlogArticlesTableProps> = ({ articles }
                   </span>
                 </div>
               </TableCell>
-              <TableCell className="text-muted-foreground">
+              <TableCell className="text-gray-400">
                 <div className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
                   <span className="text-sm">{article.readTime}</span>
@@ -96,7 +89,7 @@ export const BlogArticlesTable: React.FC<BlogArticlesTableProps> = ({ articles }
                 <Link
                   to={`/article/${article.id}`}
                   onClick={() => handleArticleClick(article)}
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                  className="text-gray-400 hover:text-blue-400 transition-colors"
                 >
                   <ExternalLink className="h-4 w-4" />
                 </Link>

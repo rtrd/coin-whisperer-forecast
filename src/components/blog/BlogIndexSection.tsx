@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import { ArticleFilterState, Article, ViewMode } from "@/types/blog";
 import { BlogArticleFilters } from "./BlogArticleFilters";
 import { BlogArticlesList } from "./BlogArticlesList";
+import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
 
 interface BlogIndexSectionProps {
@@ -12,7 +13,6 @@ const initialFilters: ArticleFilterState = {
   searchTerm: '',
   category: 'all',
   tags: [],
-  author: 'all',
   dateRange: {
     start: '',
     end: ''
@@ -59,11 +59,6 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
         if (!articleCategories.includes(filters.category)) return false;
       }
 
-      // Author filter
-      if (filters.author !== 'all' && article.author !== filters.author) {
-        return false;
-      }
-
       // Tags filter
       if (filters.tags.length > 0) {
         const articleTags = article.tagNames || [];
@@ -99,10 +94,6 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
           aValue = a.title.toLowerCase();
           bValue = b.title.toLowerCase();
           break;
-        case 'author':
-          aValue = a.author.toLowerCase();
-          bValue = b.author.toLowerCase();
-          break;
         case 'category':
           aValue = a.category.toLowerCase();
           bValue = b.category.toLowerCase();
@@ -122,57 +113,52 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
   const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
 
   return (
-    <div className="space-y-8 mt-12">
-      {/* Section Header */}
-      <div className="text-center">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <BookOpen className="h-8 w-8 text-primary" />
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            All Articles
-          </h2>
-        </div>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Explore our complete collection of crypto and blockchain articles. 
-          Filter, search, and discover insights that matter to you.
-        </p>
+    <div className="mb-12">
+      <div className="flex items-center gap-2 mb-6">
+        <BookOpen className="h-6 w-6 text-blue-400" />
+        <h2 className="text-2xl font-bold text-white">Blog Archive</h2>
       </div>
+      
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-6">
+          {/* Filters */}
+          <BlogArticleFilters
+            filters={filters}
+            onUpdateFilters={updateFilters}
+            onResetFilters={resetFilters}
+            articles={articles}
+            resultsCount={filteredArticles.length}
+          />
 
-      {/* Filters */}
-      <BlogArticleFilters
-        filters={filters}
-        onUpdateFilters={updateFilters}
-        onResetFilters={resetFilters}
-        articles={articles}
-        resultsCount={filteredArticles.length}
-      />
-
-      {/* Results */}
-      {filteredArticles.length > 0 ? (
-        <BlogArticlesList
-          articles={filteredArticles}
-          viewMode={viewMode}
-          onViewModeChange={setViewMode}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-          articlesPerPage={articlesPerPage}
-        />
-      ) : (
-        <div className="text-center py-12">
-          <div className="text-muted-foreground text-lg mb-4">
-            No articles found matching your criteria
-          </div>
-          <p className="text-muted-foreground mb-6">
-            Try adjusting your filters or search terms
-          </p>
-          <button
-            onClick={resetFilters}
-            className="text-primary hover:text-primary/80 underline"
-          >
-            Clear all filters
-          </button>
-        </div>
-      )}
+          {/* Results */}
+          {filteredArticles.length > 0 ? (
+            <BlogArticlesList
+              articles={filteredArticles}
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              articlesPerPage={articlesPerPage}
+            />
+          ) : (
+            <div className="text-center py-12">
+              <div className="text-gray-300 text-lg mb-4">
+                No articles found matching your criteria
+              </div>
+              <p className="text-gray-400 mb-6">
+                Try adjusting your filters or search terms
+              </p>
+              <button
+                onClick={resetFilters}
+                className="text-blue-400 hover:text-blue-300 underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
