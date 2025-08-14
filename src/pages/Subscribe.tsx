@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -120,25 +120,7 @@ const Subscribe = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{seoData.title}</title>
-        <meta name="description" content={seoData.description} />
-        <meta name="keywords" content={seoData.keywords} />
-        <link rel="canonical" href={seoData.canonical} />
-        
-        {/* Open Graph tags */}
-        <meta property="og:title" content={seoData.openGraph.title} />
-        <meta property="og:description" content={seoData.openGraph.description} />
-        <meta property="og:type" content={seoData.openGraph.type} />
-        <meta property="og:url" content={seoData.openGraph.url} />
-        <meta property="og:image" content={seoData.openGraph.image} />
-        
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content={seoData.twitter.card} />
-        <meta name="twitter:title" content={seoData.twitter.title} />
-        <meta name="twitter:description" content={seoData.twitter.description} />
-        <meta name="twitter:image" content={seoData.twitter.image} />
-      </Helmet>
+      <EnhancedSEOHead seoData={seoData} />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         {/* Animated background elements */}

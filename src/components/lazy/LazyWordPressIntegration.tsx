@@ -13,7 +13,9 @@ const WordPressSkeleton = () => (
     <CardHeader>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <CardTitle className="text-white">Our Latest Articles</CardTitle>
+          <CardTitle className="text-white">
+            <h2>Latest Crypto News & Analysis</h2>
+          </CardTitle>
           <Badge className="bg-green-600">Live Feed</Badge>
         </div>
         <Skeleton className="h-9 w-32" />

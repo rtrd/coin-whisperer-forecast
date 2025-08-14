@@ -320,7 +320,6 @@ const TokenDetail = () => {
           content={generateTokenMetaDescription(seoData)}
         />
         <meta name="keywords" content={generateTokenKeywords(seoData)} />
-        <link rel="canonical" href={canonicalUrl} />
 
         {/* Open Graph tags */}
         <meta property="og:title" content={generateTokenMetaTitle(seoData)} />

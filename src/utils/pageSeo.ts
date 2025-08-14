@@ -97,12 +97,12 @@ export const generateHomepageSEO = (): PageSEOData => {
 export const generateBlogSEO = (): PageSEOData => {
   return {
     title: "Crypto News & Analysis Blog | Pump Parade",
-    description: "Latest cryptocurrency news, market analysis, and trading insights. Stay updated with expert crypto content and market trends from industry professionals.",
+    description: "Latest crypto news, market analysis, and trading insights. Expert content on Bitcoin, Ethereum, DeFi, and altcoin trends.",
     keywords: "crypto news, cryptocurrency blog, market analysis, trading insights, bitcoin news, ethereum updates, DeFi analysis, crypto trends",
     canonical: "https://pumpparade.com/blog",
     openGraph: {
       title: "Crypto News & Analysis Blog | Pump Parade",
-      description: "Latest cryptocurrency news, market analysis, and trading insights. Stay updated with expert crypto content and market trends.",
+      description: "Latest crypto news, market analysis, and trading insights. Expert content on Bitcoin, Ethereum, DeFi, and altcoin trends.",
       type: "website",
       url: "https://pumpparade.com/blog",
       image: "https://pumpparade.com/og-image.jpg"
@@ -110,7 +110,7 @@ export const generateBlogSEO = (): PageSEOData => {
     twitter: {
       card: "summary_large_image",
       title: "Crypto News & Analysis Blog | Pump Parade",
-      description: "Latest cryptocurrency news, market analysis, and trading insights. Stay updated with expert crypto content and market trends.",
+      description: "Latest crypto news, market analysis, and trading insights. Expert content on Bitcoin, Ethereum, DeFi, and altcoin trends.",
       image: "https://pumpparade.com/og-image.jpg"
     }
   };
@@ -120,12 +120,12 @@ export const generateBlogSEO = (): PageSEOData => {
 export const generateAIPredictionSEO = (): PageSEOData => {
   return {
     title: "AI Cryptocurrency Price Predictions | Pump Parade",
-    description: "Advanced AI-powered crypto price predictions using machine learning algorithms and market sentiment analysis for accurate forecasting of Bitcoin, Ethereum, and altcoins.",
+    description: "AI-powered crypto price predictions using machine learning for Bitcoin, Ethereum, and altcoins. Get accurate forecasting and analysis.",
     keywords: "AI crypto predictions, machine learning cryptocurrency, price forecasting, bitcoin prediction AI, ethereum price prediction, crypto AI analysis",
     canonical: "https://pumpparade.com/ai-prediction",
     openGraph: {
       title: "AI Cryptocurrency Price Predictions | Pump Parade",
-      description: "Advanced AI-powered crypto price predictions using machine learning algorithms and market sentiment analysis for accurate forecasting.",
+      description: "AI-powered crypto price predictions using machine learning for Bitcoin, Ethereum, and altcoins. Get accurate forecasting and analysis.",
       type: "website",
       url: "https://pumpparade.com/ai-prediction",
       image: "https://pumpparade.com/og-image.jpg"
@@ -133,7 +133,7 @@ export const generateAIPredictionSEO = (): PageSEOData => {
     twitter: {
       card: "summary_large_image",
       title: "AI Cryptocurrency Price Predictions | Pump Parade",
-      description: "Advanced AI-powered crypto price predictions using machine learning algorithms and market sentiment analysis for accurate forecasting.",
+      description: "AI-powered crypto price predictions using machine learning for Bitcoin, Ethereum, and altcoins. Get accurate forecasting and analysis.",
       image: "https://pumpparade.com/og-image.jpg"
     }
   };
@@ -143,12 +143,12 @@ export const generateAIPredictionSEO = (): PageSEOData => {
 export const generateMotiMeterSEO = (): PageSEOData => {
   return {
     title: "MOTI Meter | Memecoin Momentum and Social Sentiment Tracker | Pump Parade",
-    description: "Track the hottest meme coins with our MOTI scoring system. Find trending tokens based on viral energy, community momentum, and social sentiment analysis for maximum gains.",
+    description: "Track hot meme coins with MOTI scoring. Find trending tokens based on viral energy, community momentum, and social sentiment for gains.",
     keywords: "MOTI meter, memecoin tracker, social sentiment analysis, meme coin momentum, viral crypto tokens, community sentiment, trending memecoins",
     canonical: "https://pumpparade.com/moti-meter",
     openGraph: {
       title: "MOTI Meter | Memecoin Momentum and Social Sentiment Tracker | Pump Parade",
-      description: "Track the hottest meme coins with our MOTI scoring system. Find trending tokens based on viral energy, community momentum, and social sentiment analysis.",
+      description: "Track hot meme coins with MOTI scoring. Find trending tokens based on viral energy, community momentum, and social sentiment for gains.",
       type: "website",
       url: "https://pumpparade.com/moti-meter",
       image: "https://pumpparade.com/og-image.jpg"
@@ -156,7 +156,7 @@ export const generateMotiMeterSEO = (): PageSEOData => {
     twitter: {
       card: "summary_large_image",
       title: "MOTI Meter | Memecoin Momentum and Social Sentiment Tracker | Pump Parade",
-      description: "Track the hottest meme coins with our MOTI scoring system. Find trending tokens based on viral energy, community momentum, and social sentiment analysis.",
+      description: "Track hot meme coins with MOTI scoring. Find trending tokens based on viral energy, community momentum, and social sentiment for gains.",
       image: "https://pumpparade.com/og-image.jpg"
     }
   };
@@ -166,7 +166,7 @@ export const generateMotiMeterSEO = (): PageSEOData => {
 export const generateAllTokensSEO = (): PageSEOData => {
   return {
     title: "All Cryptocurrency Tokens & Market Data | Pump Parade",
-    description: "Complete cryptocurrency market data, prices, and analysis for all tokens. Filter and compare crypto assets with real-time data, market cap, volume, and price changes.",
+    description: "Complete cryptocurrency market data and analysis for all tokens. Filter crypto assets with real-time prices, market cap, and volume.",
     keywords: "all cryptocurrencies, crypto market data, token prices, cryptocurrency list, market cap rankings, crypto trading data, altcoin analysis",
     canonical: "https://pumpparade.com/tokens",
     openGraph: {
@@ -189,7 +189,7 @@ export const generateAllTokensSEO = (): PageSEOData => {
 export const generatePumpFunSEO = (): PageSEOData => {
   return {
     title: "Solana Memecoin Tracker | Pump.fun Integration | Pump Parade",
-    description: "Discover and track trending Solana memecoins and new token launches from Pump.fun with real-time data and insights. Find the next viral Solana token early.",
+    description: "Discover trending Solana memecoins and new token launches from Pump.fun. Find the next viral Solana token with real-time data.",
     keywords: "pump.fun integration, Solana memecoins, new token launches, trending Solana tokens, memecoin tracker, Solana DeFi, viral tokens",
     canonical: "https://pumpparade.com/pump-fun",
     openGraph: {
@@ -212,7 +212,7 @@ export const generatePumpFunSEO = (): PageSEOData => {
 export const generateTechnicalAnalysisSEO = (): PageSEOData => {
   return {
     title: "Cryptocurrency Technical Analysis Tools | Pump Parade",
-    description: "Professional crypto technical analysis with advanced indicators, chart patterns, and trading signals for informed decisions. RSI, MACD, moving averages, and more.",
+    description: "Professional crypto technical analysis with RSI, MACD, chart patterns, and trading signals for informed decisions.",
     keywords: "crypto technical analysis, trading indicators, chart patterns, RSI, MACD, moving averages, crypto trading signals, technical indicators",
     canonical: "https://pumpparade.com/technical-analysis",
     openGraph: {
@@ -235,7 +235,7 @@ export const generateTechnicalAnalysisSEO = (): PageSEOData => {
 export const generateSentimentAnalysisSEO = (): PageSEOData => {
   return {
     title: "Crypto Market Sentiment Analysis | Pump Parade",
-    description: "AI-powered cryptocurrency sentiment analysis from social media, news, and market data to gauge market emotions and predict price movements with advanced algorithms.",
+    description: "AI-powered crypto sentiment analysis from social media and news to gauge market emotions and predict price movements.",
     keywords: "crypto sentiment analysis, market sentiment, social media crypto analysis, news sentiment, market emotions, sentiment indicators, crypto psychology",
     canonical: "https://pumpparade.com/sentiment-analysis",
     openGraph: {
@@ -258,7 +258,7 @@ export const generateSentimentAnalysisSEO = (): PageSEOData => {
 export const generateSubscribeSEO = (): PageSEOData => {
   return {
     title: "Premium Crypto Analysis Subscription | Pump Parade",
-    description: "Unlock premium cryptocurrency analysis features including advanced AI predictions, real-time alerts, exclusive insights, and ad-free experience. Join thousands of successful traders.",
+    description: "Unlock premium crypto analysis with advanced AI predictions, real-time alerts, exclusive insights, and ad-free experience.",
     keywords: "crypto premium subscription, advanced crypto analysis, premium trading signals, crypto alerts, professional crypto tools, trading subscription",
     canonical: "https://pumpparade.com/subscribe",
     openGraph: {

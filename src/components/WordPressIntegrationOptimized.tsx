@@ -84,7 +84,7 @@ const WordPressIntegrationOptimized: React.FC<WordPressIntegrationOptimizedProps
         <div className="flex items-center justify-between">
           <CardTitle className="text-white flex items-center gap-2">
             <ExternalLink className="h-5 w-5 text-blue-400" />
-            Our Latest Articles
+            <h2>Latest Crypto News & Analysis</h2>
             <Badge className="bg-blue-600">Live Feed</Badge>
           </CardTitle>
           <Button 
