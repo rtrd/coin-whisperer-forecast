@@ -24,7 +24,13 @@ export const LiveAIPredictions = () => {
     { name: 'Bitcoin', symbol: 'BTC', id: 'bitcoin' },
     { name: 'Ethereum', symbol: 'ETH', id: 'ethereum' },
     { name: 'Cardano', symbol: 'ADA', id: 'cardano' },
-    { name: 'Solana', symbol: 'SOL', id: 'solana' }
+    { name: 'Solana', symbol: 'SOL', id: 'solana' },
+    { name: 'Binance Coin', symbol: 'BNB', id: 'binancecoin' },
+    { name: 'XRP', symbol: 'XRP', id: 'ripple' },
+    { name: 'Dogecoin', symbol: 'DOGE', id: 'dogecoin' },
+    { name: 'Polygon', symbol: 'MATIC', id: 'matic-network' },
+    { name: 'Chainlink', symbol: 'LINK', id: 'chainlink' },
+    { name: 'Avalanche', symbol: 'AVAX', id: 'avalanche-2' }
   ];
 
   const generateMockPriceData = (currentPrice: number): PriceData[] => {
@@ -144,7 +150,7 @@ export const LiveAIPredictions = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {isLoading ? (
             // Loading skeleton
-            Array.from({ length: 4 }).map((_, index) => (
+            Array.from({ length: 10 }).map((_, index) => (
               <div key={index} className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg border border-gray-600/50 animate-pulse">
                 <div>
                   <div className="h-4 bg-gray-600 rounded w-20 mb-2"></div>
