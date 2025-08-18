@@ -173,6 +173,11 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
         const avgAltcoinChange = altcoins.reduce((sum, token) => sum + token.price_change_percentage_24h, 0) / altcoins.length;
         const altcoinDominance = altcoins.reduce((sum, token) => sum + (token.market_cap || 0), 0);
         
+        // Calculate Altcoin Season Index (how altcoins perform vs Bitcoin)
+        const btcChange = btc?.price_change_percentage_24h || 0;
+        const altcoinsOutperformingBtc = altcoins.filter(token => token.price_change_percentage_24h > btcChange).length;
+        const altcoinSeasonIndex = Math.round((altcoinsOutperformingBtc / altcoins.length) * 100);
+        
         let action: 'buy' | 'sell' | 'hold' = 'hold';
         let confidence = 60;
         let reason = 'Mixed altcoin performance';
@@ -196,7 +201,8 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
           asset: 'ALTCOINS',
           confidence,
           reason,
-          targetPrice: avgAltcoinChange > 0 ? 1.1 : avgAltcoinChange < -2 ? 0.9 : 1.05
+          // Remove targetPrice, add altcoinSeasonIndex instead
+          altcoinSeasonIndex
         });
       }
 

@@ -20,6 +20,7 @@ export interface TradingRecommendation {
   confidence: number;
   reason: string;
   targetPrice?: number;
+  altcoinSeasonIndex?: number;
 }
 
 export interface MarketNarrative {

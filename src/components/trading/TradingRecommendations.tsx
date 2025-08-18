@@ -33,7 +33,11 @@ export const TradingRecommendations: React.FC<TradingRecommendationsProps> = ({ 
                 {rec.reason}
               </div>
               <div className="flex justify-between items-center">
-                {rec.targetPrice && (
+                {rec.altcoinSeasonIndex !== undefined ? (
+                  <span className="text-xs text-blue-400">
+                    Altcoin Season: {rec.altcoinSeasonIndex}%
+                  </span>
+                ) : rec.targetPrice && (
                   <span className="text-xs text-blue-400">
                     Target: ${rec.targetPrice.toLocaleString()}
                   </span>
