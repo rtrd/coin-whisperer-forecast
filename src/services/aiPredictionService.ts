@@ -15,7 +15,7 @@ import {
   setPredictionCache,
   PredictionType,
 } from "@/services/predictionCache";
-const SERVER_URL = "https://server.pumpparade.com/";
+const SERVER_URL = "https://server.pumpparade.com";
 const generateTechnicalPrompt = (
   crypto: string,
   predictionDays: number,
