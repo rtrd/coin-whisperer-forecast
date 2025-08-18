@@ -96,13 +96,17 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
               {isUnlocked ? (
                 <div
                   className={`font-mono font-medium ${
-                    token.predictionPercentage >= 0
+                    token.category === "Stablecoin" 
+                      ? "text-gray-400" 
+                      : token.predictionPercentage >= 0
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
-                  {token.predictionPercentage >= 0 ? "+" : ""}
-                  {token.predictionPercentage.toFixed(2)}%
+                  {token.category === "Stablecoin" 
+                    ? "-" 
+                    : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
+                  }
                 </div>
                ) : (
                  <div 
@@ -120,11 +124,16 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
               </div>
               {isUnlocked ? (
                 <div
-                  className={`font-mono font-medium ${getAIScoreColor(
-                    token.aiScore
-                  )}`}
+                  className={`font-mono font-medium ${
+                    token.category === "Stablecoin" 
+                      ? "text-gray-400" 
+                      : getAIScoreColor(token.aiScore)
+                  }`}
                 >
-                  {token.aiScore.toFixed(0)}/100
+                  {token.category === "Stablecoin" 
+                    ? "-" 
+                    : `${token.aiScore.toFixed(0)}/100`
+                  }
                 </div>
                ) : (
                  <div 

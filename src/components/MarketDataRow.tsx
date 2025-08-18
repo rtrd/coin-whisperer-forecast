@@ -74,13 +74,17 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
             {isUnlocked ? (
               <div
                 className={`flex items-center gap-1 ${
-                  token.predictionPercentage >= 0
+                  token.category === "Stablecoin" 
+                    ? "text-gray-400" 
+                    : token.predictionPercentage >= 0
                     ? "text-green-400"
                     : "text-red-400"
                 }`}
               >
-                {token.predictionPercentage >= 0 ? "+" : ""}
-                {token.predictionPercentage.toFixed(2)}%
+                {token.category === "Stablecoin" 
+                  ? "-" 
+                  : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
+                }
               </div>
             ) : (
               <div 
@@ -96,10 +100,19 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
           <TableCell className="w-28 px-2 py-3">
             {isUnlocked ? (
               <div className="flex items-center gap-1">
-                <div className={`font-mono ${getAIScoreColor(token.aiScore)}`}>
-                  {token.aiScore.toFixed(0)}
+                <div className={`font-mono ${
+                  token.category === "Stablecoin" 
+                    ? "text-gray-400" 
+                    : getAIScoreColor(token.aiScore)
+                }`}>
+                  {token.category === "Stablecoin" 
+                    ? "-" 
+                    : token.aiScore.toFixed(0)
+                  }
                 </div>
-                <div className="text-gray-400 text-xs">/100</div>
+                {token.category !== "Stablecoin" && (
+                  <div className="text-gray-400 text-xs">/100</div>
+                )}
               </div>
             ) : (
               <div 
