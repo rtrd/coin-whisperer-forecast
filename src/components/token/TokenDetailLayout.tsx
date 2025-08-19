@@ -72,6 +72,9 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      {/* Navigation */}
+      <MainNavigation />
+      
       <div className="container mx-auto px-4 py-8">
         <TokenDetailHeader
           cryptoId={cryptoId}
@@ -80,9 +83,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           priceChange={priceChange}
         />
       </div>
-
-      {/* Navigation */}
-      <MainNavigation />
 
       <div className="container mx-auto px-4 pb-8">
         {/* Main Content */}
