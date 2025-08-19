@@ -10,7 +10,6 @@ import { MarketDataTable } from "./MarketDataTable";
 import { MarketDataGrid } from "./MarketDataGrid";
 import { generateMarketData, getFilterTitle } from "./MarketDataUtils";
 import { CryptoToken } from "@/types/crypto";
-import { TokenPredictionsProvider } from "@/contexts/TokenPredictionsContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 interface MarketDataWidgetProps {
@@ -19,7 +18,7 @@ interface MarketDataWidgetProps {
   onMarketDataFilter: (filter: any) => void;
 }
 
-type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'predictionPercentage' | 'aiScore' | 'volume24h' | 'marketCap' | 'category';
+type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'volume24h' | 'marketCap' | 'category';
 type SortDirection = 'asc' | 'desc';
 
 export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
@@ -39,8 +38,6 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
         case 'name': return item.name.toLowerCase();
         case 'price': return item.price || 0;
         case 'change24h': return item.change24h || 0;
-        case 'predictionPercentage': return item.predictionPercentage || 0;
-        case 'aiScore': return item.aiScore || 0;
         case 'volume24h': return item.volume24h || 0;
         case 'marketCap': return item.marketCap || 0;
         case 'category': return item.category?.toLowerCase() || '';
@@ -92,8 +89,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
     );
 
     return (
-      <TokenPredictionsProvider>
-        <TooltipProvider>
+      <TooltipProvider>
           <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
             <CardHeader>
             <div className="flex items-center justify-between mb-6">
@@ -169,7 +165,6 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
           </CardContent>
         </Card>
       </TooltipProvider>
-    </TokenPredictionsProvider>
     );
   }
 );
