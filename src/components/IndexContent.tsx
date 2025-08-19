@@ -43,7 +43,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   handleFilterChange,
 }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative pt-12">
       {/* Navigation - Fixed at top */}
       <ErrorBoundary>
         <MainNavigation />
