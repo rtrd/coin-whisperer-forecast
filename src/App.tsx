@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import { BitmedialAdManager } from "@/components/ads/BitmedialAdManager";
 import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
@@ -77,22 +76,20 @@ const AppRoutes = () => {
 };
 
 const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <HeadImprovements />
-        <Toaster />
-        <Sonner />
-        <AutoRefresh />
-        <BrowserRouter>
-          <BitmedialAdManager>
-            <ScrollToTop />
-            <AppRoutes />
-          </BitmedialAdManager>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </HelmetProvider>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <HeadImprovements />
+      <Toaster />
+      <Sonner />
+      <AutoRefresh />
+      <BrowserRouter>
+        <BitmedialAdManager>
+          <ScrollToTop />
+          <AppRoutes />
+        </BitmedialAdManager>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;
