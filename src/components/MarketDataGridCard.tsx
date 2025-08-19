@@ -7,7 +7,7 @@ import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { MarketData } from "@/types/crypto";
 import { SignupDialog } from "@/components/SignupDialog";
-import { useTokenPredictionsContext } from "@/contexts/TokenPredictionsContext";
+import { useAppContext } from "@/contexts/ConsolidatedAppProvider";
 
 interface MarketDataGridCardProps {
   token: MarketData;
@@ -20,7 +20,7 @@ interface MarketDataGridCardProps {
 export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
   ({ token, index, isUnlocked, tokenUrlId, AllCryptosData }) => {
     const [showSignupDialog, setShowSignupDialog] = useState(false);
-    const { generatePredictionForToken, getPredictionForToken, retryPrediction, isGenerating } = useTokenPredictionsContext();
+    const { generatePredictionForToken, getPredictionForToken, retryPrediction, isGenerating } = useAppContext();
     
     const tokenId = token.id || token.value;
     const prediction = getPredictionForToken(tokenId);

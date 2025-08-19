@@ -9,7 +9,7 @@ import { getTokenUrlId } from "@/utils/tokenMapping";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { CryptoToken, MarketData } from "@/types/crypto";
 import { SignupDialog } from "@/components/SignupDialog";
-import { useTokenPredictionsContext } from "@/contexts/TokenPredictionsContext";
+import { useAppContext } from "@/contexts/ConsolidatedAppProvider";
 
 interface MarketDataRowProps {
   token: MarketData;
@@ -23,7 +23,7 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
   ({ token, index, isUnlocked, AllCryptosData }) => {
     const [showSignupDialog, setShowSignupDialog] = useState(false);
     const tokenUrlId = getTokenUrlId(token.value);
-    const { generatePredictionForToken, getPredictionForToken, retryPrediction, isGenerating } = useTokenPredictionsContext();
+    const { generatePredictionForToken, getPredictionForToken, retryPrediction, isGenerating } = useAppContext();
     
     const tokenId = token.id || token.value;
     const prediction = getPredictionForToken(tokenId);
