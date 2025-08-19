@@ -13,15 +13,18 @@ import { cn } from "@/lib/utils";
 
 export const MainNavigation: React.FC = () => {
   return (
-    <div className="w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border/40">
-      <div className="container mx-auto px-4 py-4">
+    <div className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 border-b border-border/40 shadow-sm">
+      <div className="container mx-auto px-4 py-3">
         <NavigationMenu className="mx-auto">
-          <NavigationMenuList>
+          <NavigationMenuList className="gap-2">
             <NavigationMenuItem>
               <NavigationMenuLink asChild>
                 <Link 
                   to="/" 
-                  className={navigationMenuTriggerStyle()}
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent hover:bg-accent/80 hover:text-accent-foreground font-medium text-foreground/90 transition-all duration-200"
+                  )}
                 >
                   Home
                 </Link>
@@ -32,7 +35,10 @@ export const MainNavigation: React.FC = () => {
               <NavigationMenuLink asChild>
                 <Link 
                   to="/blog" 
-                  className={navigationMenuTriggerStyle()}
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent hover:bg-accent/80 hover:text-accent-foreground font-medium text-foreground/90 transition-all duration-200"
+                  )}
                 >
                   Blog
                 </Link>
@@ -40,17 +46,21 @@ export const MainNavigation: React.FC = () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Features</NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <div className="grid gap-3 p-6 w-[400px]">
+              <NavigationMenuTrigger className="bg-transparent hover:bg-accent/80 hover:text-accent-foreground font-medium text-foreground/90 transition-all duration-200">
+                Features
+              </NavigationMenuTrigger>
+              <NavigationMenuContent className="z-[100] bg-popover/95 backdrop-blur-md border border-border/50 shadow-lg">
+                <div className="grid gap-2 p-4 w-[450px] lg:w-[500px]">
                   <NavigationMenuLink asChild>
                     <Link
                       to="/ai-price-prediction"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-accent/80 hover:shadow-md focus:bg-accent focus:text-accent-foreground border border-transparent hover:border-border/30"
                     >
-                      <div className="text-sm font-medium leading-none">AI Price Prediction</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Advanced AI-powered cryptocurrency price predictions
+                      <div className="text-sm font-semibold leading-none text-foreground group-hover:text-accent-foreground">
+                        AI Price Prediction
+                      </div>
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-accent-foreground/80 mt-2">
+                        Advanced AI-powered cryptocurrency price predictions with machine learning algorithms
                       </p>
                     </Link>
                   </NavigationMenuLink>
@@ -58,11 +68,13 @@ export const MainNavigation: React.FC = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       to="/technical-analysis"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-accent/80 hover:shadow-md focus:bg-accent focus:text-accent-foreground border border-transparent hover:border-border/30"
                     >
-                      <div className="text-sm font-medium leading-none">Technical Analysis</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Comprehensive technical analysis tools and indicators
+                      <div className="text-sm font-semibold leading-none text-foreground group-hover:text-accent-foreground">
+                        Technical Analysis
+                      </div>
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-accent-foreground/80 mt-2">
+                        Comprehensive technical analysis tools, charts, and market indicators
                       </p>
                     </Link>
                   </NavigationMenuLink>
@@ -70,11 +82,13 @@ export const MainNavigation: React.FC = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       to="/sentiment-analysis"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-accent/80 hover:shadow-md focus:bg-accent focus:text-accent-foreground border border-transparent hover:border-border/30"
                     >
-                      <div className="text-sm font-medium leading-none">Sentiment Analysis</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Market sentiment analysis and social media insights
+                      <div className="text-sm font-semibold leading-none text-foreground group-hover:text-accent-foreground">
+                        Sentiment Analysis
+                      </div>
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-accent-foreground/80 mt-2">
+                        Market sentiment analysis from social media and news sources
                       </p>
                     </Link>
                   </NavigationMenuLink>
@@ -82,11 +96,13 @@ export const MainNavigation: React.FC = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       to="/real-time-data"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-accent/80 hover:shadow-md focus:bg-accent focus:text-accent-foreground border border-transparent hover:border-border/30"
                     >
-                      <div className="text-sm font-medium leading-none">Real-time Data</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Live cryptocurrency data and market updates
+                      <div className="text-sm font-semibold leading-none text-foreground group-hover:text-accent-foreground">
+                        Real-time Data
+                      </div>
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-accent-foreground/80 mt-2">
+                        Live cryptocurrency data feeds and real-time market updates
                       </p>
                     </Link>
                   </NavigationMenuLink>
@@ -94,11 +110,13 @@ export const MainNavigation: React.FC = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       to="/portfolio-tracking"
-                      className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-accent/80 hover:shadow-md focus:bg-accent focus:text-accent-foreground border border-transparent hover:border-border/30"
                     >
-                      <div className="text-sm font-medium leading-none">Portfolio Tracking</div>
-                      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                        Track and manage your cryptocurrency portfolio
+                      <div className="text-sm font-semibold leading-none text-foreground group-hover:text-accent-foreground">
+                        Portfolio Tracking
+                      </div>
+                      <p className="line-clamp-2 text-xs leading-snug text-muted-foreground group-hover:text-accent-foreground/80 mt-2">
+                        Track, manage, and analyze your cryptocurrency investment portfolio
                       </p>
                     </Link>
                   </NavigationMenuLink>
