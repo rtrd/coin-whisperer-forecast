@@ -68,7 +68,7 @@ export const shouldExcludeFromTrending = (token: CryptoToken): boolean => {
   const category = (token.category || '').toLowerCase();
   
   // Check category exclusions
-  const excludedCategories = ['wrapped tokens', 'liquid staking'];
+  const excludedCategories = ['wrapped token', 'liquid staking'];
   if (excludedCategories.some(excluded => category.includes(excluded))) {
     return true;
   }
