@@ -128,7 +128,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
             </div>
 
             {/* Smart Crypto Filters */}
-            <div className="mb-4">
+            <div className="mb-6">
               <CryptoFilters onFilterChange={onMarketDataFilter} />
             </div>
             

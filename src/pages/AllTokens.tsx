@@ -202,7 +202,7 @@ const AllTokens = () => {
           <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
             <CardHeader>
               {/* Smart Crypto Filters */}
-              <div className="mb-4">
+              <div className="mb-6">
                 <CryptoFilters onFilterChange={handleFilterChange} />
               </div>
               
