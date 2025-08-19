@@ -775,55 +775,76 @@ export const generateAIPrediction = async (
   sentimentData?: any,
   Alltokenmarketstats?: any
 ): Promise<PredictionResult> => {
-  let aiPrediction: PredictionResult;
+  // Normalize and safely derive inputs
+  const techSeries = Array.isArray(technicalIndicator) && technicalIndicator.length > 0
+    ? technicalIndicator
+    : Array.isArray(data) && data.length > 0
+    ? data
+    : [];
+  const hasTech = techSeries.length > 0;
 
-  if (modelType === "technical" && technicalIndicator.length > 0) {
-    aiPrediction = await generateTechnicalPrediction(
-      technicalIndicator,
-      predictionDays,
-      crypto
-    );
-  } else if (modelType === "sentiment" && sentimentData.sources.length > 0) {
-    const currentPrice = data[data.length - 1]?.price;
-    aiPrediction = await generateSentimentPrediction(
-      sentimentData,
-      predictionDays,
-      crypto,
-      currentPrice
-    );
-  } else if (
-    modelType === "hybrid" &&
-    technicalIndicator.length > 0 &&
-    sentimentData.sources.length > 0
-  ) {
-    aiPrediction = await generateHybridPrediction(
-      technicalIndicator,
-      sentimentData,
-      predictionDays,
-      crypto
-    );
-  } else {
-    // Default fallback if modelType is not recognized
-    aiPrediction = {
-      predictions: [
-        {
-          timestamp: Date.now(),
-          predictedPrice: data[data.length - 1]?.price || 0,
-          confidence: 0.7,
-        },
-      ],
-      accuracy: 0.7,
-      trend: "neutral",
-      factors: [
-        {
-          name: "Default",
-          weight: 0,
-          impact: "neutral",
-        },
-      ],
-    };
+  const hasSentiment = !!sentimentData && (
+    Array.isArray((sentimentData as any).sources)
+      ? (sentimentData as any).sources.length > 0
+      : Object.keys(sentimentData).length > 0
+  );
+
+  const lastPrice =
+    (Array.isArray(data) && data.length > 0 && typeof data[data.length - 1]?.price === "number")
+      ? data[data.length - 1]!.price
+      : (hasTech ? (techSeries[techSeries.length - 1]?.price ?? techSeries[techSeries.length - 1]?.close ?? 0) : 0);
+
+  try {
+    if (modelType === "technical" && hasTech) {
+      return await generateTechnicalPrediction(techSeries, predictionDays, crypto);
+    }
+
+    if (modelType === "sentiment" && hasSentiment) {
+      return await generateSentimentPrediction(sentimentData, predictionDays, crypto, lastPrice);
+    }
+
+    if (modelType === "hybrid" && hasTech && hasSentiment) {
+      return await generateHybridPrediction(techSeries, sentimentData, predictionDays, crypto);
+    }
+
+    // Smart fallbacks
+    if (modelType === "sentiment" && !hasSentiment && hasTech) {
+      // Fallback to technical if sentiment is missing
+      return await generateTechnicalPrediction(techSeries, predictionDays, crypto);
+    }
+
+    if (modelType === "hybrid") {
+      if (hasTech && !hasSentiment) {
+        return await generateTechnicalPrediction(techSeries, predictionDays, crypto);
+      }
+      if (!hasTech && hasSentiment) {
+        return await generateSentimentPrediction(sentimentData, predictionDays, crypto, lastPrice);
+      }
+    }
+  } catch (e) {
+    console.error("generateAIPrediction flow error:", e);
   }
-  return aiPrediction;
+
+  // Default fallback if nothing else matched
+  const fallbackPrice = lastPrice || 0;
+  return {
+    predictions: [
+      {
+        timestamp: Date.now(),
+        predictedPrice: fallbackPrice,
+        confidence: 0.7,
+      },
+    ],
+    accuracy: 0.7,
+    trend: "neutral",
+    factors: [
+      {
+        name: "Default",
+        weight: 0,
+        impact: "neutral",
+      },
+    ],
+  };
 };
 
 function mapTrend(trend: string): "positive" | "negative" | "neutral" {
