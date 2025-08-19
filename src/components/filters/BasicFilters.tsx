@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,8 +14,6 @@ interface FilterState {
   category: string;
   priceRange: [number, number];
   scoreRange: [number, number];
-  aiScoreRange: [number, number];
-  predictionRange: [number, number];
   volumeRange: [number, number];
   marketCapRange: [number, number];
   change24hRange: [number, number];
@@ -110,12 +107,6 @@ export const BasicFilters: React.FC<BasicFiltersProps> = ({
             <SelectValue />
           </SelectTrigger>
           <SelectContent className="bg-gray-700 border-gray-600">
-            <SelectItem value="score" className="text-white">
-              AI Score
-            </SelectItem>
-            <SelectItem value="prediction" className="text-white">
-              Prediction %
-            </SelectItem>
             <SelectItem value="name" className="text-white">
               Name (A-Z)
             </SelectItem>

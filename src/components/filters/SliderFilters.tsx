@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Slider } from "@/components/ui/slider";
 
@@ -6,8 +5,6 @@ interface FilterState {
   category: string;
   priceRange: [number, number];
   scoreRange: [number, number];
-  aiScoreRange: [number, number];
-  predictionRange: [number, number];
   volumeRange: [number, number];
   marketCapRange: [number, number];
   change24hRange: [number, number];
@@ -40,40 +37,6 @@ export const SliderFilters: React.FC<SliderFiltersProps> = ({
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* AI Score Range */}
-      <div>
-        <label className="text-sm font-medium text-gray-300 mb-2 block">
-          AI Score: {filters.aiScoreRange[0]} - {filters.aiScoreRange[1]}
-        </label>
-        <Slider
-          value={filters.aiScoreRange}
-          onValueChange={(value) =>
-            onUpdateFilters({ aiScoreRange: value as [number, number] })
-          }
-          max={100}
-          min={0}
-          step={1}
-          className="w-full"
-        />
-      </div>
-
-      {/* Prediction Range */}
-      <div>
-        <label className="text-sm font-medium text-gray-300 mb-2 block">
-          Prediction %: {filters.predictionRange[0]}% - {filters.predictionRange[1]}%
-        </label>
-        <Slider
-          value={filters.predictionRange}
-          onValueChange={(value) =>
-            onUpdateFilters({ predictionRange: value as [number, number] })
-          }
-          max={100}
-          min={-50}
-          step={1}
-          className="w-full"
-        />
-      </div>
-
       {/* Price Range */}
       <div>
         <label className="text-sm font-medium text-gray-300 mb-2 block">

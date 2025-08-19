@@ -15,9 +15,6 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
     change24h: crypto.price_change_percentage_24h || (Math.random() - 0.5) * 20,
     volume24h: crypto.total_volume || Math.random() * 1000000000,
     marketCap: crypto.market_cap || Math.random() * 10000000000,
-    predictionPercentage: null, // Will be populated by user request
-    aiScore: null, // Will be populated by user request
-    predictionStatus: 'idle' as const,
     category: crypto.category || 'Cryptocurrency',
     pricechange_24h: crypto.price_change_24h,
     price_change_percentage_7d_in_currency: crypto.price_change_percentage_7d_in_currency || (Math.random() - 0.5) * 40,
@@ -30,5 +27,3 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
   
    return marketData.slice(0, 12);
 };
-
-// getFilterTitle is now re-exported from @/types/filters above

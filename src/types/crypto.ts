@@ -24,8 +24,6 @@ export interface CryptoToken extends CryptoBase {
   price_change_percentage_30d_in_currency?: number;   
   volume24h: number;
   marketCap: number;
-  predictionPercentage: number;
-  aiScore: number;
   rank?: number;
   ath?: number;
   atl?: number;
@@ -38,11 +36,6 @@ export interface MarketData extends CryptoBase {
   change24h: number;
   volume24h: number;
   marketCap: number;
-  predictionPercentage: number | null;
-  aiScore: number | null;
-  predictionStatus: 'idle' | 'loading' | 'success' | 'error';
-  predictionError?: string;
-  lastPredictionTime?: number;
 }
 
 export interface CryptoCategory {
