@@ -127,16 +127,16 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
               </div>
             </div>
 
+            {/* Smart Crypto Filters */}
+            <div className="mb-4">
+              <CryptoFilters onFilterChange={onMarketDataFilter} />
+            </div>
+            
             <MarketDataFilters
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
               onMarketDataFilter={onMarketDataFilter}
             />
-            
-            {/* Smart Crypto Filters */}
-            <div className="mt-4">
-              <CryptoFilters onFilterChange={onMarketDataFilter} />
-            </div>
           </CardHeader>
 
           <CardContent>
