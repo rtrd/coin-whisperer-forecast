@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 declare global {
   interface Window {
@@ -9,11 +10,11 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { MainNavigation } from "@/components/MainNavigation";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -24,6 +25,13 @@ interface IndexContentProps {
   filteredCryptos: any[];
   handleFilterChange: (filters: any) => void;
 }
+
+const LoadingFallback = () => (
+  <div className="space-y-4">
+    <Skeleton className="h-32 w-full" />
+    <Skeleton className="h-64 w-full" />
+  </div>
+);
 
 export const IndexContent: React.FC<IndexContentProps> = ({
   selectedCrypto,
@@ -37,54 +45,60 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader
-          selectedCrypto={selectedCrypto}
-          cryptoOptions={cryptoOptions}
-          currentPrice={currentPrice}
-          priceChange={priceChange}
-        />
+        <ErrorBoundary>
+          <IndexHeader
+            selectedCrypto={selectedCrypto}
+            cryptoOptions={cryptoOptions}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+          />
+        </ErrorBoundary>
       </div>
 
       {/* Navigation */}
-      <MainNavigation />
+      <ErrorBoundary>
+        <MainNavigation />
+      </ErrorBoundary>
 
       <div className="container mx-auto px-4 pb-8">
-        {/* Google Ad Manager - Header Ad */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-0"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
-
         {/* WordPress Integration - Latest Crypto News & Analysis */}
-        <LazyWordPressIntegration />
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyWordPressIntegration />
+          </Suspense>
+        </ErrorBoundary>
 
         <div className="mb-8">
-          <LockedAITradingSignals />
+          <ErrorBoundary>
+            <LockedAITradingSignals />
+          </ErrorBoundary>
         </div>
 
         {/* Crypto Filters - Smart Crypto Filters */}
-        <CryptoFilters onFilterChange={handleFilterChange} />
+        <ErrorBoundary>
+          <CryptoFilters onFilterChange={handleFilterChange} />
+        </ErrorBoundary>
 
         {/* Market Data Widget - Top 10 by Market Cap */}
-        <LazyMarketDataWidget
-          onMarketDataFilter={handleFilterChange}
-          cryptoOptions={filteredCryptos}
-          AllCryptosData={AllCryptosData}
-        />
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingFallback />}>
+            <LazyMarketDataWidget
+              onMarketDataFilter={handleFilterChange}
+              cryptoOptions={filteredCryptos}
+              AllCryptosData={AllCryptosData}
+            />
+          </Suspense>
+        </ErrorBoundary>
 
         {/* Navigation Cards to Other Features */}
-        <IndexNavigationCards />
-
-        {/* Ad Banner Before Footer */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-1"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
+        <ErrorBoundary>
+          <IndexNavigationCards />
+        </ErrorBoundary>
 
         {/* Footer */}
-        <Footer />
+        <ErrorBoundary>
+          <Footer />
+        </ErrorBoundary>
       </div>
     </div>
   );
