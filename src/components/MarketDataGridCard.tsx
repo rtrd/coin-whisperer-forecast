@@ -127,10 +127,10 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                 />
                 <div className="min-w-0">
                   <div className="text-white font-bold text-base truncate">
-                    {token.name?.split(" ")[0] || token.name || "Unknown"}
+                    {token.name || "Unknown"}
                   </div>
                   <div className="text-gray-400 text-sm truncate">
-                    {token.name?.split(" ")[1] || token.symbol || ""}
+                    {token.symbol?.toUpperCase() || ""}
                   </div>
                 </div>
               </Link>
