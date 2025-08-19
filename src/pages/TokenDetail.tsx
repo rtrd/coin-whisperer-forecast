@@ -348,7 +348,7 @@ const TokenDetail = () => {
   return (
     <>
       <MainNavigation />
-      <div className="pt-16">
+      <div className="pt-16 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <Helmet>
           <title>{generateTokenMetaTitle(seoData)}</title>
           <meta
