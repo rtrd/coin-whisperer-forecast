@@ -339,12 +339,6 @@ const TokenDetail = () => {
             <p className="text-gray-300 mb-4">
               The token "{tokenId}" could not be found.
             </p>
-            <Link to="/">
-              <Button className="bg-blue-600 hover:bg-blue-700">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Button>
-            </Link>
           </CardContent>
         </Card>
       </div>

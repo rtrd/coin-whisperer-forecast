@@ -192,15 +192,6 @@ const AllTokens = () => {
           />
 
           <div className="mb-6">
-            <Link to="/">
-              <Button
-                variant="outline"
-                className="mb-4 bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Button>
-            </Link>
             <h1 className="text-4xl font-bold text-white mb-2">All Tokens</h1>
             <p className="text-gray-300">
               Browse and analyze all available cryptocurrencies

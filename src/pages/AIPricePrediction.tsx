@@ -390,18 +390,6 @@ const AIPricePrediction = () => {
           className="mb-6 md:mb-8"
         />
 
-        {/* Back Button */}
-        <div className="flex items-center gap-4 mb-6">
-          <Link to="/">
-            <Button
-              variant="outline"
-              className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {/* Main Content with SignupLock */}

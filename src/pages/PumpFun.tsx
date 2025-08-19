@@ -42,15 +42,6 @@ const PumpFun = () => {
             priceChange={2.5}
           />
 
-          {/* Header */}
-          <div className="flex items-center gap-4 mb-8">
-            <Link to="/">
-              <Button variant="outline" size="sm" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Button>
-            </Link>
-          </div>
 
           <div className="text-center mb-8">
             <h1 className="text-5xl font-bold text-white mb-4 flex items-center justify-center gap-3">
