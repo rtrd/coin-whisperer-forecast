@@ -26,12 +26,12 @@ export interface PageSEOData {
 export const generateHomepageSEO = (): PageSEOData => {
   return {
     title: "Pump Parade | AI Crypto Analysis & Price Predictions",
-    description: "Smarter crypto trading with AI analysis, live signals, price predictions, and market sentiment tracking.",
+    description: "Crypto research and market analysis tools with AI-powered technical analysis, price prediction, and real-time sentiment tracking.",
     keywords: "cryptocurrency analysis, AI price predictions, crypto trading signals, bitcoin prediction, ethereum analysis, market sentiment, technical analysis, pump parade",
     canonical: "https://pumpparade.com/",
     openGraph: {
       title: "Pump Parade | AI Crypto Analysis & Price Predictions",
-      description: "Smarter crypto trading with AI analysis, live signals, price predictions, and market sentiment tracking.",
+      description: "Crypto research and market analysis tools with AI-powered technical analysis, price prediction, and real-time sentiment tracking.",
       type: "website",
       url: "https://pumpparade.com/",
       image: "https://pumpparade.com/og-image.jpg"
@@ -39,7 +39,7 @@ export const generateHomepageSEO = (): PageSEOData => {
     twitter: {
       card: "summary_large_image",
       title: "Pump Parade | AI Crypto Analysis & Price Predictions",
-      description: "Smarter crypto trading with AI analysis, live signals, price predictions, and market sentiment tracking.",
+      description: "Crypto research and market analysis tools with AI-powered technical analysis, price prediction, and real-time sentiment tracking.",
       image: "https://pumpparade.com/og-image.jpg"
     },
     structuredData: {
