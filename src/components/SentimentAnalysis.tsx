@@ -42,178 +42,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate sentiment analysis data
-    const generateSentimentData = (): SentimentData => {
-      const score = Math.random() * 100;
-      const getSentimentLabel = (
-        score: number
-      ):
-        | "Very Bearish"
-        | "Bearish"
-        | "Neutral"
-        | "Bullish"
-        | "Very Bullish" => {
-        if (score < 20) return "Very Bearish";
-        if (score < 40) return "Bearish";
-        if (score < 60) return "Neutral";
-        if (score < 80) return "Bullish";
-        return "Very Bullish";
-      };
-
-      return {
-        score,
-        label: getSentimentLabel(score),
-        sources: [
-          {
-            name: "Twitter/X",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 10000) + 1000,
-          },
-          {
-            name: "Reddit",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 5000) + 500,
-          },
-          {
-            name: "News Media",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 1000) + 100,
-          },
-          {
-            name: "Crypto Forums",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 2000) + 200,
-          },
-        ],
-      };
-    };
-    const transformApiDataToSentiment = (apiData: any): SentimentData => {
-      console.log("Transforming API data:", apiData);
-
-      // Handle different possible API response structures
-      const dataPayload = apiData?.data || apiData;
-
-      // Map the API source keys to your desired display names
-      const sourceNameMap: Record<string, string> = {
-        tweet: "Twitter/X",
-        "reddit-post": "Reddit",
-        news: "News Media",
-        "youtube-video": "Crypto Forums",
-      };
-
-      let sources: Array<{
-        name: string;
-        sentiment: number;
-        mentions: number;
-      }> = [];
-      let avgScore = 0;
-
-      try {
-        // Check if we have the expected data structure
-        if (
-          dataPayload?.types_sentiment &&
-          typeof dataPayload.types_sentiment === "object"
-        ) {
-          sources = Object.keys(dataPayload.types_sentiment)
-            .filter((key) => sourceNameMap[key]) // only include mapped sources
-            .map((key) => ({
-              name: sourceNameMap[key],
-              sentiment: dataPayload.types_sentiment[key] || 0,
-              mentions:
-                dataPayload.types_interactions?.[key] ||
-                Math.floor(Math.random() * 1000) + 100,
-            }));
-
-          // Calculate overall average sentiment score
-          const totalScore = sources.reduce(
-            (sum, source) => sum + source.sentiment,
-            0
-          );
-          avgScore = sources.length ? totalScore / sources.length : 0;
-        } else {
-          // Fallback: create mock data based on overall sentiment if available
-          const fallbackSentiment =
-            dataPayload?.sentiment || Math.random() * 100;
-          avgScore = fallbackSentiment;
-
-          sources = [
-            {
-              name: "Twitter/X",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 10000) + 1000,
-            },
-            {
-              name: "Reddit",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 5000) + 500,
-            },
-            {
-              name: "News Media",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 1000) + 100,
-            },
-            {
-              name: "Crypto Forums",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 2000) + 200,
-            },
-          ].map((source) => ({
-            ...source,
-            sentiment: Math.max(0, Math.min(100, source.sentiment)), // Clamp between 0-100
-          }));
-        }
-      } catch (error) {
-        console.error("Error processing sentiment data:", error);
-        // Complete fallback with random data
-        avgScore = Math.random() * 100;
-        sources = [
-          {
-            name: "Twitter/X",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 10000) + 1000,
-          },
-          {
-            name: "Reddit",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 5000) + 500,
-          },
-          {
-            name: "News Media",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 1000) + 100,
-          },
-          {
-            name: "Crypto Forums",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 2000) + 200,
-          },
-        ];
-      }
-
-      // Determine sentiment label from score
-      const getSentimentLabel = (
-        score: number
-      ):
-        | "Very Bearish"
-        | "Bearish"
-        | "Neutral"
-        | "Bullish"
-        | "Very Bullish" => {
-        if (score >= 85) return "Very Bullish";
-        if (score >= 70) return "Bullish";
-        if (score >= 50) return "Neutral";
-        if (score >= 30) return "Bearish";
-        return "Very Bearish";
-      };
-
-      const result = {
-        score: avgScore,
-        label: getSentimentLabel(avgScore),
-        sources,
-      };
-
-      console.log("Transformed sentiment data:", result);
-      return result;
+    // Import the standardized processing function
+    const transformApiDataToSentiment = async (apiData: any): Promise<SentimentData> => {
+      const { processSentimentData } = await import("@/utils/sentimentCalculation");
+      return processSentimentData(apiData, crypto);
     };
 
     const fetchData = async () => {
@@ -223,21 +55,21 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         const res = await fetchSentimentData(crypto);
 
         if (res) {
-          const result = transformApiDataToSentiment(res);
+          const result = await transformApiDataToSentiment(res);
           setSentiment(result);
           sentimentData(result); // Update optional prop if provided
           console.log("Successfully processed sentiment data:", result);
         } else {
           console.warn("No data received from API, using fallback");
-          // Use fallback data
-          const fallbackData = generateSentimentData();
-          setSentiment(fallbackData);
-          sentimentData(fallbackData); // Update optional prop if provided
+          // Use deterministic fallback data
+          const result = await transformApiDataToSentiment(null);
+          setSentiment(result);
+          sentimentData(result); // Update optional prop if provided
         }
       } catch (error) {
         console.error("Error in sentiment data fetch:", error);
-        // Use fallback data on error
-        const fallbackData = generateSentimentData();
+        // Use deterministic fallback data on error
+        const fallbackData = await transformApiDataToSentiment(null);
         setSentiment(fallbackData);
         sentimentData(fallbackData); // Update optional prop if provided
       } finally {
