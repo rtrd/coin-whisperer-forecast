@@ -64,7 +64,7 @@ class IndividualPredictionService {
       const aiScore = this.calculateAIScore(prediction, tokenData);
       
       // Get prediction percentage from the result
-      const predictionPercentage = this.extractPredictionPercentage(prediction);
+      const predictionPercentage = this.extractPredictionPercentage(prediction, tokenData);
 
       // Cache the result
       this.cache[tokenId] = {
@@ -195,16 +195,18 @@ class IndividualPredictionService {
     return 0.2; // Very low volume
   }
 
-  private extractPredictionPercentage(prediction: PredictionResult): number {
-    // Extract prediction percentage from the AI result
+  private extractPredictionPercentage(prediction: PredictionResult, tokenData: CryptoToken): number {
+    // Extract prediction percentage using ACTUAL current price as baseline
     if (prediction.predictions && prediction.predictions.length > 0) {
       const latestPrediction = prediction.predictions[prediction.predictions.length - 1];
-      const currentPrice = prediction.predictions[0]?.predictedPrice || 1;
+      const actualCurrentPrice = tokenData.current_price || prediction.predictions[0]?.predictedPrice || 1;
       const predictedPrice = latestPrediction.predictedPrice;
-      
-      return ((predictedPrice - currentPrice) / currentPrice) * 100;
+
+      // Prevent division by zero
+      const base = actualCurrentPrice > 0 ? actualCurrentPrice : 1;
+      return ((predictedPrice - base) / base) * 100;
     }
-    
+
     // Fallback based on trend
     if (prediction.trend === "bullish") {
       return Math.random() * 15 + 5; // 5-20% positive
