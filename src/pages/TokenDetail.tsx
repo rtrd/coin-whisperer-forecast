@@ -62,10 +62,21 @@ const TokenDetail = () => {
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
   const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
+  
+  // Reset state when tokenId changes
+  useEffect(() => {
+    setTimeframe("7d");
+    setPredictionDays(7);
+    setModelType("technical");
+    setShowPrediction(false);
+    setSentimentData(null);
+    setTechnicalIndicator(null);
+  }, [tokenId]);
+
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetchTechnicalIndicators(cryptoId, "3m"); // or any topic
+        const response = await fetchTechnicalIndicators(cryptoId, "3m");
         console.log("Fetched technical indicators:", response);
         const prices = response.map((d) => d.price);
         if (prices[0] == undefined) {
@@ -80,11 +91,16 @@ const TokenDetail = () => {
         }
       } catch (error) {
         console.error("Error fetching technical indicators:", error);
+        // Generate fallback data on error
+        const data = generateMockData(cryptoId, timeframe, Alltokenmarketstats);
+        setTechnicalIndicator(data);
       }
     };
 
-    getData();
-  }, []);
+    if (tokenId && cryptoId) {
+      getData();
+    }
+  }, [tokenId, cryptoId, timeframe]);
   const {
     data: cryptoData,
     isLoading: dataLoading,
