@@ -74,12 +74,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
           </ErrorBoundary>
         </div>
 
-        {/* Crypto Filters - Smart Crypto Filters */}
-        <ErrorBoundary>
-          <CryptoFilters onFilterChange={handleFilterChange} />
-        </ErrorBoundary>
-
-        {/* Market Data Widget - Top 10 by Market Cap */}
+        {/* Market Data Widget with Integrated Smart Filters */}
         <ErrorBoundary>
           <Suspense fallback={<LoadingFallback />}>
             <LazyMarketDataWidget

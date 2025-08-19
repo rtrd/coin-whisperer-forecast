@@ -11,6 +11,7 @@ import { MarketDataGrid } from "./MarketDataGrid";
 import { generateMarketData, getFilterTitle } from "./MarketDataUtils";
 import { CryptoToken } from "@/types/crypto";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { CryptoFilters } from "./CryptoFilters";
 
 interface MarketDataWidgetProps {
   cryptoOptions: CryptoToken[];
@@ -131,6 +132,11 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
               onFilterChange={setActiveFilter}
               onMarketDataFilter={onMarketDataFilter}
             />
+            
+            {/* Smart Crypto Filters */}
+            <div className="mt-4">
+              <CryptoFilters onFilterChange={onMarketDataFilter} />
+            </div>
           </CardHeader>
 
           <CardContent>

@@ -198,16 +198,18 @@ const AllTokens = () => {
             </p>
           </div>
 
-          {/* Crypto Filters */}
-          <CryptoFilters onFilterChange={handleFilterChange} />
-
-          {/* Token List */}
+          {/* Token List with Integrated Filters */}
           <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <ExternalLink className="h-5 w-5 text-blue-400" />
                 All Tokens ({filteredCryptos.length})
               </CardTitle>
+              
+              {/* Smart Crypto Filters */}
+              <div className="mt-4">
+                <CryptoFilters onFilterChange={handleFilterChange} />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
