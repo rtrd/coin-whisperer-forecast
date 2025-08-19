@@ -77,16 +77,16 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
               </div>
               <div
                 className={`flex items-center gap-1 font-bold font-mono ${
-                  token.change24h >= 0 ? "text-green-400" : "text-red-400"
+                  (token.change24h || 0) >= 0 ? "text-green-400" : "text-red-400"
                 }`}
               >
-                {token.change24h >= 0 ? (
+                {(token.change24h || 0) >= 0 ? (
                   <TrendingUp className="h-3 w-3" />
                 ) : (
                   <TrendingDown className="h-3 w-3" />
                 )}
-                {token.change24h >= 0 ? "+" : ""}
-                {token.change24h.toFixed(2)}%
+                {(token.change24h || 0) >= 0 ? "+" : ""}
+                {(token.change24h || 0).toFixed(2)}%
               </div>
             </div>
           </div>
@@ -101,14 +101,14 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                   className={`font-mono font-medium ${
                     token.category === "Stablecoin" 
                       ? "text-gray-400" 
-                      : token.predictionPercentage >= 0
+                      : (token.predictionPercentage || 0) >= 0
                       ? "text-green-400"
                       : "text-red-400"
                   }`}
                 >
                   {token.category === "Stablecoin" 
                     ? "-" 
-                    : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
+                    : `${(token.predictionPercentage || 0) >= 0 ? "+" : ""}${(token.predictionPercentage || 0).toFixed(2)}%`
                   }
                 </div>
                ) : (
@@ -130,12 +130,12 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                   className={`font-mono font-medium ${
                     token.category === "Stablecoin" 
                       ? "text-gray-400" 
-                      : getAIScoreColor(token.aiScore)
+                      : getAIScoreColor(token.aiScore || 0)
                   }`}
                 >
                   {token.category === "Stablecoin" 
                     ? "-" 
-                    : `${token.aiScore.toFixed(0)}/100`
+                    : `${(token.aiScore || 0).toFixed(0)}/100`
                   }
                 </div>
                ) : (
