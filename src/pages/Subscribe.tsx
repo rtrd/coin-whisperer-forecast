@@ -123,11 +123,14 @@ const Subscribe = () => {
     <>
       <EnhancedSEOHead seoData={seoData} />
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 pt-12">
         {/* Animated background elements */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),rgba(255,255,255,0))]"></div>
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
         <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+        
+        {/* Navigation */}
+        <MainNavigation />
         
         <div className="container mx-auto px-4 py-6 relative z-10">
           {/* Homepage Header */}
@@ -138,9 +141,6 @@ const Subscribe = () => {
             priceChange={2.5}
           />
         </div>
-
-        {/* Navigation */}
-        <MainNavigation />
 
         <div className="container mx-auto px-4 pb-6 relative z-10">
           {/* Ad Banner After Header */}

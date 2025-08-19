@@ -11,7 +11,10 @@ interface BlogLayoutProps {
 
 export const BlogLayout: React.FC<BlogLayoutProps> = ({ children, cryptoOptions }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 pt-12">
+      {/* Navigation */}
+      <MainNavigation />
+      
       {/* Header */}
       <div className="container mx-auto px-4 py-4 md:py-8">
         <IndexHeader
@@ -21,9 +24,6 @@ export const BlogLayout: React.FC<BlogLayoutProps> = ({ children, cryptoOptions 
           priceChange={2.5}
         />
       </div>
-
-      {/* Navigation */}
-      <MainNavigation />
 
       <div className="container mx-auto px-4 pb-8">
         {children}

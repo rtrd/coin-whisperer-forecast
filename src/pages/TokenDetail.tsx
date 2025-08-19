@@ -315,7 +315,8 @@ const TokenDetail = () => {
   // Show loading state while fetching token info
   if (tokenInfoLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center pt-12">
+        <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
@@ -328,7 +329,8 @@ const TokenDetail = () => {
 
   if (!selectedToken) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center pt-12">
+        <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
             <h1 className="text-2xl font-bold text-white mb-4">
@@ -351,91 +353,94 @@ const TokenDetail = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{generateTokenMetaTitle(seoData)}</title>
-        <meta
-          name="description"
-          content={generateTokenMetaDescription(seoData)}
-        />
-        <meta name="keywords" content={generateTokenKeywords(seoData)} />
+      <MainNavigation />
+      <div className="pt-12">
+        <Helmet>
+          <title>{generateTokenMetaTitle(seoData)}</title>
+          <meta
+            name="description"
+            content={generateTokenMetaDescription(seoData)}
+          />
+          <meta name="keywords" content={generateTokenKeywords(seoData)} />
 
-        {/* Open Graph tags */}
-        <meta property="og:title" content={generateTokenMetaTitle(seoData)} />
-        <meta
-          property="og:description"
-          content={generateTokenMetaDescription(seoData)}
-        />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:image"
-          content="https://pumpparade.com/og-image.jpg"
-        />
-        <meta
-          property="og:image:alt"
-          content={`${seoData.name} price analysis and predictions`}
-        />
-        <meta property="og:site_name" content="Pump Parade" />
+          {/* Open Graph tags */}
+          <meta property="og:title" content={generateTokenMetaTitle(seoData)} />
+          <meta
+            property="og:description"
+            content={generateTokenMetaDescription(seoData)}
+          />
+          <meta property="og:url" content={canonicalUrl} />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:image"
+            content="https://pumpparade.com/og-image.jpg"
+          />
+          <meta
+            property="og:image:alt"
+            content={`${seoData.name} price analysis and predictions`}
+          />
+          <meta property="og:site_name" content="Pump Parade" />
 
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={generateTokenMetaTitle(seoData)} />
-        <meta
-          name="twitter:description"
-          content={generateTokenMetaDescription(seoData)}
-        />
-        <meta
-          name="twitter:image"
-          content="https://pumpparade.com/og-image.jpg"
-        />
-        <meta
-          name="twitter:image:alt"
-          content={`${seoData.name} price analysis and predictions`}
-        />
+          {/* Twitter Card tags */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content={generateTokenMetaTitle(seoData)} />
+          <meta
+            name="twitter:description"
+            content={generateTokenMetaDescription(seoData)}
+          />
+          <meta
+            name="twitter:image"
+            content="https://pumpparade.com/og-image.jpg"
+          />
+          <meta
+            name="twitter:image:alt"
+            content={`${seoData.name} price analysis and predictions`}
+          />
 
-        {/* Additional SEO tags */}
-        <meta
-          name="robots"
-          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-        />
-        <meta name="author" content="Pump Parade" />
-        <meta name="theme-color" content="#1e40af" />
+          {/* Additional SEO tags */}
+          <meta
+            name="robots"
+            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+          />
+          <meta name="author" content="Pump Parade" />
+          <meta name="theme-color" content="#1e40af" />
 
-        {/* Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
-        </script>
-      </Helmet>
-      <TokenProvider
-        tokenId={tokenId || "bitcoin"}
-        cryptoOptions={cryptoOptions}
-      >
-        <TokenDetailLayout
-          cryptoId={cryptoId}
-          cryptoOptions={cryptoOptions}
-          currentPrice={currentPrice}
-          priceChange={priceChange}
-          marketData={displayMarketStats}
-          cryptoData={cryptoData}
-          dataLoading={dataLoading}
-          prediction={prediction}
-          showPrediction={showPrediction}
-          timeframe={timeframe}
-          setTimeframe={setTimeframe}
-          predictionDays={predictionDays}
-          setPredictionDays={setPredictionDays}
-          modelType={modelType}
-          setModelType={setModelType}
-          predictionLoading={predictionLoading}
-          handlePredict={handlePredict}
-          handleClearPrediction={handleClearPrediction}
+          {/* Structured Data */}
+          <script type="application/ld+json">
+            {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
+          </script>
+        </Helmet>
+        <TokenProvider
           tokenId={tokenId || "bitcoin"}
-          selectedToken={selectedToken}
-          allCryptosData={allCryptosData}
-          SentimentData={setSentimentData}
-          tokenInfo={tokenInfo}
-        />
-      </TokenProvider>
+          cryptoOptions={cryptoOptions}
+        >
+          <TokenDetailLayout
+            cryptoId={cryptoId}
+            cryptoOptions={cryptoOptions}
+            currentPrice={currentPrice}
+            priceChange={priceChange}
+            marketData={displayMarketStats}
+            cryptoData={cryptoData}
+            dataLoading={dataLoading}
+            prediction={prediction}
+            showPrediction={showPrediction}
+            timeframe={timeframe}
+            setTimeframe={setTimeframe}
+            predictionDays={predictionDays}
+            setPredictionDays={setPredictionDays}
+            modelType={modelType}
+            setModelType={setModelType}
+            predictionLoading={predictionLoading}
+            handlePredict={handlePredict}
+            handleClearPrediction={handleClearPrediction}
+            tokenId={tokenId || "bitcoin"}
+            selectedToken={selectedToken}
+            allCryptosData={allCryptosData}
+            SentimentData={setSentimentData}
+            tokenInfo={tokenInfo}
+          />
+        </TokenProvider>
+      </div>
     </>
   );
 };
