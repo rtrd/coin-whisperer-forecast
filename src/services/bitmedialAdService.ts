@@ -1,10 +1,12 @@
-// Bitmedia Ad Service for handling ad refreshes and management
+// Enhanced Bitmedia Ad Service with React-safe DOM management
 class BitmedialAdService {
   private static instance: BitmedialAdService;
   private lastRefreshTime = 0;
-  private readonly refreshInterval = 2000; // 2 seconds between refreshes
+  private readonly refreshInterval = 3000; // Increased to 3 seconds for stability
   private isLoading = false;
   private scriptElement: HTMLScriptElement | null = null;
+  private initializationPromise: Promise<void> | null = null;
+  private isReactHydrated = false;
 
   private constructor() {}
 
@@ -17,7 +19,28 @@ class BitmedialAdService {
 
   private canRefresh(): boolean {
     const now = Date.now();
-    return now - this.lastRefreshTime >= this.refreshInterval && !this.isLoading;
+    return (
+      now - this.lastRefreshTime >= this.refreshInterval && 
+      !this.isLoading && 
+      this.isReactHydrated &&
+      document.readyState === 'complete'
+    );
+  }
+
+  // Wait for React to finish rendering before manipulating DOM
+  private waitForReactHydration(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.isReactHydrated) {
+        resolve();
+        return;
+      }
+      
+      // Wait for React to settle
+      setTimeout(() => {
+        this.isReactHydrated = true;
+        resolve();
+      }, 1000);
+    });
   }
 
   private removeExistingScript(): void {
@@ -65,14 +88,17 @@ class BitmedialAdService {
     this.isLoading = true;
 
     try {
+      // Wait for React hydration
+      await this.waitForReactHydration();
+      
       // Wait a bit for any existing ads to finish loading
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise(resolve => setTimeout(resolve, 200));
       
       // Remove and reload the Bitmedia script
       await this.createBitmedialScript();
       
       // Additional delay to allow ads to initialize
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 800));
       
     } catch (error) {
       console.warn('Bitmedia ad refresh failed:', error);
@@ -81,17 +107,31 @@ class BitmedialAdService {
   }
 
   async initializeAds(): Promise<void> {
+    // Return existing promise if already initializing
+    if (this.initializationPromise) {
+      return this.initializationPromise;
+    }
+    
     if (this.scriptElement) {
       return; // Already initialized
     }
 
+    this.initializationPromise = this._doInitialize();
+    return this.initializationPromise;
+  }
+  
+  private async _doInitialize(): Promise<void> {
     this.isLoading = true;
     
     try {
+      // Wait for React hydration before initializing ads
+      await this.waitForReactHydration();
       await this.createBitmedialScript();
     } catch (error) {
       console.warn('Bitmedia ad initialization failed:', error);
       this.isLoading = false;
+    } finally {
+      this.initializationPromise = null;
     }
   }
 
@@ -99,6 +139,8 @@ class BitmedialAdService {
     this.removeExistingScript();
     this.lastRefreshTime = 0;
     this.isLoading = false;
+    this.initializationPromise = null;
+    this.isReactHydrated = false;
   }
 
   isAdLoading(): boolean {
