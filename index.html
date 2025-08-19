@@ -4,24 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Resource Hints for Performance -->
-    <link
-      rel="preconnect"
-      href="https://www.googletagmanager.com"
-      crossorigin
-    />
-    <link
-      rel="preconnect"
-      href="https://pagead2.googlesyndication.com"
-      crossorigin
-    />
-    <link
-      rel="preconnect"
-      href="https://securepubads.g.doubleclick.net"
-      crossorigin
-    />
+    <!-- Critical Resource Hints for Performance -->
+    <link rel="preconnect" href="https://api.coingecko.com" crossorigin />
+    <link rel="preconnect" href="https://server.pumpparade.com" crossorigin />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
+    <link rel="dns-prefetch" href="//securepubads.g.doubleclick.net" />
     <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <link rel="dns-prefetch" href="//cdn.bmcdn6.com" />
+    <link rel="dns-prefetch" href="//appsha-prm.ctengine.io" />
+    
+    <!-- Preload critical resources -->
+    <link rel="modulepreload" href="/src/main.tsx" />
+    <link rel="preload" href="/src/index.css" as="style" />
+    <link rel="preload" href="/favicon.png" as="image" type="image/png" />
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#0f172a" />
@@ -104,48 +100,60 @@
       content="Pump Parade - AI-Powered Crypto Research Tools"
     />
 
-    <!-- Google Analytics -->
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-S1WNYHG54S"
-    ></script>
+    <!-- Deferred Analytics and Ad Scripts for Better Performance -->
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-S1WNYHG54S", {
-        enhanced_link_attribution: true,
-        link_attribution: true,
+      // Defer Google Analytics until page is interactive
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-S1WNYHG54S';
+          document.head.appendChild(script);
+          
+          script.onload = function() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-S1WNYHG54S', {
+              enhanced_link_attribution: true,
+              link_attribution: true,
+            });
+          };
+        }, 1000);
+      });
+      
+      // Defer Google Tag Manager
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-WD3CRSDJ');
+        }, 1500);
       });
     </script>
 
-    <!-- Google Tag Manager -->
+    <!-- Deferred Ad Scripts -->
     <script>
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
-          j = d.createElement(s),
-          dl = l != "dataLayer" ? "&l=" + l : "";
-        j.async = true;
-        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        f.parentNode.insertBefore(j, f);
-      })(window, document, "script", "dataLayer", "GTM-WD3CRSDJ");
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          // Load AdSense
+          var adsScript = document.createElement('script');
+          adsScript.async = true;
+          adsScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4882817716387956';
+          adsScript.crossOrigin = 'anonymous';
+          document.head.appendChild(adsScript);
+          
+          // Load GPT
+          var gptScript = document.createElement('script');
+          gptScript.async = true;
+          gptScript.src = 'https://securepubads.g.doubleclick.net/tag/js/gpt.js';
+          gptScript.crossOrigin = 'anonymous';
+          document.head.appendChild(gptScript);
+        }, 2000);
+      });
     </script>
-
-    <!-- Google AdSense & GPT -->
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4882817716387956"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      async
-      src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"
-      crossorigin="anonymous"
-    ></script>
 
     <!-- Structured Data for Homepage -->
     <script type="application/ld+json">
@@ -271,12 +279,22 @@
 
     <!-- App root -->
     <div id="root"></div>
-    <script
-      async
-      src="https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV"
-    ></script>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    
+    <!-- Critical App Script -->
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Defer non-critical scripts -->
+    <script>
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var appScript = document.createElement('script');
+          appScript.async = true;
+          appScript.src = 'https://appsha-prm.ctengine.io/js/script.js?wkey=Fkrv2lWxUV';
+          document.body.appendChild(appScript);
+        }, 3000);
+      });
+    </script>
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module" defer></script>
   </body>
 </html>
