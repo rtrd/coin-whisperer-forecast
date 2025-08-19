@@ -11,6 +11,7 @@ import { MarketDataGrid } from "./MarketDataGrid";
 import { generateMarketData, getFilterTitle } from "./MarketDataUtils";
 import { CryptoToken } from "@/types/crypto";
 import { TokenPredictionsProvider } from "@/contexts/TokenPredictionsContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 interface MarketDataWidgetProps {
   cryptoOptions: CryptoToken[];
@@ -57,17 +58,32 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
     };
 
     const marketData = useMemo(() => {
-      const data = generateMarketData(cryptoOptions, activeFilter);
-      
-      return [...data].sort((a, b) => {
-        const aValue = getFieldValue(a, sortField);
-        const bValue = getFieldValue(b, sortField);
+      try {
+        if (!cryptoOptions || !Array.isArray(cryptoOptions)) {
+          console.error("MarketDataWidget: Invalid cryptoOptions", cryptoOptions);
+          return [];
+        }
+
+        const data = generateMarketData(cryptoOptions, activeFilter);
         
-        if (aValue === bValue) return 0;
+        if (!data || !Array.isArray(data)) {
+          console.error("MarketDataWidget: generateMarketData returned invalid data", data);
+          return [];
+        }
         
-        const comparison = aValue < bValue ? -1 : 1;
-        return sortDirection === 'asc' ? comparison : -comparison;
-      });
+        return [...data].sort((a, b) => {
+          const aValue = getFieldValue(a, sortField);
+          const bValue = getFieldValue(b, sortField);
+          
+          if (aValue === bValue) return 0;
+          
+          const comparison = aValue < bValue ? -1 : 1;
+          return sortDirection === 'asc' ? comparison : -comparison;
+        });
+      } catch (error) {
+        console.error("MarketDataWidget: Error generating market data", error);
+        return [];
+      }
     }, [cryptoOptions, activeFilter, sortField, sortDirection]);
 
     const filterTitle = useMemo(
@@ -122,24 +138,26 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
           </CardHeader>
 
           <CardContent>
-            {viewMode === "list" ? (
-              <MarketDataTable
-                marketData={marketData}
-                isUnlocked={isUnlocked}
-                activeFilter={activeFilter}
-                AllCryptosData={AllCryptosData}
-                onSort={handleSort}
-                sortField={sortField}
-                sortDirection={sortDirection}
-              />
-            ) : (
-              <MarketDataGrid
-                marketData={marketData}
-                isUnlocked={isUnlocked}
-                activeFilter={activeFilter}
-                AllCryptosData={AllCryptosData}
-              />
-            )}
+            <ErrorBoundary>
+              {viewMode === "list" ? (
+                <MarketDataTable
+                  marketData={marketData}
+                  isUnlocked={isUnlocked}
+                  activeFilter={activeFilter}
+                  AllCryptosData={AllCryptosData}
+                  onSort={handleSort}
+                  sortField={sortField}
+                  sortDirection={sortDirection}
+                />
+              ) : (
+                <MarketDataGrid
+                  marketData={marketData}
+                  isUnlocked={isUnlocked}
+                  activeFilter={activeFilter}
+                  AllCryptosData={AllCryptosData}
+                />
+              )}
+            </ErrorBoundary>
 
             <div className="mt-6 text-center">
               <Link to="/tokens" state={{ AllCryptosData }}>

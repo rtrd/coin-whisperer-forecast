@@ -33,16 +33,19 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                 className="flex items-center gap-2 hover:text-blue-400 transition-colors min-w-0"
               >
                 <img
-                  src={token.image}
-                  alt={token.label}
+                  src={token.image || "/placeholder.svg"}
+                  alt={token.label || token.name || "Token"}
                   className="w-6 h-6 object-contain rounded-full flex-shrink-0"
+                  onError={(e) => {
+                    e.currentTarget.src = "/placeholder.svg";
+                  }}
                 />
                 <div className="min-w-0">
                   <div className="text-white font-bold text-base truncate">
-                    {token.name.split(" ")[0]}
+                    {token.name?.split(" ")[0] || token.name || "Unknown"}
                   </div>
                   <div className="text-gray-400 text-sm truncate">
-                    {token.name.split(" ")[1]}
+                    {token.name?.split(" ")[1] || token.symbol || ""}
                   </div>
                 </div>
               </Link>
