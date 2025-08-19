@@ -315,7 +315,7 @@ const TokenDetail = () => {
   // Show loading state while fetching token info
   if (tokenInfoLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center pt-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
         <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
@@ -329,7 +329,7 @@ const TokenDetail = () => {
 
   if (!selectedToken) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center pt-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
         <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
@@ -354,7 +354,7 @@ const TokenDetail = () => {
   return (
     <>
       <MainNavigation />
-      <div className="pt-12">
+      <div>
         <Helmet>
           <title>{generateTokenMetaTitle(seoData)}</title>
           <meta
