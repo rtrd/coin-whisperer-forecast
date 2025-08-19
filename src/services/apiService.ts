@@ -8,7 +8,7 @@ class ApiService {
 
   async getAllCryptos(): Promise<CryptoToken[]> {
     try {
-      // ✅ Call your backend route instead of CoinGecko directly
+      // Try the backend first
       const response = await fetch(`${SERVER_URL}/api/cryptos`, {
         headers: {
           accept: "application/json",
@@ -16,12 +16,12 @@ class ApiService {
       });
 
       if (!response.ok) {
-        throw new Error(`API error! status: ${response.status}`);
+        throw new Error(`Backend API error! status: ${response.status}`);
       }
 
       const data = await response.json();
 
-      // ✅ Transform data if needed
+      // Transform data if needed
       const transformedData = data.map((coin: any) => ({
         id: coin.id,
         symbol: coin.symbol,
@@ -51,8 +51,32 @@ class ApiService {
 
       return transformedData;
     } catch (error) {
-      console.error("API fetch error:", error);
-      return []; // fallback
+      console.error("Backend API fetch error:", error);
+      
+      // Fallback to CoinGecko API directly
+      try {
+        console.log("Falling back to CoinGecko API directly...");
+        const fallbackResponse = await fetch(
+          `${this.baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h`,
+          {
+            headers: {
+              accept: "application/json",
+              ...(API_KEY && { "x-cg-demo-api-key": API_KEY }),
+            },
+          }
+        );
+
+        if (!fallbackResponse.ok) {
+          throw new Error(`CoinGecko API error! status: ${fallbackResponse.status}`);
+        }
+
+        const fallbackData = await fallbackResponse.json();
+        console.log("Successfully fetched data from CoinGecko fallback");
+        return fallbackData;
+      } catch (fallbackError) {
+        console.error("CoinGecko fallback also failed:", fallbackError);
+        return []; // Complete fallback
+      }
     }
   }
 
