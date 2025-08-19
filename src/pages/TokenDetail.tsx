@@ -31,6 +31,7 @@ import {
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 import { PriceData } from "@/types/crypto";
 import { useAdScript } from "@/hooks/useAdScript";
+import { MainNavigation } from "@/components/MainNavigation";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();

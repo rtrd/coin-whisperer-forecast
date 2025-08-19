@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { useLocation } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
+import { MainNavigation } from "@/components/MainNavigation";
 import Footer from "@/components/Footer";
 import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
@@ -177,7 +178,12 @@ const AllTokens = () => {
             currentPrice={50000}
             priceChange={2.5}
           />
+        </div>
 
+        {/* Navigation */}
+        <MainNavigation />
+
+        <div className="container mx-auto px-4 pb-8">
           {/* Ad Banner After Header */}
           <GAMAdUnit
             adUnitId="div-gpt-ad-1752654531765-0"

@@ -6,6 +6,7 @@ declare global {
   }
 }
 import { IndexHeader } from "@/components/IndexHeader";
+import { MainNavigation } from "@/components/MainNavigation";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
@@ -34,50 +35,57 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   handleFilterChange,
 }) => {
   return (
-    <div className="container mx-auto px-4 py-4 md:py-8">
-      <IndexHeader
-        selectedCrypto={selectedCrypto}
-        cryptoOptions={cryptoOptions}
-        currentPrice={currentPrice}
-        priceChange={priceChange}
-      />
-
-      {/* Google Ad Manager - Header Ad */}
-      <GAMAdUnit
-        adUnitId="div-gpt-ad-1752654531765-0"
-        size={[728, 90]}
-        className="mb-6 md:mb-8"
-      />
-
-      {/* WordPress Integration - Latest Crypto News & Analysis */}
-      <LazyWordPressIntegration />
-
-      <div className="mb-8">
-        <LockedAITradingSignals />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+      <div className="container mx-auto px-4 py-4 md:py-8">
+        <IndexHeader
+          selectedCrypto={selectedCrypto}
+          cryptoOptions={cryptoOptions}
+          currentPrice={currentPrice}
+          priceChange={priceChange}
+        />
       </div>
 
-      {/* Crypto Filters - Smart Crypto Filters */}
-      <CryptoFilters onFilterChange={handleFilterChange} />
+      {/* Navigation */}
+      <MainNavigation />
 
-      {/* Market Data Widget - Top 10 by Market Cap */}
-      <LazyMarketDataWidget
-        onMarketDataFilter={handleFilterChange}
-        cryptoOptions={filteredCryptos}
-        AllCryptosData={AllCryptosData}
-      />
+      <div className="container mx-auto px-4 pb-8">
+        {/* Google Ad Manager - Header Ad */}
+        <GAMAdUnit
+          adUnitId="div-gpt-ad-1752654531765-0"
+          size={[728, 90]}
+          className="mb-6 md:mb-8"
+        />
 
-      {/* Navigation Cards to Other Features */}
-      <IndexNavigationCards />
+        {/* WordPress Integration - Latest Crypto News & Analysis */}
+        <LazyWordPressIntegration />
 
-      {/* Ad Banner Before Footer */}
-      <GAMAdUnit
-        adUnitId="div-gpt-ad-1752654531765-1"
-        size={[728, 90]}
-        className="mb-6 md:mb-8"
-      />
+        <div className="mb-8">
+          <LockedAITradingSignals />
+        </div>
 
-      {/* Footer */}
-      <Footer />
+        {/* Crypto Filters - Smart Crypto Filters */}
+        <CryptoFilters onFilterChange={handleFilterChange} />
+
+        {/* Market Data Widget - Top 10 by Market Cap */}
+        <LazyMarketDataWidget
+          onMarketDataFilter={handleFilterChange}
+          cryptoOptions={filteredCryptos}
+          AllCryptosData={AllCryptosData}
+        />
+
+        {/* Navigation Cards to Other Features */}
+        <IndexNavigationCards />
+
+        {/* Ad Banner Before Footer */}
+        <GAMAdUnit
+          adUnitId="div-gpt-ad-1752654531765-1"
+          size={[728, 90]}
+          className="mb-6 md:mb-8"
+        />
+
+        {/* Footer */}
+        <Footer />
+      </div>
     </div>
   );
 };

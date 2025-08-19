@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Brain, Crown, Check, Mail, ArrowLeft, Zap, TrendingUp, Users, Star, Rocket, Target, DollarSign, MessageCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
+import { MainNavigation } from "@/components/MainNavigation";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { trackFormSubmission, trackFormError, trackPageView } from "@/utils/analytics";
@@ -136,7 +137,12 @@ const Subscribe = () => {
             currentPrice={50000}
             priceChange={2.5}
           />
+        </div>
 
+        {/* Navigation */}
+        <MainNavigation />
+
+        <div className="container mx-auto px-4 pb-6 relative z-10">
           {/* Ad Banner After Header */}
           <GAMAdUnit
             adUnitId="div-gpt-ad-1752654531765-0"

@@ -9,6 +9,7 @@ import { TokenSidebar } from "./TokenSidebar";
 import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
+import { MainNavigation } from "@/components/MainNavigation";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -78,7 +79,12 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           currentPrice={currentPrice}
           priceChange={priceChange}
         />
+      </div>
 
+      {/* Navigation */}
+      <MainNavigation />
+
+      <div className="container mx-auto px-4 pb-8">
         {/* Main Content */}
         <div className="space-y-6">
           {/* Token Info Card - Full Width */}

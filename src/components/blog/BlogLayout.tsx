@@ -1,6 +1,7 @@
 
 import React from "react";
 import { IndexHeader } from "@/components/IndexHeader";
+import { MainNavigation } from "@/components/MainNavigation";
 import Footer from "@/components/Footer";
 
 interface BlogLayoutProps {
@@ -20,6 +21,9 @@ export const BlogLayout: React.FC<BlogLayoutProps> = ({ children, cryptoOptions 
           priceChange={2.5}
         />
       </div>
+
+      {/* Navigation */}
+      <MainNavigation />
 
       <div className="container mx-auto px-4 pb-8">
         {children}
