@@ -31,6 +31,21 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
       return localStorage.getItem("ai-content-unlocked") === "true";
     }, []);
 
+    const getFieldValue = (item: any, field: SortField) => {
+      switch (field) {
+        case 'rank': return cryptoOptions.findIndex(c => c.value === item.value) + 1;
+        case 'name': return item.name.toLowerCase();
+        case 'price': return item.price || 0;
+        case 'change24h': return item.change24h || 0;
+        case 'predictionPercentage': return item.predictionPercentage || 0;
+        case 'aiScore': return item.aiScore || 0;
+        case 'volume24h': return item.volume24h || 0;
+        case 'marketCap': return item.marketCap || 0;
+        case 'category': return item.category?.toLowerCase() || '';
+        default: return 0;
+      }
+    };
+
     const handleSort = (field: SortField) => {
       if (sortField === field) {
         setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
@@ -53,21 +68,6 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
         return sortDirection === 'asc' ? comparison : -comparison;
       });
     }, [cryptoOptions, activeFilter, sortField, sortDirection]);
-
-    const getFieldValue = (item: any, field: SortField) => {
-      switch (field) {
-        case 'rank': return cryptoOptions.findIndex(c => c.value === item.value) + 1;
-        case 'name': return item.name.toLowerCase();
-        case 'price': return item.price || 0;
-        case 'change24h': return item.change24h || 0;
-        case 'predictionPercentage': return item.predictionPercentage || 0;
-        case 'aiScore': return item.aiScore || 0;
-        case 'volume24h': return item.volume24h || 0;
-        case 'marketCap': return item.marketCap || 0;
-        case 'category': return item.category?.toLowerCase() || '';
-        default: return 0;
-      }
-    };
 
     const filterTitle = useMemo(
       () => getFilterTitle(activeFilter),
