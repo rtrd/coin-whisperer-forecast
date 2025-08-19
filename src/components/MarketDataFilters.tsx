@@ -9,12 +9,10 @@ import {
   Star,
 } from "lucide-react";
 
-export type FilterType =
-  | "market_cap"
-  | "volume"
-  | "gainers"
-  | "losers"
-  | "trending";
+// Import consolidated FilterType
+import { FilterType } from '@/types/filters';
+
+export type { FilterType };
 
 interface MarketDataFiltersProps {
   activeFilter: FilterType;

@@ -1,12 +1,14 @@
 import { MarketData } from '@/types/crypto';
-import { FilterType } from '@/utils/marketDataHelpers';
+import { FilterType } from '@/types/filters';
 
 export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterType): MarketData[] => {
-  const baseTokens: MarketData[] = [
+  const baseTokens = [
     {
+      id: "bitcoin",
       value: "bitcoin",
       label: "Bitcoin",
-      name: "Bitcoin BTC", 
+      name: "Bitcoin BTC",
+      symbol: "BTC", 
       image: "https://assets.coingecko.com/coins/images/1/large/bitcoin.png",
       price: 43250.75,
       change24h: 2.45,
@@ -17,9 +19,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 85
     },
     {
+      id: "ethereum",
       value: "ethereum", 
       label: "Ethereum",
       name: "Ethereum ETH",
+      symbol: "ETH",
       image: "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
       price: 2580.42,
       change24h: 1.85,
@@ -30,9 +34,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 82
     },
     {
+      id: "solana",
       value: "solana",
       label: "Solana", 
       name: "Solana SOL",
+      symbol: "SOL",
       image: "https://assets.coingecko.com/coins/images/4128/large/solana.png",
       price: 98.75,
       change24h: 4.12,
@@ -43,9 +49,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 78
     },
     {
+      id: "chainlink",
       value: "chainlink",
       label: "Chainlink",
       name: "Chainlink LINK",
+      symbol: "LINK",
       image: "https://assets.coingecko.com/coins/images/877/large/chainlink-new-logo.png",
       price: 14.85,
       change24h: 3.75,
@@ -56,9 +64,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 74
     },
     {
+      id: "litecoin",
       value: "litecoin",
       label: "Litecoin",
       name: "Litecoin LTC",
+      symbol: "LTC",
       image: "https://assets.coingecko.com/coins/images/2/large/litecoin.png",
       price: 72.45,
       change24h: 1.25,
@@ -69,9 +79,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 71
     },
     {
+      id: "uniswap",
       value: "uniswap",
       label: "Uniswap",
       name: "Uniswap UNI",
+      symbol: "UNI",
       image: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png",
       price: 6.45,
       change24h: 2.85,
@@ -82,9 +94,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 69
     },
     {
+      id: "matic-network",
       value: "matic-network",
       label: "Polygon",
       name: "Polygon MATIC",
+      symbol: "MATIC",
       image: "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png",
       price: 0.92,
       change24h: 5.75,
@@ -95,9 +109,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 64
     },
     {
+      id: "cardano",
       value: "cardano",
       label: "Cardano",
-      name: "Cardano ADA", 
+      name: "Cardano ADA",
+      symbol: "ADA", 
       image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
       price: 0.515,
       change24h: 3.25,
@@ -108,9 +124,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 67
     },
     {
+      id: "avalanche-2",
       value: "avalanche-2",
       label: "Avalanche",
       name: "Avalanche AVAX",
+      symbol: "AVAX",
       image: "https://assets.coingecko.com/coins/images/12559/large/avalanche-avax-logo.png",
       price: 38.75,
       change24h: 2.15,
@@ -121,9 +139,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 68
     },
     {
+      id: "polkadot",
       value: "polkadot",
       label: "Polkadot",
       name: "Polkadot DOT",
+      symbol: "DOT",
       image: "https://assets.coingecko.com/coins/images/12171/large/polkadot.png",
       price: 6.25,
       change24h: 1.95,
@@ -134,9 +154,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 70
     },
     {
+      id: "stellar",
       value: "stellar",
       label: "Stellar",
       name: "Stellar XLM",
+      symbol: "XLM",
       image: "https://assets.coingecko.com/coins/images/100/large/stellar.png",
       price: 0.125,
       change24h: 4.85,
@@ -147,9 +169,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 63
     },
     {
+      id: "algorand",
       value: "algorand",
       label: "Algorand",
       name: "Algorand ALGO",
+      symbol: "ALGO",
       image: "https://assets.coingecko.com/coins/images/4380/large/download.png",
       price: 0.185,
       change24h: 3.45,
@@ -161,9 +185,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
     },
     // Add losing tokens
     {
+      id: "dogecoin",
       value: "dogecoin",
       label: "Dogecoin",
       name: "Dogecoin DOGE",
+      symbol: "DOGE",
       image: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png",
       price: 0.078,
       change24h: -5.85,
@@ -174,9 +200,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 45
     },
     {
+      id: "shiba-inu",
       value: "shiba-inu",
       label: "Shiba Inu",
-      name: "Shiba Inu SHIB", 
+      name: "Shiba Inu SHIB",
+      symbol: "SHIB", 
       image: "https://assets.coingecko.com/coins/images/11939/large/shiba.png",
       price: 0.0000085,
       change24h: -6.25,
@@ -187,9 +215,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 38
     },
     {
+      id: "ripple",
       value: "ripple",
       label: "XRP",
       name: "XRP XRP",
+      symbol: "XRP",
       image: "https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png",
       price: 0.52,
       change24h: -3.85,
@@ -200,9 +230,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 59
     },
     {
+      id: "binancecoin",
       value: "binancecoin",
       label: "BNB",
       name: "BNB BNB",
+      symbol: "BNB",
       image: "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png",
       price: 315.75,
       change24h: -2.45,
@@ -213,9 +245,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 72
     },
     {
+      id: "tron",
       value: "tron",
       label: "TRON",
       name: "TRON TRX",
+      symbol: "TRX",
       image: "https://assets.coingecko.com/coins/images/1094/large/tron-logo.png",
       price: 0.095,
       change24h: -4.15,
@@ -226,9 +260,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 54
     },
     {
+      id: "aave",
       value: "aave",
       label: "Aave",
       name: "Aave AAVE",
+      symbol: "AAVE",
       image: "https://assets.coingecko.com/coins/images/12645/large/aave-token-round.png",
       price: 85.45,
       change24h: -1.25,
@@ -239,9 +275,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 73
     },
     {
+      id: "compound-governance-token",
       value: "compound-governance-token",
       label: "Compound",
       name: "Compound COMP",
+      symbol: "COMP",
       image: "https://assets.coingecko.com/coins/images/10775/large/COMP.png",
       price: 45.25,
       change24h: -2.85,
@@ -252,9 +290,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 68
     },
     {
+      id: "maker",
       value: "maker",
       label: "MakerDAO",
       name: "MakerDAO MKR",
+      symbol: "MKR",
       image: "https://assets.coingecko.com/coins/images/1364/large/Mark_Maker.png",
       price: 1200.85,
       change24h: -0.95,
@@ -265,9 +305,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 71
     },
     {
+      id: "fetch-ai",
       value: "fetch-ai",
       label: "Fetch.ai",
       name: "Fetch.ai FET",
+      symbol: "FET",
       image: "https://assets.coingecko.com/coins/images/5681/large/Fetch.jpg",
       price: 0.45,
       change24h: 6.85,
@@ -278,9 +320,11 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       aiScore: 76
     },
     {
+      id: "render-token",
       value: "render-token",
       label: "Render",
       name: "Render RNDR",
+      symbol: "RNDR",
       image: "https://assets.coingecko.com/coins/images/11636/large/rndr.png",
       price: 2.85,
       change24h: 7.25,
@@ -292,29 +336,39 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
     }
   ];
 
-  let filteredData = [...baseTokens];
+  // Transform to match MarketData interface
+  const marketDataTokens: MarketData[] = baseTokens.map(token => ({
+    ...token,
+    current_price: token.price,
+    price_change_24h: (token.price * token.change24h) / 100,
+    price_change_percentage_24h: token.change24h,
+    total_volume: token.volume24h,
+    market_cap: token.marketCap
+  }));
+
+  let filteredData = [...marketDataTokens];
   
   switch (activeFilter) {
     case "gainers":
-      filteredData = baseTokens
+      filteredData = marketDataTokens
         .filter(token => token.change24h > 0)
         .sort((a, b) => b.change24h - a.change24h)
         .slice(0, 12);
       break;
     case "losers":
-      filteredData = baseTokens
+      filteredData = marketDataTokens
         .filter(token => token.change24h < 0)
         .sort((a, b) => a.change24h - b.change24h)
         .slice(0, 12);
       break;
     case "volume":
-      filteredData = baseTokens
+      filteredData = marketDataTokens
         .sort((a, b) => b.volume24h - a.volume24h)
         .slice(0, 12);
       break;
     case "market_cap":
     default:
-      filteredData = baseTokens
+      filteredData = marketDataTokens
         .sort((a, b) => b.marketCap - a.marketCap)
         .slice(0, 12);
       break;

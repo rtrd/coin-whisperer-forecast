@@ -1,4 +1,5 @@
 // SEO utilities for dynamic meta tag generation
+import { formatPricePlain } from '@/utils/formatters';
 
 export interface TokenSEOData {
   name: string;
@@ -17,7 +18,7 @@ export const generateTokenMetaTitle = (tokenData: TokenSEOData): string => {
 export const generateTokenMetaDescription = (tokenData: TokenSEOData): string => {
   const changeText = tokenData.priceChange >= 0 ? "up" : "down";
   const changeFormatted = Math.abs(tokenData.priceChange).toFixed(2);
-  const priceFormatted = formatPrice(tokenData.currentPrice);
+  const priceFormatted = formatPricePlain(tokenData.currentPrice);
   
   return `${tokenData.name} (${tokenData.symbol}) is currently trading at $${priceFormatted}, ${changeText} ${changeFormatted}% in 24h. Get real-time ${tokenData.name} price analysis, AI predictions, technical indicators, and market insights. ${tokenData.description}`;
 };
@@ -136,12 +137,8 @@ export const generateTokenStructuredData = (tokenData: TokenSEOData, url: string
   };
 };
 
-export const formatPrice = (price: number): string => {
-  if (price >= 1) {
-    return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 6 });
-  }
-  return price.toFixed(8).replace(/\.?0+$/, '');
-};
+// Re-export from consolidated formatters
+export { formatPricePlain as formatPrice } from '@/utils/formatters';
 
 export const generateCanonicalUrl = (tokenId: string): string => {
   return `https://pumpparade.com/token/${tokenId}`;

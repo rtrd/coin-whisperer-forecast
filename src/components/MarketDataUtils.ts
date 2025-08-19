@@ -1,45 +1,10 @@
 import { CryptoToken } from '@/types/crypto';
+import type { FilterType } from '@/types/filters';
 
-export type FilterType = "market_cap" | "volume" | "gainers" | "losers" | "trending";
-
-export const formatPrice = (price: number | undefined | null): string => {
-  // Handle undefined, null, or non-numeric values
-  if (price == null || typeof price !== 'number' || isNaN(price)) {
-    return '$0.00';
-  }
-  
-  if (price < 0.01) {
-    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 6, maximumFractionDigits: 6 })}`;
-  } else if (price < 1) {
-    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 4, maximumFractionDigits: 4 })}`;
-  } else {
-    return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  }
-};
-
-export const formatVolume = (volume: number): string => {
-  if (volume >= 1000000000) {
-    return `$${(volume / 1000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}B`;
-  } else if (volume >= 1000000) {
-    return `$${(volume / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M`;
-  } else if (volume >= 1000) {
-    return `$${(volume / 1000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}K`;
-  } else {
-    return `$${volume.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  }
-};
-
-export const formatMarketCap = (marketCap: number): string => {
-  if (marketCap >= 1000000000000) {
-    return `$${(marketCap / 1000000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}T`;
-  } else if (marketCap >= 1000000000) {
-    return `$${(marketCap / 1000000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}B`;
-  } else if (marketCap >= 1000000) {
-    return `$${(marketCap / 1000000).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}M`;
-  } else {
-    return `$${marketCap.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  }
-};
+// Re-export consolidated utilities
+export { formatPrice, formatVolume, formatMarketCap } from '@/utils/formatters';
+export type { FilterType } from '@/types/filters';
+export { getFilterTitle } from '@/types/filters';
 
 export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: FilterType) => {
   console.log("Generating market data :", cryptoOptions);
@@ -65,18 +30,4 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
    return marketData.slice(0, 12);
 };
 
-export const getFilterTitle = (activeFilter: FilterType): string => {
-  switch (activeFilter) {
-    case 'gainers':
-      return 'Top Gainers';
-    case 'losers':
-      return 'Top Losers';
-    case 'volume':
-      return 'Highest Volume';
-    case 'trending':
-      return 'Trending Tokens';
-    case 'market_cap':
-    default:
-      return 'Market Cap Leaders';
-  }
-};
+// getFilterTitle is now re-exported from @/types/filters above
