@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { toast } from "sonner";
 import { MarketData } from "@/types/crypto";
 import { individualPredictionService } from "@/services/individualPredictionService";
@@ -16,6 +16,17 @@ interface PredictionState {
 export const useTokenPredictions = () => {
   const [predictions, setPredictions] = useState<PredictionState>({});
   const activeRequests = useRef<Set<string>>(new Set());
+  const mountedRef = useRef(true);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      // Cancel all active requests
+      activeRequests.current.clear();
+    };
+  }, []);
 
   const generatePredictionForToken = useCallback(async (token: MarketData) => {
     const tokenId = token.id || token.value;
@@ -38,15 +49,17 @@ export const useTokenPredictions = () => {
 
     activeRequests.current.add(tokenId);
 
-    // Set loading state
-    setPredictions(prev => ({
-      ...prev,
-      [tokenId]: {
-        ...prev[tokenId],
-        predictionStatus: 'loading',
-        predictionError: undefined,
-      }
-    }));
+    // Set loading state - only if component is still mounted
+    if (mountedRef.current) {
+      setPredictions(prev => ({
+        ...prev,
+        [tokenId]: {
+          ...prev[tokenId],
+          predictionStatus: 'loading',
+          predictionError: undefined,
+        }
+      }));
+    }
 
     try {
       console.log(`Generating prediction for ${token.name} (${tokenId})`);
@@ -63,34 +76,38 @@ export const useTokenPredictions = () => {
         } as any
       );
 
-      // Update state with successful prediction
-      setPredictions(prev => ({
-        ...prev,
-        [tokenId]: {
-          predictionPercentage: result.predictionPercentage,
-          aiScore: result.aiScore,
-          predictionStatus: 'success',
-          lastPredictionTime: Date.now(),
-          predictionError: undefined,
-        }
-      }));
+      // Update state with successful prediction - only if component is still mounted
+      if (mountedRef.current) {
+        setPredictions(prev => ({
+          ...prev,
+          [tokenId]: {
+            predictionPercentage: result.predictionPercentage,
+            aiScore: result.aiScore,
+            predictionStatus: 'success',
+            lastPredictionTime: Date.now(),
+            predictionError: undefined,
+          }
+        }));
 
-      toast.success(`AI prediction generated for ${token.name}!`);
+        toast.success(`AI prediction generated for ${token.name}!`);
+      }
 
     } catch (error) {
       console.error(`Failed to generate prediction for ${tokenId}:`, error);
       
-      // Update state with error
-      setPredictions(prev => ({
-        ...prev,
-        [tokenId]: {
-          ...prev[tokenId],
-          predictionStatus: 'error',
-          predictionError: error.message || 'Failed to generate prediction',
-        }
-      }));
+      // Update state with error - only if component is still mounted
+      if (mountedRef.current) {
+        setPredictions(prev => ({
+          ...prev,
+          [tokenId]: {
+            ...prev[tokenId],
+            predictionStatus: 'error',
+            predictionError: error.message || 'Failed to generate prediction',
+          }
+        }));
 
-      toast.error(`Failed to generate prediction for ${token.name}. Please try again.`);
+        toast.error(`Failed to generate prediction for ${token.name}. Please try again.`);
+      }
     } finally {
       activeRequests.current.delete(tokenId);
     }

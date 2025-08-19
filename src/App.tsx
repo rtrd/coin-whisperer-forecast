@@ -13,6 +13,7 @@ import { usePerformanceOptimization } from "./hooks/usePerformanceOptimization";
 import ScrollToTop from "./components/ScrollToTop";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { ConsolidatedAppProvider } from "@/contexts/ConsolidatedAppProvider";
 
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -112,21 +113,23 @@ const AppRoutes = () => {
 const App = () => (
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <ErrorBoundary>
-          <PerformanceMonitor />
-          <HeadImprovements />
-          <Toaster />
-          <Sonner />
-          <AutoRefresh />
-          <BrowserRouter>
-            <BitmedialAdManager>
-              <ScrollToTop />
-              <AppRoutes />
-            </BitmedialAdManager>
-          </BrowserRouter>
-        </ErrorBoundary>
-      </TooltipProvider>
+      <ConsolidatedAppProvider>
+        <TooltipProvider>
+          <ErrorBoundary>
+            <PerformanceMonitor />
+            <HeadImprovements />
+            <Toaster />
+            <Sonner />
+            <AutoRefresh />
+            <BrowserRouter>
+              <BitmedialAdManager>
+                <ScrollToTop />
+                <AppRoutes />
+              </BitmedialAdManager>
+            </BrowserRouter>
+          </ErrorBoundary>
+        </TooltipProvider>
+      </ConsolidatedAppProvider>
     </QueryClientProvider>
   </StrictMode>
 );
