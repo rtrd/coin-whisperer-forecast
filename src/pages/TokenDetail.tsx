@@ -348,7 +348,7 @@ const TokenDetail = () => {
   return (
     <>
       <MainNavigation />
-      <div>
+      <div className="pt-16">
         <Helmet>
           <title>{generateTokenMetaTitle(seoData)}</title>
           <meta

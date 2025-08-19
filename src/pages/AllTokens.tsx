@@ -183,7 +183,7 @@ const AllTokens = () => {
         {/* Navigation */}
         <MainNavigation />
 
-        <div className="container mx-auto px-4 pb-8">
+        <div className="container mx-auto px-4 pb-8 pt-20">
           {/* Ad Banner After Header */}
           <GAMAdUnit
             adUnitId="div-gpt-ad-1752654531765-0"

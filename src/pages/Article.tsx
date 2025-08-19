@@ -224,7 +224,7 @@ const Article = () => {
         </Helmet>
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 pt-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 pt-20">
         {/* Navigation */}
         <MainNavigation />
         

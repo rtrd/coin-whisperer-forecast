@@ -382,7 +382,7 @@ const AIPricePrediction = () => {
       {/* Navigation */}
       <MainNavigation />
 
-      <div className="container mx-auto px-4 pb-8">
+      <div className="container mx-auto px-4 pb-8 pt-20">
         {/* Google Ad Manager - Header Ad */}
         <GAMAdUnit
           adUnitId="div-gpt-ad-1752654531765-0"

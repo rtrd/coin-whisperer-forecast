@@ -132,7 +132,7 @@ const Subscribe = () => {
         {/* Navigation */}
         <MainNavigation />
         
-        <div className="container mx-auto px-4 py-6 relative z-10">
+        <div className="container mx-auto px-4 py-6 relative z-10 pt-20">
           {/* Homepage Header */}
           <IndexHeader 
             selectedCrypto="bitcoin"
