@@ -87,7 +87,6 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
             <FilterHeader isOpen={isOpen} activeFiltersCount={hasActiveFilters() ? 1 : 0} />
           </CardHeader>
         </CollapsibleTrigger>
-        <div className="h-4" />
         <CollapsibleContent>
           <CardContent className="space-y-6">
             <BasicFilters

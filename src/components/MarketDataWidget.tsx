@@ -132,6 +132,8 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
               <CryptoFilters onFilterChange={onMarketDataFilter} />
             </div>
             
+            <div className="h-4" />
+            
             <MarketDataFilters
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
