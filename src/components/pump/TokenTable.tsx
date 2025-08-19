@@ -96,7 +96,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
                   <Button 
                     className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-xs h-8 font-semibold shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
                     size="sm"
-                    onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+                    onClick={() => window.open('https://app.andmilo.com/?code=@pumpparade', '_blank')}
                   >
                     <ExternalLink className="h-3 w-3 mr-1" />
                     AI Agent

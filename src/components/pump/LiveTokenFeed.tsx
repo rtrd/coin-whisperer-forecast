@@ -181,7 +181,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                     <Button
                       size="sm"
                       className="h-6 px-2 text-xs bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                      onClick={() => window.open('https://app.andmilo.com/auth/signin/b103d893-d5b8-4cb3-8b67-1f356abb314f', '_blank')}
+                      onClick={() => window.open('https://app.andmilo.com/?code=@pumpparade', '_blank')}
                     >
                       Trade With AI Agent
                     </Button>
