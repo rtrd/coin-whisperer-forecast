@@ -34,6 +34,24 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
   marketData,
 }) => {
   console.log("Market Data:", marketData);
+  
+  // Add safety checks for marketData
+  if (!marketData) {
+    return (
+      <div className="bg-gray-700/30 rounded-2xl p-6 border border-gray-600/30 backdrop-blur-sm shadow-xl">
+        <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
+          <div className="p-2 rounded-full bg-gradient-to-r from-blue-500/20 to-purple-500/20">
+            <BarChart3 className="h-6 w-6 text-blue-400" />
+          </div>
+          Market Statistics
+        </h3>
+        <div className="text-gray-400 text-center py-8">
+          Loading market data...
+        </div>
+      </div>
+    );
+  }
+
   const statsConfig = [
     {
       icon: BarChart3,
@@ -47,10 +65,12 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}B`
-          : `$${(marketData.market_cap / 1000000000).toLocaleString("en-US", {
+          : marketData.market_cap 
+          ? `$${(marketData.market_cap / 1000000000).toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
-            })}B`,
+            })}B`
+          : "N/A",
     },
     {
       icon: Activity,
@@ -64,10 +84,12 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}M`
-          : `$${(marketData.total_volume / 1000000).toLocaleString("en-US", {
+          : marketData.total_volume
+          ? `$${(marketData.total_volume / 1000000).toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
-            })}M`,
+            })}M`
+          : "N/A",
     },
     {
       icon: Clock,
@@ -76,10 +98,10 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
       hoverColor: "hover:border-purple-500/30",
       label: "7d Change",
       value: `${
-        marketData.price_change_percentage_7d_in_currency >= 0 ? "+" : ""
-      }${(marketData.price_change_percentage_7d_in_currency ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
+        (marketData.price_change_percentage_7d_in_currency || 0) >= 0 ? "+" : ""
+      }${((marketData.price_change_percentage_7d_in_currency || 0)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
       valueColor:
-        marketData.price_change_percentage_7d_in_currency >= 0
+        (marketData.price_change_percentage_7d_in_currency || 0) >= 0
           ? "text-green-400"
           : "text-red-400",
     },
@@ -90,10 +112,10 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
       hoverColor: "hover:border-orange-500/30",
       label: "30d Change",
       value: `${
-        marketData.price_change_percentage_30d_in_currency >= 0 ? "+" : ""
-      }${(marketData.price_change_percentage_30d_in_currency ?? 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
+        (marketData.price_change_percentage_30d_in_currency || 0) >= 0 ? "+" : ""
+      }${((marketData.price_change_percentage_30d_in_currency || 0)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%`,
       valueColor:
-        marketData.price_change_percentage_30d_in_currency >= 0
+        (marketData.price_change_percentage_30d_in_currency || 0) >= 0
           ? "text-green-400"
           : "text-red-400",
     },
@@ -109,10 +131,12 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
               minimumFractionDigits: 2,
               maximumFractionDigits: 6,
             })}`
-          : `$${marketData.ath.toLocaleString("en-US", {
+          : marketData.ath
+          ? `$${marketData.ath.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 6,
-            })}`,
+            })}`
+          : "N/A",
     },
     {
       icon: TrendingDown,
@@ -126,10 +150,12 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
               minimumFractionDigits: 2,
               maximumFractionDigits: 6,
             })}`
-          : `$${marketData.atl.toLocaleString("en-US", {
+          : marketData.atl
+          ? `$${marketData.atl.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 6,
-            })}`,
+            })}`
+          : "N/A",
     },
     {
       icon: Activity,
@@ -137,10 +163,12 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
       bgColor: "bg-cyan-500/20",
       hoverColor: "hover:border-cyan-500/30",
       label: "Circulating",
-      value: `${(marketData.circulating_supply / 1000000).toLocaleString(
-        "en-US",
-        { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-      )}M`,
+      value: marketData.circulating_supply
+        ? `${(marketData.circulating_supply / 1000000).toLocaleString(
+            "en-US",
+            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+          )}M`
+        : "N/A",
     },
     {
       icon: BarChart3,
@@ -148,10 +176,12 @@ export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
       bgColor: "bg-yellow-500/20",
       hoverColor: "hover:border-yellow-500/30",
       label: "Total Supply",
-      value: `${(marketData.total_supply / 1000000).toLocaleString("en-US", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      })}M`,
+      value: marketData.total_supply
+        ? `${(marketData.total_supply / 1000000).toLocaleString("en-US", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}M`
+        : "N/A",
     },
   ];
 

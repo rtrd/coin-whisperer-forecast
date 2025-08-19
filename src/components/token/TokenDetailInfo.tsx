@@ -10,6 +10,7 @@ interface TokenDetailInfoProps {
   priceChange: number;
   marketData: any;
   tokenId: string;
+  tokenSymbol?: string;
 }
 
 export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
@@ -17,6 +18,7 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
   priceChange,
   marketData,
   tokenId,
+  tokenSymbol,
 }) => {
   return (
     <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
@@ -28,7 +30,7 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
             <TokenPriceDisplay
               currentPrice={currentPrice}
               priceChange={priceChange}
-              tokenSymbol={marketData?.symbol}
+              tokenSymbol={tokenSymbol || marketData?.symbol}
             />
           </div>
 
