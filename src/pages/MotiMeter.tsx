@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Helmet } from "react-helmet-async";
 import { useAdScript } from "@/hooks/useAdScript";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { TrendingUp, Flame, Clock, Users, BarChart3, ShoppingCart, TrendingDown, Home, Search, User, ArrowLeft, AlertTriangle } from "lucide-react";
+import { TrendingUp, Flame, BarChart3, ShoppingCart, TrendingDown, Home, Search, User, ArrowLeft, AlertTriangle } from "lucide-react";
 import { useMotiMeterData } from "@/hooks/useMotiMeterData";
 import { MotiToken } from "@/types/motiMeter";
 import { IndexHeader } from "@/components/IndexHeader";
@@ -24,12 +24,9 @@ declare global {
 }
 
 const MotiMeter = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState<'24h' | '5d' | '7d'>('24h');
-  
   // Initialize ad script on page load
   useAdScript();
-  const { data: motiTokens, isLoading, error } = useMotiMeterData(selectedPeriod);
-  const [topGainersAndLosers, setTopGainersAndLosers] = useState<any[]>([]);
+  const { data: motiTokens, isLoading, error } = useMotiMeterData('24h');
 
   const cryptoOptions = [
     { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
@@ -207,35 +204,8 @@ const MotiMeter = () => {
             />
           </div>
 
-          {/* Enhanced Time Period Tabs */}
-          <Tabs value={selectedPeriod} onValueChange={(value) => setSelectedPeriod(value as '24h' | '5d' | '7d')} className="mb-10">
-            <div className="flex justify-center">
-              <TabsList className="grid grid-cols-3 bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-600 rounded-xl p-2 shadow-2xl h-14">
-                <TabsTrigger 
-                  value="24h" 
-                  className="h-10 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 font-medium"
-                >
-                  <Clock className="h-4 w-4 mr-2" />
-                  24 Hours
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="5d" 
-                  className="h-10 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 font-medium"
-                >
-                  <TrendingUp className="h-4 w-4 mr-2" />
-                  5 Days
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="7d" 
-                  className="h-10 rounded-lg data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-pink-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300 font-medium"
-                >
-                  <Users className="h-4 w-4 mr-2" />
-                  7 Days
-                </TabsTrigger>
-              </TabsList>
-            </div>
-
-                <TabsContent value={selectedPeriod} className="mt-6">
+          {/* MOTI Token Rankings */}
+          <div className="mb-6">
                   {isLoading ? (
                     <div className="grid grid-cols-1 gap-4">
                       {[...Array(10)].map((_, i) => (
@@ -481,8 +451,7 @@ const MotiMeter = () => {
                       ))}
                     </div>
                   )}
-                </TabsContent>
-              </Tabs>
+          </div>
 
           {/* Ad Banner After Section 2 */}
           <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-8 mb-8">
