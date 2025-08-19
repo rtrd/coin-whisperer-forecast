@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { AdBlockDetector } from "@/components/ads/AdBlockDetector";
 import { BitmedialAdManager } from "@/components/ads/BitmedialAdManager";
 import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
@@ -72,7 +71,6 @@ const App = () => (
         <HeadImprovements />
         <Toaster />
         <Sonner />
-        <AdBlockDetector />
         <AutoRefresh />
         <BrowserRouter>
           <BitmedialAdManager>
