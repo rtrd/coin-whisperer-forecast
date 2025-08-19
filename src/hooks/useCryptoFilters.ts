@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { apiService } from '@/services/apiService';
 import { CryptoToken, CryptoFilters, CryptoCategory } from '@/types/crypto';
 import { category } from '../../utils/Category';
-import { getTrendingTokens } from '@/utils/trending';
+import { getTrendingTokens, shouldExcludeFromTrending } from '@/utils/trending';
 
 export const useCryptoFilters = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<CryptoToken[]>([]);
@@ -59,11 +59,11 @@ export const useCryptoFilters = () => {
       return [...data].sort((a, b) => (b.total_volume || 0) - (a.total_volume || 0));
     case "gainers":
       return data
-        .filter((item) => item.price_change_24h > 0)
+        .filter((item) => item.price_change_24h > 0 && !shouldExcludeFromTrending(item))
         .sort((a, b) => b.price_change_24h - a.price_change_24h);
     case "losers":                   
       return data
-        .filter((item) => item.price_change_24h < 0)
+        .filter((item) => item.price_change_24h < 0 && !shouldExcludeFromTrending(item))
         .sort((a, b) => a.price_change_24h - b.price_change_24h);
     case "market_cap":
       return [...data].sort((a, b) => (b.market_cap || 0) - (a.market_cap || 0));
