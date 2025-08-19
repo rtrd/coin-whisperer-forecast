@@ -4,6 +4,9 @@ import { performanceService } from '@/services/performanceService';
 // Hook for performance optimization
 export const usePerformanceOptimization = () => {
   useEffect(() => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') return;
+    
     // Initialize performance optimizations
     performanceService.optimizeImages();
     
