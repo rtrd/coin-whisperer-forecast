@@ -11,11 +11,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info, Lock, ChevronUp, ChevronDown } from "lucide-react";
+import { Info, ChevronUp, ChevronDown } from "lucide-react";
 import { MarketDataRow } from "./MarketDataRow";
 import { CryptoToken } from "@/types/crypto";
 
-type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'predictionPercentage' | 'aiScore' | 'volume24h' | 'marketCap' | 'category';
+type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'change7d' | 'change30d' | 'volume24h' | 'marketCap' | 'category';
 type SortDirection = 'asc' | 'desc';
 
 interface MarketDataTableProps {
@@ -65,35 +65,28 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
             <SortableHeader field="name" className="min-w-[200px]">Token</SortableHeader>
             <SortableHeader field="price" className="min-w-[100px]">Price</SortableHeader>
             <SortableHeader field="change24h" className="min-w-[100px]">24h Change</SortableHeader>
-            <SortableHeader field="predictionPercentage" className="min-w-[120px]">
+            <SortableHeader field="change7d" className="min-w-[100px]">
               <div className="flex items-center gap-1">
-                Prediction %
+                7d Change
                 <Tooltip>
                   <TooltipTrigger>
                     <Info className="h-3 w-3 text-gray-400" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>
-                      AI-generated price prediction percentage for the next
-                      period
-                    </p>
+                    <p>Price change percentage over the last 7 days</p>
                   </TooltipContent>
                 </Tooltip>
               </div>
             </SortableHeader>
-            <SortableHeader field="aiScore" className="min-w-[100px]">
+            <SortableHeader field="change30d" className="min-w-[100px]">
               <div className="flex items-center gap-1">
-                AI Score
-                {!isUnlocked && <Lock className="h-3 w-3 text-yellow-400" />}
+                30d Change
                 <Tooltip>
                   <TooltipTrigger>
                     <Info className="h-3 w-3 text-gray-400" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>
-                      AI confidence score (0-100) based on market analysis and
-                      technical indicators
-                    </p>
+                    <p>Price change percentage over the last 30 days</p>
                   </TooltipContent>
                 </Tooltip>
               </div>

@@ -1,12 +1,11 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, Lock, ExternalLink } from "lucide-react";
+import { TrendingUp, TrendingDown, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
-import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
+import { getCategoryBadgeStyle } from "@/utils/categoryStyles";
 import { MarketData } from "@/types/crypto";
-import { SignupDialog } from "@/components/SignupDialog";
 
 interface MarketDataGridCardProps {
   token: MarketData;
@@ -18,8 +17,6 @@ interface MarketDataGridCardProps {
 
 export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
   ({ token, index, isUnlocked, tokenUrlId, AllCryptosData }) => {
-    const [showSignupDialog, setShowSignupDialog] = useState(false);
-    
     return (
       <div className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
         <div className="flex items-start justify-between mb-4">
@@ -91,59 +88,59 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
           <div className="grid grid-cols-2 gap-3 text-sm">
             <div className="space-y-1">
               <div className="text-gray-400 text-xs uppercase tracking-wide">
-                Prediction %
+                7d Change
               </div>
-              {isUnlocked ? (
-                <div
-                  className={`font-mono font-medium ${
-                    token.category === "Stablecoin" 
-                      ? "text-gray-400" 
-                      : token.predictionPercentage >= 0
-                      ? "text-green-400"
-                      : "text-red-400"
-                  }`}
-                >
-                  {token.category === "Stablecoin" 
-                    ? "-" 
-                    : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
-                  }
-                </div>
-               ) : (
-                 <div 
-                   className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
-                   onClick={() => setShowSignupDialog(true)}
-                 >
-                   <Lock className="h-3 w-3 text-yellow-400" />
-                   <span className="text-yellow-400 text-xs">Premium</span>
-                 </div>
-               )}
+              <div
+                className={`flex items-center gap-1 font-mono font-medium ${
+                  !token.price_change_percentage_7d_in_currency
+                    ? "text-gray-400"
+                    : token.price_change_percentage_7d_in_currency >= 0
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {!token.price_change_percentage_7d_in_currency ? (
+                  "-"
+                ) : (
+                  <>
+                    {token.price_change_percentage_7d_in_currency >= 0 ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
+                    {token.price_change_percentage_7d_in_currency >= 0 ? "+" : ""}
+                    {token.price_change_percentage_7d_in_currency.toFixed(2)}%
+                  </>
+                )}
+              </div>
             </div>
             <div className="space-y-1">
               <div className="text-gray-400 text-xs uppercase tracking-wide">
-                AI Score
+                30d Change
               </div>
-              {isUnlocked ? (
-                <div
-                  className={`font-mono font-medium ${
-                    token.category === "Stablecoin" 
-                      ? "text-gray-400" 
-                      : getAIScoreColor(token.aiScore)
-                  }`}
-                >
-                  {token.category === "Stablecoin" 
-                    ? "-" 
-                    : `${token.aiScore.toFixed(0)}/100`
-                  }
-                </div>
-               ) : (
-                 <div 
-                   className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
-                   onClick={() => setShowSignupDialog(true)}
-                 >
-                   <Lock className="h-3 w-3 text-yellow-400" />
-                   <span className="text-yellow-400 text-xs">Premium</span>
-                 </div>
-               )}
+              <div
+                className={`flex items-center gap-1 font-mono font-medium ${
+                  !token.price_change_percentage_30d_in_currency
+                    ? "text-gray-400"
+                    : token.price_change_percentage_30d_in_currency >= 0
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {!token.price_change_percentage_30d_in_currency ? (
+                  "-"
+                ) : (
+                  <>
+                    {token.price_change_percentage_30d_in_currency >= 0 ? (
+                      <TrendingUp className="h-3 w-3" />
+                    ) : (
+                      <TrendingDown className="h-3 w-3" />
+                    )}
+                    {token.price_change_percentage_30d_in_currency >= 0 ? "+" : ""}
+                    {token.price_change_percentage_30d_in_currency.toFixed(2)}%
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -179,13 +176,6 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
             </Link>
           </Button>
         </div>
-        
-        <SignupDialog
-          open={showSignupDialog}
-          onOpenChange={setShowSignupDialog}
-          title="Unlock AI Predictions"
-          description="Get access to AI-powered predictions, market sentiment analysis, and technical indicators."
-        />
       </div>
     );
   }

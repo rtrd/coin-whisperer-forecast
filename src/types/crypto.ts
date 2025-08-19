@@ -36,6 +36,8 @@ export interface MarketData extends CryptoBase {
   label: string;
   price: number;
   change24h: number;
+  price_change_percentage_7d_in_currency?: number;
+  price_change_percentage_30d_in_currency?: number;
   volume24h: number;
   marketCap: number;
   predictionPercentage: number;

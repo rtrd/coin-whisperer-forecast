@@ -1,13 +1,12 @@
-import React, { memo, useState } from "react";
+import React, { memo } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Lock } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
-import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
+import { getCategoryBadgeStyle } from "@/utils/categoryStyles";
 import { CryptoToken, MarketData } from "@/types/crypto";
-import { SignupDialog } from "@/components/SignupDialog";
 
 interface MarketDataRowProps {
   token: MarketData;
@@ -19,12 +18,10 @@ interface MarketDataRowProps {
 
 export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
   ({ token, index, isUnlocked, AllCryptosData }) => {
-    const [showSignupDialog, setShowSignupDialog] = useState(false);
     const tokenUrlId = getTokenUrlId(token.value);
 
     return (
-      <>
-        <TableRow className="border-gray-700 hover:bg-gray-700/50 h-16">
+      <TableRow className="border-gray-700 hover:bg-gray-700/50 h-16">
           <TableCell className="text-gray-300 font-medium w-12 px-2 py-3">
             {index + 1}
           </TableCell>
@@ -71,58 +68,55 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
           </TableCell>
 
           <TableCell className="w-32 px-2 py-3">
-            {isUnlocked ? (
-              <div
-                className={`flex items-center gap-1 ${
-                  token.category === "Stablecoin" 
-                    ? "text-gray-400" 
-                    : token.predictionPercentage >= 0
-                    ? "text-green-400"
-                    : "text-red-400"
-                }`}
-              >
-                {token.category === "Stablecoin" 
-                  ? "-" 
-                  : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
-                }
-              </div>
-            ) : (
-              <div 
-                className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
-                onClick={() => setShowSignupDialog(true)}
-              >
-                <Lock className="h-3 w-3 text-yellow-400" />
-                <span className="text-yellow-400 text-xs">Premium</span>
-              </div>
-            )}
+            <div
+              className={`flex items-center gap-1 ${
+                !token.price_change_percentage_7d_in_currency
+                  ? "text-gray-400"
+                  : token.price_change_percentage_7d_in_currency >= 0
+                  ? "text-green-400"
+                  : "text-red-400"
+              }`}
+            >
+              {!token.price_change_percentage_7d_in_currency ? (
+                "-"
+              ) : (
+                <>
+                  {token.price_change_percentage_7d_in_currency >= 0 ? (
+                    <TrendingUp className="h-4 w-4" />
+                  ) : (
+                    <TrendingDown className="h-4 w-4" />
+                  )}
+                  {token.price_change_percentage_7d_in_currency >= 0 ? "+" : ""}
+                  {token.price_change_percentage_7d_in_currency.toFixed(2)}%
+                </>
+              )}
+            </div>
           </TableCell>
 
-          <TableCell className="w-28 px-2 py-3">
-            {isUnlocked ? (
-              <div className="flex items-center gap-1">
-                <div className={`font-mono ${
-                  token.category === "Stablecoin" 
-                    ? "text-gray-400" 
-                    : getAIScoreColor(token.aiScore)
-                }`}>
-                  {token.category === "Stablecoin" 
-                    ? "-" 
-                    : token.aiScore.toFixed(0)
-                  }
-                </div>
-                {token.category !== "Stablecoin" && (
-                  <div className="text-gray-400 text-xs">/100</div>
-                )}
-              </div>
-            ) : (
-              <div 
-                className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
-                onClick={() => setShowSignupDialog(true)}
-              >
-                <Lock className="h-3 w-3 text-yellow-400" />
-                <span className="text-yellow-400 text-xs">Premium</span>
-              </div>
-            )}
+          <TableCell className="w-32 px-2 py-3">
+            <div
+              className={`flex items-center gap-1 ${
+                !token.price_change_percentage_30d_in_currency
+                  ? "text-gray-400"
+                  : token.price_change_percentage_30d_in_currency >= 0
+                  ? "text-green-400"
+                  : "text-red-400"
+              }`}
+            >
+              {!token.price_change_percentage_30d_in_currency ? (
+                "-"
+              ) : (
+                <>
+                  {token.price_change_percentage_30d_in_currency >= 0 ? (
+                    <TrendingUp className="h-4 w-4" />
+                  ) : (
+                    <TrendingDown className="h-4 w-4" />
+                  )}
+                  {token.price_change_percentage_30d_in_currency >= 0 ? "+" : ""}
+                  {token.price_change_percentage_30d_in_currency.toFixed(2)}%
+                </>
+              )}
+            </div>
           </TableCell>
 
           <TableCell className="text-gray-300 font-mono w-40 px-2 py-3">
@@ -142,14 +136,6 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
             </Badge>
           </TableCell>
         </TableRow>
-        
-        <SignupDialog
-          open={showSignupDialog}
-          onOpenChange={setShowSignupDialog}
-          title="Unlock AI Predictions"
-          description="Get access to AI-powered predictions, market sentiment analysis, and technical indicators."
-        />
-      </>
     );
   }
 );
