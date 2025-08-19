@@ -43,7 +43,12 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   handleFilterChange,
 }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 relative">
+      {/* Navigation - Positioned at top right */}
+      <ErrorBoundary>
+        <MainNavigation />
+      </ErrorBoundary>
+
       <div className="container mx-auto px-4 py-4 md:py-8">
         <ErrorBoundary>
           <IndexHeader
@@ -54,11 +59,6 @@ export const IndexContent: React.FC<IndexContentProps> = ({
           />
         </ErrorBoundary>
       </div>
-
-      {/* Navigation */}
-      <ErrorBoundary>
-        <MainNavigation />
-      </ErrorBoundary>
 
       <div className="container mx-auto px-4 pb-8">
         {/* WordPress Integration - Latest Crypto News & Analysis */}
