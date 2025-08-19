@@ -48,11 +48,6 @@ export const useCryptoFilters = () => {
     } catch (error: any) {
       const errorMessage = error.message || 'Failed to fetch crypto data';
       setError(errorMessage);
-      console.error('Crypto data fetch error:', error);
-      
-      // Set empty arrays as fallback to prevent infinite loading
-      setFilteredCryptos([]);
-      setAllCryptosData([]);
     } finally {
       setIsLoading(false);
     }

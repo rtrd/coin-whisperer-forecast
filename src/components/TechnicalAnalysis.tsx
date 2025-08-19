@@ -40,42 +40,6 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   data,
   isLoading,
 }) => {
-  // Early return for loading state
-  if (isLoading) {
-    return (
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
-          <Skeleton className="h-6 w-32 bg-gray-700" />
-          <Skeleton className="h-4 w-48 bg-gray-700" />
-        </CardHeader>
-        <CardContent className="space-y-4 p-6">
-          {[...Array(5)].map((_, i) => (
-            <Skeleton key={i} className="h-16 w-full bg-gray-700" />
-          ))}
-        </CardContent>
-      </Card>
-    );
-  }
-
-  // Early return for no data
-  if (!data || data.length === 0) {
-    return (
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
-          <CardTitle className="text-white flex items-center gap-3">
-            <div className="p-2 rounded-full bg-blue-500/20">
-              <BarChart3 className="h-6 w-6 text-blue-400" />
-            </div>
-            Technical Analysis
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <p className="text-gray-400">No data available for analysis</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   const prices = data.map((d) => d.price);
 
   const currentPrice = prices[prices.length - 1];
@@ -191,6 +155,39 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     return { macd: latestMACD, signal: latestSignal, strength: scaled };
   };
 
+  if (isLoading) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
+          <Skeleton className="h-6 w-32 bg-gray-700" />
+          <Skeleton className="h-4 w-48 bg-gray-700" />
+        </CardHeader>
+        <CardContent className="space-y-4 p-6">
+          {[...Array(5)].map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full bg-gray-700" />
+          ))}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (!data || data.length === 0) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
+        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
+          <CardTitle className="text-white flex items-center gap-3">
+            <div className="p-2 rounded-full bg-blue-500/20">
+              <BarChart3 className="h-6 w-6 text-blue-400" />
+            </div>
+            Technical Analysis
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <p className="text-gray-400">No data available for analysis</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   // Calculate technical indicators
   const rsi = calculateRSI(prices);

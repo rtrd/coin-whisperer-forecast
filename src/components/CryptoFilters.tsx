@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -17,6 +18,8 @@ interface FilterState {
   category: string;
   priceRange: [number, number];
   scoreRange: [number, number];
+  aiScoreRange: [number, number];
+  predictionRange: [number, number];
   volumeRange: [number, number];
   marketCapRange: [number, number];
   change24hRange: [number, number];
@@ -30,10 +33,12 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
     category: "all",
     priceRange: [0, 1000000],
     scoreRange: [0, 10],
+    aiScoreRange: [0, 100],
+    predictionRange: [-50, 100],
     volumeRange: [0, 100000000000],
     marketCapRange: [0, 100000000000000],
     change24hRange: [-50, 50],
-    sortBy: "name",
+    sortBy: "score",
     searchTerm: "",
   });
 
@@ -48,56 +53,69 @@ export const CryptoFilters = ({ onFilterChange }: FilterProps) => {
       category: "all",
       priceRange: [0, 1000000],
       scoreRange: [0, 10],
+      aiScoreRange: [0, 100],
+      predictionRange: [-50, 100],
       volumeRange: [0, 100000000000],
       marketCapRange: [0, 100000000000000],
       change24hRange: [-50, 50],
-      sortBy: "name",
+      sortBy: "score",
       searchTerm: "",
     };
     setFilters(defaultFilters);
     onFilterChange(defaultFilters);
   };
 
-  const hasActiveFilters = () => {
-    const defaultState = {
-      category: "all",
-      priceRange: [0, 1000000],
-      scoreRange: [0, 10],
-      volumeRange: [0, 100000000000],
-      marketCapRange: [0, 100000000000000],
-      change24hRange: [-50, 50],
-      sortBy: "name",
-      searchTerm: "",
-    };
-
-    return Object.entries(filters).some(([key, value]) => {
-      const defaultValue = defaultState[key as keyof FilterState];
-      if (Array.isArray(value) && Array.isArray(defaultValue)) {
-        return value[0] !== defaultValue[0] || value[1] !== defaultValue[1];
-      }
-      return value !== defaultValue;
-    });
-  };
+  const activeFiltersCount = Object.entries(filters).filter(([key, value]) => {
+    if (key === "category" && value !== "all") return true;
+    if (key === "priceRange" && (value[0] !== 0 || value[1] !== 1000000))
+      return true;
+    if (key === "scoreRange" && (value[0] !== 0 || value[1] !== 10))
+      return true;
+    if (key === "aiScoreRange" && (value[0] !== 0 || value[1] !== 100))
+      return true;
+    if (key === "predictionRange" && (value[0] !== -50 || value[1] !== 100))
+      return true;
+    if (key === "volumeRange" && (value[0] !== 0 || value[1] !== 100000000000))
+      return true;
+    if (
+      key === "marketCapRange" &&
+      (value[0] !== 0 || value[1] !== 100000000000000)
+    )
+      return true;
+    if (key === "change24hRange" && (value[0] !== -50 || value[1] !== 50))
+      return true;
+    if (key === "sortBy" && value !== "score") return true;
+    if (key === "searchTerm" && value !== "") return true;
+    return false;
+  }).length;
 
   return (
-    <Card className="bg-gray-800/50 border-gray-700">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger asChild>
-          <CardHeader className="cursor-pointer">
-            <FilterHeader isOpen={isOpen} activeFiltersCount={hasActiveFilters() ? 1 : 0} />
+    <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Card className="mb-6 bg-gray-800/50 border-gray-700 shadow-2xl">
+        <CollapsibleTrigger className="w-full">
+          <CardHeader className="cursor-pointer transition-colors">
+            <CardTitle>
+              <FilterHeader
+                isOpen={isOpen}
+                activeFiltersCount={activeFiltersCount}
+              />
+            </CardTitle>
           </CardHeader>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CardContent className="space-y-6">
+          <CardContent>
             <BasicFilters
               filters={filters}
               onUpdateFilters={updateFilters}
               onResetFilters={resetFilters}
             />
-            <SliderFilters filters={filters} onUpdateFilters={updateFilters} />
+            <SliderFilters
+              filters={filters}
+              onUpdateFilters={updateFilters}
+            />
           </CardContent>
         </CollapsibleContent>
-      </Collapsible>
-    </Card>
+      </Card>
+    </Collapsible>
   );
 };

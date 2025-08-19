@@ -11,7 +11,6 @@ import { TokenDataService } from "@/services/tokenDataService";
 import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { useMarketData } from "@/hooks/useMarketData";
-import { useTokenInfo } from "@/hooks/useTokenInfo";
 import { toast } from "sonner";
 import { getTokenInfo, getCoinGeckoId } from "@/utils/tokenMapping";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
@@ -31,7 +30,6 @@ import {
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 import { PriceData } from "@/types/crypto";
 import { useAdScript } from "@/hooks/useAdScript";
-import { MainNavigation } from "@/components/MainNavigation";
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -46,9 +44,6 @@ const TokenDetail = () => {
   // Get token info and crypto options
   const selectedToken = getTokenInfo(tokenId || "bitcoin");
   const cryptoId = getCoinGeckoId(tokenId || "bitcoin");
-  
-  // Fetch real token data from API
-  const { data: tokenInfo, isLoading: tokenInfoLoading, error: tokenInfoError } = useTokenInfo(cryptoId);
 
   // Initialize ad script on page load
   useAdScript();
@@ -67,21 +62,10 @@ const TokenDetail = () => {
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
   const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
-  
-  // Reset state when tokenId changes
-  useEffect(() => {
-    setTimeframe("7d");
-    setPredictionDays(7);
-    setModelType("technical");
-    setShowPrediction(false);
-    setSentimentData(null);
-    setTechnicalIndicator(null);
-  }, [tokenId]);
-
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetchTechnicalIndicators(cryptoId, "3m");
+        const response = await fetchTechnicalIndicators(cryptoId, "3m"); // or any topic
         console.log("Fetched technical indicators:", response);
         const prices = response.map((d) => d.price);
         if (prices[0] == undefined) {
@@ -96,16 +80,11 @@ const TokenDetail = () => {
         }
       } catch (error) {
         console.error("Error fetching technical indicators:", error);
-        // Generate fallback data on error
-        const data = generateMockData(cryptoId, timeframe, Alltokenmarketstats);
-        setTechnicalIndicator(data);
       }
     };
 
-    if (tokenId && cryptoId) {
-      getData();
-    }
-  }, [tokenId, cryptoId, timeframe]);
+    getData();
+  }, []);
   const {
     data: cryptoData,
     isLoading: dataLoading,
@@ -125,7 +104,6 @@ const TokenDetail = () => {
   } = useCryptoFilters();
 
   const currentPrice =
-    tokenInfo?.current_price ||
     tokenmarketstats?.current_price ||
     (cryptoData && cryptoData.length > 0
       ? cryptoData[cryptoData.length - 1]?.price
@@ -135,7 +113,6 @@ const TokenDetail = () => {
       ? cryptoData[cryptoData.length - 2]?.price
       : 0;
   const priceChange =
-    tokenInfo?.price_change_percentage_24h ||
     tokenmarketstats?.price_change_percentage_24h ||
     (currentPrice && previousPrice
       ? ((currentPrice - previousPrice) / previousPrice) * 100
@@ -148,11 +125,11 @@ const TokenDetail = () => {
   );
 
   // Create fallback market stats if none provided
-  const displayMarketStats = tokenInfo || tokenmarketstats || {
+  const displayMarketStats = tokenmarketstats || {
     current_price: currentPrice,
     price_change_percentage_24h: priceChange,
-    market_cap: tokenInfo?.market_cap || marketData.marketCap,
-    total_volume: tokenInfo?.total_volume || marketData.volume24h,
+    market_cap: marketData.marketCap,
+    total_volume: marketData.volume24h,
     circulating_supply: marketData.circulatingSupply,
     total_supply: marketData.totalSupply,
     ath: marketData.allTimeHigh,
@@ -294,43 +271,26 @@ const TokenDetail = () => {
 
   // Create SEO data object
   const seoData: TokenSEOData = {
-    name: tokenInfo?.name || selectedToken?.name || "",
-    symbol: tokenInfo?.symbol || selectedToken?.symbol || "",
+    name: selectedToken?.name || "",
+    symbol: selectedToken?.symbol || "",
     currentPrice,
     priceChange,
     marketCap: displayMarketStats.market_cap,
     description:
-      tokenInfo?.description ||
       selectedToken?.description ||
-      `${tokenInfo?.name || selectedToken?.name} price analysis and predictions`,
+      `${selectedToken?.name} price analysis and predictions`,
     category: selectedToken?.category || "Cryptocurrency",
   };
 
   const canonicalUrl = generateCanonicalUrl(tokenId || "bitcoin");
   const breadcrumbItems = [
     { label: "Tokens", href: "/tokens" },
-    { label: `${tokenInfo?.name || selectedToken?.name} (${tokenInfo?.symbol || selectedToken?.symbol})` },
+    { label: `${selectedToken?.name} (${selectedToken?.symbol})` },
   ];
-
-  // Show loading state while fetching token info
-  if (tokenInfoLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
-        <MainNavigation />
-        <Card className="bg-gray-800/50 border-gray-700">
-          <CardContent className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
-            <p className="text-gray-300">Loading token data...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   if (!selectedToken) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
-        <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
             <h1 className="text-2xl font-bold text-white mb-4">
@@ -339,6 +299,12 @@ const TokenDetail = () => {
             <p className="text-gray-300 mb-4">
               The token "{tokenId}" could not be found.
             </p>
+            <Link to="/">
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -347,94 +313,90 @@ const TokenDetail = () => {
 
   return (
     <>
-      <MainNavigation />
-      <div className="pt-16 bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <Helmet>
-          <title>{generateTokenMetaTitle(seoData)}</title>
-          <meta
-            name="description"
-            content={generateTokenMetaDescription(seoData)}
-          />
-          <meta name="keywords" content={generateTokenKeywords(seoData)} />
+      <Helmet>
+        <title>{generateTokenMetaTitle(seoData)}</title>
+        <meta
+          name="description"
+          content={generateTokenMetaDescription(seoData)}
+        />
+        <meta name="keywords" content={generateTokenKeywords(seoData)} />
 
-          {/* Open Graph tags */}
-          <meta property="og:title" content={generateTokenMetaTitle(seoData)} />
-          <meta
-            property="og:description"
-            content={generateTokenMetaDescription(seoData)}
-          />
-          <meta property="og:url" content={canonicalUrl} />
-          <meta property="og:type" content="website" />
-          <meta
-            property="og:image"
-            content="https://pumpparade.com/og-image.jpg"
-          />
-          <meta
-            property="og:image:alt"
-            content={`${seoData.name} price analysis and predictions`}
-          />
-          <meta property="og:site_name" content="Pump Parade" />
+        {/* Open Graph tags */}
+        <meta property="og:title" content={generateTokenMetaTitle(seoData)} />
+        <meta
+          property="og:description"
+          content={generateTokenMetaDescription(seoData)}
+        />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://pumpparade.com/og-image.jpg"
+        />
+        <meta
+          property="og:image:alt"
+          content={`${seoData.name} price analysis and predictions`}
+        />
+        <meta property="og:site_name" content="Pump Parade" />
 
-          {/* Twitter Card tags */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:title" content={generateTokenMetaTitle(seoData)} />
-          <meta
-            name="twitter:description"
-            content={generateTokenMetaDescription(seoData)}
-          />
-          <meta
-            name="twitter:image"
-            content="https://pumpparade.com/og-image.jpg"
-          />
-          <meta
-            name="twitter:image:alt"
-            content={`${seoData.name} price analysis and predictions`}
-          />
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={generateTokenMetaTitle(seoData)} />
+        <meta
+          name="twitter:description"
+          content={generateTokenMetaDescription(seoData)}
+        />
+        <meta
+          name="twitter:image"
+          content="https://pumpparade.com/og-image.jpg"
+        />
+        <meta
+          name="twitter:image:alt"
+          content={`${seoData.name} price analysis and predictions`}
+        />
 
-          {/* Additional SEO tags */}
-          <meta
-            name="robots"
-            content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-          />
-          <meta name="author" content="Pump Parade" />
-          <meta name="theme-color" content="#1e40af" />
+        {/* Additional SEO tags */}
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+        <meta name="author" content="Pump Parade" />
+        <meta name="theme-color" content="#1e40af" />
 
-          {/* Structured Data */}
-          <script type="application/ld+json">
-            {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
-          </script>
-        </Helmet>
-        <TokenProvider
-          tokenId={tokenId || "bitcoin"}
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
+        </script>
+      </Helmet>
+      <TokenProvider
+        tokenId={tokenId || "bitcoin"}
+        cryptoOptions={cryptoOptions}
+      >
+        <TokenDetailLayout
+          cryptoId={cryptoId}
           cryptoOptions={cryptoOptions}
-        >
-          <TokenDetailLayout
-            cryptoId={cryptoId}
-            cryptoOptions={cryptoOptions}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
-            marketData={displayMarketStats}
-            cryptoData={cryptoData}
-            dataLoading={dataLoading}
-            prediction={prediction}
-            showPrediction={showPrediction}
-            timeframe={timeframe}
-            setTimeframe={setTimeframe}
-            predictionDays={predictionDays}
-            setPredictionDays={setPredictionDays}
-            modelType={modelType}
-            setModelType={setModelType}
-            predictionLoading={predictionLoading}
-            handlePredict={handlePredict}
-            handleClearPrediction={handleClearPrediction}
-            tokenId={tokenId || "bitcoin"}
-            selectedToken={selectedToken}
-            allCryptosData={allCryptosData}
-            SentimentData={setSentimentData}
-            tokenInfo={tokenInfo}
-          />
-        </TokenProvider>
-      </div>
+          currentPrice={currentPrice}
+          priceChange={priceChange}
+          marketData={displayMarketStats}
+          cryptoData={cryptoData}
+          dataLoading={dataLoading}
+          prediction={prediction}
+          showPrediction={showPrediction}
+          timeframe={timeframe}
+          setTimeframe={setTimeframe}
+          predictionDays={predictionDays}
+          setPredictionDays={setPredictionDays}
+          modelType={modelType}
+          setModelType={setModelType}
+          predictionLoading={predictionLoading}
+          handlePredict={handlePredict}
+          handleClearPrediction={handleClearPrediction}
+          tokenId={tokenId || "bitcoin"}
+          selectedToken={selectedToken}
+          allCryptosData={allCryptosData}
+          SentimentData={setSentimentData}
+        />
+      </TokenProvider>
     </>
   );
 };

@@ -1,13 +1,13 @@
 import React, { memo, useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
-import { getCategoryBadgeStyle } from "@/utils/categoryStyles";
+import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { CryptoToken, MarketData } from "@/types/crypto";
+import { SignupDialog } from "@/components/SignupDialog";
 
 interface MarketDataRowProps {
   token: MarketData;
@@ -18,7 +18,8 @@ interface MarketDataRowProps {
 }
 
 export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
-  ({ token, index, AllCryptosData }) => {
+  ({ token, index, isUnlocked, AllCryptosData }) => {
+    const [showSignupDialog, setShowSignupDialog] = useState(false);
     const tokenUrlId = getTokenUrlId(token.value);
 
     return (
@@ -40,10 +41,10 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
               />
               <div>
                 <div className="text-white font-medium">
-                  {token.name}
+                  {token.name.split(" ")[0]}
                 </div>
                 <div className="text-gray-400 text-sm">
-                  {token.symbol?.toUpperCase() || ""}
+                  {token.name.split(" ")[1]}
                 </div>
               </div>
             </Link>
@@ -69,6 +70,61 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
             </div>
           </TableCell>
 
+          <TableCell className="w-32 px-2 py-3">
+            {isUnlocked ? (
+              <div
+                className={`flex items-center gap-1 ${
+                  token.category === "Stablecoin" 
+                    ? "text-gray-400" 
+                    : token.predictionPercentage >= 0
+                    ? "text-green-400"
+                    : "text-red-400"
+                }`}
+              >
+                {token.category === "Stablecoin" 
+                  ? "-" 
+                  : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
+                }
+              </div>
+            ) : (
+              <div 
+                className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+                onClick={() => setShowSignupDialog(true)}
+              >
+                <Lock className="h-3 w-3 text-yellow-400" />
+                <span className="text-yellow-400 text-xs">Premium</span>
+              </div>
+            )}
+          </TableCell>
+
+          <TableCell className="w-28 px-2 py-3">
+            {isUnlocked ? (
+              <div className="flex items-center gap-1">
+                <div className={`font-mono ${
+                  token.category === "Stablecoin" 
+                    ? "text-gray-400" 
+                    : getAIScoreColor(token.aiScore)
+                }`}>
+                  {token.category === "Stablecoin" 
+                    ? "-" 
+                    : token.aiScore.toFixed(0)
+                  }
+                </div>
+                {token.category !== "Stablecoin" && (
+                  <div className="text-gray-400 text-xs">/100</div>
+                )}
+              </div>
+            ) : (
+              <div 
+                className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+                onClick={() => setShowSignupDialog(true)}
+              >
+                <Lock className="h-3 w-3 text-yellow-400" />
+                <span className="text-yellow-400 text-xs">Premium</span>
+              </div>
+            )}
+          </TableCell>
+
           <TableCell className="text-gray-300 font-mono w-40 px-2 py-3">
             {formatVolume(token.volume24h)}
           </TableCell>
@@ -86,6 +142,13 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
             </Badge>
           </TableCell>
         </TableRow>
+        
+        <SignupDialog
+          open={showSignupDialog}
+          onOpenChange={setShowSignupDialog}
+          title="Unlock AI Predictions"
+          description="Get access to AI-powered predictions, market sentiment analysis, and technical indicators."
+        />
       </>
     );
   }

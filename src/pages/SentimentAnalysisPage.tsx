@@ -171,36 +171,56 @@ const SentimentAnalysisPage = () => {
           const { fetchSentimentData } = await import(
             "@/services/aiPredictionService"
           );
-          const { calculateSentimentScore } = await import(
-            "@/utils/sentimentCalculation"
-          );
           const data = await fetchSentimentData(crypto.id);
 
-          // Use standardized sentiment calculation
-          const avgSentiment = calculateSentimentScore(data, crypto.id);
+          if (data && data.data && data.data.types_sentiment) {
+            // Calculate average sentiment score from different sources
+            const sentimentData = data.data.types_sentiment;
+            const sentimentValues = Object.values(sentimentData).filter(
+              (val) => typeof val === "number"
+            );
+            const avgSentiment =
+              sentimentValues.length > 0
+                ? sentimentValues.reduce((sum, val) => sum + val, 0) /
+                  sentimentValues.length
+                : Math.random() * 40 + 30; // fallback
 
+            return {
+              ...crypto,
+              sentiment: Math.round(avgSentiment),
+              trend:
+                avgSentiment > 60
+                  ? "up"
+                  : avgSentiment < 40
+                  ? "down"
+                  : "neutral",
+              socialScore:
+                data.data.social_score || Math.floor(Math.random() * 100),
+              galaxyScore:
+                data.data.galaxy_score || Math.floor(Math.random() * 100),
+              altRank: data.data.alt_rank || Math.floor(Math.random() * 100),
+            };
+          }
+
+          // Fallback data if API fails
+          const fallbackSentiment = Math.floor(Math.random() * 60) + 20;
           return {
             ...crypto,
-            sentiment: Math.round(avgSentiment),
+            sentiment: fallbackSentiment,
             trend:
-              avgSentiment > 60
+              fallbackSentiment > 60
                 ? "up"
-                : avgSentiment < 40
+                : fallbackSentiment < 40
                 ? "down"
                 : "neutral",
-            socialScore:
-              data?.data?.social_score || Math.floor(Math.random() * 100),
-            galaxyScore:
-              data?.data?.galaxy_score || Math.floor(Math.random() * 100),
-            altRank: data?.data?.alt_rank || Math.floor(Math.random() * 100),
+            socialScore: Math.floor(Math.random() * 100),
+            galaxyScore: Math.floor(Math.random() * 100),
+            altRank: Math.floor(Math.random() * 100),
           };
         } catch (error) {
           console.error(`Error fetching sentiment for ${crypto.name}:`, error);
-          // Fallback data - use deterministic fallback
-          const { calculateSentimentScore } = await import(
-            "@/utils/sentimentCalculation"
-          );
-          const fallbackSentiment = calculateSentimentScore(null, crypto.id);
+          // Fallback data
+          const fallbackSentiment = Math.floor(Math.random() * 60) + 20;
           return {
             ...crypto,
             sentiment: fallbackSentiment,
@@ -330,6 +350,18 @@ const SentimentAnalysisPage = () => {
         />
 
         <div className="container mx-auto px-4 pb-8">
+          {/* Back Button */}
+          <div className="flex items-center gap-4 mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {/* Main Content */}

@@ -26,7 +26,6 @@ import {
 import { AdUnit } from "@/components/ads/AdService";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
-import { MainNavigation } from "@/components/MainNavigation";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
 import { LazyLiveAIPredictions } from "@/components/lazy/LazyLiveAIPredictions";
@@ -368,21 +367,18 @@ const AIPricePrediction = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      {/* Header like homepage */}
-      <div className="container mx-auto px-4 py-4 md:py-8">
-        <IndexHeader
-          selectedCrypto="bitcoin"
-          cryptoOptions={cryptoOptions}
-          currentPrice={45000}
-          priceChange={2.5}
-        />
-      </div>
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        {/* Header like homepage */}
+        <div className="container mx-auto px-4 py-4 md:py-8">
+          <IndexHeader
+            selectedCrypto="bitcoin"
+            cryptoOptions={cryptoOptions}
+            currentPrice={45000}
+            priceChange={2.5}
+          />
+        </div>
 
-      {/* Navigation */}
-      <MainNavigation />
-
-      <div className="container mx-auto px-4 pb-8 pt-20">
         {/* Google Ad Manager - Header Ad */}
         <GAMAdUnit
           adUnitId="div-gpt-ad-1752654531765-0"
@@ -390,42 +386,56 @@ const AIPricePrediction = () => {
           className="mb-6 md:mb-8"
         />
 
+        <div className="container mx-auto px-4 pb-8">
+          {/* Back Button */}
+          <div className="flex items-center gap-4 mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+          </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-          {/* Main Content with SignupLock */}
-          <SignupLock
-            title="Unlock AI Price Predictions"
-            description="Get access to advanced machine learning price predictions - 100% free!"
-          >
-            {lockedContent}
-          </SignupLock>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+            {/* Main Content with SignupLock */}
+            <SignupLock
+              title="Unlock AI Price Predictions"
+              description="Get access to advanced machine learning price predictions - 100% free!"
+            >
+              {lockedContent}
+            </SignupLock>
 
-          {/* Responsive Sidebar */}
-          <div className="lg:col-span-1 order-first lg:order-last">
-            <div className="lg:sticky lg:top-8 space-y-4 sm:space-y-6 lg:space-y-8">
-              <MarketWinnersWidget topGainnersandLoosers={marketData} />
-              <div className="hidden lg:block">
-                <AdUnit type="skyscraper" className="ad-click" />
+            {/* Responsive Sidebar */}
+            <div className="lg:col-span-1 order-first lg:order-last">
+              <div className="lg:sticky lg:top-8 space-y-4 sm:space-y-6 lg:space-y-8">
+                <MarketWinnersWidget topGainnersandLoosers={marketData} />
+                <div className="hidden lg:block">
+                  <AdUnit type="skyscraper" className="ad-click" />
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Bottom Ad Placement */}
+          <div className="mt-12 flex justify-center">
+            <AdUnit type="leaderboard" className="ad-click" />
+          </div>
+
+          {/* Google Ad Manager - Bottom Ad */}
+          <GAMAdUnit
+            adUnitId="div-gpt-ad-1752654531765-1"
+            size={[728, 90]}
+            className="mt-8"
+          />
         </div>
 
-        {/* Bottom Ad Placement */}
-        <div className="mt-12 flex justify-center">
-          <AdUnit type="leaderboard" className="ad-click" />
-        </div>
-
-        {/* Google Ad Manager - Bottom Ad */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-1"
-          size={[728, 90]}
-          className="mt-8"
-        />
+        <Footer />
       </div>
-
-      <Footer />
-    </div>
+    </>
   );
 };
 

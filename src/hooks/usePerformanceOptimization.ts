@@ -4,19 +4,11 @@ import { performanceService } from '@/services/performanceService';
 // Hook for performance optimization
 export const usePerformanceOptimization = () => {
   useEffect(() => {
-    // Only run in browser environment
-    if (typeof window === 'undefined') return;
-    
-    // Add a small delay to ensure React is fully initialized
-    const timeoutId = setTimeout(() => {
-      performanceService.optimizeImages();
-    }, 100);
+    // Initialize performance optimizations
+    performanceService.optimizeImages();
     
     // Cleanup on unmount
-    return () => {
-      clearTimeout(timeoutId);
-      performanceService.cleanup();
-    };
+    return () => performanceService.cleanup();
   }, []);
 
   const getCachedData = useCallback(

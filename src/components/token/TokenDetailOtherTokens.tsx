@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, ArrowRight, Star } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { getCanonicalTokenUrl } from "@/utils/tokenUrlNormalization";
 
 interface TokenDetailOtherTokensProps {
   tokenId: string;
@@ -46,7 +45,7 @@ export const TokenDetailOtherTokens: React.FC<TokenDetailOtherTokensProps> = ({
               .map((token) => (
                 <Link
                   key={token.value}
-                  to={`/token/${getCanonicalTokenUrl(token)}`}
+                  to={`/token/${token.name}`}
                   className="flex-shrink-0 w-32"
                 >
                   <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-xl p-4 border border-gray-700/50 hover:border-gray-600/70 hover:bg-gradient-to-br hover:from-gray-700/70 hover:to-gray-800/70 transition-all duration-300 h-full shadow-lg hover:shadow-xl transform hover:scale-105">
@@ -98,7 +97,7 @@ export const TokenDetailOtherTokens: React.FC<TokenDetailOtherTokensProps> = ({
               .map((token) => (
                 <Link
                   key={token.value}
-                  to={`/token/${getCanonicalTokenUrl(token)}`}
+                  to={`/token/${token.name}`}
                   className="block"
                 >
                   <div className="bg-gradient-to-br from-gray-800/60 to-gray-900/60 rounded-xl p-5 border border-gray-700/50 hover:border-gray-600/70 hover:bg-gradient-to-br hover:from-gray-700/70 hover:to-gray-800/70 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">

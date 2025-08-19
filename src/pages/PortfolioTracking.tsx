@@ -125,6 +125,14 @@ const PortfolioTracking = () => {
         </div>
 
         <div className="container mx-auto px-4 pb-8">
+          <div className="flex items-center gap-4 mb-6">
+            <Link to="/">
+              <Button variant="outline" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             <div className="lg:col-span-3 space-y-4 sm:space-y-6 lg:space-y-8">

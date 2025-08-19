@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { useLocation } from "react-router-dom";
 import { IndexHeader } from "@/components/IndexHeader";
-import { MainNavigation } from "@/components/MainNavigation";
 import Footer from "@/components/Footer";
 import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
@@ -178,12 +177,7 @@ const AllTokens = () => {
             currentPrice={50000}
             priceChange={2.5}
           />
-        </div>
 
-        {/* Navigation */}
-        <MainNavigation />
-
-        <div className="container mx-auto px-4 pb-8 pt-20">
           {/* Ad Banner After Header */}
           <GAMAdUnit
             adUnitId="div-gpt-ad-1752654531765-0"
@@ -192,20 +186,27 @@ const AllTokens = () => {
           />
 
           <div className="mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="mb-4 bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
             <h1 className="text-4xl font-bold text-white mb-2">All Tokens</h1>
             <p className="text-gray-300">
               Browse and analyze all available cryptocurrencies
             </p>
           </div>
 
-          {/* Token List with Integrated Filters */}
+          {/* Crypto Filters */}
+          <CryptoFilters onFilterChange={handleFilterChange} />
+
+          {/* Token List */}
           <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
             <CardHeader>
-              {/* Smart Crypto Filters */}
-              <div className="mb-6">
-                <CryptoFilters onFilterChange={handleFilterChange} />
-              </div>
-              
               <CardTitle className="text-white flex items-center gap-2">
                 <ExternalLink className="h-5 w-5 text-blue-400" />
                 All Tokens ({filteredCryptos.length})
@@ -231,10 +232,10 @@ const AllTokens = () => {
                       </span>
                       <div>
                         <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                          {token.name}
+                          {token.symbol.toUpperCase()}
                         </div>
                         <div className="text-gray-400 text-xs">
-                          {token.symbol.toUpperCase()}
+                          {(Math.random() * 10).toFixed(2)}/10
                         </div>
                       </div>
                     </div>

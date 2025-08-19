@@ -16,7 +16,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 15.7,
       volume24h: 28500000000,
       marketCap: 847000000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 8.5,
+      aiScore: 85
     },
     {
       id: "ethereum",
@@ -31,7 +33,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 12.1,
       volume24h: 15200000000,
       marketCap: 310000000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 6.2,
+      aiScore: 82
     },
     {
       id: "solana",
@@ -46,7 +50,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 32.8,
       volume24h: 3800000000,
       marketCap: 44000000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 12.8,
+      aiScore: 78
     },
     {
       id: "chainlink",
@@ -61,7 +67,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 24.5,
       volume24h: 625000000,
       marketCap: 8500000000,
-      category: "DeFi"
+      category: "DeFi", 
+      predictionPercentage: 7.8,
+      aiScore: 74
     },
     {
       id: "litecoin",
@@ -76,7 +84,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 18.3,
       volume24h: 580000000,
       marketCap: 5400000000,
-      category: "Payment Token"
+      category: "Payment Token",
+      predictionPercentage: 3.5,
+      aiScore: 71
     },
     {
       id: "uniswap",
@@ -91,7 +101,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 28.2,
       volume24h: 285000000,
       marketCap: 3900000000,
-      category: "DeFi"
+      category: "DeFi",
+      predictionPercentage: 4.1,
+      aiScore: 69
     },
     {
       id: "matic-network",
@@ -106,7 +118,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 41.8,
       volume24h: 420000000,
       marketCap: 9200000000,
-      category: "L2"
+      category: "L2",
+      predictionPercentage: 6.8,
+      aiScore: 64
     },
     {
       id: "cardano",
@@ -121,7 +135,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 16.4,
       volume24h: 520000000,
       marketCap: 18200000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 5.2,
+      aiScore: 67
     },
     {
       id: "avalanche-2",
@@ -136,7 +152,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 25.3,
       volume24h: 640000000,
       marketCap: 15200000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 4.8,
+      aiScore: 68
     },
     {
       id: "polkadot",
@@ -144,14 +162,16 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       label: "Polkadot",
       name: "Polkadot DOT",
       symbol: "DOT",
-      image: "https://assets.coingecku.com/coins/images/12171/large/polkadot.png",
+      image: "https://assets.coingecko.com/coins/images/12171/large/polkadot.png",
       price: 6.25,
       change24h: 1.95,
       change7d: 6.4,
       change30d: 14.7,
       volume24h: 235000000,
       marketCap: 8900000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 3.2,
+      aiScore: 70
     },
     {
       id: "stellar",
@@ -166,7 +186,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 35.6,
       volume24h: 185000000,
       marketCap: 3600000000,
-      category: "Payment Token"
+      category: "Payment Token",
+      predictionPercentage: 6.5,
+      aiScore: 63
     },
     {
       id: "algorand",
@@ -181,7 +203,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 19.2,
       volume24h: 95000000,
       marketCap: 1500000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: 5.8,
+      aiScore: 61
     },
     // Add losing tokens
     {
@@ -197,7 +221,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -22.1,
       volume24h: 890000000,
       marketCap: 11000000000,
-      category: "Meme Coin"
+      category: "Meme Coin",
+      predictionPercentage: -4.5,
+      aiScore: 45
     },
     {
       id: "shiba-inu",
@@ -212,7 +238,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -28.4,
       volume24h: 340000000,
       marketCap: 5000000000,
-      category: "Meme Coin"
+      category: "Meme Coin",
+      predictionPercentage: -5.8,
+      aiScore: 38
     },
     {
       id: "ripple",
@@ -227,7 +255,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -14.6,
       volume24h: 1200000000,
       marketCap: 29000000000,
-      category: "Payment Token"
+      category: "Payment Token",
+      predictionPercentage: -2.5,
+      aiScore: 59
     },
     {
       id: "binancecoin",
@@ -242,7 +272,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -8.9,
       volume24h: 1800000000,
       marketCap: 47000000000,
-      category: "Exchange Token"
+      category: "Exchange Token",
+      predictionPercentage: -1.8,
+      aiScore: 72
     },
     {
       id: "tron",
@@ -257,7 +289,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -18.3,
       volume24h: 420000000,
       marketCap: 8500000000,
-      category: "Layer 1 (L1)"
+      category: "Layer 1 (L1)",
+      predictionPercentage: -3.5,
+      aiScore: 54
     },
     {
       id: "aave",
@@ -272,7 +306,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -7.2,
       volume24h: 180000000,
       marketCap: 1200000000,
-      category: "DeFi"
+      category: "DeFi",
+      predictionPercentage: -0.5,
+      aiScore: 73
     },
     {
       id: "compound-governance-token",
@@ -287,7 +323,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -12.1,
       volume24h: 65000000,
       marketCap: 280000000,
-      category: "DeFi"
+      category: "DeFi",
+      predictionPercentage: -1.8,
+      aiScore: 68
     },
     {
       id: "maker",
@@ -302,7 +340,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: -4.8,
       volume24h: 45000000,
       marketCap: 1100000000,
-      category: "DeFi"
+      category: "DeFi",
+      predictionPercentage: -0.2,
+      aiScore: 71
     },
     {
       id: "fetch-ai",
@@ -317,7 +357,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 45.7,
       volume24h: 125000000,
       marketCap: 380000000,
-      category: "AI"
+      category: "AI",
+      predictionPercentage: 8.2,
+      aiScore: 76
     },
     {
       id: "render-token",
@@ -332,7 +374,9 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
       change30d: 52.8,
       volume24h: 95000000,
       marketCap: 1100000000,
-      category: "AI"
+      category: "AI",
+      predictionPercentage: 9.5,
+      aiScore: 79
     }
   ];
 

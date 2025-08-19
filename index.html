@@ -14,52 +14,10 @@
     <link rel="dns-prefetch" href="//cdn.bmcdn6.com" />
     <link rel="dns-prefetch" href="//appsha-prm.ctengine.io" />
     
-    <!-- Critical CSS - inline for fastest loading -->
-    <style>
-      /* Critical above-the-fold styles */
-      * { box-sizing: border-box; }
-      html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
-      body { 
-        margin: 0; 
-        font-family: Inter, system-ui, sans-serif; 
-        line-height: 1.5; 
-        color: #ffffff; 
-        background-color: #0f172a;
-        -webkit-font-smoothing: antialiased;
-      }
-      #root { min-height: 100vh; display: flex; flex-direction: column; }
-      .loading-skeleton { 
-        background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
-        background-size: 200% 100%;
-        animation: loading 1.5s infinite;
-      }
-      @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-      .card { 
-        background: rgba(15, 23, 42, 0.8); 
-        border: 1px solid #334155; 
-        border-radius: 0.75rem; 
-        backdrop-filter: blur(8px);
-      }
-    </style>
-    
     <!-- Preload critical resources -->
     <link rel="modulepreload" href="/src/main.tsx" />
     <link rel="preload" href="/src/index.css" as="style" />
     <link rel="preload" href="/favicon.png" as="image" type="image/png" />
-    
-    <!-- Preload critical JavaScript chunks -->
-    <link rel="modulepreload" href="/js/react-vendor.js" />
-    <link rel="modulepreload" href="/js/router.js" />
-    <link rel="modulepreload" href="/js/ui-core.js" />
-    
-    <!-- Prefetch likely next resources -->
-    <link rel="prefetch" href="/js/charts.js" />
-    <link rel="prefetch" href="/js/ui-components.js" />
-    
-    <!-- Font preloading for better performance -->
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
 
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#0f172a" />
@@ -74,7 +32,6 @@
 
     <!-- Security Headers -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests; block-all-mixed-content" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
     <title>Pump Parade | AI-Powered Crypto Research Tools</title>

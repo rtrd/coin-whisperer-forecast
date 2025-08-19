@@ -20,6 +20,18 @@ export const TokenDetailHeader: React.FC<TokenDetailHeaderProps> = ({
 }) => {
   return (
     <>
+      {/* Header with Back Button */}
+      <div className="mb-6">
+        <Link to="/">
+          <Button
+            variant="outline"
+            className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+        </Link>
+      </div>
 
       {/* Homepage Header */}
       <IndexHeader

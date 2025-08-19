@@ -15,30 +15,14 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
   activeFilter,
   AllCryptosData = [],
 }) => {
-  // Add safety check for marketData
-  if (!marketData || !Array.isArray(marketData)) {
-    console.error("MarketDataGrid: Invalid marketData prop", marketData);
-    return (
-      <div className="text-center text-gray-400 py-8">
-        <p>No market data available</p>
-      </div>
-    );
-  }
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
       {marketData.map((token, index) => {
-        // Add safety checks
-        if (!token || !token.value) {
-          console.error("MarketDataGrid: Invalid token data", token, index);
-          return null;
-        }
-
         const tokenUrlId = getTokenUrlId(token.value);
 
         return (
           <MarketDataGridCard
-            key={`${token.value}-${index}`}
+            key={token.value}
             token={token}
             index={index}
             isUnlocked={isUnlocked}
@@ -46,7 +30,7 @@ export const MarketDataGrid: React.FC<MarketDataGridProps> = ({
             AllCryptosData={AllCryptosData}
           />
         );
-      }).filter(Boolean)}
+      })}
     </div>
   );
 };

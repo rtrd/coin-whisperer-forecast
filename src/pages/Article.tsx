@@ -14,7 +14,6 @@ import { ArticleHeader } from "@/components/ArticleHeader";
 import { ArticleContent } from "@/components/ArticleContent";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { ArticleNotFound } from "@/components/ArticleNotFound";
-import { MainNavigation } from "@/components/MainNavigation";
 import {
   formatArticleForDisplay,
   getRelatedArticles,
@@ -224,10 +223,7 @@ const Article = () => {
         </Helmet>
       )}
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 pt-20">
-        {/* Navigation */}
-        <MainNavigation />
-        
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         {/* Header like homepage */}
         <div className="container mx-auto px-4 py-4 md:py-8">
           <IndexHeader
@@ -249,6 +245,18 @@ const Article = () => {
         </div>
 
         <div className="container mx-auto px-4 pb-8">
+          {/* Back Button */}
+          <div className="flex items-center gap-4 mb-6">
+            <Link to="/">
+              <Button
+                variant="outline"
+                className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Home
+              </Button>
+            </Link>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Main Content */}

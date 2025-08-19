@@ -23,10 +23,6 @@ export const TokenPriceDisplay: React.FC<TokenPriceDisplayProps> = ({
   priceChange,
   tokenSymbol = 'btc',
 }) => {
-  // Add safety checks for display
-  const safeCurrentPrice = currentPrice || 0;
-  const safePriceChange = priceChange || 0;
-
   const handleBuy = () => {
     openAffiliateLink(tokenSymbol);
     toast.success("Redirecting to buy...", {
@@ -52,26 +48,26 @@ export const TokenPriceDisplay: React.FC<TokenPriceDisplayProps> = ({
         </div>
         <div className="text-4xl font-bold text-white mb-3">
           $
-          {safeCurrentPrice.toLocaleString("en-US", {
+          {currentPrice.toLocaleString("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 6,
           })}
         </div>
         <div
           className={`flex items-center justify-center gap-2 px-4 py-2 rounded-xl mb-6 ${
-            safePriceChange >= 0
+            priceChange >= 0
               ? "bg-green-500/20 text-green-400"
               : "bg-red-500/20 text-red-400"
           }`}
         >
-          {safePriceChange >= 0 ? (
+          {priceChange >= 0 ? (
             <TrendingUp className="h-4 w-4" />
           ) : (
             <TrendingDown className="h-4 w-4" />
           )}
           <span className="text-lg font-semibold">
-            {safePriceChange >= 0 ? "+" : ""}
-            {safePriceChange.toFixed(2)}%
+            {priceChange >= 0 ? "+" : ""}
+            {priceChange.toFixed(2)}%
           </span>
           <span className="text-sm opacity-80">24h</span>
         </div>

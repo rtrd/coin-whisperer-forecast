@@ -16,25 +16,15 @@ class PerformanceService {
 
   private cache = new Map<string, { data: any; timestamp: number }>();
   private pendingRequests = new Map<string, Promise<any>>();
-  private initialized = false;
 
   constructor() {
-    // Defer initialization to avoid issues during SSR or early loading
-    if (typeof window !== 'undefined') {
-      this.init();
-    }
-  }
-
-  private init() {
-    if (this.initialized) return;
-    this.initialized = true;
     this.initWebVitals();
     this.initServiceWorker();
   }
 
   // Core Web Vitals tracking
   private initWebVitals() {
-    if (!this.config.enableTracking || typeof window === 'undefined') return;
+    if (!this.config.enableTracking) return;
 
     const sendToAnalytics = (metric: Metric) => {
       // Only send if gtag is available (loaded asynchronously)
@@ -58,7 +48,7 @@ class PerformanceService {
 
   // Service Worker initialization
   private async initServiceWorker() {
-    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
       try {
         const registration = await navigator.serviceWorker.register('/sw.js', {
           scope: '/'
@@ -112,9 +102,6 @@ class PerformanceService {
 
   // Prefetch critical resources
   prefetchResources(urls: string[]) {
-    if (typeof document === 'undefined') return;
-    this.init(); // Ensure initialization
-    
     urls.forEach(url => {
       const link = document.createElement('link');
       link.rel = 'prefetch';
@@ -125,9 +112,6 @@ class PerformanceService {
 
   // Image optimization with intersection observer
   optimizeImages() {
-    if (typeof document === 'undefined' || typeof IntersectionObserver === 'undefined') return;
-    this.init(); // Ensure initialization
-    
     const images = document.querySelectorAll('img[data-src]');
     const imageObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {

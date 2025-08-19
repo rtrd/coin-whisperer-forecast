@@ -1,11 +1,12 @@
 import React, { memo, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingUp, TrendingDown, ExternalLink } from "lucide-react";
+import { TrendingUp, TrendingDown, Lock, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
-import { getCategoryBadgeStyle } from "@/utils/categoryStyles";
+import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { MarketData } from "@/types/crypto";
+import { SignupDialog } from "@/components/SignupDialog";
 
 interface MarketDataGridCardProps {
   token: MarketData;
@@ -16,7 +17,8 @@ interface MarketDataGridCardProps {
 }
 
 export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
-  ({ token, index, tokenUrlId, AllCryptosData }) => {
+  ({ token, index, isUnlocked, tokenUrlId, AllCryptosData }) => {
+    const [showSignupDialog, setShowSignupDialog] = useState(false);
     
     return (
       <div className="bg-gray-800/60 border border-gray-600/50 rounded-xl p-4 flex flex-col h-full hover:bg-gray-800/80 transition-all duration-200 hover:border-gray-500/50">
@@ -31,19 +33,16 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                 className="flex items-center gap-2 hover:text-blue-400 transition-colors min-w-0"
               >
                 <img
-                  src={token.image || "/placeholder.svg"}
-                  alt={token.label || token.name || "Token"}
+                  src={token.image}
+                  alt={token.label}
                   className="w-6 h-6 object-contain rounded-full flex-shrink-0"
-                  onError={(e) => {
-                    e.currentTarget.src = "/placeholder.svg";
-                  }}
                 />
                 <div className="min-w-0">
                   <div className="text-white font-bold text-base truncate">
-                    {token.name || "Unknown"}
+                    {token.name.split(" ")[0]}
                   </div>
                   <div className="text-gray-400 text-sm truncate">
-                    {token.symbol?.toUpperCase() || ""}
+                    {token.name.split(" ")[1]}
                   </div>
                 </div>
               </Link>
@@ -75,17 +74,76 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
               </div>
               <div
                 className={`flex items-center gap-1 font-bold font-mono ${
-                  (token.change24h || 0) >= 0 ? "text-green-400" : "text-red-400"
+                  token.change24h >= 0 ? "text-green-400" : "text-red-400"
                 }`}
               >
-                {(token.change24h || 0) >= 0 ? (
+                {token.change24h >= 0 ? (
                   <TrendingUp className="h-3 w-3" />
                 ) : (
                   <TrendingDown className="h-3 w-3" />
                 )}
-                {(token.change24h || 0) >= 0 ? "+" : ""}
-                {(token.change24h || 0).toFixed(2)}%
+                {token.change24h >= 0 ? "+" : ""}
+                {token.change24h.toFixed(2)}%
               </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="space-y-1">
+              <div className="text-gray-400 text-xs uppercase tracking-wide">
+                Prediction %
+              </div>
+              {isUnlocked ? (
+                <div
+                  className={`font-mono font-medium ${
+                    token.category === "Stablecoin" 
+                      ? "text-gray-400" 
+                      : token.predictionPercentage >= 0
+                      ? "text-green-400"
+                      : "text-red-400"
+                  }`}
+                >
+                  {token.category === "Stablecoin" 
+                    ? "-" 
+                    : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
+                  }
+                </div>
+               ) : (
+                 <div 
+                   className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+                   onClick={() => setShowSignupDialog(true)}
+                 >
+                   <Lock className="h-3 w-3 text-yellow-400" />
+                   <span className="text-yellow-400 text-xs">Premium</span>
+                 </div>
+               )}
+            </div>
+            <div className="space-y-1">
+              <div className="text-gray-400 text-xs uppercase tracking-wide">
+                AI Score
+              </div>
+              {isUnlocked ? (
+                <div
+                  className={`font-mono font-medium ${
+                    token.category === "Stablecoin" 
+                      ? "text-gray-400" 
+                      : getAIScoreColor(token.aiScore)
+                  }`}
+                >
+                  {token.category === "Stablecoin" 
+                    ? "-" 
+                    : `${token.aiScore.toFixed(0)}/100`
+                  }
+                </div>
+               ) : (
+                 <div 
+                   className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+                   onClick={() => setShowSignupDialog(true)}
+                 >
+                   <Lock className="h-3 w-3 text-yellow-400" />
+                   <span className="text-yellow-400 text-xs">Premium</span>
+                 </div>
+               )}
             </div>
           </div>
 
@@ -121,6 +179,13 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
             </Link>
           </Button>
         </div>
+        
+        <SignupDialog
+          open={showSignupDialog}
+          onOpenChange={setShowSignupDialog}
+          title="Unlock AI Predictions"
+          description="Get access to AI-powered predictions, market sentiment analysis, and technical indicators."
+        />
       </div>
     );
   }
