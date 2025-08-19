@@ -65,6 +65,13 @@ const EXCLUDED_NAMES = [
 export const shouldExcludeFromTrending = (token: CryptoToken): boolean => {
   const symbol = (token.symbol || '').toLowerCase();
   const name = (token.name || '').toLowerCase();
+  const category = (token.category || '').toLowerCase();
+  
+  // Check category exclusions
+  const excludedCategories = ['wrapped tokens', 'liquid staking'];
+  if (excludedCategories.some(excluded => category.includes(excluded))) {
+    return true;
+  }
   
   // Check symbol patterns
   if (EXCLUDED_PATTERNS.some(pattern => pattern.test(symbol))) {
