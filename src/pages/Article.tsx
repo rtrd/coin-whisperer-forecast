@@ -289,8 +289,8 @@ const Article = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
-                <ArticleIndex content={article.content} />
                 <AdUnit type="skyscraper" className="ad-click" />
+                <ArticleIndex content={article.content} />
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
                 />
