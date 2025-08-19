@@ -64,6 +64,18 @@ const TokenDetail = () => {
       trackPageView(`/token/${tokenId}`);
     }
   }, [tokenId, selectedToken, tokenmarketstats?.current_price]);
+
+  // Handle anchor scrolling
+  React.useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 500); // Delay to ensure component is fully rendered
+      }
+    }
+  }, [location.hash]);
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
   const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
