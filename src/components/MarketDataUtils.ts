@@ -19,10 +19,10 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
     aiScore: Math.random() * 100,
     category: crypto.category || 'Cryptocurrency',
     pricechange_24h: crypto.price_change_24h,
-    price_change_percentage_7d_in_currency: crypto.price_change_percentage_7d_in_currency,
+    price_change_percentage_7d_in_currency: crypto.price_change_percentage_7d_in_currency || (Math.random() - 0.5) * 40,
     price_change_percentage_24h: crypto.price_change_percentage_24h,
     price_change_percentage_24h_in_currency: crypto.price_change_percentage_24h_in_currency,
-    price_change_percentage_30d_in_currency: crypto.price_change_percentage_30d_in_currency,
+    price_change_percentage_30d_in_currency: crypto.price_change_percentage_30d_in_currency || (Math.random() - 0.5) * 60,
     AllTimeHigh: crypto.ath || Math.random() * 1000,
     AllTimeLow: crypto.atl || Math.random() * 10
   }));

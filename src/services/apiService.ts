@@ -35,6 +35,8 @@ class ApiService {
         low_24h: coin.low_24h,
         price_change_24h: coin.price_change_24h,
         price_change_percentage_24h: coin.price_change_percentage_24h,
+        price_change_percentage_7d_in_currency: coin.price_change_percentage_7d_in_currency,
+        price_change_percentage_30d_in_currency: coin.price_change_percentage_30d_in_currency,
         market_cap_change_24h: coin.market_cap_change_24h,
         market_cap_change_percentage_24h: coin.market_cap_change_percentage_24h,
         circulating_supply: coin.circulating_supply,
@@ -57,7 +59,7 @@ class ApiService {
       try {
         console.log("Falling back to CoinGecko API directly...");
         const fallbackResponse = await fetch(
-          `${this.baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h`,
+          `${this.baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=24h,7d,30d`,
           {
             headers: {
               accept: "application/json",
