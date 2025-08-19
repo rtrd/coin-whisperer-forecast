@@ -172,8 +172,8 @@ class OptimizedApiService {
       volume24h: coin.total_volume || 0,
       marketCap: coin.market_cap || 0,
       category: 'Cryptocurrency',
-      predictionPercentage: (Math.random() - 0.5) * 30,
-      aiScore: Math.random() * 100
+      predictionPercentage: null, // Will be populated by user request
+      aiScore: null // Will be populated by user request
     }));
   }
 

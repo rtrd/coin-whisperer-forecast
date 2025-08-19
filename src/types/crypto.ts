@@ -38,8 +38,11 @@ export interface MarketData extends CryptoBase {
   change24h: number;
   volume24h: number;
   marketCap: number;
-  predictionPercentage: number;
-  aiScore: number;
+  predictionPercentage: number | null;
+  aiScore: number | null;
+  predictionStatus: 'idle' | 'loading' | 'success' | 'error';
+  predictionError?: string;
+  lastPredictionTime?: number;
 }
 
 export interface CryptoCategory {

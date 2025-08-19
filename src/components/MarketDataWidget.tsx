@@ -10,6 +10,7 @@ import { MarketDataTable } from "./MarketDataTable";
 import { MarketDataGrid } from "./MarketDataGrid";
 import { generateMarketData, getFilterTitle } from "./MarketDataUtils";
 import { CryptoToken } from "@/types/crypto";
+import { TokenPredictionsProvider } from "@/contexts/TokenPredictionsContext";
 
 interface MarketDataWidgetProps {
   cryptoOptions: CryptoToken[];
@@ -75,9 +76,10 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
     );
 
     return (
-      <TooltipProvider>
-        <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
-          <CardHeader>
+      <TokenPredictionsProvider>
+        <TooltipProvider>
+          <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
+            <CardHeader>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5 text-blue-400" />
@@ -149,6 +151,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
           </CardContent>
         </Card>
       </TooltipProvider>
+    </TokenPredictionsProvider>
     );
   }
 );

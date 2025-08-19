@@ -15,8 +15,9 @@ export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: F
     change24h: crypto.price_change_percentage_24h || (Math.random() - 0.5) * 20,
     volume24h: crypto.total_volume || Math.random() * 1000000000,
     marketCap: crypto.market_cap || Math.random() * 10000000000,
-    predictionPercentage: (Math.random() - 0.5) * 30,
-    aiScore: Math.random() * 100,
+    predictionPercentage: null, // Will be populated by user request
+    aiScore: null, // Will be populated by user request
+    predictionStatus: 'idle' as const,
     category: crypto.category || 'Cryptocurrency',
     pricechange_24h: crypto.price_change_24h,
     price_change_percentage_7d_in_currency: crypto.price_change_percentage_7d_in_currency || (Math.random() - 0.5) * 40,

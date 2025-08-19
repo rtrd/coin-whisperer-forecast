@@ -389,7 +389,8 @@ export const generateMarketData = (cryptoOptions: any[], activeFilter: FilterTyp
     price_change_percentage_7d_in_currency: token.change7d,
     price_change_percentage_30d_in_currency: token.change30d,
     total_volume: token.volume24h,
-    market_cap: token.marketCap
+    market_cap: token.marketCap,
+    predictionStatus: 'idle' as const
   }));
 
   let filteredData = [...marketDataTokens];

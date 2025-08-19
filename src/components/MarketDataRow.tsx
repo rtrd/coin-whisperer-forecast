@@ -1,13 +1,15 @@
 import React, { memo, useState } from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { TrendingUp, TrendingDown, Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { TrendingUp, TrendingDown, Lock, Bot, RefreshCw, AlertCircle } from "lucide-react";
 import { Link } from "react-router-dom";
 import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { CryptoToken, MarketData } from "@/types/crypto";
 import { SignupDialog } from "@/components/SignupDialog";
+import { useTokenPredictionsContext } from "@/contexts/TokenPredictionsContext";
 
 interface MarketDataRowProps {
   token: MarketData;
@@ -21,6 +23,121 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
   ({ token, index, isUnlocked, AllCryptosData }) => {
     const [showSignupDialog, setShowSignupDialog] = useState(false);
     const tokenUrlId = getTokenUrlId(token.value);
+    const { generatePredictionForToken, getPredictionForToken, retryPrediction, isGenerating } = useTokenPredictionsContext();
+    
+    const tokenId = token.id || token.value;
+    const prediction = getPredictionForToken(tokenId);
+    const isLoading = isGenerating(tokenId);
+    
+    // Use prediction data if available, otherwise fall back to token data
+    const displayPrediction = prediction.predictionPercentage ?? token.predictionPercentage;
+    const displayAIScore = prediction.aiScore ?? token.aiScore;
+    const predictionStatus = prediction.predictionStatus;
+
+    const handleGeneratePrediction = () => {
+      generatePredictionForToken(token);
+    };
+
+    const handleRetryPrediction = () => {
+      retryPrediction(token);
+    };
+
+    const renderPredictionCell = () => {
+      if (!isUnlocked) {
+        return (
+          <div 
+            className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+            onClick={() => setShowSignupDialog(true)}
+          >
+            <Lock className="h-3 w-3 text-yellow-400" />
+            <span className="text-yellow-400 text-xs">Premium</span>
+          </div>
+        );
+      }
+
+      if (token.category === "Stablecoin") {
+        return <span className="text-gray-400">-</span>;
+      }
+
+      switch (predictionStatus) {
+        case 'loading':
+          return (
+            <div className="flex items-center gap-2">
+              <RefreshCw className="h-3 w-3 animate-spin text-blue-400" />
+              <span className="text-blue-400 text-xs">Generating...</span>
+            </div>
+          );
+        
+        case 'success':
+          return (
+            <div className={`flex items-center gap-1 ${
+              displayPrediction >= 0 ? "text-green-400" : "text-red-400"
+            }`}>
+              {displayPrediction >= 0 ? "+" : ""}
+              {displayPrediction?.toFixed(2)}%
+            </div>
+          );
+        
+        case 'error':
+          return (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleRetryPrediction}
+              className="h-6 px-2 text-red-400 hover:text-red-300 hover:bg-red-900/20"
+            >
+              <AlertCircle className="h-3 w-3 mr-1" />
+              <span className="text-xs">Retry</span>
+            </Button>
+          );
+        
+        case 'idle':
+        default:
+          return (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleGeneratePrediction}
+              disabled={isLoading}
+              className="h-6 px-2 text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
+            >
+              <Bot className="h-3 w-3 mr-1" />
+              <span className="text-xs">Generate</span>
+            </Button>
+          );
+      }
+    };
+
+    const renderAIScoreCell = () => {
+      if (!isUnlocked) {
+        return (
+          <div 
+            className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
+            onClick={() => setShowSignupDialog(true)}
+          >
+            <Lock className="h-3 w-3 text-yellow-400" />
+            <span className="text-yellow-400 text-xs">Premium</span>
+          </div>
+        );
+      }
+
+      if (token.category === "Stablecoin") {
+        return <span className="text-gray-400">-</span>;
+      }
+
+      if (predictionStatus === 'success' && displayAIScore !== null) {
+        return (
+          <div className="flex items-center gap-1">
+            <div className={`font-mono ${getAIScoreColor(displayAIScore)}`}>
+              {displayAIScore.toFixed(0)}
+            </div>
+            <div className="text-gray-400 text-xs">/100</div>
+          </div>
+        );
+      }
+
+      return <span className="text-gray-500 text-xs">-</span>;
+    };
 
     return (
       <>
@@ -71,58 +188,11 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
           </TableCell>
 
           <TableCell className="w-32 px-2 py-3">
-            {isUnlocked ? (
-              <div
-                className={`flex items-center gap-1 ${
-                  token.category === "Stablecoin" 
-                    ? "text-gray-400" 
-                    : token.predictionPercentage >= 0
-                    ? "text-green-400"
-                    : "text-red-400"
-                }`}
-              >
-                {token.category === "Stablecoin" 
-                  ? "-" 
-                  : `${token.predictionPercentage >= 0 ? "+" : ""}${token.predictionPercentage.toFixed(2)}%`
-                }
-              </div>
-            ) : (
-              <div 
-                className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
-                onClick={() => setShowSignupDialog(true)}
-              >
-                <Lock className="h-3 w-3 text-yellow-400" />
-                <span className="text-yellow-400 text-xs">Premium</span>
-              </div>
-            )}
+            {renderPredictionCell()}
           </TableCell>
 
           <TableCell className="w-28 px-2 py-3">
-            {isUnlocked ? (
-              <div className="flex items-center gap-1">
-                <div className={`font-mono ${
-                  token.category === "Stablecoin" 
-                    ? "text-gray-400" 
-                    : getAIScoreColor(token.aiScore)
-                }`}>
-                  {token.category === "Stablecoin" 
-                    ? "-" 
-                    : token.aiScore.toFixed(0)
-                  }
-                </div>
-                {token.category !== "Stablecoin" && (
-                  <div className="text-gray-400 text-xs">/100</div>
-                )}
-              </div>
-            ) : (
-              <div 
-                className="flex items-center gap-1 cursor-pointer hover:bg-gray-600/30 px-2 py-1 rounded transition-colors"
-                onClick={() => setShowSignupDialog(true)}
-              >
-                <Lock className="h-3 w-3 text-yellow-400" />
-                <span className="text-yellow-400 text-xs">Premium</span>
-              </div>
-            )}
+            {renderAIScoreCell()}
           </TableCell>
 
           <TableCell className="text-gray-300 font-mono w-40 px-2 py-3">
