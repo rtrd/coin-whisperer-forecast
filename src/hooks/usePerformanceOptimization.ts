@@ -7,11 +7,16 @@ export const usePerformanceOptimization = () => {
     // Only run in browser environment
     if (typeof window === 'undefined') return;
     
-    // Initialize performance optimizations
-    performanceService.optimizeImages();
+    // Add a small delay to ensure React is fully initialized
+    const timeoutId = setTimeout(() => {
+      performanceService.optimizeImages();
+    }, 100);
     
     // Cleanup on unmount
-    return () => performanceService.cleanup();
+    return () => {
+      clearTimeout(timeoutId);
+      performanceService.cleanup();
+    };
   }, []);
 
   const getCachedData = useCallback(
