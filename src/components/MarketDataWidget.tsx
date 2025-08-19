@@ -17,19 +17,57 @@ interface MarketDataWidgetProps {
   onMarketDataFilter: (filter: any) => void;
 }
 
+type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'predictionPercentage' | 'aiScore' | 'volume24h' | 'marketCap' | 'category';
+type SortDirection = 'asc' | 'desc';
+
 export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
   ({ cryptoOptions, AllCryptosData, onMarketDataFilter }) => {
     const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
     const [viewMode, setViewMode] = useState<"list" | "grid">("list");
+    const [sortField, setSortField] = useState<SortField>('rank');
+    const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
 
     const isUnlocked = useMemo(() => {
       return localStorage.getItem("ai-content-unlocked") === "true";
     }, []);
 
-    const marketData = useMemo(
-      () => generateMarketData(cryptoOptions, activeFilter),
-      [cryptoOptions, activeFilter]
-    );
+    const handleSort = (field: SortField) => {
+      if (sortField === field) {
+        setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      } else {
+        setSortField(field);
+        setSortDirection('asc');
+      }
+    };
+
+    const marketData = useMemo(() => {
+      const data = generateMarketData(cryptoOptions, activeFilter);
+      
+      return [...data].sort((a, b) => {
+        const aValue = getFieldValue(a, sortField);
+        const bValue = getFieldValue(b, sortField);
+        
+        if (aValue === bValue) return 0;
+        
+        const comparison = aValue < bValue ? -1 : 1;
+        return sortDirection === 'asc' ? comparison : -comparison;
+      });
+    }, [cryptoOptions, activeFilter, sortField, sortDirection]);
+
+    const getFieldValue = (item: any, field: SortField) => {
+      switch (field) {
+        case 'rank': return cryptoOptions.findIndex(c => c.value === item.value) + 1;
+        case 'name': return item.name.toLowerCase();
+        case 'price': return item.price || 0;
+        case 'change24h': return item.change24h || 0;
+        case 'predictionPercentage': return item.predictionPercentage || 0;
+        case 'aiScore': return item.aiScore || 0;
+        case 'volume24h': return item.volume24h || 0;
+        case 'marketCap': return item.marketCap || 0;
+        case 'category': return item.category?.toLowerCase() || '';
+        default: return 0;
+      }
+    };
 
     const filterTitle = useMemo(
       () => getFilterTitle(activeFilter),
@@ -88,6 +126,9 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
                 isUnlocked={isUnlocked}
                 activeFilter={activeFilter}
                 AllCryptosData={AllCryptosData}
+                onSort={handleSort}
+                sortField={sortField}
+                sortDirection={sortDirection}
               />
             ) : (
               <MarketDataGrid

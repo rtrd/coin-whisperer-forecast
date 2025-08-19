@@ -11,15 +11,21 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info, Lock } from "lucide-react";
+import { Info, Lock, ChevronUp, ChevronDown } from "lucide-react";
 import { MarketDataRow } from "./MarketDataRow";
 import { CryptoToken } from "@/types/crypto";
+
+type SortField = 'rank' | 'name' | 'price' | 'change24h' | 'predictionPercentage' | 'aiScore' | 'volume24h' | 'marketCap' | 'category';
+type SortDirection = 'asc' | 'desc';
 
 interface MarketDataTableProps {
   marketData: any[];
   isUnlocked: boolean;
   activeFilter: string;
   AllCryptosData: CryptoToken[];
+  onSort: (field: SortField) => void;
+  sortField: SortField;
+  sortDirection: SortDirection;
 }
 
 export const MarketDataTable: React.FC<MarketDataTableProps> = ({
@@ -27,19 +33,39 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
   isUnlocked,
   activeFilter,
   AllCryptosData = [],
+  onSort,
+  sortField,
+  sortDirection,
 }) => {
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) return null;
+    return sortDirection === 'asc' ? 
+      <ChevronUp className="h-3 w-3 ml-1" /> : 
+      <ChevronDown className="h-3 w-3 ml-1" />;
+  };
+
+  const SortableHeader = ({ field, children, className = "" }: { 
+    field: SortField; 
+    children: React.ReactNode; 
+    className?: string;
+  }) => (
+    <TableHead className={`text-gray-300 px-2 cursor-pointer hover:text-white transition-colors ${className}`} onClick={() => onSort(field)}>
+      <div className="flex items-center">
+        {children}
+        {getSortIcon(field)}
+      </div>
+    </TableHead>
+  );
   return (
     <div className="overflow-x-auto">
       <Table className="w-full min-w-[800px]">
         <TableHeader>
-          <TableRow className="border-gray-700 h-14">
-            <TableHead className="text-gray-300 w-12 px-2">#</TableHead>
-            <TableHead className="text-gray-300 min-w-[200px] px-2">Token</TableHead>
-            <TableHead className="text-gray-300 min-w-[100px] px-2">Price</TableHead>
-            <TableHead className="text-gray-300 min-w-[100px] px-2">
-              24h Change
-            </TableHead>
-            <TableHead className="text-gray-300 min-w-[120px] px-2">
+          <TableRow className="border-gray-700 h-14 hover:bg-transparent">
+            <SortableHeader field="rank" className="w-12">#</SortableHeader>
+            <SortableHeader field="name" className="min-w-[200px]">Token</SortableHeader>
+            <SortableHeader field="price" className="min-w-[100px]">Price</SortableHeader>
+            <SortableHeader field="change24h" className="min-w-[100px]">24h Change</SortableHeader>
+            <SortableHeader field="predictionPercentage" className="min-w-[120px]">
               <div className="flex items-center gap-1">
                 Prediction %
                 <Tooltip>
@@ -54,8 +80,8 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-            </TableHead>
-            <TableHead className="text-gray-300 min-w-[100px] px-2">
+            </SortableHeader>
+            <SortableHeader field="aiScore" className="min-w-[100px]">
               <div className="flex items-center gap-1">
                 AI Score
                 {!isUnlocked && <Lock className="h-3 w-3 text-yellow-400" />}
@@ -71,8 +97,8 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-            </TableHead>
-            <TableHead className="text-gray-300 min-w-[120px] px-2">
+            </SortableHeader>
+            <SortableHeader field="volume24h" className="min-w-[120px]">
               <div className="flex items-center gap-1">
                 Trading Volume
                 <Tooltip>
@@ -84,8 +110,8 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-            </TableHead>
-            <TableHead className="text-gray-300 min-w-[120px] px-2">
+            </SortableHeader>
+            <SortableHeader field="marketCap" className="min-w-[120px]">
               <div className="flex items-center gap-1">
                 Market Cap
                 <Tooltip>
@@ -97,8 +123,8 @@ export const MarketDataTable: React.FC<MarketDataTableProps> = ({
                   </TooltipContent>
                 </Tooltip>
               </div>
-            </TableHead>
-            <TableHead className="text-gray-300 min-w-[100px] px-2">Category</TableHead>
+            </SortableHeader>
+            <SortableHeader field="category" className="min-w-[100px]">Category</SortableHeader>
           </TableRow>
         </TableHeader>
         <TableBody>
