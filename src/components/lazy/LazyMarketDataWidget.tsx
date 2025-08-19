@@ -6,9 +6,9 @@ import { Badge } from '@/components/ui/badge';
 import { BarChart3 } from 'lucide-react';
 import { CryptoToken } from '@/types/crypto';
 
-const StableMarketDataWidget = lazy(() => 
-  import('@/components/StableMarketDataWidget').then(module => ({ 
-    default: module.StableMarketDataWidget 
+const MarketDataWidget = lazy(() => 
+  import('@/components/MarketDataWidget').then(module => ({ 
+    default: module.MarketDataWidget 
   }))
 );
 
@@ -69,7 +69,7 @@ export const LazyMarketDataWidget: React.FC<LazyMarketDataWidgetProps> = (props)
       fallback={<MarketDataSkeleton />}
       className="mb-8"
     >
-      <StableMarketDataWidget {...props} />
+      <MarketDataWidget {...props} />
     </LazyLoadWrapper>
   );
 };

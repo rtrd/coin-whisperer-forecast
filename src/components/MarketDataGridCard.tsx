@@ -7,7 +7,7 @@ import { formatPrice, formatVolume, formatMarketCap } from "./MarketDataUtils";
 import { getCategoryBadgeStyle, getAIScoreColor } from "@/utils/categoryStyles";
 import { MarketData } from "@/types/crypto";
 import { SignupDialog } from "@/components/SignupDialog";
-import { useAppContext } from "@/contexts/ConsolidatedAppProvider";
+import { useTokenPredictionsContext } from "@/contexts/TokenPredictionsContext";
 
 interface MarketDataGridCardProps {
   token: MarketData;
@@ -20,7 +20,7 @@ interface MarketDataGridCardProps {
 export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
   ({ token, index, isUnlocked, tokenUrlId, AllCryptosData }) => {
     const [showSignupDialog, setShowSignupDialog] = useState(false);
-    const { getPredictionForToken, retryPrediction, isGenerating } = useAppContext();
+    const { generatePredictionForToken, getPredictionForToken, retryPrediction, isGenerating } = useTokenPredictionsContext();
     
     const tokenId = token.id || token.value;
     const prediction = getPredictionForToken(tokenId);
@@ -30,6 +30,10 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
     const displayPrediction = prediction.predictionPercentage ?? token.predictionPercentage;
     const displayAIScore = prediction.aiScore ?? token.aiScore;
     const predictionStatus = prediction.predictionStatus;
+
+    const handleGeneratePrediction = () => {
+      generatePredictionForToken(token);
+    };
 
     const handleRetryPrediction = () => {
       retryPrediction(token);
@@ -87,20 +91,16 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
         case 'idle':
         default:
           return (
-            <Link
-              to={`/token/${tokenUrlId}#ai-prediction`}
-              state={{ token, AllCryptosData }}
-              className="inline-flex"
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={handleGeneratePrediction}
+              disabled={isLoading}
+              className="h-6 px-2 text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
             >
-              <Button
-                size="sm"
-                variant="ghost"
-                className="h-6 px-2 text-blue-400 hover:text-blue-300 hover:bg-blue-900/20"
-              >
-                <Bot className="h-3 w-3 mr-1" />
-                <span className="text-xs">Generate</span>
-              </Button>
-            </Link>
+              <Bot className="h-3 w-3 mr-1" />
+              <span className="text-xs">Generate</span>
+            </Button>
           );
       }
     };

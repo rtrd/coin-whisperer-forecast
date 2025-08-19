@@ -64,18 +64,6 @@ const TokenDetail = () => {
       trackPageView(`/token/${tokenId}`);
     }
   }, [tokenId, selectedToken, tokenmarketstats?.current_price]);
-
-  // Handle anchor scrolling
-  React.useEffect(() => {
-    if (location.hash) {
-      const element = document.getElementById(location.hash.substring(1));
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 500); // Delay to ensure component is fully rendered
-      }
-    }
-  }, [location.hash]);
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
   const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
@@ -328,6 +316,7 @@ const TokenDetail = () => {
   if (tokenInfoLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center pt-12">
+        <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-4"></div>
@@ -341,6 +330,7 @@ const TokenDetail = () => {
   if (!selectedToken) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center pt-12">
+        <MainNavigation />
         <Card className="bg-gray-800/50 border-gray-700">
           <CardContent className="p-8 text-center">
             <h1 className="text-2xl font-bold text-white mb-4">
@@ -363,6 +353,7 @@ const TokenDetail = () => {
 
   return (
     <>
+      <MainNavigation />
       <div className="pt-12">
         <Helmet>
           <title>{generateTokenMetaTitle(seoData)}</title>

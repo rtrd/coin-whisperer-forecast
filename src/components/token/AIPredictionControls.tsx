@@ -40,7 +40,7 @@ export const AIPredictionControls: React.FC<AIPredictionControlsProps> = ({
   cryptoOptions,
 }) => {
   return (
-    <div className="bg-gradient-to-br from-gray-800/80 via-purple-900/30 to-gray-700/80 backdrop-blur-sm border-2 border-purple-500/40 rounded-2xl p-6 shadow-2xl" id="ai-prediction">
+    <div className="bg-gradient-to-br from-gray-800/80 via-purple-900/30 to-gray-700/80 backdrop-blur-sm border-2 border-purple-500/40 rounded-2xl p-6 shadow-2xl">
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-purple-500/30 to-blue-500/30 rounded-xl border border-purple-400/50 shadow-lg">

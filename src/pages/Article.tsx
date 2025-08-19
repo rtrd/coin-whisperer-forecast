@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useAdScript } from "@/hooks/useAdScript";
 import { useParams, Link, useLocation } from "react-router-dom";
@@ -14,7 +14,7 @@ import { ArticleHeader } from "@/components/ArticleHeader";
 import { ArticleContent } from "@/components/ArticleContent";
 import { RelatedArticles } from "@/components/RelatedArticles";
 import { ArticleNotFound } from "@/components/ArticleNotFound";
-import { SafeNavigationWrapper } from "@/components/SafeNavigationWrapper";
+import { MainNavigation } from "@/components/MainNavigation";
 import {
   formatArticleForDisplay,
   getRelatedArticles,
@@ -23,7 +23,6 @@ import { getAllCryptos, getWordPressPost } from "../../utils/api";
 import { decodeHtmlEntities } from "@/utils/htmlUtils";
 import { CryptoToken } from "@/types/crypto";
 import { generateArticleSEO } from "@/utils/pageSeo";
-import { useStableData, useDebounceCallback } from "@/hooks/useStableData";
 
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
@@ -35,9 +34,10 @@ const Article = () => {
   useAdScript();
   const [articlesData, setArticlesData] = useState<any[]>([]);
   const [allArticlesData, setallArticlesData] = useState<any[]>([]);
-  const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>([]);
+  const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const location = useLocation();
 
   const articles = (() => {
@@ -75,14 +75,12 @@ const Article = () => {
     },
   ];
 
-  // Stable data fetchers to prevent race conditions
-  const stableCryptoFetcher = useStableData(getAllCryptos, []);
-  const stableArticleFetcher = useStableData(getWordPressPost, []);
+  useEffect(() => {
+    fetchAndCacheTopGainnersandLoosers();
+    getAllarticles();
+  }, []);
 
-  // Debounced error setter to prevent excessive error states
-  const debouncedSetError = useDebounceCallback(setError, 300);
-
-  const fetchAndCacheTopGainnersandLoosers = useCallback(async () => {
+  const fetchAndCacheTopGainnersandLoosers = async () => {
     const cached = localStorage.getItem(CACHE_KEY);
     if (cached) {
       try {
@@ -93,65 +91,23 @@ const Article = () => {
         }
       } catch (err) {
         // If cache is corrupted, ignore and fetch fresh
-        console.warn('Cache corrupted, fetching fresh data');
       }
     }
-    
     // Fetch and cache if not found or expired
     try {
-      const data = await stableCryptoFetcher();
-      if (data) {
-        setallTopGainnersandLoosers(data);
-        localStorage.setItem(
-          CACHE_KEY,
-          JSON.stringify({ data, timestamp: Date.now() })
-        );
-      }
+      const data = await getAllCryptos();
+      setallTopGainnersandLoosers(data);
+      localStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({ data, timestamp: Date.now() })
+      );
     } catch (err) {
-      console.warn('Failed to fetch crypto data:', err);
-      debouncedSetError('Failed to load market data');
+      // // Handle fetch error if needed
+      // setallArticlesData([]);
     }
-  }, [stableCryptoFetcher, debouncedSetError]);
+  };
 
-  const getAllarticles = useCallback(async () => {
-    try {
-      const AllarticleData = await stableArticleFetcher();
-      if (AllarticleData && Array.isArray(AllarticleData)) {
-        setArticlesData(AllarticleData);
-        const formattedArticles = transformArticles(AllarticleData);
-        setallArticlesData(formattedArticles);
-      } else if (AllarticleData) {
-        console.error("Fetched article data is not an array:", AllarticleData);
-        debouncedSetError('Invalid article data format');
-      }
-    } catch (err) {
-      console.error('Failed to fetch articles:', err);
-      debouncedSetError('Failed to load articles');
-    } finally {
-      setLoading(false);
-    }
-  }, [stableArticleFetcher, debouncedSetError]);
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    const initializeData = async () => {
-      if (isMounted) {
-        await Promise.all([
-          fetchAndCacheTopGainnersandLoosers(),
-          getAllarticles()
-        ]);
-      }
-    };
-    
-    initializeData();
-    
-    return () => {
-      isMounted = false;
-    };
-  }, [fetchAndCacheTopGainnersandLoosers, getAllarticles]);
-
-  const transformArticles = useCallback((posts: any[]) => {
+  const transformArticles = (posts: any[]) => {
     return posts.map((post) => {
       const title = decodeHtmlEntities(post.title?.rendered || "No Title");
       const excerpt = decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "");
@@ -179,20 +135,27 @@ const Article = () => {
         tagname,
       };
     });
-  }, []);
+  };
 
-  // Memoize expensive computations
-  const article = useMemo(() => 
-    articles.find((a) => a.id === Number(articleId)), 
-    [articles, articleId]
-  );
-  
-  const seoData = useMemo(() => 
-    article ? generateArticleSEO(article) : null, 
-    [article]
-  );
+  const getAllarticles = async () => {
+    try {
+      const AllarticleData = await getWordPressPost();
+      if (Array.isArray(AllarticleData)) {
+        setArticlesData(AllarticleData);
+        const formattedArticles = transformArticles(AllarticleData);
+        setallArticlesData(formattedArticles);
+      } else {
+        console.error("Fetched article data is not an array:", AllarticleData);
+      }
+    } finally {
+      setLoading(false); // <-- SET LOADING FALSE AFTER FETCH
+    }
+  };
 
-  const transformallArticles = useCallback((articles: any[]): any[] => {
+  const article = articles.find((a) => a.id === Number(articleId));
+  const seoData = article ? generateArticleSEO(article) : null;
+
+  const transformallArticles = (articles: any[]): any[] => {
     return articles.map((a) => ({
       id: a.id,
       title: decodeHtmlEntities(a.title?.rendered || "Untitled"),
@@ -207,22 +170,7 @@ const Article = () => {
           (t: string) => typeof t === "string" && t.trim() !== ""
         ) || [],
     }));
-  }, []);
-
-  // Enhanced loading and error states
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
-        <div className="text-center space-y-4">
-          <div className="text-red-400 text-xl">Error Loading Article</div>
-          <div className="text-gray-300">{error}</div>
-          <Button onClick={() => window.location.reload()} variant="outline">
-            Retry
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  };
 
   if (loading && !article) {
     return (
@@ -236,15 +184,8 @@ const Article = () => {
     return <ArticleNotFound />;
   }
 
-  const relatedArticles = useMemo(() => 
-    getRelatedArticles(article, articlesData), 
-    [article, articlesData]
-  );
-  
-  const transformedArticles = useMemo(() => 
-    transformallArticles(relatedArticles), 
-    [relatedArticles, transformallArticles]
-  );
+  const relatedArticles = getRelatedArticles(article, articlesData);
+  const transformedArticles = transformallArticles(relatedArticles);
 
   return (
     <>
@@ -284,8 +225,8 @@ const Article = () => {
       )}
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 pt-12">
-        {/* Safe Navigation */}
-        <SafeNavigationWrapper />
+        {/* Navigation */}
+        <MainNavigation />
         
         {/* Header like homepage */}
         <div className="container mx-auto px-4 py-4 md:py-8">

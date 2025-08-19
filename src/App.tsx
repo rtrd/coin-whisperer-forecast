@@ -1,19 +1,17 @@
-import React, { Suspense, lazy, StrictMode } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { BitmedialAdManager } from "@/components/ads/BitmedialAdManager";
 import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
 import { useAdRefresh } from "./hooks/useAdRefresh";
 import { usePerformanceOptimization } from "./hooks/usePerformanceOptimization";
 import ScrollToTop from "./components/ScrollToTop";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { PerformanceMonitor } from "@/components/PerformanceMonitor";
-import { ConsolidatedAppProvider } from "@/contexts/ConsolidatedAppProvider";
+import { Suspense, lazy } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 // Lazy load all pages for optimal code splitting
 const Index = lazy(() => import("./pages/Index"));
@@ -33,105 +31,68 @@ const MotiMeter = lazy(() => import("./pages/MotiMeter"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ViewEmails = lazy(() => import("./pages/EmailList"));
 
-// Enhanced loading fallback component
+// Optimized loading fallback component
 const PageLoadingFallback = () => (
-  <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 flex items-center justify-center">
-    <div className="space-y-4 text-center">
-      <Skeleton className="h-8 w-64 mx-auto bg-gray-700" />
-      <Skeleton className="h-4 w-48 mx-auto bg-gray-700" />
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 px-4 max-w-4xl">
-        <Skeleton className="h-32 bg-gray-700" />
-        <Skeleton className="h-32 bg-gray-700" />
-        <Skeleton className="h-32 bg-gray-700" />
+  <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="space-y-4 w-full max-w-4xl px-4">
+      <Skeleton className="h-16 w-full" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <Skeleton key={i} className="h-48 w-full" />
+        ))}
       </div>
     </div>
   </div>
 );
 
-// Enhanced error fallback for navigation issues
-const NavigationErrorFallback = () => (
-  <div className="fixed top-0 left-0 w-full z-50 bg-slate-900 border-b border-slate-700 shadow-lg">
-    <div className="container mx-auto px-6 py-2">
-      <div className="flex justify-end">
-        <div className="text-white font-medium text-sm px-3 py-1">
-          Navigation Loading...
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-// Create a single QueryClient instance to avoid re-initializing
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-      staleTime: 5 * 60 * 1000, // 5 minutes
-      gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const AppRoutes = () => {
-  // Initialize ad refresh and performance optimizations
-  useAdRefresh();
-  usePerformanceOptimization();
+  useAdRefresh(); // Initialize ad refresh functionality
+  usePerformanceOptimization(); // Initialize performance optimizations
 
   return (
-    <ErrorBoundary>
-      <Suspense fallback={<PageLoadingFallback />}>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/subscribe" element={<Subscribe />} />
-          <Route path="/token/:tokenId" element={<TokenDetail />} />
-          <Route path="/article/:articleId" element={
-            <ErrorBoundary>
-              <Suspense fallback={<PageLoadingFallback />}>
-                <Article />
-              </Suspense>
-            </ErrorBoundary>
-          } />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/tokens" element={<AllTokens />} />
-          <Route path="/ai-prediction" element={<AIPrediction />} />
-          <Route path="/pump-fun" element={<PumpFun />} />
-          <Route path="/ai-price-prediction" element={<AIPricePrediction />} />
-          <Route path="/technical-analysis" element={<TechnicalAnalysisPage />} />
-          <Route path="/sentiment-analysis" element={<SentimentAnalysisPage />} />
-          <Route path="/view-emails" element={<ViewEmails />} />
-          <Route path="/real-time-data" element={<RealTimeData />} />
-          <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
-          <Route path="/moti-meter" element={<MotiMeter />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-    </ErrorBoundary>
+    <Suspense fallback={<PageLoadingFallback />}>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/subscribe" element={<Subscribe />} />
+        <Route path="/token/:tokenId" element={<TokenDetail />} />
+        <Route path="/article/:articleId" element={<Article />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/tokens" element={<AllTokens />} />
+        <Route path="/ai-prediction" element={<AIPrediction />} />
+        <Route path="/pump-fun" element={<PumpFun />} />
+        <Route path="/ai-price-prediction" element={<AIPricePrediction />} />
+        <Route path="/technical-analysis" element={<TechnicalAnalysisPage />} />
+        <Route path="/sentiment-analysis" element={<SentimentAnalysisPage />} />
+        <Route path="/view-emails" element={<ViewEmails />} />
+        <Route path="/real-time-data" element={<RealTimeData />} />
+        <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
+        <Route path="/moti-meter" element={<MotiMeter />} />
+        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
 const App = () => (
-  <StrictMode>
+  <HelmetProvider>
     <QueryClientProvider client={queryClient}>
-      <ConsolidatedAppProvider>
-        <TooltipProvider>
-          <ErrorBoundary>
-            <PerformanceMonitor />
-            <HeadImprovements />
-            <Toaster />
-            <Sonner />
-            <AutoRefresh />
-            <BrowserRouter>
-              <BitmedialAdManager>
-                <ScrollToTop />
-                <AppRoutes />
-              </BitmedialAdManager>
-            </BrowserRouter>
-          </ErrorBoundary>
-        </TooltipProvider>
-      </ConsolidatedAppProvider>
+      <TooltipProvider>
+        <HeadImprovements />
+        <Toaster />
+        <Sonner />
+        <AutoRefresh />
+        <BrowserRouter>
+          <BitmedialAdManager>
+            <ScrollToTop />
+            <AppRoutes />
+          </BitmedialAdManager>
+        </BrowserRouter>
+      </TooltipProvider>
     </QueryClientProvider>
-  </StrictMode>
+  </HelmetProvider>
 );
 
 export default App;
