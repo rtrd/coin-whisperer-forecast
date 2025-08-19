@@ -39,7 +39,7 @@ export const MainNavigation: React.FC = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="text-white font-medium text-sm px-3 py-1 bg-transparent hover:bg-transparent hover:text-white focus:bg-transparent focus:text-white data-[state=open]:bg-transparent data-[state=open]:text-white data-[active]:bg-transparent">
+                <NavigationMenuTrigger className="text-white font-medium text-sm px-3 py-1 bg-transparent hover:bg-transparent hover:text-white focus:bg-transparent focus:text-white data-[state=open]:bg-transparent data-[state=open]:text-white data-[active]:bg-transparent transition-none">
                   Features
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="z-[200] bg-slate-900 border border-slate-700 shadow-xl">
