@@ -39,7 +39,7 @@ export const MarketDataGridCard: React.FC<MarketDataGridCardProps> = memo(
                     {token.name}
                   </div>
                   <div className="text-gray-400 text-sm truncate">
-                    {token.symbol}
+                    {token.symbol.toUpperCase()}
                   </div>
                 </div>
               </Link>

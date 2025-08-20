@@ -105,7 +105,7 @@ export const DynamicMarketMovers = () => {
                 <div className="flex items-center gap-1">
                   <span className="text-xs">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium text-xs">{crypto.symbol}</div>
+                    <div className="text-white font-medium text-xs">{crypto.symbol.toUpperCase()}</div>
                     <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>
@@ -139,7 +139,7 @@ export const DynamicMarketMovers = () => {
                 <div className="flex items-center gap-1">
                   <span className="text-xs">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium text-xs">{crypto.symbol}</div>
+                    <div className="text-white font-medium text-xs">{crypto.symbol.toUpperCase()}</div>
                     <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>
@@ -173,7 +173,7 @@ export const DynamicMarketMovers = () => {
                 <div className="flex items-center gap-1">
                   <span className="text-xs">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium text-xs">{crypto.symbol}</div>
+                    <div className="text-white font-medium text-xs">{crypto.symbol.toUpperCase()}</div>
                     <div className="text-gray-400 text-xs">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>

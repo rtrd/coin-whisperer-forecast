@@ -159,7 +159,7 @@ export const LiveTokenFeed: React.FC<LiveTokenFeedProps> = ({ tokens, isConnecte
                   {/* Token Info - 20% */}
                   <div className="flex items-center gap-2 w-1/5 min-w-0">
                     <div className="flex items-center gap-2 min-w-0">
-                      <h4 className="font-semibold text-white text-sm truncate">{token.symbol}</h4>
+                      <h4 className="font-semibold text-white text-sm truncate">{token.symbol.toUpperCase()}</h4>
                     </div>
                     <p className="text-gray-400 text-xs truncate">{token.name}</p>
                   </div>

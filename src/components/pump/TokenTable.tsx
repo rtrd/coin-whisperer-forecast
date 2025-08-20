@@ -48,7 +48,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ tokens, changeColorClass
                     {token.icon}
                   </div>
                   <div className="flex flex-col">
-                    <div className="text-white font-bold text-sm group-hover:text-slate-100">{token.symbol}</div>
+                    <div className="text-white font-bold text-sm group-hover:text-slate-100">{token.symbol.toUpperCase()}</div>
                     <div className="text-slate-400 text-xs truncate max-w-24 group-hover:text-slate-300">{token.name}</div>
                   </div>
                 </div>
