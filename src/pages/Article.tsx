@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { AdUnit } from "@/components/ads/AdService";
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { ArticleIndex } from "@/components/ArticleIndex";
@@ -285,8 +286,11 @@ const Article = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
-                <AdUnit type="skyscraper" className="ad-click" />
                 <ArticleIndex content={article.content} />
+                {/* <AdUnit type="skyscraper" className="ad-click" /> */}
+                <VdoBannerAd />
+
+                {/* Market Movers Widget */}
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
                 />

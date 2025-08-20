@@ -12,6 +12,7 @@ import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
+import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
 
 interface IndexContentProps {
@@ -70,11 +71,21 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <IndexNavigationCards />
 
       {/* Ad Banner Before Footer */}
-      <GAMAdUnit
+      {/* <GAMAdUnit
         adUnitId="div-gpt-ad-1752654531765-1"
         size={[728, 90]}
         className="mb-6 md:mb-8"
-      />
+      /> */}
+        {/* <div className="mb-8">
+          <LockedAITradingSignals />
+        </div> */}
+      {/* Ad Banner Before Footer */}
+      {/* <GAMAdUnit
+        adUnitId="div-gpt-ad-1752654531765-1"
+        size={[728, 90]}
+        className="mb-6 md:mb-8"
+      /> */}
+      <VdoFloatingAd />
 
       {/* Footer */}
       <Footer />
