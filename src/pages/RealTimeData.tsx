@@ -16,7 +16,6 @@ import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import { apiService } from "@/services/apiService";
 import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHelpers';
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 
 import ScrollToTop from "@/components/ScrollToTop";
 
@@ -751,7 +750,7 @@ const RealTimeData = () => {
                     className="mt-8"
                   />
                 </div>
-                <VdoFloatingAd />
+
                 <Footer />
               </>
             )}
