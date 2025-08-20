@@ -9,6 +9,7 @@ import { TokenSidebar } from "./TokenSidebar";
 import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
+import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -158,7 +159,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             tokenId={tokenId}
             cryptoOptions={allCryptosData || []}
           />
-        </div>
+        </div><br/>
 
         {/* Ad Banner Before Footer */}
         {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
@@ -169,7 +170,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             className="max-w-full h-full"
           />
         </div> */}
-
+        <VdoFloatingAd />
         {/* Footer */}
         <div className="mt-12">
           <Footer />
