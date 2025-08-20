@@ -4,11 +4,23 @@ import { performanceService } from '@/services/performanceService';
 // Hook for performance optimization
 export const usePerformanceOptimization = () => {
   useEffect(() => {
-    // Initialize performance optimizations
-    performanceService.optimizeImages();
+    try {
+      console.log('Initializing performance optimizations...');
+      // Initialize performance optimizations
+      performanceService.optimizeImages();
+      console.log('Performance optimizations initialized successfully');
+    } catch (error) {
+      console.warn('Performance optimization initialization failed:', error);
+    }
     
     // Cleanup on unmount
-    return () => performanceService.cleanup();
+    return () => {
+      try {
+        performanceService.cleanup();
+      } catch (error) {
+        console.warn('Performance cleanup failed:', error);
+      }
+    };
   }, []);
 
   const getCachedData = useCallback(

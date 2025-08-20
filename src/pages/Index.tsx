@@ -59,13 +59,25 @@ const Index = () => {
   };
 
   useEffect(() => {
+    console.log('Index component mounted, checking for errors...');
+    
     if (dataError) {
+      console.error('Data error:', dataError);
       toast.error("Failed to fetch crypto data");
     }
     if (filtersError) {
+      console.error('Filters error:', filtersError);
       toast.error(filtersError);
     }
-  }, [dataError, filtersError]);
+    
+    console.log('Component state:', {
+      filtersLoading,
+      dataLoading,
+      predictionLoading,
+      cryptosCount: filteredCryptos.length,
+      allCryptosCount: allCryptosData.length
+    });
+  }, [dataError, filtersError, filtersLoading, dataLoading, predictionLoading, filteredCryptos.length, allCryptosData.length]);
 
   const currentPrice = cryptoData?.length 
     ? cryptoData[cryptoData.length - 1]?.price || 0

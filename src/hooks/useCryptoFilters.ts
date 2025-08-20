@@ -38,16 +38,23 @@ export const useCryptoFilters = () => {
     setError(null);
     
     try {
+      console.log('Fetching crypto data...');
       const data = await apiService.getAllCryptos();
       const cryptoArray = Array.isArray(data) ? data : [];
       const uniqueData = removeDuplicates(cryptoArray);
       const updatedTokens = addCategoryToTokens(uniqueData, category);
 
+      console.log('Crypto data loaded successfully:', updatedTokens.length, 'tokens');
       setFilteredCryptos(updatedTokens);
       setAllCryptosData(updatedTokens);
     } catch (error: any) {
       const errorMessage = error.message || 'Failed to fetch crypto data';
+      console.error('Crypto data fetch failed:', error);
       setError(errorMessage);
+      
+      // Set empty arrays as fallback to prevent white screen
+      setFilteredCryptos([]);
+      setAllCryptosData([]);
     } finally {
       setIsLoading(false);
     }
