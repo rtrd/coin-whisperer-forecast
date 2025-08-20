@@ -231,11 +231,11 @@ const AllTokens = () => {
                         />
                       </span>
                       <div>
-                        <div className="text-white font-medium group-hover:text-blue-400 transition-colors">
-                          {token.symbol.toUpperCase()}
+                        <div className="text-white font-medium group-hover:text-blue-400 transition-colors truncate">
+                          {token.name}
                         </div>
                         <div className="text-gray-400 text-xs">
-                          {(Math.random() * 10).toFixed(2)}/10
+                          {token.symbol.toUpperCase()}
                         </div>
                       </div>
                     </div>
