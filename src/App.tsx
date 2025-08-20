@@ -8,6 +8,7 @@ import { BitmedialAdManager } from "@/components/ads/BitmedialAdManager";
 import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
 import { useAdRefresh } from "./hooks/useAdRefresh";
+import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import Subscribe from "./pages/Subscribe";
@@ -30,6 +31,7 @@ const queryClient = new QueryClient();
 
 const AppRoutes = () => {
   useAdRefresh(); // Initialize ad refresh functionality
+  usePerformanceOptimization(); // Initialize performance optimizations
 
   return (
     <Routes>
