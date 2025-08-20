@@ -37,11 +37,11 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
                 className="w-8 h-8 object-contain rounded-full flex-shrink-0"
               />
               <div>
-                <div className="text-white font-medium">
-                  {token.name.split(" ")[0]}
+                <div className="text-white font-medium truncate">
+                  {token.name}
                 </div>
                 <div className="text-gray-400 text-sm">
-                  {token.name.split(" ")[1]}
+                  {token.symbol.toUpperCase()}
                 </div>
               </div>
             </Link>

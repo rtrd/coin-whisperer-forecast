@@ -151,15 +151,16 @@ const AIPrediction = () => {
       <EnhancedSEOHead seoData={seoData} />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Homepage Header */}
+        <div className="container mx-auto px-4 py-4 md:py-8">
           <IndexHeader 
-            selectedCrypto={selectedCrypto}
+            selectedCrypto="bitcoin"
             cryptoOptions={cryptoOptions}
-            currentPrice={currentPrice}
-            priceChange={priceChange}
+            currentPrice={50000}
+            priceChange={2.5}
           />
+        </div>
 
+        <div className="container mx-auto px-4 pb-8">
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Link to="/">

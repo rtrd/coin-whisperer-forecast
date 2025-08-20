@@ -1,4 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 // import { AdBanner } from "@/components/AdBanner";
 import Footer from "@/components/Footer";
 import { TokenDetailHeader } from "./TokenDetailHeader";
@@ -10,6 +13,7 @@ import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
+import { AdUnit } from "@/components/ads/AdService";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -70,13 +74,30 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <TokenDetailHeader
-          cryptoId={cryptoId}
           cryptoOptions={cryptoOptions}
-          currentPrice={currentPrice}
-          priceChange={priceChange}
         />
+      </div>
+
+      <div className="container mx-auto px-4 pb-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/">
+            <Button
+              variant="outline"
+              className="bg-gray-700/50 border-gray-600 text-white hover:bg-gray-600/50"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back
+            </Button>
+          </Link>
+        </div>
+
+        {/* Ad Banner Before Price Chart */}
+        <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mb-8">
+          <AdUnit type="leaderboard" className="max-w-full h-full ad-click" />
+        </div>
 
         {/* Main Content */}
         <div className="space-y-6">

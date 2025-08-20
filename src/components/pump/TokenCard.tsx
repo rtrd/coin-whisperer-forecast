@@ -26,7 +26,7 @@ export const TokenCard: React.FC<TokenCardProps> = ({ token, changeColorClass, s
         <div className="flex items-center gap-3">
           <div className="text-3xl">{token.icon}</div>
           <div className="min-w-0">
-            <div className="text-white font-bold text-base truncate">{token.symbol}</div>
+            <div className="text-white font-bold text-base truncate">{token.symbol.toUpperCase()}</div>
             <div className="text-gray-400 text-sm truncate">{token.name}</div>
           </div>
         </div>

@@ -123,6 +123,17 @@
   }
 }
 
+/* Global CSS Reset */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 @layer base {
   * {
     @apply border-border;

@@ -71,9 +71,8 @@ const MotiMeter = () => {
   return (
     <>
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-gray-900">
-        {/* PumpParade Header */}
-        <div className="container mx-auto px-4 py-2">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+        <div className="container mx-auto px-4 py-4 md:py-8">
           <IndexHeader 
             selectedCrypto="bitcoin"
             cryptoOptions={cryptoOptions}
@@ -82,7 +81,7 @@ const MotiMeter = () => {
           />
         </div>
 
-        <div className="container mx-auto px-4 pb-8">{/* Reduced gap */}
+        <div className="container mx-auto px-4 pb-8">
           {/* Header Ad */}
           <div className="flex justify-center mb-6">
             <div id='div-gpt-ad-header-moti' style={{minWidth: '728px', minHeight: '90px'}}></div>

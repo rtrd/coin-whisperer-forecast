@@ -165,7 +165,7 @@ export const PopularMemecoins = () => {
                         )}
                       </div>
                       <div>
-                        <h4 className="font-bold text-white text-sm">{coin.symbol}</h4>
+                        <h4 className="font-bold text-white text-sm">{coin.symbol.toUpperCase()}</h4>
                         <p className="text-gray-300 text-xs truncate max-w-20">{coin.name}</p>
                       </div>
                     </div>
@@ -267,7 +267,7 @@ export const PopularMemecoins = () => {
                     )}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <div className="font-semibold text-white text-sm">{coin.symbol}</div>
+                    <div className="font-semibold text-white text-sm">{coin.symbol.toUpperCase()}</div>
                     <div className="text-xs text-gray-300 truncate">{coin.name}</div>
                   </div>
                 </div>

@@ -61,7 +61,7 @@ const MarketMovers = () => {
                 <div className="flex items-center gap-3">
                   <span className="text-lg">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium">{crypto.symbol}</div>
+                    <div className="text-white font-medium">{crypto.symbol.toUpperCase()}</div>
                     <div className="text-gray-400 text-sm">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ const MarketMovers = () => {
                 <div className="flex items-center gap-3">
                   <span className="text-lg">{crypto.icon}</span>
                   <div>
-                    <div className="text-white font-medium">{crypto.symbol}</div>
+                    <div className="text-white font-medium">{crypto.symbol.toUpperCase()}</div>
                     <div className="text-gray-400 text-sm">${formatPrice(crypto.price)}</div>
                   </div>
                 </div>
