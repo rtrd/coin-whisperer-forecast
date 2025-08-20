@@ -26,20 +26,21 @@ const PumpFun = () => {
       <EnhancedSEOHead seoData={seoData} />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <div className="container mx-auto px-4 py-8">
-          {/* Top Ad */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-0"
-            className="mb-8 flex justify-center"
-            size={[728, 90]}
-          />
-
-          {/* Homepage Header */}
+        <div className="container mx-auto px-4 py-4 md:py-8">
           <IndexHeader 
             selectedCrypto="bitcoin"
             cryptoOptions={cryptoOptions}
             currentPrice={50000}
             priceChange={2.5}
+          />
+        </div>
+
+        <div className="container mx-auto px-4 pb-8">
+          {/* Top Ad */}
+          <GAMAdUnit
+            adUnitId="div-gpt-ad-1752654531765-0"
+            className="mb-8 flex justify-center"
+            size={[728, 90]}
           />
 
           {/* Header */}
