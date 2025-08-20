@@ -224,7 +224,6 @@ const Article = () => {
       )}
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        {/* Header like homepage */}
         <div className="container mx-auto px-4 py-4 md:py-8">
           <IndexHeader
             selectedCrypto="bitcoin"
@@ -242,9 +241,6 @@ const Article = () => {
           <div className="flex justify-center mb-8">
             <AdUnit type="leaderboard" className="ad-click" />
           </div>
-        </div>
-
-        <div className="container mx-auto px-4 pb-8">
           {/* Back Button */}
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">
