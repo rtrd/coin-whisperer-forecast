@@ -25,36 +25,36 @@ export default defineConfig(({ mode }) => ({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
-          // React core
-          if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
-            return 'react-vendor';
-          }
-          // Router
-          if (id.includes('react-router-dom')) {
-            return 'router';
-          }
-          // UI components
-          if (id.includes('@radix-ui/') || id.includes('node_modules/cmdk') || id.includes('node_modules/vaul')) {
-            return 'ui-components';
-          }
-          // Charts and visualization
-          if (id.includes('recharts') || id.includes('d3-')) {
-            return 'charts';
-          }
-          // Utils and helpers
-          if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority') || id.includes('date-fns')) {
-            return 'utils';
-          }
-          // Query and data
-          if (id.includes('@tanstack/react-query')) {
-            return 'query';
-          }
-          // Heavy third-party libs
-          if (id.includes('node_modules/') && !id.includes('react')) {
-            return 'vendor';
-          }
-        },
+        // manualChunks: (id) => {
+        //   // React core
+        //   if (id.includes('node_modules/react/') || id.includes('node_modules/react-dom/')) {
+        //     return 'react-vendor';
+        //   }
+        //   // Router
+        //   if (id.includes('react-router-dom')) {
+        //     return 'router';
+        //   }
+        //   // UI components
+        //   if (id.includes('@radix-ui/') || id.includes('node_modules/cmdk') || id.includes('node_modules/vaul')) {
+        //     return 'ui-components';
+        //   }
+        //   // Charts and visualization
+        //   if (id.includes('recharts') || id.includes('d3-')) {
+        //     return 'charts';
+        //   }
+        //   // Utils and helpers
+        //   if (id.includes('clsx') || id.includes('tailwind-merge') || id.includes('class-variance-authority') || id.includes('date-fns')) {
+        //     return 'utils';
+        //   }
+        //   // Query and data
+        //   if (id.includes('@tanstack/react-query')) {
+        //     return 'query';
+        //   }
+        //   // Heavy third-party libs
+        //   if (id.includes('node_modules/') && !id.includes('react')) {
+        //     return 'vendor';
+        //   }
+        // },
         chunkFileNames: (chunkInfo) => {
           const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
           return `js/[name]-[hash].js`;
