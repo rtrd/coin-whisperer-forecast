@@ -1,20 +1,36 @@
-import { useEffect, useCallback, useMemo, useState } from 'react';
+
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
 import { performanceService } from '@/services/performanceService';
 
-// Hook for performance optimization
+// Hook for performance optimization with safe initialization
 export const usePerformanceOptimization = () => {
+  // Add early return for SSR or when React isn't ready
+  if (typeof window === 'undefined') {
+    return {
+      getCachedData: () => Promise.resolve(null),
+      clearCache: () => {},
+      prefetchResources: () => {}
+    };
+  }
+
   useEffect(() => {
-    try {
-      console.log('Initializing performance optimizations...');
-      // Initialize performance optimizations
-      performanceService.optimizeImages();
-      console.log('Performance optimizations initialized successfully');
-    } catch (error) {
-      console.warn('Performance optimization initialization failed:', error);
-    }
+    // Delay initialization to ensure all modules are loaded
+    const initializePerformance = () => {
+      try {
+        console.log('Initializing performance optimizations...');
+        performanceService.optimizeImages();
+        console.log('Performance optimizations initialized successfully');
+      } catch (error) {
+        console.warn('Performance optimization initialization failed:', error);
+      }
+    };
+
+    // Use setTimeout to ensure React is fully initialized
+    const timeoutId = setTimeout(initializePerformance, 0);
     
     // Cleanup on unmount
     return () => {
+      clearTimeout(timeoutId);
       try {
         performanceService.cleanup();
       } catch (error) {
@@ -46,7 +62,7 @@ export const usePerformanceOptimization = () => {
   };
 };
 
-// Hook for debounced API calls
+// Hook for debounced API calls with safe initialization
 export const useDebouncedCallback = <T extends (...args: any[]) => void>(
   callback: T,
   delay: number
@@ -69,7 +85,7 @@ export const useDebouncedCallback = <T extends (...args: any[]) => void>(
   return debouncedCallback;
 };
 
-// Hook for optimized re-renders
+// Hook for optimized state with safe initialization
 export const useOptimizedState = <T>(initialValue: T) => {
   const [state, setState] = useState(initialValue);
   
@@ -87,7 +103,7 @@ export const useOptimizedState = <T>(initialValue: T) => {
   return [state, optimizedSetState] as const;
 };
 
-// Hook for intersection observer with performance optimizations
+// Hook for intersection observer with performance optimizations and safe initialization
 export const useOptimizedIntersectionObserver = (
   options: IntersectionObserverInit & { 
     throttle?: number;
@@ -98,7 +114,7 @@ export const useOptimizedIntersectionObserver = (
   const [isIntersecting, setIsIntersecting] = useState(false);
 
   useEffect(() => {
-    if (!ref) return;
+    if (!ref || typeof window === 'undefined' || !window.IntersectionObserver) return;
 
     let timeoutId: NodeJS.Timeout;
     
