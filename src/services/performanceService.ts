@@ -1,5 +1,4 @@
 // Performance optimization service for Core Web Vitals and caching
-import { onCLS, onINP, onFCP, onLCP, onTTFB, Metric } from 'web-vitals';
 
 interface PerformanceConfig {
   enableTracking: boolean;
@@ -24,40 +23,14 @@ class PerformanceService {
 
   // Core Web Vitals tracking
   private initWebVitals() {
-    if (!this.config.enableTracking) return;
-
-    const sendToAnalytics = (metric: Metric) => {
-      // Only send if gtag is available (loaded asynchronously)
-      if (typeof window.gtag !== 'undefined') {
-        window.gtag('event', metric.name, {
-          event_category: 'Web Vitals',
-          event_label: metric.id,
-          value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-          non_interaction: true,
-        });
-      }
-    };
-
-    // Track Core Web Vitals
-    onCLS(sendToAnalytics);
-    onINP(sendToAnalytics); // Replaced FID with INP (Interaction to Next Paint)
-    onFCP(sendToAnalytics);
-    onLCP(sendToAnalytics);
-    onTTFB(sendToAnalytics);
+    // Web vitals tracking disabled for now to prevent loading issues
+    return;
   }
 
   // Service Worker initialization
   private async initServiceWorker() {
-    if ('serviceWorker' in navigator) {
-      try {
-        const registration = await navigator.serviceWorker.register('/sw.js', {
-          scope: '/'
-        });
-        console.log('Service Worker registered:', registration);
-      } catch (error) {
-        console.log('Service Worker registration failed:', error);
-      }
-    }
+    // Service worker registration disabled to prevent loading issues
+    return;
   }
 
   // Enhanced caching with deduplication
