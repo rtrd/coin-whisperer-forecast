@@ -18,53 +18,45 @@ class PerformanceService {
   private pendingRequests = new Map<string, Promise<any>>();
 
   constructor() {
-    try {
-      this.initWebVitals();
-      this.initServiceWorker();
-    } catch (error) {
-      console.warn('Performance service initialization failed:', error);
-    }
+    this.initWebVitals();
+    this.initServiceWorker();
   }
 
   // Core Web Vitals tracking
   private initWebVitals() {
-    if (!this.config.enableTracking || typeof window === 'undefined') return;
+    if (!this.config.enableTracking) return;
 
-    try {
-      const sendToAnalytics = (metric: Metric) => {
-        // Only send if gtag is available (loaded asynchronously)
-        if (typeof window !== 'undefined' && typeof window.gtag !== 'undefined') {
-          window.gtag('event', metric.name, {
-            event_category: 'Web Vitals',
-            event_label: metric.id,
-            value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
-            non_interaction: true,
-          });
-        }
-      };
+    const sendToAnalytics = (metric: Metric) => {
+      // Only send if gtag is available (loaded asynchronously)
+      if (typeof window.gtag !== 'undefined') {
+        window.gtag('event', metric.name, {
+          event_category: 'Web Vitals',
+          event_label: metric.id,
+          value: Math.round(metric.name === 'CLS' ? metric.value * 1000 : metric.value),
+          non_interaction: true,
+        });
+      }
+    };
 
-      // Track Core Web Vitals with error handling
-      onCLS(sendToAnalytics);
-      onINP(sendToAnalytics);
-      onFCP(sendToAnalytics);
-      onLCP(sendToAnalytics);
-      onTTFB(sendToAnalytics);
-    } catch (error) {
-      console.warn('Web Vitals initialization failed:', error);
-    }
+    // Track Core Web Vitals
+    onCLS(sendToAnalytics);
+    onINP(sendToAnalytics); // Replaced FID with INP (Interaction to Next Paint)
+    onFCP(sendToAnalytics);
+    onLCP(sendToAnalytics);
+    onTTFB(sendToAnalytics);
   }
 
   // Service Worker initialization
   private async initServiceWorker() {
-    if (typeof window === 'undefined' || !('serviceWorker' in navigator)) return;
-    
-    try {
-      const registration = await navigator.serviceWorker.register('/sw.js', {
-        scope: '/'
-      });
-      console.log('Service Worker registered:', registration);
-    } catch (error) {
-      console.warn('Service Worker registration failed:', error);
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/'
+        });
+        console.log('Service Worker registered:', registration);
+      } catch (error) {
+        console.log('Service Worker registration failed:', error);
+      }
     }
   }
 
