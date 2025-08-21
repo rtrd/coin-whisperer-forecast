@@ -28,7 +28,8 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-
+import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
@@ -521,7 +522,8 @@ const TechnicalAnalysisPage = () => {
             className="mt-8"
           />
         </div>
-
+       <VdoFloatingAd />
+       <VdoBannerAd/>
         <Footer />
       </div>
     </>

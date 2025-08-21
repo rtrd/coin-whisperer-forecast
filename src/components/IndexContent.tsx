@@ -13,6 +13,7 @@ import { CryptoFilters } from "@/components/CryptoFilters";
 import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
 
 interface IndexContentProps {
@@ -85,8 +86,8 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         size={[728, 90]}
         className="mb-6 md:mb-8"
       /> */}
+      <VdoBannerAd />
       <VdoFloatingAd />
-
       {/* Footer */}
       <Footer />
     </div>
