@@ -14,7 +14,7 @@ import { TokenDetailActions } from "./TokenDetailActions";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import { AdUnit } from "@/components/ads/AdService";
-
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 interface TokenDetailLayoutProps {
   // Header props
   cryptoId: string;
@@ -75,9 +75,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
-        <TokenDetailHeader
-          cryptoOptions={cryptoOptions}
-        />
+        <TokenDetailHeader cryptoOptions={cryptoOptions} />
       </div>
 
       <div className="container mx-auto px-4 pb-8">
@@ -151,18 +149,19 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         {/* Market Analysis and Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
           {/* Market Analysis - 3/4 width */}
-          <div className="lg:col-span-3 order-2 lg:order-1">
+          <div className="lg:col-span-3">
             <TokenDetailAnalysis
               cryptoId={cryptoId}
               cryptoData={cryptoData}
               dataLoading={dataLoading}
               prediction={prediction}
-              sentimentData={SentimentData} // Pass sentiment data prop
+              sentimentData={SentimentData}
             />
           </div>
 
-          {/* Sidebar - 1/4 width */}
-          <div className="lg:col-span-1 order-1 lg:order-2">
+          {/* Sidebar with Ad + TokenSidebar */}
+          <div className="lg:col-span-1 space-y-6">
+            <VdoBannerAd />
             <TokenSidebar
               currentTokenId={tokenId}
               selectedCrypto={cryptoId}
@@ -180,7 +179,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             tokenId={tokenId}
             cryptoOptions={allCryptosData || []}
           />
-        </div><br/>
+        </div>
+        <br />
 
         {/* Ad Banner Before Footer */}
         {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">

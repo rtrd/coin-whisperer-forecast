@@ -41,7 +41,8 @@ import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-
+import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const SentimentAnalysisPage = () => {
   // Initialize ad script on page load
   useAdScript();
@@ -1010,7 +1011,9 @@ const SentimentAnalysisPage = () => {
             className="mt-8"
           />
         </div>
-
+        <VdoFloatingAd />
+        <VdoBannerAd />
+        {/* Footer */}
         <Footer />
       </div>
     </>

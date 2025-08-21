@@ -17,7 +17,7 @@ import { getAllCryptos } from "../../utils/api";
 import { apiService } from "@/services/apiService";
 import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHelpers';
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import ScrollToTop from "@/components/ScrollToTop";
 
 const RealTimeData = () => {
@@ -752,6 +752,7 @@ const RealTimeData = () => {
                   />
                 </div>
                 <VdoFloatingAd />
+                <VdoBannerAd />
                 <Footer />
               </>
             )}

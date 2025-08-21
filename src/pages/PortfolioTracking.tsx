@@ -33,7 +33,7 @@ import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-
+import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const PortfolioTracking = () => {
   // Initialize ad script on page load
   useAdScript();
@@ -556,6 +556,7 @@ const PortfolioTracking = () => {
           </div>
         </div>
         <VdoFloatingAd />
+        <VdoBannerAd />
         <Footer />
       </div>
     </>
