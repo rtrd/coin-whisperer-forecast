@@ -286,10 +286,10 @@ const Article = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
+                <VdoBannerAd />
                 <ArticleIndex content={article.content} />
                 {/* <AdUnit type="skyscraper" className="ad-click" /> */}
-                <VdoBannerAd />
-
+                {/* <VdoBannerAd /> */}
                 {/* Market Movers Widget */}
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
