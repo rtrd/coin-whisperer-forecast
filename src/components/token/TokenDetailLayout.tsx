@@ -94,7 +94,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 
         {/* Ad Banner Before Price Chart */}
         <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mb-8">
-          <AdUnit type="leaderboard" className="max-w-full h-full ad-click" />
+         <span id="ct_cIDsE2QDOHw"><AdUnit type="leaderboard" className="max-w-full h-full ad-click" /></span>
+          
         </div>
 
         {/* Main Content */}
@@ -128,11 +129,13 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 
           {/* Ad Banner After Price Chart - Responsive */}
           <div className="w-full min-h-[90px] sm:min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-            <GAMAdUnit
-              adUnitId="div-gpt-ad-1752654531765-2"
-              size={[728, 120]}
-              className="max-w-full h-auto"
-            />
+            <span id="ct_cVqQhaBjbGn">
+              <GAMAdUnit
+                adUnitId="div-gpt-ad-1752654531765-2"
+                size={[728, 120]}
+                className="max-w-full h-auto"
+              />
+            </span>
           </div>
 
           {/* Ad Banner After Price Chart - Centered */}

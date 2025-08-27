@@ -26,6 +26,7 @@ import PortfolioTracking from "./pages/PortfolioTracking";
 import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
+import VdoFloatingAd from "./components/ads/VdoFloatingAd";
 
 const queryClient = new QueryClient();
 
@@ -75,10 +76,9 @@ const App = () => (
         <Sonner />
         <AutoRefresh />
         <BrowserRouter>
-          <BitmedialAdManager>
+            <VdoFloatingAd />
             <ScrollToTop />
             <AppRoutes />
-          </BitmedialAdManager>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

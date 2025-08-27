@@ -60,7 +60,11 @@ export const IndexContent: React.FC<IndexContentProps> = ({
 
       {/* Crypto Filters - Smart Crypto Filters */}
       <CryptoFilters onFilterChange={handleFilterChange} />
-
+       <div className="my-6 md:my-8">
+         <VdoBannerAd/>
+         <VdoFloatingAd/>
+       </div>
+         
       {/* Market Data Widget - Top 10 by Market Cap */}
       <LazyMarketDataWidget
         onMarketDataFilter={handleFilterChange}
@@ -86,7 +90,6 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         size={[728, 90]}
         className="mb-6 md:mb-8"
       /> */}
-      <VdoBannerAd />
       <VdoFloatingAd />
       {/* Footer */}
       <Footer />
