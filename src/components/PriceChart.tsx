@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -34,7 +32,6 @@ interface PriceChartProps {
   onClearPrediction?: () => void;
 }
 
-// Define chart data type that includes both historical and prediction data
 interface ChartDataPoint {
   timestamp: number;
   date: string;
@@ -44,6 +41,20 @@ interface ChartDataPoint {
   confidence?: number;
 }
 
+// ✅ Safe hook to get window width (no SSR crash)
+function useWindowWidth() {
+  const [width, setWidth] = useState<number>(1024); // default = desktop
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    handleResize(); // set initial
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return width;
+}
+
 export const PriceChart: React.FC<PriceChartProps> = ({
   data,
   prediction,
@@ -51,6 +62,8 @@ export const PriceChart: React.FC<PriceChartProps> = ({
   crypto,
   onClearPrediction,
 }) => {
+  const width = useWindowWidth();
+
   if (isLoading) {
     return (
       <div className="h-80 md:h-[500px] space-y-4">
@@ -68,7 +81,6 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     );
   }
 
-  // Prepare historical chart data
   const chartData: ChartDataPoint[] = data.map((d) => ({
     timestamp: d.timestamp,
     date: new Date(d.timestamp * 1000).toLocaleDateString("en-US", {
@@ -79,13 +91,10 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     volume: d.volume || 0,
   }));
 
-  // Add prediction data if available - create smoother transition
   if (prediction && prediction.length > 0) {
-    // Get the last historical price point for connecting the prediction line
     const lastHistoricalPrice = data[data.length - 1]?.price;
-
-    // Add a bridge point that connects historical to prediction smoothly
     const firstPredictionTime = prediction[0].timestamp;
+
     const bridgePoint = {
       timestamp: firstPredictionTime,
       date: new Date(firstPredictionTime).toLocaleDateString("en-US", {
@@ -93,25 +102,23 @@ export const PriceChart: React.FC<PriceChartProps> = ({
         day: "numeric",
         timeZone: "UTC",
       }),
-      price: lastHistoricalPrice, // Keep historical price for smooth connection
-      predictedPrice: lastHistoricalPrice, // Start prediction from same point
+      price: lastHistoricalPrice,
+      predictedPrice: lastHistoricalPrice,
       confidence: prediction[0].confidence,
       volume: 0,
     };
 
     chartData.push(bridgePoint);
 
-    // Add remaining prediction points
     prediction.forEach((p, index) => {
       if (index > 0) {
-        // Skip first point as we already added bridge
         chartData.push({
           timestamp: p.timestamp,
           date: new Date(p.timestamp).toLocaleDateString("en-US", {
             month: "short",
             day: "numeric",
           }),
-          price: null, // No historical price for future points
+          price: null,
           predictedPrice: p.predictedPrice,
           confidence: p.confidence,
           volume: 0,
@@ -121,26 +128,12 @@ export const PriceChart: React.FC<PriceChartProps> = ({
   }
 
   const formatPrice = (value: number) => {
-    if (value >= 1000000) {
-      return `$${(value / 1000000).toFixed(1)}M`;
-    } else if (value >= 1000) {
-      return `$${(value / 1000).toFixed(1)}K`;
-    } else if (value >= 1) {
-      return `$${value.toFixed(0)}`;
-    } else {
-      return `$${value.toFixed(4)}`;
-    }
+    if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
+    if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
+    if (value >= 1) return `$${value.toFixed(0)}`;
+    return `$${value.toFixed(4)}`;
   };
 
-  const formatDate = (tickItem: string) => {
-    const date = new Date(tickItem);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-  };
-
-  // Custom tooltip component
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -166,11 +159,11 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     return null;
   };
 
+  const isMobile = width < 768;
+
   return (
     <div className="space-y-4">
-      {/* Chart Container with integrated header and legend */}
       <div className="bg-gradient-to-br from-gray-800/40 to-gray-900/60 rounded-2xl border border-gray-600/30 backdrop-blur-sm shadow-2xl overflow-hidden">
-        {/* Chart Header with Clear Button - Inside chart container */}
         {prediction && prediction.length > 0 && (
           <div className="flex items-center justify-between bg-gradient-to-r from-blue-500/15 to-green-500/15 border-b border-gray-600/30 px-6 py-4">
             <div className="flex items-center gap-3 text-sm">
@@ -196,20 +189,18 @@ export const PriceChart: React.FC<PriceChartProps> = ({
           </div>
         )}
 
-        {/* Chart - Mobile Optimized */}
         <div className="h-64 sm:h-80 md:h-[500px] p-1 sm:p-2 md:p-4">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={chartData}
-              margin={{ 
-                top: window.innerWidth < 768 ? 10 : 20, 
-                right: window.innerWidth < 768 ? 10 : 30, 
-                left: 0, 
-                bottom: window.innerWidth < 768 ? 30 : 20 
+              margin={{
+                top: isMobile ? 10 : 20,
+                right: isMobile ? 10 : 30,
+                left: 0,
+                bottom: isMobile ? 30 : 20,
               }}
             >
               <defs>
-                {/* Enhanced gradients */}
                 <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.4} />
                   <stop offset="50%" stopColor="#1D4ED8" stopOpacity={0.2} />
@@ -226,62 +217,50 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                   <stop offset="50%" stopColor="#059669" stopOpacity={0.15} />
                   <stop offset="100%" stopColor="#047857" stopOpacity={0.05} />
                 </linearGradient>
-
-                {/* Glowing effects */}
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                  <feMerge>
-                    <feMergeNode in="coloredBlur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
               </defs>
 
               <CartesianGrid
                 strokeDasharray="2 4"
                 stroke="#374151"
                 opacity={0.3}
-                horizontal={true}
+                horizontal
                 vertical={false}
               />
 
-               <XAxis
+              <XAxis
                 dataKey="date"
                 stroke="#9CA3AF"
-                fontSize={10}
-                interval={window.innerWidth < 768 ? "preserveEnd" : 0}
-                angle={window.innerWidth < 768 ? -45 : -30}
+                interval={isMobile ? "preserveEnd" : 0}
+                angle={isMobile ? -45 : -30}
                 textAnchor="end"
-                height={window.innerWidth < 768 ? 50 : 40}
+                height={isMobile ? 50 : 40}
                 tick={{
                   fill: "#D1D5DB",
                   fontWeight: 500,
-                  fontSize: window.innerWidth < 768 ? 9 : 12,
+                  fontSize: isMobile ? 9 : 12,
                 }}
                 axisLine={{ stroke: "#4B5563", strokeWidth: 1 }}
                 tickLine={{ stroke: "#6B7280", strokeWidth: 1 }}
-                tickMargin={window.innerWidth < 768 ? 2 : 4}
+                tickMargin={isMobile ? 2 : 4}
               />
 
-               <YAxis
+              <YAxis
                 stroke="#9CA3AF"
                 tickFormatter={formatPrice}
-                fontSize={9}
                 tick={{
                   fill: "#D1D5DB",
                   fontWeight: 500,
-                  fontSize: window.innerWidth < 768 ? 9 : 12,
+                  fontSize: isMobile ? 9 : 12,
                 }}
-                width={window.innerWidth < 768 ? 45 : 60}
+                width={isMobile ? 45 : 60}
                 axisLine={{ stroke: "#4B5563", strokeWidth: 1 }}
                 tickLine={{ stroke: "#6B7280", strokeWidth: 1 }}
-                tickCount={window.innerWidth < 768 ? 6 : 8}
+                tickCount={isMobile ? 6 : 8}
                 domain={["dataMin * 0.98", "dataMax * 1.02"]}
               />
 
               <Tooltip content={<CustomTooltip />} />
 
-              {/* Historical Price Area */}
               <Area
                 type="monotone"
                 dataKey="price"
@@ -293,7 +272,6 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 activeDot={false}
               />
 
-              {/* Prediction Area */}
               {prediction && prediction.length > 0 && (
                 <Area
                   type="monotone"
@@ -302,38 +280,13 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                   strokeWidth={3}
                   strokeDasharray="8 6"
                   fill="url(#predictionGradient)"
-                  connectNulls={true}
+                  connectNulls
                   dot={false}
                   activeDot={false}
                 />
               )}
             </AreaChart>
           </ResponsiveContainer>
-        </div>
-
-        {/* Enhanced Legend - Mobile Optimized */}
-        <div className="bg-gradient-to-r from-gray-800/60 to-gray-900/60 backdrop-blur-sm border-t border-gray-600/30 px-3 sm:px-6 py-3 sm:py-4">
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-xs sm:text-sm">
-            <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-blue-500/15 rounded-xl border border-blue-500/30 backdrop-blur-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-1 sm:w-6 sm:h-1 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full"></div>
-              </div>
-              <span className="text-blue-300 font-semibold">
-                Historical Price
-              </span>
-            </div>
-
-            {prediction && prediction.length > 0 && (
-              <div className="flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-green-500/15 rounded-xl border border-green-500/30 backdrop-blur-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-1 sm:w-6 sm:h-1 border-t-2 border-dashed border-green-400 rounded"></div>
-                </div>
-                <span className="text-green-300 font-semibold">
-                  AI Prediction
-                </span>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>

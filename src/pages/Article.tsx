@@ -234,14 +234,14 @@ const Article = () => {
           />
 
           {/* Header Ad - below header description */}
-          <div className="flex justify-center mt-6 mb-8">
+          {/* <div className="flex justify-center mt-6 mb-8">
             <AdUnit type="header" className="ad-click" />
-          </div>
+          </div> */}
 
           {/* Additional Header Ad Placement */}
-          <div className="flex justify-center mb-8">
+          {/* <div className="flex justify-center mb-8">
             <AdUnit type="leaderboard" className="ad-click" />
-          </div>
+          </div> */}
           {/* Back Button */}
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">

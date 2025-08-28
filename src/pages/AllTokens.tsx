@@ -163,7 +163,7 @@ const AllTokens = () => {
       setFilteredCryptos(sorted);
     }
   };
-
+  console.log("Rendering AllTokens with data:", AllCryptosData);
   return (
     <>
       <EnhancedSEOHead seoData={seoData} />
