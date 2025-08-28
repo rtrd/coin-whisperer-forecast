@@ -259,7 +259,7 @@ export const generateTechnicalPrediction = async (
     const predictions: PredictionData[] = Array.from(
       { length: predictionDays },
       (_, i) => {
-        const timestamp = baseTimestamp + i * 24 * 60 * 60 * 1000;
+        const timestamp = Math.floor((baseTimestamp / 1000) + i * 24 * 60 * 60); // in seconds
         const predictedPrice = currentPrice * Math.pow(1 + dailyGrowthRate, i);
         return {
           timestamp,
@@ -430,7 +430,7 @@ export const generateSentimentPrediction = async (
     const predictions: PredictionData[] = Array.from(
       { length: predictionDays },
       (_, i) => {
-        const timestamp = baseTimestamp + i * 24 * 60 * 60 * 1000;
+        const timestamp = Math.floor((baseTimestamp / 1000) + i * 24 * 60 * 60); // in seconds
         const price = currentPrice * Math.pow(1 + dailyGrowthRate, i);
         return {
           timestamp,
