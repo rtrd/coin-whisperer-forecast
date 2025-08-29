@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState, useId } from "react";
 import {
   XAxis,
   YAxis,
@@ -13,13 +13,13 @@ import { Button } from "@/components/ui/button";
 import { X, Brain } from "lucide-react";
 
 interface PriceData {
-  timestamp: number;
+  timestamp: number; // seconds since epoch
   price: number;
   volume?: number;
 }
 
 interface PredictionData {
-  timestamp: number;
+  timestamp: number; // seconds since epoch
   predictedPrice: number;
   confidence: number;
 }
@@ -33,8 +33,7 @@ interface PriceChartProps {
 }
 
 interface ChartDataPoint {
-  timestamp: number;
-  date: string;
+  ts: number;             // milliseconds since epoch (normalized)
   price: number | null;
   volume: number;
   predictedPrice?: number;
@@ -43,15 +42,13 @@ interface ChartDataPoint {
 
 // ✅ Safe hook to get window width (no SSR crash)
 function useWindowWidth() {
-  const [width, setWidth] = useState<number>(1024); // default = desktop
-
+  const [width, setWidth] = useState<number>(1024);
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
-    handleResize(); // set initial
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
   return width;
 }
 
@@ -63,6 +60,89 @@ export const PriceChart: React.FC<PriceChartProps> = ({
   onClearPrediction,
 }) => {
   const width = useWindowWidth();
+  const uid = useId();
+  const PRICE_GRAD_ID = `priceGradient-${uid}`;
+  const PRED_GRAD_ID = `predictionGradient-${uid}`;
+
+  const formatDate = (ms: number) =>
+    new Date(ms).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+
+  const formatPrice = (value: number) => {
+    if (value >= 1_000_000) return `$${(value / 1_000_000).toFixed(1)}M`;
+    if (value >= 1_000) return `$${(value / 1_000).toFixed(1)}K`;
+    if (value >= 1) return `$${value.toFixed(0)}`;
+    return `$${value.toFixed(4)}`;
+  };
+
+  const chartData: ChartDataPoint[] = useMemo(() => {
+    if (!data || data.length === 0) return [];
+
+    // base (normalize to ms)
+    let base: ChartDataPoint[] = data.map((d) => ({
+      ts: d.timestamp * 1000, // seconds -> ms
+      price: d.price,
+      volume: d.volume ?? 0,
+    }));
+
+    if (prediction && prediction.length > 0) {
+      const lastHistoricalPrice = data[data.length - 1]?.price ?? null;
+      const firstPredictionTimeMs = prediction[0].timestamp * 1000; // normalize
+
+      const bridgePoint: ChartDataPoint = {
+        ts: firstPredictionTimeMs,
+        price: lastHistoricalPrice,
+        predictedPrice: lastHistoricalPrice ?? undefined,
+        confidence: prediction[0].confidence,
+        volume: 0,
+      };
+
+      const preds: ChartDataPoint[] = prediction.slice(1).map((p) => ({
+        ts: p.timestamp * 1000, // normalize
+        price: null,
+        predictedPrice: p.predictedPrice,
+        confidence: p.confidence,
+        volume: 0,
+      }));
+
+      base = [...base, bridgePoint, ...preds];
+    }
+
+    return base;
+  }, [data, prediction]);
+
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload?.length) {
+      const dateLabel =
+        typeof label === "number" ? formatDate(label) : String(label);
+      return (
+        <div className="bg-gradient-to-br from-gray-800/95 to-gray-900/95 backdrop-blur-sm border border-gray-600/50 rounded-xl p-4 shadow-2xl">
+          <p className="text-gray-300 text-sm font-medium mb-2">{`Date: ${dateLabel}`}</p>
+          {payload.map(
+            (entry: any, index: number) =>
+              entry?.value != null && (
+                <div key={index} className="flex items-center gap-2 mb-1">
+                  <div
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: entry.color || "#fff" }}
+                  />
+                  <span className="text-white font-semibold">
+                    {entry.dataKey === "price"
+                      ? "Historical Price: "
+                      : "AI Prediction: "}
+                    {formatPrice(entry.value)}
+                  </span>
+                </div>
+              )
+          )}
+        </div>
+      );
+    }
+    return null;
+  };
 
   if (isLoading) {
     return (
@@ -80,84 +160,6 @@ export const PriceChart: React.FC<PriceChartProps> = ({
       </div>
     );
   }
-
-  const chartData: ChartDataPoint[] = data.map((d) => ({
-    timestamp: d.timestamp,
-    date: new Date(d.timestamp * 1000).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }),
-    price: d.price,
-    volume: d.volume || 0,
-  }));
-
-  if (prediction && prediction.length > 0) {
-    const lastHistoricalPrice = data[data.length - 1]?.price;
-    const firstPredictionTime = prediction[0].timestamp;
-
-    const bridgePoint = {
-      timestamp: firstPredictionTime,
-      date: new Date(firstPredictionTime).toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        timeZone: "UTC",
-      }),
-      price: lastHistoricalPrice,
-      predictedPrice: lastHistoricalPrice,
-      confidence: prediction[0].confidence,
-      volume: 0,
-    };
-
-    chartData.push(bridgePoint);
-
-    prediction.forEach((p, index) => {
-      if (index > 0) {
-        chartData.push({
-          timestamp: p.timestamp,
-          date: new Date(p.timestamp).toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          }),
-          price: null,
-          predictedPrice: p.predictedPrice,
-          confidence: p.confidence,
-          volume: 0,
-        });
-      }
-    });
-  }
-
-  const formatPrice = (value: number) => {
-    if (value >= 1000000) return `$${(value / 1000000).toFixed(1)}M`;
-    if (value >= 1000) return `$${(value / 1000).toFixed(1)}K`;
-    if (value >= 1) return `$${value.toFixed(0)}`;
-    return `$${value.toFixed(4)}`;
-  };
-
-  const CustomTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-gradient-to-br from-gray-800/95 to-gray-900/95 backdrop-blur-sm border border-gray-600/50 rounded-xl p-4 shadow-2xl">
-          <p className="text-gray-300 text-sm font-medium mb-2">{`Date: ${label}`}</p>
-          {payload.map((entry: any, index: number) => (
-            <div key={index} className="flex items-center gap-2 mb-1">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: entry.color }}
-              />
-              <span className="text-white font-semibold">
-                {entry.dataKey === "price"
-                  ? "Historical Price: "
-                  : "AI Prediction: "}
-                {formatPrice(entry.value)}
-              </span>
-            </div>
-          ))}
-        </div>
-      );
-    }
-    return null;
-  };
 
   const isMobile = width < 768;
 
@@ -201,18 +203,12 @@ export const PriceChart: React.FC<PriceChartProps> = ({
               }}
             >
               <defs>
-                <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id={PRICE_GRAD_ID} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.4} />
                   <stop offset="50%" stopColor="#1D4ED8" stopOpacity={0.2} />
                   <stop offset="100%" stopColor="#1E40AF" stopOpacity={0.05} />
                 </linearGradient>
-                <linearGradient
-                  id="predictionGradient"
-                  x1="0"
-                  y1="0"
-                  x2="0"
-                  y2="1"
-                >
+                <linearGradient id={PRED_GRAD_ID} x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#10B981" stopOpacity={0.3} />
                   <stop offset="50%" stopColor="#059669" stopOpacity={0.15} />
                   <stop offset="100%" stopColor="#047857" stopOpacity={0.05} />
@@ -227,8 +223,13 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 vertical={false}
               />
 
+              {/* Use time scale on X-axis with ms timestamps */}
               <XAxis
-                dataKey="date"
+                dataKey="ts"
+                type="number"
+                scale="time"
+                domain={["dataMin", "dataMax"]}
+                tickFormatter={(val: number) => formatDate(val)}
                 stroke="#9CA3AF"
                 interval={isMobile ? "preserveEnd" : 0}
                 angle={isMobile ? -45 : -30}
@@ -266,7 +267,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 dataKey="price"
                 stroke="#3B82F6"
                 strokeWidth={3}
-                fill="url(#priceGradient)"
+                fill={`url(#${PRICE_GRAD_ID})`}
                 connectNulls={false}
                 dot={false}
                 activeDot={false}
@@ -279,7 +280,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                   stroke="#10B981"
                   strokeWidth={3}
                   strokeDasharray="8 6"
-                  fill="url(#predictionGradient)"
+                  fill={`url(#${PRED_GRAD_ID})`}
                   connectNulls
                   dot={false}
                   activeDot={false}

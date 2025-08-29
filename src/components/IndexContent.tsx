@@ -57,13 +57,12 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       <div className="mb-8">
         <LockedAITradingSignals />
       </div>
-
-      {/* Crypto Filters - Smart Crypto Filters */}
-      <CryptoFilters onFilterChange={handleFilterChange} />
-       <div className="my-6 md:my-8">
+         <div className="my-6 md:my-8">
          <VdoBannerAd/>
          <VdoFloatingAd/>
        </div>
+      {/* Crypto Filters - Smart Crypto Filters */}
+      <CryptoFilters onFilterChange={handleFilterChange} />
          
       {/* Market Data Widget - Top 10 by Market Cap */}
       <LazyMarketDataWidget
