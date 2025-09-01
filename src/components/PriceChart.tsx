@@ -80,26 +80,22 @@ export const PriceChart: React.FC<PriceChartProps> = ({
       </div>
     );
   }
-
   const chartData: ChartDataPoint[] = data.map((d) => ({
     timestamp: d.timestamp,
     date: new Date(d.timestamp * 1000).toLocaleDateString("en-US", {
-      year: "numeric", // ✅ added year for uniqueness
       month: "short",
       day: "numeric",
     }),
     price: d.price,
     volume: d.volume || 0,
   }));
-
   if (prediction && prediction.length > 0) {
     const lastHistoricalPrice = data[data.length - 1]?.price;
     const firstPredictionTime = prediction[0].timestamp;
 
-    const bridgePoint: ChartDataPoint = {
+    const bridgePoint = {
       timestamp: firstPredictionTime,
       date: new Date(firstPredictionTime).toLocaleDateString("en-US", {
-        year: "numeric",
         month: "short",
         day: "numeric",
         timeZone: "UTC",
@@ -110,17 +106,13 @@ export const PriceChart: React.FC<PriceChartProps> = ({
       volume: 0,
     };
 
-    // ✅ Prevent duplicate timestamp
-    if (!chartData.find((p) => p.timestamp === firstPredictionTime)) {
-      chartData.push(bridgePoint);
-    }
+    chartData.push(bridgePoint);
 
     prediction.forEach((p, index) => {
       if (index > 0) {
         chartData.push({
           timestamp: p.timestamp,
           date: new Date(p.timestamp).toLocaleDateString("en-US", {
-            year: "numeric",
             month: "short",
             day: "numeric",
           }),
@@ -198,7 +190,6 @@ export const PriceChart: React.FC<PriceChartProps> = ({
         <div className="h-64 sm:h-80 md:h-[500px] p-1 sm:p-2 md:p-4">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
-              key={chartData.length} // ✅ force remount when dataset shape changes
               data={chartData}
               margin={{
                 top: isMobile ? 10 : 20,
@@ -266,7 +257,8 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 domain={["dataMin * 0.98", "dataMax * 1.02"]}
               />
 
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={CustomTooltip} />
+
 
               <Area
                 type="monotone"
@@ -274,7 +266,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 stroke="#3B82F6"
                 strokeWidth={3}
                 fill="url(#priceGradient)"
-                connectNulls={true} // ✅ safer with nulls
+                connectNulls={false}
                 dot={false}
                 activeDot={false}
               />

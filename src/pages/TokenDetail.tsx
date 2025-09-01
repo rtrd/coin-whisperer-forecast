@@ -249,7 +249,6 @@ const TokenDetail = () => {
       toast.error("No data available for prediction");
       return;
     }
-
     await generatePrediction(
       cryptoData,
       cryptoId,
@@ -260,13 +259,13 @@ const TokenDetail = () => {
       Alltokenmarketstats
     );
     setShowPrediction(true);
-    toast.success("Prediction generated successfully!");
+    //toast.success("Prediction generated successfully!");
   };
 
   const handleClearPrediction = () => {
     trackPredictionTool("clear", selectedToken?.name, modelType);
     setShowPrediction(false);
-    toast.success("Prediction cleared from chart");
+    //toast.success("Prediction cleared from chart");
   };
 
   // Create SEO data object
