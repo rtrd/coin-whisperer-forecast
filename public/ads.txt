@@ -610,3 +610,4 @@ onetag.com, 5d49f482552c9b6, Reseller
 smartadserver.com, 4839, RESELLER, 060d053dcf45cbf3
 rhebus.works,6206908708,RESELLER
 loopme.com, 11498, RESELLER, 6c8d5f95897a5a3b
+google.com, pub-7094677798399606, RESELLER, f08c47fec0942fa0
