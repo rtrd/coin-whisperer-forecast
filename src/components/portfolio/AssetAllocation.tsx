@@ -75,9 +75,9 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           {/* Pie Chart */}
-          <div className="h-80">
+          <div className="h-80 flex justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -100,26 +100,26 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
           </div>
 
           {/* Asset List */}
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-hidden">
             {assets.map((asset, index) => (
               <div 
                 key={asset.id} 
-                className="flex items-center justify-between p-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50"
+                className="flex items-center justify-between p-3 rounded-lg bg-card/40 hover:bg-card/60 transition-colors border border-border/40 min-w-0"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
                   <div 
-                    className="w-4 h-4 rounded-full" 
+                    className="w-4 h-4 rounded-full flex-shrink-0" 
                     style={{ backgroundColor: colors[index % colors.length] }}
                   />
                   
-                  <div>
-                    <p className="font-medium text-white">{asset.symbol}</p>
-                    <p className="text-sm text-gray-400">{asset.name}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-foreground truncate">{asset.symbol}</p>
+                    <p className="text-sm text-muted-foreground truncate">{asset.name}</p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="font-semibold text-white">{formatPercentage(asset.allocation)}</p>
-                  <p className="text-sm text-gray-400">{formatPrice(asset.totalValue)}</p>
+                <div className="text-right flex-shrink-0 ml-3">
+                  <p className="font-semibold text-foreground">{formatPercentage(asset.allocation)}</p>
+                  <p className="text-sm text-muted-foreground">{formatPrice(asset.totalValue)}</p>
                 </div>
               </div>
             ))}
