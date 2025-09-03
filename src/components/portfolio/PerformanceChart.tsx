@@ -157,7 +157,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
             { label: 'SOL', value: chartData[chartData.length - 1]?.sol || 0, icon: '◎', color: 'bg-purple-500' },
             { label: 'Others', value: chartData[chartData.length - 1]?.others || 0, icon: '⚡', color: 'bg-gray-500' }
           ].map((asset) => (
-            <div key={asset.label} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
+            <div key={asset.label} className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
               <div className={`w-8 h-8 rounded-full ${asset.color} flex items-center justify-center text-white text-sm font-bold`}>
                 {asset.icon}
               </div>
