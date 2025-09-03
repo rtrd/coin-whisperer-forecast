@@ -30,9 +30,6 @@ import VdoFloatingAd from "./components/ads/VdoFloatingAd";
 const queryClient = new QueryClient();
 
 const AppRoutes = () => {
-  useAdRefresh(); // Initialize ad refresh functionality
-  usePerformanceOptimization(); // Initialize performance optimizations
-
   return (
     <Routes>
             <Route path="/" element={<Index />} />
@@ -66,6 +63,19 @@ const AppRoutes = () => {
   );
 };
 
+const AppWithHooks = () => {
+  useAdRefresh(); // Initialize ad refresh functionality
+  usePerformanceOptimization(); // Initialize performance optimizations
+  
+  return (
+    <>
+      <VdoFloatingAd />
+      <ScrollToTop />
+      <AppRoutes />
+    </>
+  );
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -75,9 +85,7 @@ const App = () => (
         <Sonner />
         <AutoRefresh />
         <BrowserRouter>
-            <VdoFloatingAd />
-            <ScrollToTop />
-            <AppRoutes />
+            <AppWithHooks />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
