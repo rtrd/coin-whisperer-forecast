@@ -342,9 +342,9 @@ const PortfolioDashboard = () => {
           </div>
 
           {/* Main Content Grid */}
-          <div className="mt-8 grid grid-cols-1 xl:grid-cols-4 gap-6">
+          <div className="mt-8 grid grid-cols-1 xl:grid-cols-2 gap-6">
             {/* Left Column - Chart and Analytics */}
-            <div className="xl:col-span-3 space-y-6">
+            <div className="space-y-6">
               <PerformanceChart data={portfolioHistory} />
               
               <Tabs defaultValue="holdings" className="space-y-4">
