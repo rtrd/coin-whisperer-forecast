@@ -72,11 +72,11 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
   };
 
   return (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Portfolio Performance</CardTitle>
+            <CardTitle className="text-white">Portfolio Performance</CardTitle>
             <CardDescription>
               Track your portfolio value and P&L over time
             </CardDescription>

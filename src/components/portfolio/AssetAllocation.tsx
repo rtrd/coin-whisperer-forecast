@@ -68,9 +68,9 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
   };
 
   return (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle>Asset Allocation</CardTitle>
+        <CardTitle className="text-white">Asset Allocation</CardTitle>
         <CardDescription>
           Portfolio distribution by asset value
         </CardDescription>

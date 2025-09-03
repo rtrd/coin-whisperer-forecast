@@ -69,13 +69,13 @@ export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({ metrics })
   return (
     <div className="space-y-6">
       {/* Main Portfolio Value */}
-      <Card className="relative overflow-hidden border-2 border-primary/20">
+      <Card className="relative overflow-hidden border-2 bg-gray-800/50 border-gray-700 shadow-2xl">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/10" />
         <CardHeader className="relative z-10">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-lg text-muted-foreground">Total Portfolio Value</CardTitle>
-              <div className="text-4xl font-bold mt-2 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <CardTitle className="text-lg text-gray-300">Total Portfolio Value</CardTitle>
+              <div className="text-4xl font-bold mt-2 text-white">
                 {formatLargeNumber(metrics.totalValue)}
               </div>
             </div>

@@ -32,10 +32,10 @@ const PortfolioDashboard = () => {
 
   // Mock components for demo purposes
   const HoldingsTable = () => (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Coins className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Coins className="h-5 w-5 text-blue-400" />
           Holdings
         </CardTitle>
       </CardHeader>
@@ -64,10 +64,10 @@ const PortfolioDashboard = () => {
   );
 
   const AIRecommendations = () => (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Brain className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Brain className="h-5 w-5 text-blue-400" />
           AI Portfolio Recommendations
         </CardTitle>
       </CardHeader>
@@ -99,10 +99,10 @@ const PortfolioDashboard = () => {
   );
 
   const RiskAnalysis = () => (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Shield className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-white">
+          <Shield className="h-5 w-5 text-blue-400" />
           Risk Analysis
         </CardTitle>
       </CardHeader>
@@ -138,10 +138,10 @@ const PortfolioDashboard = () => {
   );
 
   const SmartAlerts = () => (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <AlertCircle className="h-5 w-5" />
+        <CardTitle className="flex items-center gap-2 text-white">
+          <AlertCircle className="h-5 w-5 text-blue-400" />
           Smart Alerts
         </CardTitle>
       </CardHeader>
@@ -167,9 +167,9 @@ const PortfolioDashboard = () => {
   );
 
   const DeFiIntegration = () => (
-    <Card>
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader>
-        <CardTitle>DeFi Positions</CardTitle>
+        <CardTitle className="text-white">DeFi Positions</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
@@ -198,12 +198,12 @@ const PortfolioDashboard = () => {
           <meta name="description" content="Advanced portfolio tracking dashboard with AI-powered insights, risk analysis, and DeFi integration. Connect your wallet to get started." />
         </Helmet>
 
-        <div className="min-h-screen bg-gray-900 text-white">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
           <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
               <Link to="/portfolio-tracking">
-                <Button variant="ghost" className="mb-4">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
+                <Button variant="ghost" className="mb-4 text-white hover:bg-gray-700/50">
+                  <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
                   Back to Portfolio Info
                 </Button>
               </Link>
@@ -211,10 +211,10 @@ const PortfolioDashboard = () => {
 
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+                <h1 className="text-4xl font-bold text-white mb-4">
                   Portfolio Dashboard
                 </h1>
-                <p className="text-lg text-muted-foreground">
+                <p className="text-lg text-gray-300">
                   Advanced portfolio tracking with AI-powered insights and professional-grade analytics
                 </p>
               </div>
@@ -222,24 +222,24 @@ const PortfolioDashboard = () => {
               <WalletConnector onConnect={handleWalletConnect} />
 
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="text-center">
+                <Card className="text-center bg-gray-800/50 border-gray-700">
                   <CardContent className="pt-6">
-                    <BarChart3 className="h-8 w-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold mb-1">Advanced Analytics</h3>
+                    <BarChart3 className="h-8 w-8 mx-auto mb-2 text-blue-400" />
+                    <h3 className="font-semibold mb-1 text-white">Advanced Analytics</h3>
                     <p className="text-sm text-muted-foreground">Risk metrics, correlations, Sharpe ratio</p>
                   </CardContent>
                 </Card>
-                <Card className="text-center">
+                <Card className="text-center bg-gray-800/50 border-gray-700">
                   <CardContent className="pt-6">
-                    <Brain className="h-8 w-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold mb-1">AI Recommendations</h3>
+                    <Brain className="h-8 w-8 mx-auto mb-2 text-blue-400" />
+                    <h3 className="font-semibold mb-1 text-white">AI Recommendations</h3>
                     <p className="text-sm text-muted-foreground">Smart rebalancing and risk management</p>
                   </CardContent>
                 </Card>
-                <Card className="text-center">
+                <Card className="text-center bg-gray-800/50 border-gray-700">
                   <CardContent className="pt-6">
-                    <Coins className="h-8 w-8 mx-auto mb-2 text-primary" />
-                    <h3 className="font-semibold mb-1">DeFi Integration</h3>
+                    <Coins className="h-8 w-8 mx-auto mb-2 text-blue-400" />
+                    <h3 className="font-semibold mb-1 text-white">DeFi Integration</h3>
                     <p className="text-sm text-muted-foreground">Track yields, staking, liquidity pools</p>
                   </CardContent>
                 </Card>
@@ -259,16 +259,16 @@ const PortfolioDashboard = () => {
         <meta name="description" content="Professional portfolio tracking dashboard with real-time analytics, AI recommendations, and DeFi integration." />
       </Helmet>
 
-      <div className="min-h-screen bg-gray-900 text-white">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
             <Link to="/portfolio-tracking">
-              <Button variant="ghost" className="mb-4">
-                <ArrowLeft className="h-4 w-4 mr-2" />
+              <Button variant="ghost" className="mb-4 text-white hover:bg-gray-700/50">
+                <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
                 Back to Portfolio Info
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold text-white">
               Portfolio Dashboard
             </h1>
           </div>
