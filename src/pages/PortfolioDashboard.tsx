@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { WalletConnector } from '@/components/portfolio/WalletConnector';
 import { PortfolioOverview } from '@/components/portfolio/PortfolioOverview';
 import { AssetAllocation } from '@/components/portfolio/AssetAllocation';
+import { EnhancedRiskAnalysis } from '@/components/portfolio/EnhancedRiskAnalysis';
 import { PerformanceChart } from '@/components/portfolio/PerformanceChart';
 import { 
   mockPortfolioAssets, 
