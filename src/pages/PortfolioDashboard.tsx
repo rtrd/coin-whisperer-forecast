@@ -33,21 +33,35 @@ const PortfolioDashboard = () => {
 
   // Enhanced AI Insights - More Prominent
   const EnhancedAIInsights = () => (
-    <Card className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 border-blue-400/30 shadow-lg">
+    <Card className="bg-gray-800/80 border-gray-700 shadow-lg">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2 text-white text-xl">
-          <Brain className="h-5 w-5 text-blue-400" />
-          AI Portfolio Insights
-          <Star className="h-4 w-4 text-yellow-400" />
-        </CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-white text-xl">
+            <Brain className="h-5 w-5 text-blue-400" />
+            AI Portfolio Insights
+            <Star className="h-4 w-4 text-yellow-400" />
+          </CardTitle>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white border-0">
+            Generate Suggestions
+          </Button>
+        </div>
+        <div className="mt-3">
+          <label className="text-sm text-gray-300 mb-2 block">Investment Strategy</label>
+          <select className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm">
+            <option value="conservative">Conservative</option>
+            <option value="moderate">Moderate</option>
+            <option value="aggressive">Aggressive</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         {mockAIRecommendations.slice(0, 3).map((rec) => (
-          <div key={rec.id} className="p-4 rounded-lg bg-gray-800/60 border border-gray-600/50">
+          <div key={rec.id} className="p-4 rounded-lg bg-gray-700/60 border border-gray-600/50">
             <div className="flex items-start justify-between mb-2">
               <h4 className="font-semibold text-white text-sm">{rec.title}</h4>
               <div className="flex items-center gap-2">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                <span className={`px-2 py-1 rounded-full text-xs font-medium uppercase ${
                   rec.priority === 'high' ? 'bg-red-500/20 text-red-300 border border-red-500/30' :
                   rec.priority === 'medium' ? 'bg-yellow-500/20 text-yellow-300 border border-yellow-500/30' :
                   'bg-green-500/20 text-green-300 border border-green-500/30'
@@ -135,26 +149,26 @@ const PortfolioDashboard = () => {
     </TooltipProvider>
   );
 
-  // Compact Holdings without icons
-  const CompactHoldings = () => (
-    <Card className="bg-gray-800/60 border-gray-600/50">
+  // Recent Transactions
+  const RecentTransactions = () => (
+    <Card className="bg-gray-800/80 border-gray-700">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-white text-lg">
-          <Coins className="h-4 w-4 text-blue-400" />
-          Top Holdings
+          <TrendingUp className="h-4 w-4 text-blue-400" />
+          Recent Transactions
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {mockPortfolioAssets.slice(0, 4).map((asset) => (
-          <div key={asset.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-700/40 hover:bg-gray-700/60 transition-colors border border-gray-600/30">
+        {mockTransactions.slice(0, 4).map((tx) => (
+          <div key={tx.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
             <div>
-              <p className="font-medium text-white text-sm">{asset.symbol}</p>
-              <p className="text-xs text-gray-400">{asset.name}</p>
+              <p className="font-medium text-white text-sm">{tx.type.toUpperCase()}</p>
+              <p className="text-xs text-gray-400">{tx.asset} • {new Date(tx.timestamp).toLocaleDateString()}</p>
             </div>
             <div className="text-right">
-              <p className="font-semibold text-white text-sm">${asset.totalValue.toLocaleString()}</p>
-              <p className={`text-xs ${asset.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(1)}%
+              <p className="font-semibold text-white text-sm">${tx.totalValue.toLocaleString()}</p>
+              <p className={`text-xs ${tx.type === 'buy' ? 'text-green-400' : tx.type === 'sell' ? 'text-red-400' : 'text-gray-400'}`}>
+                {tx.amount.toFixed(4)} {tx.asset}
               </p>
             </div>
           </div>
@@ -166,29 +180,29 @@ const PortfolioDashboard = () => {
   // Enhanced Quick Stats Component
   const QuickStats = () => (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      <Card className="bg-gradient-to-r from-green-900/40 to-green-800/40 border-green-500/30">
+      <Card className="bg-gray-800/80 border-gray-700">
         <CardContent className="p-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <TrendingUp className="h-4 w-4 text-green-400" />
-            <p className="text-sm text-green-300 font-medium">Total Value</p>
+            <p className="text-sm text-gray-300 font-medium">Total Value</p>
           </div>
           <p className="font-bold text-white text-2xl">${mockPortfolioMetrics.totalValue.toLocaleString()}</p>
           <p className="text-sm text-green-400 mt-1">+{mockPortfolioMetrics.totalPnLPercentage.toFixed(1)}%</p>
         </CardContent>
       </Card>
-      <Card className="bg-gray-800/60 border-gray-600/50">
+      <Card className="bg-gray-800/80 border-gray-700">
         <CardContent className="p-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <BarChart3 className="h-4 w-4 text-blue-400" />
             <p className="text-sm text-gray-300 font-medium">24h Change</p>
           </div>
-          <p className="font-bold text-white text-2xl">${Math.abs(mockPortfolioMetrics.totalPnL).toLocaleString()}</p>
-          <p className={`text-sm mt-1 ${mockPortfolioMetrics.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-            {mockPortfolioMetrics.totalPnL >= 0 ? '+' : ''}{mockPortfolioMetrics.totalPnLPercentage.toFixed(1)}%
+          <p className="font-bold text-white text-2xl">${Math.abs(mockPortfolioMetrics.dayChange).toLocaleString()}</p>
+          <p className={`text-sm mt-1 ${mockPortfolioMetrics.dayChange >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            {mockPortfolioMetrics.dayChange >= 0 ? '+' : ''}{mockPortfolioMetrics.dayChangePercentage.toFixed(1)}%
           </p>
         </CardContent>
       </Card>
-      <Card className="bg-gray-800/60 border-gray-600/50">
+      <Card className="bg-gray-800/80 border-gray-700">
         <CardContent className="p-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Coins className="h-4 w-4 text-blue-400" />
@@ -198,11 +212,11 @@ const PortfolioDashboard = () => {
           <p className="text-sm text-blue-400 mt-1">Tokens</p>
         </CardContent>
       </Card>
-      <Card className="bg-gradient-to-r from-orange-900/40 to-red-900/40 border-orange-500/30">
+      <Card className="bg-gray-800/80 border-gray-700">
         <CardContent className="p-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <AlertCircle className="h-4 w-4 text-orange-400" />
-            <p className="text-sm text-orange-300 font-medium">Active Alerts</p>
+            <p className="text-sm text-gray-300 font-medium">Active Alerts</p>
           </div>
           <p className="font-bold text-white text-2xl">{mockSmartAlerts.filter(a => a.isActive).length}</p>
           <p className="text-sm text-orange-400 mt-1">Monitoring</p>
@@ -223,7 +237,7 @@ const PortfolioDashboard = () => {
           <div className="container mx-auto px-4 py-6">
             <div className="mb-6">
               <Link to="/">
-                <Button variant="ghost" className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white border-gray-600/50">
+                <Button variant="ghost" className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white border-gray-700 bg-gray-800/60">
                   <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
                   Back to Home
                 </Button>
@@ -241,21 +255,21 @@ const PortfolioDashboard = () => {
               <WalletConnector onConnect={handleWalletConnect} />
 
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="text-center bg-gray-800/60 border-gray-600/50">
+                <Card className="text-center bg-gray-800/80 border-gray-700">
                   <CardContent className="pt-6">
                     <BarChart3 className="h-8 w-8 mx-auto mb-3 text-blue-400" />
                     <h3 className="font-semibold mb-2 text-white">Advanced Analytics</h3>
                     <p className="text-sm text-gray-300">Risk metrics, correlations, Sharpe ratio</p>
                   </CardContent>
                 </Card>
-                <Card className="text-center bg-gradient-to-br from-blue-900/40 to-purple-900/40 border-blue-400/30">
+                <Card className="text-center bg-gray-800/80 border-gray-700">
                   <CardContent className="pt-6">
                     <Brain className="h-8 w-8 mx-auto mb-3 text-blue-400" />
                     <h3 className="font-semibold mb-2 text-white">AI Recommendations</h3>
                     <p className="text-sm text-gray-300">Smart rebalancing and risk management</p>
                   </CardContent>
                 </Card>
-                <Card className="text-center bg-gray-800/60 border-gray-600/50">
+                <Card className="text-center bg-gray-800/80 border-gray-700">
                   <CardContent className="pt-6">
                     <Coins className="h-8 w-8 mx-auto mb-3 text-blue-400" />
                     <h3 className="font-semibold mb-2 text-white">DeFi Integration</h3>
@@ -281,16 +295,16 @@ const PortfolioDashboard = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-6">
           {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-4">
+          <div className="mb-6">
+            <div className="flex items-center gap-4 mb-4">
               <Link to="/">
-                <Button variant="ghost" className="text-gray-300 hover:bg-gray-700/50 hover:text-white border-gray-600/50">
+                <Button variant="ghost" className="text-gray-300 hover:bg-gray-700/50 hover:text-white border-gray-700 bg-gray-800/60">
                   <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
                   Back to Home
                 </Button>
               </Link>
-              <h1 className="text-3xl font-bold text-white">Portfolio Dashboard</h1>
             </div>
+            <h1 className="text-3xl font-bold text-white">Portfolio Dashboard</h1>
           </div>
 
           {/* Quick Stats Row */}
@@ -308,29 +322,31 @@ const PortfolioDashboard = () => {
               <PerformanceChart data={portfolioHistory} />
               
               <Tabs defaultValue="holdings" className="space-y-4">
-                <TabsList className="grid w-full grid-cols-3 bg-gray-800/60 border border-gray-600/50">
-                  <TabsTrigger value="holdings" className="text-gray-300 data-[state=active]:bg-gray-700/60 data-[state=active]:text-white data-[state=active]:border-blue-400/50">Holdings</TabsTrigger>
-                  <TabsTrigger value="defi" className="text-gray-300 data-[state=active]:bg-gray-700/60 data-[state=active]:text-white data-[state=active]:border-blue-400/50">DeFi</TabsTrigger>
-                  <TabsTrigger value="alerts" className="text-gray-300 data-[state=active]:bg-gray-700/60 data-[state=active]:text-white data-[state=active]:border-blue-400/50">Alerts</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-3 bg-gray-800/80 border border-gray-700">
+                  <TabsTrigger value="holdings" className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white">Holdings</TabsTrigger>
+                  <TabsTrigger value="defi" className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white">DeFi</TabsTrigger>
+                  <TabsTrigger value="alerts" className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white">Alerts</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="holdings" className="space-y-0">
-                  <Card className="bg-gray-800/60 border-gray-600/50">
+                  <Card className="bg-gray-800/80 border-gray-700">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-white text-xl">All Holdings</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {mockPortfolioAssets.map((asset) => (
-                        <div key={asset.id} className="flex items-center justify-between py-3 px-4 rounded-lg bg-gray-700/40 hover:bg-gray-700/60 transition-colors border border-gray-600/30">
+                        <div key={asset.id} className="flex items-center justify-between py-3 px-4 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
                           <div>
                             <p className="font-semibold text-white text-base">{asset.symbol}</p>
                             <p className="text-sm text-gray-400">{asset.name}</p>
+                            <p className="text-xs text-gray-500">{asset.amount.toFixed(4)} tokens</p>
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-white text-base">${asset.totalValue.toLocaleString()}</p>
                             <p className={`text-sm ${asset.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(1)}%
                             </p>
+                            <p className="text-xs text-gray-400">{asset.allocation.toFixed(1)}% allocation</p>
                           </div>
                         </div>
                       ))}
@@ -339,20 +355,22 @@ const PortfolioDashboard = () => {
                 </TabsContent>
 
                 <TabsContent value="defi" className="space-y-0">
-                  <Card className="bg-gray-800/60 border-gray-600/50">
+                  <Card className="bg-gray-800/80 border-gray-700">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-white text-xl">DeFi Positions</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {mockDeFiPositions.map((position) => (
-                        <div key={position.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-700/40 border border-gray-600/30">
+                        <div key={position.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
                           <div>
                             <p className="font-semibold text-white text-base">{position.protocol}</p>
-                            <p className="text-sm text-gray-400">{position.type} • {position.asset}</p>
+                            <p className="text-sm text-gray-400">{position.type.replace('_', ' ')} • {position.asset}</p>
+                            <p className="text-xs text-gray-500">Risk: {position.risk}</p>
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-white text-base">${position.totalValue.toLocaleString()}</p>
-                            <p className="text-sm text-green-400">{position.apy}% APY</p>
+                            <p className="text-sm text-green-400">{position.apy.toFixed(1)}% APY</p>
+                            <p className="text-xs text-gray-400">Rewards: ${position.rewards.toLocaleString()}</p>
                           </div>
                         </div>
                       ))}
@@ -361,21 +379,24 @@ const PortfolioDashboard = () => {
                 </TabsContent>
 
                 <TabsContent value="alerts" className="space-y-0">
-                  <Card className="bg-gray-800/60 border-gray-600/50">
+                  <Card className="bg-gray-800/80 border-gray-700">
                     <CardHeader className="pb-4">
                       <CardTitle className="text-white text-xl">Smart Alerts</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {mockSmartAlerts.map((alert) => (
-                        <div key={alert.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-700/40 border border-gray-600/30">
+                        <div key={alert.id} className="flex items-center justify-between p-4 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
                           <div className="flex items-center gap-3">
                             <div className={`w-3 h-3 rounded-full ${alert.isActive ? 'bg-green-400' : 'bg-gray-500'}`} />
                             <div>
                               <p className="text-base font-semibold text-white">{alert.message}</p>
-                              <p className="text-sm text-gray-400">{alert.type} alert</p>
+                              <p className="text-sm text-gray-400">{alert.type} alert • Threshold: {alert.threshold}</p>
+                              {alert.lastTriggered && (
+                                <p className="text-xs text-gray-500">Last: {new Date(alert.lastTriggered).toLocaleString()}</p>
+                              )}
                             </div>
                           </div>
-                          <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700/50 hover:text-white border border-gray-600/50">
+                          <Button className="bg-gray-700 hover:bg-gray-600 text-white border-gray-600 text-sm">
                             {alert.isActive ? 'Active' : 'Inactive'}
                           </Button>
                         </div>
@@ -390,7 +411,7 @@ const PortfolioDashboard = () => {
             <div className="space-y-6">
               <AssetAllocation assets={mockPortfolioAssets} />
               <EnhancedRiskMetrics />
-              <CompactHoldings />
+              <RecentTransactions />
             </div>
           </div>
         </div>
