@@ -345,20 +345,31 @@ const PortfolioDashboard = () => {
                 </TabsList>
 
                 <TabsContent value="holdings" className="space-y-0">
-                  <Card className="bg-gray-800/80 border-gray-700">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-white text-lg">All Holdings</CardTitle>
+                  <Card className="bg-gradient-to-br from-gray-800/90 to-gray-700/90 border-2 border-blue-500/30 shadow-xl">
+                    <CardHeader className="pb-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 border-b border-blue-500/30">
+                      <CardTitle className="text-white text-xl font-bold flex items-center gap-2">
+                        <Coins className="h-5 w-5 text-blue-400" />
+                        All Holdings
+                        <div className="ml-auto text-sm font-normal text-blue-300">
+                          {mockPortfolioAssets.length} Assets
+                        </div>
+                      </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2 pt-0">
+                    <CardContent className="space-y-3 pt-4">
                       {mockPortfolioAssets.map((asset) => (
-                        <div key={asset.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
-                          <div>
-                            <p className="font-semibold text-white text-sm">{asset.symbol}</p>
-                            <p className="text-xs text-gray-400">{asset.name}</p>
-                            <p className="text-xs text-gray-500">{asset.amount.toFixed(4)} tokens</p>
+                        <div key={asset.id} className="flex items-center justify-between py-4 px-4 rounded-xl bg-gradient-to-r from-gray-700/80 to-gray-600/80 hover:from-gray-600/90 hover:to-gray-500/90 transition-all duration-300 border border-gray-500/40 hover:border-blue-400/60 shadow-lg hover:shadow-blue-500/20">
+                          <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                              {asset.symbol.substring(0, 2)}
+                            </div>
+                            <div>
+                              <p className="font-bold text-white text-base">{asset.symbol}</p>
+                              <p className="text-sm text-gray-300">{asset.name}</p>
+                              <p className="text-xs text-blue-300 font-medium">{asset.amount.toFixed(4)} tokens</p>
+                            </div>
                           </div>
                           <div className="text-right">
-                            <p className="font-bold text-white text-sm">${asset.totalValue.toLocaleString()}</p>
+                            <p className="font-bold text-white text-lg">${asset.totalValue.toLocaleString()}</p>
                             <p className={`text-xs ${asset.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(1)}%
                             </p>
