@@ -37,7 +37,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-background/95 backdrop-blur-sm border rounded-lg p-4 shadow-lg">
+        <div className="bg-gray-800/95 backdrop-blur-sm border border-gray-600 rounded-lg p-4 shadow-lg text-white">
           <p className="font-medium mb-2">{data.fullDate.toLocaleDateString('en-US', { 
             year: 'numeric',
             month: 'long', 
