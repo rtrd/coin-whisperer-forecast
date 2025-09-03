@@ -355,3 +355,5 @@ export const EnhancedRiskAnalysis: React.FC = () => {
     </TooltipProvider>
   );
 };
+
+export default EnhancedRiskAnalysis;
