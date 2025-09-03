@@ -75,9 +75,9 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Pie Chart */}
-          <div className="h-80 flex justify-center">
+          <div className="h-80 w-full flex justify-center items-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -100,26 +100,26 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
           </div>
 
           {/* Asset List */}
-          <div className="space-y-3 overflow-hidden">
+          <div className="space-y-3 w-full">
             {assets.map((asset, index) => (
               <div 
                 key={asset.id} 
-                className="flex items-center justify-between p-3 rounded-lg bg-card/40 hover:bg-card/60 transition-colors border border-border/40 min-w-0"
+                className="flex items-center justify-between p-3 rounded-lg bg-card/40 hover:bg-card/60 transition-colors border border-border/40 w-full"
               >
-                <div className="flex items-center gap-3 min-w-0 flex-1">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
                   <div 
                     className="w-4 h-4 rounded-full flex-shrink-0" 
                     style={{ backgroundColor: colors[index % colors.length] }}
                   />
                   
-                  <div className="min-w-0 flex-1">
-                    <p className="font-medium text-foreground truncate">{asset.symbol}</p>
-                    <p className="text-sm text-muted-foreground truncate">{asset.name}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-foreground text-sm truncate">{asset.symbol}</p>
+                    <p className="text-xs text-muted-foreground truncate">{asset.name}</p>
                   </div>
                 </div>
-                <div className="text-right flex-shrink-0 ml-3">
-                  <p className="font-semibold text-foreground">{formatPercentage(asset.allocation)}</p>
-                  <p className="text-sm text-muted-foreground">{formatPrice(asset.totalValue)}</p>
+                <div className="text-right flex-shrink-0 ml-4">
+                  <p className="font-semibold text-foreground text-sm">{formatPercentage(asset.allocation)}</p>
+                  <p className="text-xs text-muted-foreground">{formatPrice(asset.totalValue)}</p>
                 </div>
               </div>
             ))}
