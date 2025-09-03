@@ -82,12 +82,12 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
             </CardDescription>
           </div>
           <div className="flex gap-2">
-            <div className="flex border border-gray-700 rounded-lg p-1 bg-gray-800/80">
+            <div className="flex border border-gray-600 rounded-lg p-1 bg-gray-800/50">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setChartType('value')}
-                className={`h-8 px-3 ${chartType === 'value' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'}`}
+                className={`h-8 px-3 ${chartType === 'value' ? 'bg-gray-700 text-white' : 'text-gray-200 hover:bg-gray-700/50 hover:text-white'}`}
               >
                 Value
               </Button>
@@ -95,7 +95,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
                 variant="ghost"
                 size="sm"
                 onClick={() => setChartType('pnl')}
-                className={`h-8 px-3 ${chartType === 'pnl' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'}`}
+                className={`h-8 px-3 ${chartType === 'pnl' ? 'bg-gray-700 text-white' : 'text-gray-200 hover:bg-gray-700/50 hover:text-white'}`}
               >
                 P&L
               </Button>
