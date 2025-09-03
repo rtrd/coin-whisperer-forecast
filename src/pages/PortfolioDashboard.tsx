@@ -442,7 +442,7 @@ const PortfolioDashboard = () => {
 
             {/* Right Column - Sidebar */}
             <div className="space-y-4">
-              <EnhancedRiskMetrics />
+              <EnhancedRiskAnalysis />
               <RecentTransactions />
             </div>
           </div>
