@@ -147,7 +147,7 @@ export const EnhancedRiskAnalysis: React.FC = () => {
               {/* Core Risk Metrics */}
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
+                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30 hover:bg-gray-700/60 transition-colors">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <BarChart3 className="h-4 w-4 text-blue-400" />
                       <p className="text-sm text-gray-300">Sharpe Ratio</p>
@@ -159,14 +159,18 @@ export const EnhancedRiskAnalysis: React.FC = () => {
                     </p>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-sm max-w-48">Risk-adjusted returns. Higher is better (&gt;1.5 is excellent, &gt;1.0 is good).</p>
+                <TooltipContent side="top" className="max-w-xs">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Sharpe Ratio</p>
+                    <p className="text-xs">Measures risk-adjusted returns by comparing excess return to volatility.</p>
+                    <p className="text-xs text-green-400">&gt;1.5 = Excellent • &gt;1.0 = Good • &lt;1.0 = Poor</p>
+                  </div>
                 </TooltipContent>
               </Tooltip>
 
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
+                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30 hover:bg-gray-700/60 transition-colors">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <Activity className="h-4 w-4 text-yellow-400" />
                       <p className="text-sm text-gray-300">Volatility</p>
@@ -178,14 +182,18 @@ export const EnhancedRiskAnalysis: React.FC = () => {
                     </p>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-sm max-w-48">Price fluctuation measure. Lower is more stable (&lt;15% low, 15-30% medium, &gt;30% high).</p>
+                <TooltipContent side="top" className="max-w-xs">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Volatility (Annualized)</p>
+                    <p className="text-xs">Standard deviation of returns measuring price fluctuation risk.</p>
+                    <p className="text-xs text-green-400">&lt;15% = Low • 15-30% = Medium • &gt;30% = High</p>
+                  </div>
                 </TooltipContent>
               </Tooltip>
 
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
+                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30 hover:bg-gray-700/60 transition-colors">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <TrendingDown className="h-4 w-4 text-red-400" />
                       <p className="text-sm text-gray-300">Max Drawdown</p>
@@ -195,14 +203,18 @@ export const EnhancedRiskAnalysis: React.FC = () => {
                     <p className="text-xs text-gray-400 mt-1">Peak-to-trough</p>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-sm max-w-48">Largest peak-to-trough decline. Lower absolute value is better (&lt;-10% good, -10% to -20% moderate, &gt;-20% high risk).</p>
+                <TooltipContent side="top" className="max-w-xs">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Maximum Drawdown</p>
+                    <p className="text-xs">Largest peak-to-trough decline in portfolio value.</p>
+                    <p className="text-xs text-green-400">&gt;-10% = Good • -10% to -20% = Moderate • &lt;-20% = High Risk</p>
+                  </div>
                 </TooltipContent>
               </Tooltip>
 
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
+                  <div className="p-4 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30 hover:bg-gray-700/60 transition-colors">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <TrendingUp className="h-4 w-4 text-purple-400" />
                       <p className="text-sm text-gray-300">Beta</p>
@@ -212,8 +224,12 @@ export const EnhancedRiskAnalysis: React.FC = () => {
                     <p className="text-xs text-gray-400 mt-1">vs Market</p>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-sm max-w-48">Market correlation. 1 = moves with market, &gt;1 = more volatile than market, &lt;1 = less volatile.</p>
+                <TooltipContent side="top" className="max-w-xs">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Beta Coefficient</p>
+                    <p className="text-xs">Measures sensitivity to overall market movements.</p>
+                    <p className="text-xs text-green-400">1.0 = Market • &gt;1.0 = More Volatile • &lt;1.0 = Less Volatile</p>
+                  </div>
                 </TooltipContent>
               </Tooltip>
             </div>
