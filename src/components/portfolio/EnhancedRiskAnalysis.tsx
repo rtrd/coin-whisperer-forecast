@@ -236,32 +236,74 @@ export const EnhancedRiskAnalysis: React.FC = () => {
 
             {/* Advanced Metrics */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-4 rounded-lg bg-gray-700/30 border border-gray-600/30">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-300">Value at Risk (95%)</span>
-                  <span className="font-semibold text-red-400">{mockRiskMetrics.var95}%</span>
-                </div>
-                <Progress value={Math.abs(mockRiskMetrics.var95)} className="h-2" />
-                <p className="text-xs text-gray-500 mt-1">Maximum expected loss (95% confidence)</p>
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="p-4 rounded-lg bg-gray-700/30 border border-gray-600/30 cursor-help hover:bg-gray-700/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-gray-300">Value at Risk (95%)</span>
+                        <Info className="h-3 w-3 text-blue-400" />
+                      </div>
+                      <span className="font-semibold text-red-400">{mockRiskMetrics.var95}%</span>
+                    </div>
+                    <Progress value={Math.abs(mockRiskMetrics.var95)} className="h-2" />
+                    <p className="text-xs text-gray-500 mt-1">Maximum expected loss (95% confidence)</p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs z-50">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Value at Risk (VaR)</p>
+                    <p className="text-xs">Statistical measure of potential loss over a specific timeframe.</p>
+                    <p className="text-xs text-green-400">95% confidence = only 5% chance of exceeding this loss</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
 
-              <div className="p-4 rounded-lg bg-gray-700/30 border border-gray-600/30">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-300">Sortino Ratio</span>
-                  <span className="font-semibold text-green-400">{mockRiskMetrics.sortino}</span>
-                </div>
-                <Progress value={(mockRiskMetrics.sortino / 3) * 100} className="h-2" />
-                <p className="text-xs text-gray-500 mt-1">Downside deviation adjusted returns</p>
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="p-4 rounded-lg bg-gray-700/30 border border-gray-600/30 cursor-help hover:bg-gray-700/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-gray-300">Sortino Ratio</span>
+                        <Info className="h-3 w-3 text-blue-400" />
+                      </div>
+                      <span className="font-semibold text-green-400">{mockRiskMetrics.sortino}</span>
+                    </div>
+                    <Progress value={(mockRiskMetrics.sortino / 3) * 100} className="h-2" />
+                    <p className="text-xs text-gray-500 mt-1">Downside deviation adjusted returns</p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs z-50">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Sortino Ratio</p>
+                    <p className="text-xs">Similar to Sharpe but only considers downside volatility.</p>
+                    <p className="text-xs text-green-400">&gt;2.0 = Excellent • &gt;1.0 = Good • &lt;0.5 = Poor</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
 
-              <div className="p-4 rounded-lg bg-gray-700/30 border border-gray-600/30">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-gray-300">Calmar Ratio</span>
-                  <span className="font-semibold text-yellow-400">{mockRiskMetrics.calmar}</span>
-                </div>
-                <Progress value={(mockRiskMetrics.calmar / 2) * 100} className="h-2" />
-                <p className="text-xs text-gray-500 mt-1">Return vs maximum drawdown</p>
-              </div>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div className="p-4 rounded-lg bg-gray-700/30 border border-gray-600/30 cursor-help hover:bg-gray-700/50 transition-colors">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm text-gray-300">Calmar Ratio</span>
+                        <Info className="h-3 w-3 text-blue-400" />
+                      </div>
+                      <span className="font-semibold text-yellow-400">{mockRiskMetrics.calmar}</span>
+                    </div>
+                    <Progress value={(mockRiskMetrics.calmar / 2) * 100} className="h-2" />
+                    <p className="text-xs text-gray-500 mt-1">Return vs maximum drawdown</p>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs z-50">
+                  <div className="space-y-1">
+                    <p className="font-semibold">Calmar Ratio</p>
+                    <p className="text-xs">Annual return divided by maximum drawdown.</p>
+                    <p className="text-xs text-green-400">&gt;1.0 = Excellent • 0.5-1.0 = Good • &lt;0.5 = Poor</p>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
             </div>
 
             {/* Risk Distribution */}
