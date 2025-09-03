@@ -26,6 +26,8 @@ import Footer from '@/components/Footer';
 const PortfolioDashboard = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [portfolioHistory, setPortfolioHistory] = useState(generateMockPortfolioHistory());
+  const [selectedStrategy, setSelectedStrategy] = useState('moderate');
+  const [customStrategy, setCustomStrategy] = useState('');
 
   const handleWalletConnect = (address: string) => {
     setIsWalletConnected(true);
@@ -41,18 +43,41 @@ const PortfolioDashboard = () => {
             AI Portfolio Insights
             <Star className="h-4 w-4 text-yellow-400" />
           </CardTitle>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white border-0">
+          <Button 
+            className="bg-blue-600 hover:bg-blue-700 text-white border-0"
+            onClick={() => {
+              alert('To get real AI insights, connect to Supabase to enable our Gemini AI integration. Click the green Supabase button in the top right.');
+            }}
+          >
             Generate Suggestions
           </Button>
         </div>
-        <div className="mt-3">
-          <label className="text-sm text-gray-300 mb-2 block">Investment Strategy</label>
-          <select className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm">
-            <option value="conservative">Conservative</option>
-            <option value="moderate">Moderate</option>
-            <option value="aggressive">Aggressive</option>
-            <option value="custom">Custom</option>
-          </select>
+        <div className="mt-3 space-y-3">
+          <div>
+            <label className="text-sm text-gray-300 mb-2 block">Investment Strategy</label>
+            <select 
+              className="max-w-xs bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+              onChange={(e) => setSelectedStrategy(e.target.value)}
+              value={selectedStrategy}
+            >
+              <option value="conservative">Conservative</option>
+              <option value="moderate">Moderate</option>
+              <option value="aggressive">Aggressive</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          {selectedStrategy === 'custom' && (
+            <div>
+              <label className="text-sm text-gray-300 mb-2 block">Custom Strategy</label>
+              <input 
+                type="text" 
+                placeholder="Describe your custom strategy..."
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400"
+                value={customStrategy}
+                onChange={(e) => setCustomStrategy(e.target.value)}
+              />
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

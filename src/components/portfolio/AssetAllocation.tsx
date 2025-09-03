@@ -31,7 +31,6 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
       return (
         <div className="bg-background/95 backdrop-blur-sm border rounded-lg p-3 shadow-lg">
           <div className="flex items-center gap-2 mb-2">
-            <div className="text-lg">{data.icon}</div>
             <span className="font-semibold">{data.name}</span>
           </div>
           <div className="space-y-1 text-sm">
@@ -59,7 +58,7 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
               className="w-3 h-3 rounded-full" 
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-lg mr-1">{entry.payload.icon}</span>
+            
             <span>{entry.value}</span>
           </div>
         ))}
@@ -68,7 +67,7 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
   };
 
   return (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
+    <Card className="bg-gray-800/80 border-gray-700">
       <CardHeader>
         <CardTitle className="text-white">Asset Allocation</CardTitle>
         <CardDescription>
@@ -105,22 +104,22 @@ export const AssetAllocation: React.FC<AssetAllocationProps> = ({ assets }) => {
             {assets.map((asset, index) => (
               <div 
                 key={asset.id} 
-                className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                className="flex items-center justify-between p-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50"
               >
                 <div className="flex items-center gap-3">
                   <div 
                     className="w-4 h-4 rounded-full" 
                     style={{ backgroundColor: colors[index % colors.length] }}
                   />
-                  <div className="text-xl">{asset.icon}</div>
+                  
                   <div>
-                    <p className="font-medium">{asset.symbol}</p>
-                    <p className="text-sm text-muted-foreground">{asset.name}</p>
+                    <p className="font-medium text-white">{asset.symbol}</p>
+                    <p className="text-sm text-gray-400">{asset.name}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold">{formatPercentage(asset.allocation)}</p>
-                  <p className="text-sm text-muted-foreground">{formatPrice(asset.totalValue)}</p>
+                  <p className="font-semibold text-white">{formatPercentage(asset.allocation)}</p>
+                  <p className="text-sm text-gray-400">{formatPrice(asset.totalValue)}</p>
                 </div>
               </div>
             ))}
