@@ -85,7 +85,8 @@ const App = () => (
         <HeadImprovements />
         <Toaster />
         <Sonner />
-        <AutoRefresh />
+        {/* Temporarily disable AutoRefresh to prevent forced reloads */}
+        {/* <AutoRefresh /> */}
         <BrowserRouter>
             <AppWithHooks />
         </BrowserRouter>
