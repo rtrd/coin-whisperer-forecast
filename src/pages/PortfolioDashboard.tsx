@@ -38,48 +38,37 @@ const PortfolioDashboard = () => {
   const EnhancedAIInsights = () => (
     <Card className="bg-gray-800/80 border-gray-700 shadow-lg">
       <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-3">
           <CardTitle className="flex items-center gap-2 text-white text-lg">
             <Brain className="h-5 w-5 text-blue-400" />
             AI Portfolio Insights
             <Star className="h-4 w-4 text-yellow-400" />
           </CardTitle>
-          <Button 
-            className="bg-blue-600 hover:bg-blue-700 text-white border-0"
-            onClick={(e) => {
-              e.preventDefault();
-              alert('To get real AI insights, connect to Supabase to enable our Gemini AI integration. Click the green Supabase button in the top right.');
-            }}
-          >
-            Generate Suggestions
-          </Button>
         </div>
-        <div className="mt-2 space-y-2">
-          <div>
+        <div className="flex items-center gap-3">
+          <div className="flex-1">
             <label className="text-sm text-gray-300 mb-1 block">Investment Strategy</label>
             <select 
-              className="max-w-xs bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm"
+              className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 pr-8 text-white text-sm appearance-none bg-[url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3e%3cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3e%3c/svg%3e')] bg-no-repeat bg-right-2 bg-center"
               onChange={(e) => setSelectedStrategy(e.target.value)}
               value={selectedStrategy}
             >
               <option value="conservative">Conservative</option>
               <option value="moderate">Moderate</option>
               <option value="aggressive">Aggressive</option>
-              <option value="custom">Custom</option>
             </select>
           </div>
-          {selectedStrategy === 'custom' && (
-            <div>
-              <label className="text-sm text-gray-300 mb-1 block">Custom Strategy</label>
-              <input 
-                type="text" 
-                placeholder="Describe your custom strategy..."
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-400"
-                value={customStrategy}
-                onChange={(e) => setCustomStrategy(e.target.value)}
-              />
-            </div>
-          )}
+          <div className="flex-shrink-0 pt-6">
+            <Button 
+              className="bg-blue-600 hover:bg-blue-700 text-white border-0"
+              onClick={(e) => {
+                e.preventDefault();
+                alert('To get real AI insights, connect to Supabase to enable our Gemini AI integration. Click the green Supabase button in the top right.');
+              }}
+            >
+              Generate Suggestions
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-3 pt-0">
