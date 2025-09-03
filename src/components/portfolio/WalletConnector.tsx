@@ -45,34 +45,34 @@ export const WalletConnector: React.FC<WalletConnectorProps> = ({ onConnect }) =
 
   if (isConnected) {
     return (
-      <Card className="border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/20">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-600" />
-              <CardTitle className="text-lg">Wallet Connected</CardTitle>
+              <CheckCircle className="h-5 w-5 text-green-400" />
+              <CardTitle className="text-lg text-white">Wallet Connected</CardTitle>
             </div>
-            <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
+            <Badge variant="outline" className="bg-green-600 text-white border-green-500">
               Active
             </Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-background rounded-lg border">
+          <div className="flex items-center justify-between p-3 bg-gray-700/50 rounded-lg border border-gray-600">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
                 <Wallet className="h-4 w-4 text-white" />
               </div>
               <div>
-                <p className="font-medium">MetaMask</p>
-                <p className="text-sm text-muted-foreground">{formatAddress(walletAddress)}</p>
+                <p className="font-medium text-white">MetaMask</p>
+                <p className="text-sm text-gray-300">{formatAddress(walletAddress)}</p>
               </div>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={copyAddress}
-              className="h-8 w-8 p-0"
+              className="h-8 w-8 p-0 text-white hover:bg-gray-600"
             >
               <Copy className="h-4 w-4" />
             </Button>
@@ -82,14 +82,14 @@ export const WalletConnector: React.FC<WalletConnectorProps> = ({ onConnect }) =
             <Button
               variant="outline"
               onClick={handleDisconnect}
-              className="flex-1"
+              className="flex-1 bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
             >
               Disconnect
             </Button>
             <Button
               variant="outline"
               onClick={() => toast.info('Switching networks...')}
-              className="flex-1"
+              className="flex-1 bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
             >
               Switch Network
             </Button>
@@ -100,13 +100,13 @@ export const WalletConnector: React.FC<WalletConnectorProps> = ({ onConnect }) =
   }
 
   return (
-    <Card className="border-dashed">
+    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
       <CardHeader className="text-center">
         <div className="mx-auto w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center mb-4">
           <Wallet className="h-6 w-6 text-white" />
         </div>
-        <CardTitle>Connect Your Wallet</CardTitle>
-        <CardDescription>
+        <CardTitle className="text-white">Connect Your Wallet</CardTitle>
+        <CardDescription className="text-gray-300">
           Connect your wallet to view your portfolio and get personalized insights
         </CardDescription>
       </CardHeader>
@@ -115,7 +115,7 @@ export const WalletConnector: React.FC<WalletConnectorProps> = ({ onConnect }) =
           <Button
             onClick={handleConnect}
             disabled={isConnecting}
-            className="w-full h-12 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+            className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white"
           >
             {isConnecting ? (
               <div className="flex items-center gap-2">
@@ -131,25 +131,25 @@ export const WalletConnector: React.FC<WalletConnectorProps> = ({ onConnect }) =
           </Button>
           
           <div className="grid grid-cols-3 gap-2">
-            <Button variant="outline" size="sm" disabled>
+            <Button variant="outline" size="sm" disabled className="bg-gray-700 border-gray-600 text-white">
               <div className="w-5 h-5 rounded bg-orange-500" />
               MetaMask
             </Button>
-            <Button variant="outline" size="sm" disabled>
+            <Button variant="outline" size="sm" disabled className="bg-gray-700 border-gray-600 text-white">
               <div className="w-5 h-5 rounded bg-blue-500" />
               Coinbase
             </Button>
-            <Button variant="outline" size="sm" disabled>
+            <Button variant="outline" size="sm" disabled className="bg-gray-700 border-gray-600 text-white">
               <div className="w-5 h-5 rounded bg-purple-500" />
               Rainbow
             </Button>
           </div>
         </div>
         
-        <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/20 rounded-lg border border-amber-200 dark:border-amber-800">
-          <AlertCircle className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
-          <div className="text-sm text-amber-800 dark:text-amber-200">
-            <p className="font-medium">Demo Mode</p>
+        <div className="flex items-start gap-2 p-3 bg-gray-700/50 rounded-lg border border-gray-600">
+          <AlertCircle className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+          <div className="text-sm text-gray-300">
+            <p className="font-medium text-white">Demo Mode</p>
             <p>Click "Connect with WalletConnect" to see demo portfolio data</p>
           </div>
         </div>
