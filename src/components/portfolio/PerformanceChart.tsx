@@ -82,20 +82,20 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
             </CardDescription>
           </div>
           <div className="flex gap-2">
-            <div className="flex border rounded-lg p-1">
+            <div className="flex border border-gray-700 rounded-lg p-1 bg-gray-800/80">
               <Button
-                variant={chartType === 'value' ? 'default' : 'ghost'}
+                variant="ghost"
                 size="sm"
                 onClick={() => setChartType('value')}
-                className="h-8 px-3"
+                className={`h-8 px-3 ${chartType === 'value' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'}`}
               >
                 Value
               </Button>
               <Button
-                variant={chartType === 'pnl' ? 'default' : 'ghost'}
+                variant="ghost"
                 size="sm"
                 onClick={() => setChartType('pnl')}
-                className="h-8 px-3"
+                className={`h-8 px-3 ${chartType === 'pnl' ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'}`}
               >
                 P&L
               </Button>
@@ -106,10 +106,10 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
           {timeframes.map((tf) => (
             <Button
               key={tf.value}
-              variant={timeframe === tf.value ? 'default' : 'outline'}
+              variant="ghost"
               size="sm"
               onClick={() => setTimeframe(tf.value)}
-              className="h-8 px-3"
+              className={`h-8 px-3 ${timeframe === tf.value ? 'bg-gray-700 text-white' : 'text-gray-300 hover:bg-gray-700/50 hover:text-white'}`}
             >
               {tf.label}
             </Button>
