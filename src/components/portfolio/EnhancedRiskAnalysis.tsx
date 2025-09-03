@@ -326,7 +326,7 @@ export const EnhancedRiskAnalysis: React.FC = () => {
                       </Badge>
                     </div>
                     <p className="text-sm text-gray-300">{suggestion.description}</p>
-                    <div className="bg-gray-800/50 p-3 rounded border border-gray-600/20">
+                    <div className="bg-gray-800/50 p-3 rounded border border-gray-600/20 -ml-6">
                       <p className="text-sm text-blue-300 mb-1">
                         <strong>Recommended Action:</strong> {suggestion.action}
                       </p>
