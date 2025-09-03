@@ -436,7 +436,7 @@ const PortfolioDashboard = () => {
             {/* Right Column - Sidebar */}
             <div className="space-y-6">
               <AssetAllocation assets={mockPortfolioAssets} />
-              <EnhancedRiskMetrics />
+              <EnhancedRiskAnalysis />
               <RecentTransactions />
             </div>
           </div>
