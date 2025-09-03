@@ -30,164 +30,132 @@ const PortfolioDashboard = () => {
     setIsWalletConnected(true);
   };
 
-  // Mock components for demo purposes
-  const HoldingsTable = () => (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Coins className="h-5 w-5 text-blue-400" />
+  // Compact Holdings Component
+  const CompactHoldings = () => (
+    <Card className="bg-gray-800/50 border-gray-700">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-white text-lg">
+          <Coins className="h-4 w-4 text-blue-400" />
           Holdings
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {mockPortfolioAssets.map((asset) => (
-            <div key={asset.id} className="flex items-center justify-between p-4 rounded-lg border border-gray-700 bg-gray-800/80 hover:bg-gray-700/50 transition-colors">
-              <div className="flex items-center gap-4">
-                <div className="text-2xl">{asset.icon}</div>
-                <div>
-                  <p className="font-semibold text-white">{asset.symbol}</p>
-                  <p className="text-sm text-gray-300">{asset.name}</p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="font-semibold text-white">${asset.totalValue.toLocaleString()}</p>
-                <p className={`text-sm ${asset.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(2)}%
-                </p>
+      <CardContent className="space-y-2">
+        {mockPortfolioAssets.slice(0, 4).map((asset) => (
+          <div key={asset.id} className="flex items-center justify-between py-2 px-3 rounded-md bg-gray-700/30 hover:bg-gray-700/50 transition-colors">
+            <div className="flex items-center gap-3">
+              <span className="text-lg">{asset.icon}</span>
+              <div>
+                <p className="font-medium text-white text-sm">{asset.symbol}</p>
+                <p className="text-xs text-gray-400">{asset.name}</p>
               </div>
             </div>
-          ))}
-        </div>
+            <div className="text-right">
+              <p className="font-semibold text-white text-sm">${asset.totalValue.toLocaleString()}</p>
+              <p className={`text-xs ${asset.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(1)}%
+              </p>
+            </div>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );
 
-  const AIRecommendations = () => (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Brain className="h-5 w-5 text-blue-400" />
-          AI Portfolio Recommendations
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {mockAIRecommendations.map((rec) => (
-            <div key={rec.id} className="p-4 rounded-lg border border-gray-700 bg-gray-800/60 hover:bg-gray-700/40 transition-colors">
-              <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold text-white">{rec.title}</h4>
-                <span className={`px-2 py-1 rounded text-xs font-medium ${
-                  rec.priority === 'high' ? 'bg-red-900/80 text-red-200 border border-red-700' :
-                  rec.priority === 'medium' ? 'bg-yellow-900/80 text-yellow-200 border border-yellow-700' :
-                  'bg-green-900/80 text-green-200 border border-green-700'
-                }`}>
-                  {rec.priority} priority
-                </span>
-              </div>
-              <p className="text-sm text-gray-300 mb-3">{rec.description}</p>
-              <div className="space-y-1">
-                {rec.actions.map((action, index) => (
-                  <p key={index} className="text-sm text-gray-200">• {action}</p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
-
-  const RiskAnalysis = () => (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <Shield className="h-5 w-5 text-blue-400" />
+  // Compact Risk Metrics
+  const CompactRiskMetrics = () => (
+    <Card className="bg-gray-800/50 border-gray-700">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-white text-lg">
+          <Shield className="h-4 w-4 text-blue-400" />
           Risk Analysis
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-            <p className="text-sm text-gray-300">Sharpe Ratio</p>
-            <p className="text-lg font-bold text-white">{mockRiskMetrics.sharpeRatio}</p>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="p-2 rounded-md bg-gray-700/30 text-center">
+            <p className="text-xs text-gray-400">Sharpe Ratio</p>
+            <p className="font-bold text-white">{mockRiskMetrics.sharpeRatio}</p>
           </div>
-          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-            <p className="text-sm text-gray-300">Volatility</p>
-            <p className="text-lg font-bold text-white">{mockRiskMetrics.volatility}%</p>
+          <div className="p-2 rounded-md bg-gray-700/30 text-center">
+            <p className="text-xs text-gray-400">Volatility</p>
+            <p className="font-bold text-white">{mockRiskMetrics.volatility}%</p>
           </div>
-          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-            <p className="text-sm text-gray-300">Max Drawdown</p>
-            <p className="text-lg font-bold text-red-400">{mockRiskMetrics.maxDrawdown}%</p>
+          <div className="p-2 rounded-md bg-gray-700/30 text-center">
+            <p className="text-xs text-gray-400">Max Drawdown</p>
+            <p className="font-bold text-red-400">{mockRiskMetrics.maxDrawdown}%</p>
           </div>
-          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-            <p className="text-sm text-gray-300">Beta</p>
-            <p className="text-lg font-bold text-white">{mockRiskMetrics.beta}</p>
-          </div>
-          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-            <p className="text-sm text-gray-300">VaR (95%)</p>
-            <p className="text-lg font-bold text-red-400">{mockRiskMetrics.var95}%</p>
-          </div>
-          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-            <p className="text-sm text-gray-300">Diversification</p>
-            <p className="text-lg font-bold text-white">{mockRiskMetrics.diversificationRatio}</p>
+          <div className="p-2 rounded-md bg-gray-700/30 text-center">
+            <p className="text-xs text-gray-400">Beta</p>
+            <p className="font-bold text-white">{mockRiskMetrics.beta}</p>
           </div>
         </div>
       </CardContent>
     </Card>
   );
 
-  const SmartAlerts = () => (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-white">
-          <AlertCircle className="h-5 w-5 text-blue-400" />
-          Smart Alerts
+  // Compact AI Insights
+  const CompactAIInsights = () => (
+    <Card className="bg-gray-800/50 border-gray-700">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-white text-lg">
+          <Brain className="h-4 w-4 text-blue-400" />
+          AI Insights
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-3">
-          {mockSmartAlerts.map((alert) => (
-            <div key={alert.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-700 bg-gray-800/60">
-              <div className="flex items-center gap-3">
-                <div className={`w-3 h-3 rounded-full ${alert.isActive ? 'bg-green-400' : 'bg-gray-500'}`} />
-                <div>
-                  <p className="text-sm font-medium text-white">{alert.message}</p>
-                  <p className="text-xs text-gray-300">{alert.type} alert</p>
-                </div>
-              </div>
-              <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700/50 hover:text-white">
-                {alert.isActive ? 'Active' : 'Inactive'}
-              </Button>
+      <CardContent className="space-y-3">
+        {mockAIRecommendations.slice(0, 2).map((rec) => (
+          <div key={rec.id} className="p-3 rounded-md bg-gray-700/30 border-l-2 border-blue-400">
+            <div className="flex items-start justify-between mb-1">
+              <h4 className="font-medium text-white text-sm">{rec.title}</h4>
+              <span className={`px-1.5 py-0.5 rounded text-xs font-medium ${
+                rec.priority === 'high' ? 'bg-red-900/60 text-red-300' :
+                rec.priority === 'medium' ? 'bg-yellow-900/60 text-yellow-300' :
+                'bg-green-900/60 text-green-300'
+              }`}>
+                {rec.priority}
+              </span>
             </div>
-          ))}
-        </div>
+            <p className="text-xs text-gray-300 line-clamp-2">{rec.description}</p>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );
 
-  const DeFiIntegration = () => (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
-      <CardHeader>
-        <CardTitle className="text-white">DeFi Positions</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {mockDeFiPositions.map((position) => (
-            <div key={position.id} className="flex items-center justify-between p-4 rounded-lg border border-gray-700 bg-gray-800/60">
-              <div>
-                <p className="font-semibold text-white">{position.protocol}</p>
-                <p className="text-sm text-gray-300">{position.type} • {position.asset}</p>
-              </div>
-              <div className="text-right">
-                <p className="font-semibold text-white">${position.totalValue.toLocaleString()}</p>
-                <p className="text-sm text-green-400">{position.apy}% APY</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+  // Quick Stats Component
+  const QuickStats = () => (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">Total Value</p>
+          <p className="font-bold text-white text-lg">${mockPortfolioMetrics.totalValue.toLocaleString()}</p>
+          <p className="text-xs text-green-400">+{mockPortfolioMetrics.totalPnLPercentage.toFixed(1)}%</p>
+        </CardContent>
+      </Card>
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">24h Change</p>
+          <p className="font-bold text-white text-lg">${Math.abs(mockPortfolioMetrics.totalPnL).toLocaleString()}</p>
+          <p className={`text-xs ${mockPortfolioMetrics.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            {mockPortfolioMetrics.totalPnL >= 0 ? '+' : ''}{mockPortfolioMetrics.totalPnLPercentage.toFixed(1)}%
+          </p>
+        </CardContent>
+      </Card>
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">Assets</p>
+          <p className="font-bold text-white text-lg">{mockPortfolioAssets.length}</p>
+          <p className="text-xs text-blue-400">Tokens</p>
+        </CardContent>
+      </Card>
+      <Card className="bg-gray-800/50 border-gray-700">
+        <CardContent className="p-4 text-center">
+          <p className="text-xs text-gray-400 mb-1">Alerts</p>
+          <p className="font-bold text-white text-lg">{mockSmartAlerts.filter(a => a.isActive).length}</p>
+          <p className="text-xs text-orange-400">Active</p>
+        </CardContent>
+      </Card>
+    </div>
   );
 
   if (!isWalletConnected) {
@@ -199,7 +167,7 @@ const PortfolioDashboard = () => {
         </Helmet>
 
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-          <div className="container mx-auto px-4 py-8">
+          <div className="container mx-auto px-4 py-6">
             <div className="mb-6">
               <Link to="/">
                 <Button variant="ghost" className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white">
@@ -211,9 +179,7 @@ const PortfolioDashboard = () => {
 
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold text-white mb-4">
-                  Portfolio Dashboard
-                </h1>
+                <h1 className="text-4xl font-bold text-white mb-4">Portfolio Dashboard</h1>
                 <p className="text-lg text-gray-300">
                   Advanced portfolio tracking with AI-powered insights and professional-grade analytics
                 </p>
@@ -226,21 +192,21 @@ const PortfolioDashboard = () => {
                   <CardContent className="pt-6">
                     <BarChart3 className="h-8 w-8 mx-auto mb-2 text-blue-400" />
                     <h3 className="font-semibold mb-1 text-white">Advanced Analytics</h3>
-                    <p className="text-sm text-muted-foreground">Risk metrics, correlations, Sharpe ratio</p>
+                    <p className="text-sm text-gray-300">Risk metrics, correlations, Sharpe ratio</p>
                   </CardContent>
                 </Card>
                 <Card className="text-center bg-gray-800/50 border-gray-700">
                   <CardContent className="pt-6">
                     <Brain className="h-8 w-8 mx-auto mb-2 text-blue-400" />
                     <h3 className="font-semibold mb-1 text-white">AI Recommendations</h3>
-                    <p className="text-sm text-muted-foreground">Smart rebalancing and risk management</p>
+                    <p className="text-sm text-gray-300">Smart rebalancing and risk management</p>
                   </CardContent>
                 </Card>
                 <Card className="text-center bg-gray-800/50 border-gray-700">
                   <CardContent className="pt-6">
                     <Coins className="h-8 w-8 mx-auto mb-2 text-blue-400" />
                     <h3 className="font-semibold mb-1 text-white">DeFi Integration</h3>
-                    <p className="text-sm text-muted-foreground">Track yields, staking, liquidity pools</p>
+                    <p className="text-sm text-gray-300">Track yields, staking, liquidity pools</p>
                   </CardContent>
                 </Card>
               </div>
@@ -260,70 +226,117 @@ const PortfolioDashboard = () => {
       </Helmet>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-6">
-            <Link to="/">
-              <Button variant="ghost" className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white">
-                <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
-                Back to Home
-              </Button>
-            </Link>
-            <h1 className="text-3xl font-bold text-white">
-              Portfolio Dashboard
-            </h1>
+        <div className="container mx-auto px-4 py-6">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-4">
+              <Link to="/">
+                <Button variant="ghost" className="text-gray-300 hover:bg-gray-700/50 hover:text-white">
+                  <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
+                  Back to Home
+                </Button>
+              </Link>
+              <h1 className="text-2xl font-bold text-white">Portfolio Dashboard</h1>
+            </div>
           </div>
 
-          <div className="space-y-6">
-            {/* Portfolio Overview */}
-            <PortfolioOverview metrics={mockPortfolioMetrics} />
+          {/* Quick Stats Row */}
+          <QuickStats />
 
-            {/* Main Dashboard Tabs */}
-            <Tabs defaultValue="overview" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-2 md:grid-cols-5">
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                <TabsTrigger value="ai">AI Insights</TabsTrigger>
-                <TabsTrigger value="defi">DeFi</TabsTrigger>
-                <TabsTrigger value="alerts">Alerts</TabsTrigger>
-              </TabsList>
+          {/* Main Content Grid */}
+          <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Chart */}
+            <div className="lg:col-span-2 space-y-6">
+              <PerformanceChart data={portfolioHistory} />
+              
+              <Tabs defaultValue="holdings" className="space-y-4">
+                <TabsList className="grid w-full grid-cols-3 bg-gray-800/50">
+                  <TabsTrigger value="holdings" className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white">Holdings</TabsTrigger>
+                  <TabsTrigger value="defi" className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white">DeFi</TabsTrigger>
+                  <TabsTrigger value="alerts" className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white">Alerts</TabsTrigger>
+                </TabsList>
 
-              <TabsContent value="overview" className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <PerformanceChart data={portfolioHistory} />
-                  <AssetAllocation assets={mockPortfolioAssets} />
-                </div>
-                <HoldingsTable />
-              </TabsContent>
+                <TabsContent value="holdings">
+                  <Card className="bg-gray-800/50 border-gray-700">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-white text-lg">All Holdings</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {mockPortfolioAssets.map((asset) => (
+                        <div key={asset.id} className="flex items-center justify-between py-2 px-3 rounded-md bg-gray-700/30 hover:bg-gray-700/50 transition-colors">
+                          <div className="flex items-center gap-3">
+                            <span className="text-lg">{asset.icon}</span>
+                            <div>
+                              <p className="font-medium text-white text-sm">{asset.symbol}</p>
+                              <p className="text-xs text-gray-400">{asset.name}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-white text-sm">${asset.totalValue.toLocaleString()}</p>
+                            <p className={`text-xs ${asset.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                              {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(1)}%
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-              <TabsContent value="analytics" className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <RiskAnalysis />
-                  <PerformanceChart data={portfolioHistory} />
-                </div>
-                <AssetAllocation assets={mockPortfolioAssets} />
-              </TabsContent>
+                <TabsContent value="defi">
+                  <Card className="bg-gray-800/50 border-gray-700">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-white text-lg">DeFi Positions</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {mockDeFiPositions.map((position) => (
+                        <div key={position.id} className="flex items-center justify-between p-3 rounded-md bg-gray-700/30">
+                          <div>
+                            <p className="font-medium text-white text-sm">{position.protocol}</p>
+                            <p className="text-xs text-gray-400">{position.type} • {position.asset}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold text-white text-sm">${position.totalValue.toLocaleString()}</p>
+                            <p className="text-xs text-green-400">{position.apy}% APY</p>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
 
-              <TabsContent value="ai" className="space-y-6">
-                <AIRecommendations />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <RiskAnalysis />
-                  <AssetAllocation assets={mockPortfolioAssets} />
-                </div>
-              </TabsContent>
+                <TabsContent value="alerts">
+                  <Card className="bg-gray-800/50 border-gray-700">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-white text-lg">Smart Alerts</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      {mockSmartAlerts.map((alert) => (
+                        <div key={alert.id} className="flex items-center justify-between p-3 rounded-md bg-gray-700/30">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-2 h-2 rounded-full ${alert.isActive ? 'bg-green-400' : 'bg-gray-500'}`} />
+                            <div>
+                              <p className="text-sm font-medium text-white">{alert.message}</p>
+                              <p className="text-xs text-gray-400">{alert.type} alert</p>
+                            </div>
+                          </div>
+                          <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700/50 hover:text-white text-xs">
+                            {alert.isActive ? 'Active' : 'Inactive'}
+                          </Button>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+              </Tabs>
+            </div>
 
-              <TabsContent value="defi" className="space-y-6">
-                <DeFiIntegration />
-                <PerformanceChart data={portfolioHistory} />
-              </TabsContent>
-
-              <TabsContent value="alerts" className="space-y-6">
-                <SmartAlerts />
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <HoldingsTable />
-                  <RiskAnalysis />
-                </div>
-              </TabsContent>
-            </Tabs>
+            {/* Right Column - Sidebar */}
+            <div className="space-y-6">
+              <AssetAllocation assets={mockPortfolioAssets} />
+              <CompactRiskMetrics />
+              <CompactAIInsights />
+            </div>
           </div>
         </div>
         <Footer />
