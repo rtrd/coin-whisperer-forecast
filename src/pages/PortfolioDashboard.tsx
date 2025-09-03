@@ -202,7 +202,7 @@ const PortfolioDashboard = () => {
           <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
               <Link to="/">
-                <Button variant="ghost" className="mb-4 text-white hover:bg-gray-800/50">
+                <Button variant="ghost" className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white">
                   <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
                   Back to Home
                 </Button>
@@ -263,7 +263,7 @@ const PortfolioDashboard = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
             <Link to="/">
-              <Button variant="ghost" className="mb-4 text-white hover:bg-gray-800/50">
+              <Button variant="ghost" className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white">
                 <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
                 Back to Home
               </Button>
