@@ -198,7 +198,7 @@ const PortfolioDashboard = () => {
           <meta name="description" content="Advanced portfolio tracking dashboard with AI-powered insights, risk analysis, and DeFi integration. Connect your wallet to get started." />
         </Helmet>
 
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+        <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-primary/10">
           <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
               <Link to="/portfolio-tracking">
@@ -259,7 +259,7 @@ const PortfolioDashboard = () => {
         <meta name="description" content="Professional portfolio tracking dashboard with real-time analytics, AI recommendations, and DeFi integration." />
       </Helmet>
 
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="min-h-screen bg-gradient-to-br from-background via-secondary/5 to-primary/10">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
             <Link to="/portfolio-tracking">
