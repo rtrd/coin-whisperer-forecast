@@ -317,7 +317,7 @@ export const EnhancedRiskAnalysis: React.FC = () => {
               <Button 
                 variant="outline" 
                 size="sm"
-                className="border-gray-600 text-gray-300 hover:bg-gray-700/50"
+                className="border-gray-600 text-gray-300 hover:bg-gray-700/50 hover:text-white bg-gray-800/60 text-xs px-3 py-1.5 h-8"
                 onClick={() => alert('Connect Supabase for real-time AI suggestions')}
               >
                 Refresh Suggestions
