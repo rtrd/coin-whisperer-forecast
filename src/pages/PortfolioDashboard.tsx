@@ -440,11 +440,6 @@ const PortfolioDashboard = () => {
               <RecentTransactions />
             </div>
           </div>
-
-          {/* Enhanced Risk Analysis - Full Width Section */}
-          <div className="mt-8">
-            <EnhancedRiskAnalysis />
-          </div>
         </div>
         <Footer />
       </div>
