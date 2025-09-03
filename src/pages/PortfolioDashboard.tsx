@@ -201,10 +201,10 @@ const PortfolioDashboard = () => {
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
           <div className="container mx-auto px-4 py-8">
             <div className="mb-6">
-              <Link to="/portfolio-tracking">
-                <Button variant="ghost" className="mb-4 text-white hover:bg-gray-700/50">
+              <Link to="/">
+                <Button variant="ghost" className="mb-4 text-white hover:bg-gray-800/50">
                   <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
-                  Back to Portfolio Info
+                  Back to Home
                 </Button>
               </Link>
             </div>
@@ -262,10 +262,10 @@ const PortfolioDashboard = () => {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-8">
           <div className="mb-6">
-            <Link to="/portfolio-tracking">
-              <Button variant="ghost" className="mb-4 text-white hover:bg-gray-700/50">
+            <Link to="/">
+              <Button variant="ghost" className="mb-4 text-white hover:bg-gray-800/50">
                 <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
-                Back to Portfolio Info
+                Back to Home
               </Button>
             </Link>
             <h1 className="text-3xl font-bold text-white">
