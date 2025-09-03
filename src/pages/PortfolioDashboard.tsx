@@ -42,16 +42,16 @@ const PortfolioDashboard = () => {
       <CardContent>
         <div className="space-y-4">
           {mockPortfolioAssets.map((asset) => (
-            <div key={asset.id} className="flex items-center justify-between p-4 rounded-lg border hover:bg-muted/50 transition-colors">
+            <div key={asset.id} className="flex items-center justify-between p-4 rounded-lg border border-gray-700 bg-gray-800/80 hover:bg-gray-700/50 transition-colors">
               <div className="flex items-center gap-4">
                 <div className="text-2xl">{asset.icon}</div>
                 <div>
-                  <p className="font-semibold">{asset.symbol}</p>
-                  <p className="text-sm text-muted-foreground">{asset.name}</p>
+                  <p className="font-semibold text-white">{asset.symbol}</p>
+                  <p className="text-sm text-gray-300">{asset.name}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-semibold">${asset.totalValue.toLocaleString()}</p>
+                <p className="font-semibold text-white">${asset.totalValue.toLocaleString()}</p>
                 <p className={`text-sm ${asset.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                   {asset.pnl >= 0 ? '+' : ''}{asset.pnlPercentage.toFixed(2)}%
                 </p>
@@ -74,21 +74,21 @@ const PortfolioDashboard = () => {
       <CardContent>
         <div className="space-y-4">
           {mockAIRecommendations.map((rec) => (
-            <div key={rec.id} className="p-4 rounded-lg border bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20">
+            <div key={rec.id} className="p-4 rounded-lg border border-gray-700 bg-gray-800/60 hover:bg-gray-700/40 transition-colors">
               <div className="flex items-start justify-between mb-2">
-                <h4 className="font-semibold">{rec.title}</h4>
+                <h4 className="font-semibold text-white">{rec.title}</h4>
                 <span className={`px-2 py-1 rounded text-xs font-medium ${
-                  rec.priority === 'high' ? 'bg-red-100 text-red-800' :
-                  rec.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                  'bg-green-100 text-green-800'
+                  rec.priority === 'high' ? 'bg-red-900/80 text-red-200 border border-red-700' :
+                  rec.priority === 'medium' ? 'bg-yellow-900/80 text-yellow-200 border border-yellow-700' :
+                  'bg-green-900/80 text-green-200 border border-green-700'
                 }`}>
                   {rec.priority} priority
                 </span>
               </div>
-              <p className="text-sm text-muted-foreground mb-3">{rec.description}</p>
+              <p className="text-sm text-gray-300 mb-3">{rec.description}</p>
               <div className="space-y-1">
                 {rec.actions.map((action, index) => (
-                  <p key={index} className="text-sm">• {action}</p>
+                  <p key={index} className="text-sm text-gray-200">• {action}</p>
                 ))}
               </div>
             </div>
@@ -108,29 +108,29 @@ const PortfolioDashboard = () => {
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div className="p-3 rounded-lg border bg-card">
-            <p className="text-sm text-muted-foreground">Sharpe Ratio</p>
-            <p className="text-lg font-bold">{mockRiskMetrics.sharpeRatio}</p>
+          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
+            <p className="text-sm text-gray-300">Sharpe Ratio</p>
+            <p className="text-lg font-bold text-white">{mockRiskMetrics.sharpeRatio}</p>
           </div>
-          <div className="p-3 rounded-lg border bg-card">
-            <p className="text-sm text-muted-foreground">Volatility</p>
-            <p className="text-lg font-bold">{mockRiskMetrics.volatility}%</p>
+          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
+            <p className="text-sm text-gray-300">Volatility</p>
+            <p className="text-lg font-bold text-white">{mockRiskMetrics.volatility}%</p>
           </div>
-          <div className="p-3 rounded-lg border bg-card">
-            <p className="text-sm text-muted-foreground">Max Drawdown</p>
-            <p className="text-lg font-bold text-red-600">{mockRiskMetrics.maxDrawdown}%</p>
+          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
+            <p className="text-sm text-gray-300">Max Drawdown</p>
+            <p className="text-lg font-bold text-red-400">{mockRiskMetrics.maxDrawdown}%</p>
           </div>
-          <div className="p-3 rounded-lg border bg-card">
-            <p className="text-sm text-muted-foreground">Beta</p>
-            <p className="text-lg font-bold">{mockRiskMetrics.beta}</p>
+          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
+            <p className="text-sm text-gray-300">Beta</p>
+            <p className="text-lg font-bold text-white">{mockRiskMetrics.beta}</p>
           </div>
-          <div className="p-3 rounded-lg border bg-card">
-            <p className="text-sm text-muted-foreground">VaR (95%)</p>
-            <p className="text-lg font-bold text-red-600">{mockRiskMetrics.var95}%</p>
+          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
+            <p className="text-sm text-gray-300">VaR (95%)</p>
+            <p className="text-lg font-bold text-red-400">{mockRiskMetrics.var95}%</p>
           </div>
-          <div className="p-3 rounded-lg border bg-card">
-            <p className="text-sm text-muted-foreground">Diversification</p>
-            <p className="text-lg font-bold">{mockRiskMetrics.diversificationRatio}</p>
+          <div className="p-3 rounded-lg border border-gray-700 bg-gray-800/60">
+            <p className="text-sm text-gray-300">Diversification</p>
+            <p className="text-lg font-bold text-white">{mockRiskMetrics.diversificationRatio}</p>
           </div>
         </div>
       </CardContent>
@@ -148,15 +148,15 @@ const PortfolioDashboard = () => {
       <CardContent>
         <div className="space-y-3">
           {mockSmartAlerts.map((alert) => (
-            <div key={alert.id} className="flex items-center justify-between p-3 rounded-lg border">
+            <div key={alert.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-700 bg-gray-800/60">
               <div className="flex items-center gap-3">
-                <div className={`w-3 h-3 rounded-full ${alert.isActive ? 'bg-green-500' : 'bg-gray-300'}`} />
+                <div className={`w-3 h-3 rounded-full ${alert.isActive ? 'bg-green-400' : 'bg-gray-500'}`} />
                 <div>
-                  <p className="text-sm font-medium">{alert.message}</p>
-                  <p className="text-xs text-muted-foreground">{alert.type} alert</p>
+                  <p className="text-sm font-medium text-white">{alert.message}</p>
+                  <p className="text-xs text-gray-300">{alert.type} alert</p>
                 </div>
               </div>
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="text-gray-300 hover:bg-gray-700/50 hover:text-white">
                 {alert.isActive ? 'Active' : 'Inactive'}
               </Button>
             </div>
@@ -174,14 +174,14 @@ const PortfolioDashboard = () => {
       <CardContent>
         <div className="space-y-4">
           {mockDeFiPositions.map((position) => (
-            <div key={position.id} className="flex items-center justify-between p-4 rounded-lg border">
+            <div key={position.id} className="flex items-center justify-between p-4 rounded-lg border border-gray-700 bg-gray-800/60">
               <div>
-                <p className="font-semibold">{position.protocol}</p>
-                <p className="text-sm text-muted-foreground">{position.type} • {position.asset}</p>
+                <p className="font-semibold text-white">{position.protocol}</p>
+                <p className="text-sm text-gray-300">{position.type} • {position.asset}</p>
               </div>
               <div className="text-right">
-                <p className="font-semibold">${position.totalValue.toLocaleString()}</p>
-                <p className="text-sm text-green-600">{position.apy}% APY</p>
+                <p className="font-semibold text-white">${position.totalValue.toLocaleString()}</p>
+                <p className="text-sm text-green-400">{position.apy}% APY</p>
               </div>
             </div>
           ))}
