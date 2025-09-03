@@ -162,8 +162,8 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
                 {asset.icon}
               </div>
               <div>
-                <p className="text-sm font-medium">{asset.label}</p>
-                <p className="text-sm text-muted-foreground">{formatPrice(asset.value)}</p>
+                <p className="text-sm font-medium text-white">{asset.label}</p>
+                <p className="text-sm text-gray-300">{formatPrice(asset.value)}</p>
               </div>
             </div>
           ))}
