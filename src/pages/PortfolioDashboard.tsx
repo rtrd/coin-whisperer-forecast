@@ -360,7 +360,7 @@ const PortfolioDashboard = () => {
                     </CardHeader>
                     <CardContent className="space-y-3">
                       {mockPortfolioAssets.map((asset) => (
-                        <div key={asset.id} className="flex items-center justify-between py-3 px-4 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
+                        <div key={asset.id} className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50">
                           <div>
                             <p className="font-semibold text-white text-base">{asset.symbol}</p>
                             <p className="text-sm text-gray-400">{asset.name}</p>
