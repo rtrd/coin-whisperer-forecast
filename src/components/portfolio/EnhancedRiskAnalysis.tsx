@@ -314,8 +314,8 @@ export const EnhancedRiskAnalysis: React.FC = () => {
                 key={suggestion.id} 
                 className="p-4 rounded-lg bg-gray-700/40 border border-gray-600/30 hover:bg-gray-700/60 transition-colors"
               >
-                <div className="flex items-start gap-3">
-                  <div className="mt-1">
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0">
                     {getSuggestionIcon(suggestion.type)}
                   </div>
                   <div className="flex-1 space-y-2">
