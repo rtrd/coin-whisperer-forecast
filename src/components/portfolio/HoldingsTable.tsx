@@ -27,12 +27,12 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
   };
 
   return (
-    <Card className="bg-gray-800/80 border-gray-700">
+    <Card className="bg-card border-border">
       <CardHeader className="pb-4">
-        <CardTitle className="text-white text-xl font-bold flex items-center gap-2">
-          <Coins className="h-5 w-5 text-blue-400" />
+        <CardTitle className="text-foreground text-xl font-bold flex items-center gap-2">
+          <Coins className="h-5 w-5 text-primary" />
           All Holdings
-          <div className="ml-auto text-sm font-normal text-blue-300">
+          <div className="ml-auto text-sm font-normal text-muted-foreground">
             {assets.length} Assets
           </div>
         </CardTitle>
@@ -40,18 +40,18 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
       <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-gray-700 hover:bg-transparent">
-              <TableHead className="text-gray-300 font-semibold pl-6">Token</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">Amount</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">Price</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">Total Value</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">7d Change</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right pr-6">Allocation</TableHead>
+            <TableRow className="border-border hover:bg-transparent">
+              <TableHead className="text-muted-foreground font-semibold pl-6">Token</TableHead>
+              <TableHead className="text-muted-foreground font-semibold text-right">Amount</TableHead>
+              <TableHead className="text-muted-foreground font-semibold text-right">Price</TableHead>
+              <TableHead className="text-muted-foreground font-semibold text-right">Total Value</TableHead>
+              <TableHead className="text-muted-foreground font-semibold text-right">7d Change</TableHead>
+              <TableHead className="text-muted-foreground font-semibold text-right pr-6">Allocation</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {assets.map((asset) => (
-              <TableRow key={asset.id} className="border-gray-700 hover:bg-gray-700/30 transition-colors">
+              <TableRow key={asset.id} className="border-border hover:bg-muted/50 transition-colors">
                 <TableCell className="pl-6">
                   <div className="flex items-center gap-3">
                     <img 
@@ -60,36 +60,36 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
                       className="w-8 h-8 rounded-full"
                     />
                     <div>
-                      <div className="font-semibold text-white">
-                        {asset.name} <span className="text-gray-400 font-normal">({asset.symbol})</span>
+                      <div className="font-semibold text-foreground">
+                        {asset.name} <span className="text-muted-foreground font-normal">({asset.symbol})</span>
                       </div>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="font-medium text-white">
+                  <div className="font-medium text-foreground">
                     {formatAmount(asset.amount)}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="font-medium text-white">
+                  <div className="font-medium text-foreground">
                     {formatPrice(asset.currentPrice)}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
-                  <div className="font-semibold text-white">
+                  <div className="font-semibold text-foreground">
                     {formatValue(asset.totalValue)}
                   </div>
                 </TableCell>
                 <TableCell className="text-right">
                   <div className={`font-medium ${
-                    asset.change24h >= 0 ? 'text-green-400' : 'text-red-400'
+                    asset.change24h >= 0 ? 'text-green-500' : 'text-red-500'
                   }`}>
                     {formatPercentage(asset.change24h)}
                   </div>
                 </TableCell>
                 <TableCell className="text-right pr-6">
-                  <div className="font-medium text-blue-400">
+                  <div className="font-medium text-primary">
                     {asset.allocation.toFixed(1)}%
                   </div>
                 </TableCell>
