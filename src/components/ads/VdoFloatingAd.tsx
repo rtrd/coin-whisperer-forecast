@@ -8,7 +8,7 @@ const VdoFloatingAd = () => {
       script.id = "vdo-ai-script";
       script.async = true;
       script.defer = true;
-      script.src = "//a.vdo.ai/core/v-pumpparade/vdo.ai.js";
+      script.src = "";
       document.body.appendChild(script);
     }
   }, []);

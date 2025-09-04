@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export default function VdoBannerAd() {
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://a.vdo.ai/core/b-pumpparade/vdo.ai.js";
+    script.src = " ";
     script.async = true;
     script.defer = true;
     document.body.appendChild(script);
