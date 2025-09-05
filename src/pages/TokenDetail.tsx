@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -312,7 +312,7 @@ const TokenDetail = () => {
 
   return (
     <>
-      <Helmet>
+      <EnhancedSEOHead seoData={generateTokenDetailSEO(tokenId || "bitcoin", seoData)} />
         <title>{generateTokenMetaTitle(seoData)}</title>
         <meta
           name="description"

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,8 +19,10 @@ import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHe
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import ScrollToTop from "@/components/ScrollToTop";
+import { generateRealTimeDataSEO } from "@/utils/pageSeo";
 
 const RealTimeData = () => {
+  const seoData = generateRealTimeDataSEO();
   // Initialize ad script on page load
   useAdScript();
   
@@ -141,15 +143,7 @@ const RealTimeData = () => {
               </div>
             ) : (
               <>
-                <Helmet>
-                  <title>Real-Time Cryptocurrency Market Data | Live Prices & Analytics</title>
-                  <meta name="description" content="Access real-time cryptocurrency market data with live prices, trading volumes, social sentiment analysis, and comprehensive market intelligence. Professional-grade tools for crypto traders." />
-                  <meta name="keywords" content="real-time crypto data, live cryptocurrency prices, market data, trading analytics, social sentiment, market intelligence" />
-                  <meta property="og:title" content="Real-Time Cryptocurrency Market Data | Live Prices & Analytics" />
-                  <meta property="og:description" content="Professional real-time crypto market data with live prices, social sentiment analysis, and comprehensive trading analytics." />
-                  <meta property="og:type" content="website" />
-                  <link rel="canonical" href="https://yoursite.com/real-time-data" />
-                </Helmet>
+                <EnhancedSEOHead seoData={seoData} />
 
                 {/* Header like homepage */}
                 <div className="container mx-auto px-4 py-4 md:py-8">

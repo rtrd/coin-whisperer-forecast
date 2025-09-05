@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Home, Search, TrendingUp } from 'lucide-react';
-import { SEOHead } from '@/components/SEOHead';
+import { EnhancedSEOHead } from '@/components/seo/EnhancedSEOHead';
 import { useEffect } from 'react';
+import { generateNotFoundSEO } from '@/utils/pageSeo';
 
 const NotFound = () => {
+  const seoData = generateNotFoundSEO();
   useEffect(() => {
     // Track 404 errors
     if (typeof gtag !== 'undefined') {
@@ -19,29 +21,9 @@ const NotFound = () => {
     }
   }, []);
 
-  const seoData = {
-    title: '404 - Page Not Found | Pump Parade',
-    description: 'The page you are looking for could not be found. Explore our crypto analysis tools, AI predictions, and market data instead.',
-    canonical: 'https://pumpparade.com/404',
-    keywords: 'error, 404, not found, crypto analysis, pump parade',
-    openGraph: {
-      title: '404 - Page Not Found | Pump Parade',
-      description: 'The page you are looking for could not be found. Explore our crypto analysis tools instead.',
-      url: 'https://pumpparade.com/404',
-      type: 'website' as const,
-      image: 'https://pumpparade.com/og-image.jpg'
-    },
-    twitter: {
-      title: '404 - Page Not Found | Pump Parade',
-      description: 'The page you are looking for could not be found. Explore our crypto analysis tools instead.',
-      card: 'summary_large_image' as const,
-      image: 'https://pumpparade.com/og-image.jpg'
-    }
-  };
-
   return (
     <>
-      <SEOHead seoData={seoData} />
+      <EnhancedSEOHead seoData={seoData} />
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center space-y-8 p-8 max-w-lg mx-auto">
           {/* 404 Display */}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { useAdScript } from "@/hooks/useAdScript";
+import { generatePortfolioTrackingSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,7 @@ import { getAllCryptos } from "../../utils/api";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const PortfolioTracking = () => {
+  const seoData = generatePortfolioTrackingSEO();
   // Initialize ad script on page load
   useAdScript();
 
@@ -211,16 +213,7 @@ const PortfolioTracking = () => {
 
   return (
     <>
-      <Helmet>
-        <title>
-          Portfolio Tracking - Advanced Crypto Portfolio Analytics |
-          CryptoInsights
-        </title>
-        <meta
-          name="description"
-          content="Track your cryptocurrency portfolio with real-time data, performance analytics, and professional-grade tools. Get early access to our portfolio tracking platform."
-        />
-      </Helmet>
+      <EnhancedSEOHead seoData={seoData} />
 
       <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-x-hidden">
         <div className="container mx-auto px-4 py-4 md:py-8">

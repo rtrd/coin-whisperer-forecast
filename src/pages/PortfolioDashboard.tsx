@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Helmet } from 'react-helmet-async';
+import { EnhancedSEOHead } from '@/components/seo/EnhancedSEOHead';
+import { generatePortfolioDashboardSEO } from '@/utils/pageSeo';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -26,6 +27,7 @@ import {
 import Footer from '@/components/Footer';
 
 const PortfolioDashboard = () => {
+  const seoData = generatePortfolioDashboardSEO();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const [portfolioHistory, setPortfolioHistory] = useState(generateMockPortfolioHistory());
   const [selectedStrategy, setSelectedStrategy] = useState('moderate');
@@ -252,10 +254,7 @@ const PortfolioDashboard = () => {
   if (!isWalletConnected) {
     return (
       <>
-        <Helmet>
-          <title>Portfolio Dashboard - Connect Your Wallet | CryptoPrediction.ai</title>
-          <meta name="description" content="Advanced portfolio tracking dashboard with AI-powered insights, risk analysis, and DeFi integration. Connect your wallet to get started." />
-        </Helmet>
+        <EnhancedSEOHead seoData={seoData} />
 
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
           <div className="container mx-auto px-4 py-6">
@@ -311,10 +310,7 @@ const PortfolioDashboard = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Portfolio Dashboard - Advanced Analytics | CryptoPrediction.ai</title>
-        <meta name="description" content="Professional portfolio tracking dashboard with real-time analytics, AI recommendations, and DeFi integration." />
-      </Helmet>
+      <EnhancedSEOHead seoData={seoData} />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-6">

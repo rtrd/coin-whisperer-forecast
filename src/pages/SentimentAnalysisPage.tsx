@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { useAdScript } from "@/hooks/useAdScript";
+import { generateSentimentAnalysisSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -44,6 +45,7 @@ import { getAllCryptos } from "../../utils/api";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const SentimentAnalysisPage = () => {
+  const seoData = generateSentimentAnalysisSEO();
   // Initialize ad script on page load
   useAdScript();
 
@@ -332,6 +334,7 @@ const SentimentAnalysisPage = () => {
 
   return (
     <>
+      <EnhancedSEOHead seoData={seoData} />
       <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-x-hidden">
         {/* Header like homepage */}
         <div className="container mx-auto px-4 py-4 md:py-8">

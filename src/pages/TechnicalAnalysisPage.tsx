@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet-async";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { useAdScript } from "@/hooks/useAdScript";
+import { generateTechnicalAnalysisSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,6 +35,7 @@ const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const TechnicalAnalysisPage = () => {
+  const seoData = generateTechnicalAnalysisSEO();
   // Initialize ad script on page load
   useAdScript();
 
@@ -130,6 +132,7 @@ const TechnicalAnalysisPage = () => {
 
   return (
     <>
+      <EnhancedSEOHead seoData={seoData} />
       <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-x-hidden">
         {/* Header like homepage */}
         <div className="container mx-auto px-4 py-4 md:py-8">

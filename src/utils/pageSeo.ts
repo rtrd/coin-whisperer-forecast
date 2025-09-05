@@ -398,3 +398,145 @@ export const generateArticleSEO = (article: any): PageSEOData => {
     }
   };
 };
+
+// Real-time Data SEO
+export const generateRealTimeDataSEO = (): PageSEOData => {
+  return {
+    title: "Real-Time Cryptocurrency Data & Live Prices | Pump Parade",
+    description: "Live cryptocurrency prices, market cap, volume, and real-time trading data. Track crypto markets with instant updates and alerts.",
+    keywords: "real-time crypto data, live cryptocurrency prices, crypto market cap live, trading volume real-time, crypto price alerts, live market data",
+    canonical: "https://pumpparade.com/real-time-data",
+    openGraph: {
+      title: "Real-Time Cryptocurrency Data & Live Prices | Pump Parade",
+      description: "Get live cryptocurrency prices, market cap, volume, and real-time trading data with instant updates and price alerts.",
+      type: "website",
+      url: "https://pumpparade.com/real-time-data",
+      image: "https://pumpparade.com/og-image.jpg"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Real-Time Cryptocurrency Data & Live Prices | Pump Parade",
+      description: "Get live cryptocurrency prices, market cap, volume, and real-time trading data with instant updates and price alerts.",
+      image: "https://pumpparade.com/og-image.jpg"
+    }
+  };
+};
+
+// Portfolio Tracking SEO
+export const generatePortfolioTrackingSEO = (): PageSEOData => {
+  return {
+    title: "Crypto Portfolio Tracker | Track Your Holdings | Pump Parade",
+    description: "Track your cryptocurrency portfolio with real-time performance analytics, profit/loss calculations, and portfolio insights.",
+    keywords: "crypto portfolio tracker, cryptocurrency portfolio management, crypto holdings tracker, portfolio performance, crypto profit loss calculator",
+    canonical: "https://pumpparade.com/portfolio-tracking",
+    openGraph: {
+      title: "Crypto Portfolio Tracker | Track Your Holdings | Pump Parade",
+      description: "Advanced cryptocurrency portfolio tracking with real-time performance analytics, profit/loss calculations, and detailed insights.",
+      type: "website",
+      url: "https://pumpparade.com/portfolio-tracking",
+      image: "https://pumpparade.com/og-image.jpg"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Crypto Portfolio Tracker | Track Your Holdings | Pump Parade",
+      description: "Advanced cryptocurrency portfolio tracking with real-time performance analytics, profit/loss calculations, and detailed insights.",
+      image: "https://pumpparade.com/og-image.jpg"
+    }
+  };
+};
+
+// Portfolio Dashboard SEO
+export const generatePortfolioDashboardSEO = (): PageSEOData => {
+  return {
+    title: "Advanced Portfolio Dashboard | Analytics & Insights | Pump Parade",
+    description: "Professional crypto portfolio dashboard with advanced analytics, risk analysis, performance metrics, and trading insights.",
+    keywords: "crypto portfolio dashboard, portfolio analytics, crypto risk analysis, portfolio performance metrics, crypto trading dashboard, investment analytics",
+    canonical: "https://pumpparade.com/portfolio-dashboard",
+    openGraph: {
+      title: "Advanced Portfolio Dashboard | Analytics & Insights | Pump Parade",
+      description: "Professional cryptocurrency portfolio dashboard with advanced analytics, risk analysis, performance metrics, and trading insights.",
+      type: "website",
+      url: "https://pumpparade.com/portfolio-dashboard",
+      image: "https://pumpparade.com/og-image.jpg"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Advanced Portfolio Dashboard | Analytics & Insights | Pump Parade",
+      description: "Professional cryptocurrency portfolio dashboard with advanced analytics, risk analysis, performance metrics, and trading insights.",
+      image: "https://pumpparade.com/og-image.jpg"
+    }
+  };
+};
+
+// AI Price Prediction SEO
+export const generateAIPricePredictionSEO = (): PageSEOData => {
+  return {
+    title: "AI Price Prediction Models | Advanced Crypto Forecasting | Pump Parade",
+    description: "Advanced AI-powered cryptocurrency price prediction models with machine learning algorithms, accuracy metrics, and forecasting insights.",
+    keywords: "AI price prediction models, crypto forecasting algorithms, machine learning price prediction, cryptocurrency prediction accuracy, AI trading models",
+    canonical: "https://pumpparade.com/ai-price-prediction",
+    openGraph: {
+      title: "AI Price Prediction Models | Advanced Crypto Forecasting | Pump Parade",
+      description: "Advanced AI-powered cryptocurrency price prediction models with machine learning algorithms, accuracy metrics, and forecasting insights.",
+      type: "website",
+      url: "https://pumpparade.com/ai-price-prediction",
+      image: "https://pumpparade.com/og-image.jpg"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "AI Price Prediction Models | Advanced Crypto Forecasting | Pump Parade",
+      description: "Advanced AI-powered cryptocurrency price prediction models with machine learning algorithms, accuracy metrics, and forecasting insights.",
+      image: "https://pumpparade.com/og-image.jpg"
+    }
+  };
+};
+
+// Token Detail SEO
+export const generateTokenDetailSEO = (tokenId: string, tokenData?: any): PageSEOData => {
+  const tokenName = tokenData?.name || tokenId;
+  const symbol = tokenData?.symbol || tokenId.toUpperCase();
+  const price = tokenData?.current_price ? `$${tokenData.current_price.toFixed(2)}` : "";
+  
+  return {
+    title: `${tokenName} (${symbol}) Price, Chart & Analysis ${price} | Pump Parade`,
+    description: `Live ${tokenName} price, market data, charts, and analysis. Track ${symbol} performance, technical indicators, and AI predictions.`,
+    keywords: `${tokenName} price, ${symbol} analysis, ${tokenId} chart, cryptocurrency ${tokenName}, ${symbol} trading, ${tokenName} prediction`,
+    canonical: `https://pumpparade.com/token/${tokenId}`,
+    openGraph: {
+      title: `${tokenName} (${symbol}) Price & Analysis ${price} | Pump Parade`,
+      description: `Live ${tokenName} price data, technical analysis, charts, and AI predictions. Complete ${symbol} market insights and trading information.`,
+      type: "website",
+      url: `https://pumpparade.com/token/${tokenId}`,
+      image: "https://pumpparade.com/og-image.jpg"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${tokenName} (${symbol}) Price & Analysis ${price} | Pump Parade`,
+      description: `Live ${tokenName} price data, technical analysis, charts, and AI predictions. Complete ${symbol} market insights and trading information.`,
+      image: "https://pumpparade.com/og-image.jpg"
+    }
+  };
+};
+
+// Not Found SEO
+export const generateNotFoundSEO = (): PageSEOData => {
+  return {
+    title: "Page Not Found | Pump Parade",
+    description: "The page you're looking for doesn't exist. Explore our crypto analysis tools, AI predictions, and market insights.",
+    keywords: "404 error, page not found, crypto analysis, pump parade",
+    canonical: "https://pumpparade.com/404",
+    openGraph: {
+      title: "Page Not Found | Pump Parade",
+      description: "The page you're looking for doesn't exist. Explore our cryptocurrency analysis tools, AI predictions, and market insights.",
+      type: "website",
+      url: "https://pumpparade.com/404",
+      image: "https://pumpparade.com/og-image.jpg"
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Page Not Found | Pump Parade",
+      description: "The page you're looking for doesn't exist. Explore our cryptocurrency analysis tools, AI predictions, and market insights.",
+      image: "https://pumpparade.com/og-image.jpg"
+    }
+  };
+};
