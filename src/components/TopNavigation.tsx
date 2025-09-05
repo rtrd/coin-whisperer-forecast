@@ -119,12 +119,17 @@ export const TopNavigation: React.FC = () => {
     description: string;
     icon: any;
   }) => (
-    <Link to={href} className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-      <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4" />
-        <div className="text-sm font-medium leading-none">{title}</div>
+    <Link 
+      to={href} 
+      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
+    >
+      <div className="flex items-center gap-3">
+        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
+          <Icon className="h-4 w-4 text-primary" />
+        </div>
+        <div className="text-sm font-medium leading-none text-gray-200 group-hover:text-white">{title}</div>
       </div>
-      <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+      <p className="line-clamp-2 text-xs leading-snug text-gray-400 group-hover:text-gray-300 ml-11">
         {description}
       </p>
     </Link>
@@ -132,23 +137,25 @@ export const TopNavigation: React.FC = () => {
 
   const MobileFeatureSection = ({ title, features }: { title: string; features: any[] }) => (
     <div className="space-y-2">
-      <h3 className="text-sm font-semibold text-muted-foreground px-3">{title}</h3>
+      <h3 className="text-sm font-semibold text-gray-400 px-3 uppercase tracking-wider">{title}</h3>
       {features.map((feature) => (
         <Link
           key={feature.href}
           to={feature.href}
-          className="flex items-center gap-3 px-3 py-2 text-sm hover:bg-accent rounded-md"
+          className="flex items-center gap-3 px-3 py-3 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200 border border-transparent hover:border-gray-600/50"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <feature.icon className="h-4 w-4" />
-          <span>{feature.title}</span>
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
+            <feature.icon className="h-4 w-4 text-primary" />
+          </div>
+          <span className="font-medium">{feature.title}</span>
         </Link>
       ))}
     </div>
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-lg border-b border-gray-700/50 shadow-xl">{/* Added pt-16 to account for navigation height */}
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Desktop Navigation */}
@@ -185,37 +192,51 @@ export const TopNavigation: React.FC = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-gradient-to-r from-primary to-secondary text-primary-foreground hover:from-primary/90 hover:to-secondary/90">
-                  Features
+                <NavigationMenuTrigger className="bg-gradient-to-r from-primary to-secondary text-white hover:from-primary/90 hover:to-secondary/90 border-none shadow-lg">
+                  <span className="font-semibold">Features</span>
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="grid w-[800px] gap-3 p-4 md:grid-cols-2 lg:grid-cols-4">
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium leading-none">AI Analysis</h4>
-                      {aiAnalysisFeatures.map((feature) => (
-                        <FeatureCard key={feature.href} {...feature} />
-                      ))}
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium leading-none">Market Data</h4>
-                      {marketDataFeatures.map((feature) => (
-                        <FeatureCard key={feature.href} {...feature} />
-                      ))}
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium leading-none">Trends & Insights</h4>
-                      {trendsFeatures.map((feature) => (
-                        <FeatureCard key={feature.href} {...feature} />
-                      ))}
-                    </div>
-                    
-                    <div className="space-y-3">
-                      <h4 className="text-sm font-medium leading-none">Premium</h4>
-                      {premiumFeatures.map((feature) => (
-                        <FeatureCard key={feature.href} {...feature} />
-                      ))}
+                  <div className="w-[800px] bg-gray-800/95 backdrop-blur-lg border border-gray-700/50 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-2">
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <Brain className="h-4 w-4 text-blue-400" />
+                          AI Analysis
+                        </h4>
+                        {aiAnalysisFeatures.map((feature) => (
+                          <FeatureCard key={feature.href} {...feature} />
+                        ))}
+                      </div>
+                      
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <BarChart3 className="h-4 w-4 text-green-400" />
+                          Market Data
+                        </h4>
+                        {marketDataFeatures.map((feature) => (
+                          <FeatureCard key={feature.href} {...feature} />
+                        ))}
+                      </div>
+                      
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-orange-400" />
+                          Trends & Insights
+                        </h4>
+                        {trendsFeatures.map((feature) => (
+                          <FeatureCard key={feature.href} {...feature} />
+                        ))}
+                      </div>
+                      
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <Crown className="h-4 w-4 text-yellow-400" />
+                          Premium
+                        </h4>
+                        {premiumFeatures.map((feature) => (
+                          <FeatureCard key={feature.href} {...feature} />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </NavigationMenuContent>
@@ -226,38 +247,38 @@ export const TopNavigation: React.FC = () => {
           {/* Mobile Navigation */}
           <div className="flex md:hidden items-center gap-4">
             <Link to="/" className="flex items-center gap-2">
-              <span className="font-bold text-lg">PumpParade</span>
+              <span className="font-bold text-lg bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">PumpParade</span>
             </Link>
           </div>
 
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="outline" size="icon">
-                <Menu className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="text-gray-300 hover:bg-gray-700/50 hover:text-white">
+                <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-80">
+            <SheetContent side="right" className="w-80 bg-gray-900/95 backdrop-blur-lg border-l border-gray-700/50">
               <div className="flex flex-col space-y-6 mt-6">
                 <Link
                   to="/"
-                  className="flex items-center gap-3 px-3 py-2 text-lg hover:bg-accent rounded-md"
+                  className="flex items-center gap-3 px-3 py-3 text-lg text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <Home className="h-5 w-5" />
+                  <Home className="h-5 w-5 text-primary" />
                   Home
                 </Link>
                 
                 <Link
                   to="/blog"
-                  className="flex items-center gap-3 px-3 py-2 text-lg hover:bg-accent rounded-md"
+                  className="flex items-center gap-3 px-3 py-3 text-lg text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <BookOpen className="h-5 w-5" />
+                  <BookOpen className="h-5 w-5 text-primary" />
                   Blog
                 </Link>
 
                 <div className="space-y-4">
-                  <h2 className="text-lg font-semibold px-3">Features</h2>
+                  <h2 className="text-lg font-semibold px-3 text-white">Features</h2>
                   
                   <MobileFeatureSection title="AI Analysis" features={aiAnalysisFeatures} />
                   <MobileFeatureSection title="Market Data" features={marketDataFeatures} />

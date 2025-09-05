@@ -73,9 +73,11 @@ const AppWithHooks = () => {
   return (
     <>
       <TopNavigation />
-      <VdoFloatingAd />
-      <ScrollToTop />
-      <AppRoutes />
+      <div className="pt-16">
+        <VdoFloatingAd />
+        <ScrollToTop />
+        <AppRoutes />
+      </div>
     </>
   );
 };

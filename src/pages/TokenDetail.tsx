@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
+import { generateTokenDetailSEO } from "@/utils/pageSeo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -366,7 +367,7 @@ const TokenDetail = () => {
         <script type="application/ld+json">
           {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
         </script>
-      </Helmet>
+      
       <TokenProvider
         tokenId={tokenId || "bitcoin"}
         cryptoOptions={cryptoOptions}
