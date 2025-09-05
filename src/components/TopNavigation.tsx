@@ -113,25 +113,21 @@ export const TopNavigation: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const FeatureCard = ({ title, href, description, icon: Icon }: {
+  const FeatureCard = ({ title, href, icon: Icon }: {
     title: string;
     href: string; 
-    description: string;
     icon: any;
   }) => (
     <Link 
       to={href} 
-      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
+      className="group block select-none rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
     >
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
-          <Icon className="h-4 w-4 text-primary" />
+        <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
+          <Icon className="h-3 w-3 text-primary" />
         </div>
         <div className="text-sm font-medium leading-none text-gray-200 group-hover:text-white">{title}</div>
       </div>
-      <p className="line-clamp-2 text-xs leading-snug text-gray-400 group-hover:text-gray-300 ml-11">
-        {description}
-      </p>
     </Link>
   );
 
@@ -204,7 +200,7 @@ export const TopNavigation: React.FC = () => {
                           AI Analysis
                         </h4>
                         {aiAnalysisFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} {...feature} />
+                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
                         ))}
                       </div>
                       
@@ -214,7 +210,7 @@ export const TopNavigation: React.FC = () => {
                           Market Data
                         </h4>
                         {marketDataFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} {...feature} />
+                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
                         ))}
                       </div>
                       
@@ -224,7 +220,7 @@ export const TopNavigation: React.FC = () => {
                           Trends & Insights
                         </h4>
                         {trendsFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} {...feature} />
+                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
                         ))}
                       </div>
                       
@@ -234,7 +230,7 @@ export const TopNavigation: React.FC = () => {
                           Premium
                         </h4>
                         {premiumFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} {...feature} />
+                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
                         ))}
                       </div>
                     </div>
