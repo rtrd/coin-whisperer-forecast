@@ -27,6 +27,7 @@ import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
 import VdoFloatingAd from "./components/ads/VdoFloatingAd";
+import { TopNavigation } from "./components/TopNavigation";
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,7 @@ const AppWithHooks = () => {
   
   return (
     <>
+      <TopNavigation />
       <VdoFloatingAd />
       <ScrollToTop />
       <AppRoutes />
