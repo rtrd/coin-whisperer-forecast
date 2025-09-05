@@ -155,7 +155,7 @@ export const TopNavigation: React.FC = () => {
   );
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-lg border-b border-gray-700/50 shadow-xl">{/* Added pt-16 to account for navigation height */}
+    <div className="fixed top-0 left-0 right-0 z-[9999] bg-gray-900/95 backdrop-blur-lg border-b border-gray-700/50 shadow-xl">{/* Added specific high z-index */}
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Desktop Navigation */}
@@ -166,12 +166,12 @@ export const TopNavigation: React.FC = () => {
                   <Link
                     to="/"
                     className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                      isActive('/') && "bg-accent text-accent-foreground"
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-800/80 hover:text-white focus:bg-gray-800/80 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                      isActive('/') && "bg-gray-800/80 text-white"
                     )}
                   >
-                    <Home className="mr-2 h-4 w-4" />
-                    Home
+                    <Home className="mr-2 h-4 w-4 text-blue-400" />
+                    <span className="text-gray-200">Home</span>
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
@@ -181,22 +181,22 @@ export const TopNavigation: React.FC = () => {
                   <Link
                     to="/blog"
                     className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
-                      isActive('/blog') && "bg-accent text-accent-foreground"
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-800/80 hover:text-white focus:bg-gray-800/80 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                      isActive('/blog') && "bg-gray-800/80 text-white"
                     )}
                   >
-                    <BookOpen className="mr-2 h-4 w-4" />
-                    Blog
+                    <BookOpen className="mr-2 h-4 w-4 text-blue-400" />
+                    <span className="text-gray-200">Blog</span>
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-gradient-to-r from-primary to-secondary text-white hover:from-primary/90 hover:to-secondary/90 border-none shadow-lg">
-                  <span className="font-semibold">Features</span>
+                <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 border-none shadow-lg font-semibold">
+                  Features
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[800px] bg-gray-800/95 backdrop-blur-lg border border-gray-700/50 rounded-xl shadow-2xl overflow-hidden">
+                  <div className="w-[800px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden">{/* Added specific high z-index */}
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-2">
                       <div className="space-y-1 p-3">
                         <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">

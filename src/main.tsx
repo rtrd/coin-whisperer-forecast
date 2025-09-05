@@ -5,6 +5,9 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 import App from './App.tsx'
 import './index.css'
 
+// Apply dark theme globally
+document.documentElement.classList.add('dark');
+
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
     <ErrorBoundary>
