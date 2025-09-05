@@ -113,36 +113,37 @@ export const TopNavigation: React.FC = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const FeatureCard = ({ title, href, icon: Icon }: {
+  const FeatureCard = ({ title, href, description, icon: Icon }: {
     title: string;
-    href: string;
+    href: string; 
+    description: string;
     icon: any;
   }) => (
     <Link 
       to={href} 
-      className="group flex items-center gap-3 select-none rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
+      className="group flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/30"
     >
-      <div className="flex items-center justify-center w-6 h-6 rounded-md bg-gradient-to-br from-primary/20 to-secondary/20">
-        <Icon className="h-3 w-3 text-primary" />
+      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0">
+        <Icon className="h-4 w-4 text-primary" />
       </div>
-      <div className="text-sm font-medium leading-none text-gray-200 group-hover:text-white truncate">{title}</div>
+      <span className="text-sm font-medium text-gray-200 group-hover:text-white whitespace-nowrap truncate">{title}</span>
     </Link>
   );
 
   const MobileFeatureSection = ({ title, features }: { title: string; features: any[] }) => (
-    <div className="space-y-2">
-      <h3 className="text-sm font-semibold text-gray-400 px-3 uppercase tracking-wider">{title}</h3>
+    <div className="space-y-3">
+      <h3 className="text-xs font-semibold text-gray-400 px-3 uppercase tracking-wider">{title}</h3>
       {features.map((feature) => (
         <Link
           key={feature.href}
           to={feature.href}
-          className="flex items-center gap-3 px-3 py-3 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200 border border-transparent hover:border-gray-600/50"
+          className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
-            <feature.icon className="h-4 w-4 text-primary" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0">
+            <feature.icon className="h-3 w-3 text-primary" />
           </div>
-          <span className="font-medium">{feature.title}</span>
+          <span className="font-medium whitespace-nowrap truncate">{feature.title}</span>
         </Link>
       ))}
     </div>
@@ -190,45 +191,45 @@ export const TopNavigation: React.FC = () => {
                   Features
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[640px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden z-[10000]">
-                    <div className="grid grid-cols-4 gap-0 p-4">
-                      <div className="space-y-2 pr-4">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
+                  <div className="w-[720px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 p-4">
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
                           <Brain className="h-3 w-3 text-blue-400" />
                           AI Analysis
                         </h4>
                         {aiAnalysisFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
-                        ))}
-                      </div>
-                      
-                      <div className="space-y-2 pr-4">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
-                          <BarChart3 className="h-3 w-3 text-green-400" />
-                          Market Data
-                        </h4>
-                        {marketDataFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
-                        ))}
-                      </div>
-                      
-                      <div className="space-y-2 pr-4">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
-                          <TrendingUp className="h-3 w-3 text-orange-400" />
-                          Trends
-                        </h4>
-                        {trendsFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
+                          <FeatureCard key={feature.href} {...feature} />
                         ))}
                       </div>
                       
                       <div className="space-y-2">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                          <BarChart3 className="h-3 w-3 text-green-400" />
+                          Market Data
+                        </h4>
+                        {marketDataFeatures.map((feature) => (
+                          <FeatureCard key={feature.href} {...feature} />
+                        ))}
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                          <TrendingUp className="h-3 w-3 text-orange-400" />
+                          Trends
+                        </h4>
+                        {trendsFeatures.map((feature) => (
+                          <FeatureCard key={feature.href} {...feature} />
+                        ))}
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
                           <Crown className="h-3 w-3 text-yellow-400" />
                           Premium
                         </h4>
                         {premiumFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
+                          <FeatureCard key={feature.href} {...feature} />
                         ))}
                       </div>
                     </div>
