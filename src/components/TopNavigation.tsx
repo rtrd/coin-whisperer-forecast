@@ -121,34 +121,29 @@ export const TopNavigation: React.FC = () => {
   }) => (
     <Link 
       to={href} 
-      className="group block select-none space-y-1 rounded-lg p-4 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
+      className="group flex items-center gap-3 p-3 rounded-lg transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/30"
     >
-      <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
-          <Icon className="h-4 w-4 text-primary" />
-        </div>
-        <div className="text-sm font-medium leading-none text-gray-200 group-hover:text-white">{title}</div>
+      <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0">
+        <Icon className="h-4 w-4 text-primary" />
       </div>
-      <p className="line-clamp-2 text-xs leading-snug text-gray-400 group-hover:text-gray-300 ml-11">
-        {description}
-      </p>
+      <span className="text-sm font-medium text-gray-200 group-hover:text-white whitespace-nowrap truncate">{title}</span>
     </Link>
   );
 
   const MobileFeatureSection = ({ title, features }: { title: string; features: any[] }) => (
-    <div className="space-y-2">
-      <h3 className="text-sm font-semibold text-gray-400 px-3 uppercase tracking-wider">{title}</h3>
+    <div className="space-y-3">
+      <h3 className="text-xs font-semibold text-gray-400 px-3 uppercase tracking-wider">{title}</h3>
       {features.map((feature) => (
         <Link
           key={feature.href}
           to={feature.href}
-          className="flex items-center gap-3 px-3 py-3 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200 border border-transparent hover:border-gray-600/50"
+          className="flex items-center gap-3 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700/50 hover:text-white rounded-lg transition-all duration-200"
           onClick={() => setMobileMenuOpen(false)}
         >
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
-            <feature.icon className="h-4 w-4 text-primary" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20 flex-shrink-0">
+            <feature.icon className="h-3 w-3 text-primary" />
           </div>
-          <span className="font-medium">{feature.title}</span>
+          <span className="font-medium whitespace-nowrap truncate">{feature.title}</span>
         </Link>
       ))}
     </div>
@@ -196,11 +191,11 @@ export const TopNavigation: React.FC = () => {
                   Features
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[800px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden">{/* Added specific high z-index */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-2">
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <Brain className="h-4 w-4 text-blue-400" />
+                  <div className="w-[720px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 p-4">
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                          <Brain className="h-3 w-3 text-blue-400" />
                           AI Analysis
                         </h4>
                         {aiAnalysisFeatures.map((feature) => (
@@ -208,9 +203,9 @@ export const TopNavigation: React.FC = () => {
                         ))}
                       </div>
                       
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <BarChart3 className="h-4 w-4 text-green-400" />
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                          <BarChart3 className="h-3 w-3 text-green-400" />
                           Market Data
                         </h4>
                         {marketDataFeatures.map((feature) => (
@@ -218,19 +213,19 @@ export const TopNavigation: React.FC = () => {
                         ))}
                       </div>
                       
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <TrendingUp className="h-4 w-4 text-orange-400" />
-                          Trends & Insights
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                          <TrendingUp className="h-3 w-3 text-orange-400" />
+                          Trends
                         </h4>
                         {trendsFeatures.map((feature) => (
                           <FeatureCard key={feature.href} {...feature} />
                         ))}
                       </div>
                       
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <Crown className="h-4 w-4 text-yellow-400" />
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-semibold leading-none text-gray-400 mb-3 flex items-center gap-2 uppercase tracking-wider">
+                          <Crown className="h-3 w-3 text-yellow-400" />
                           Premium
                         </h4>
                         {premiumFeatures.map((feature) => (
