@@ -115,17 +115,19 @@ export const TopNavigation: React.FC = () => {
 
   const FeatureCard = ({ title, href, icon: Icon }: {
     title: string;
-    href: string;
+    href: string; 
     icon: any;
   }) => (
     <Link 
       to={href} 
-      className="group flex items-center gap-3 select-none rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
+      className="group block select-none rounded-lg p-3 leading-none no-underline outline-none transition-all duration-200 hover:bg-gray-700/50 hover:text-white focus:bg-gray-700/50 focus:text-white border border-transparent hover:border-gray-600/50"
     >
-      <div className="flex items-center justify-center w-6 h-6 rounded-md bg-gradient-to-br from-primary/20 to-secondary/20">
-        <Icon className="h-3 w-3 text-primary" />
+      <div className="flex items-center gap-3">
+        <div className="flex items-center justify-center w-6 h-6 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/20">
+          <Icon className="h-3 w-3 text-primary" />
+        </div>
+        <div className="text-sm font-medium leading-none text-gray-200 group-hover:text-white">{title}</div>
       </div>
-      <div className="text-sm font-medium leading-none text-gray-200 group-hover:text-white truncate">{title}</div>
     </Link>
   );
 
@@ -190,11 +192,11 @@ export const TopNavigation: React.FC = () => {
                   Features
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[640px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden z-[10000]">
-                    <div className="grid grid-cols-4 gap-0 p-4">
-                      <div className="space-y-2 pr-4">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
-                          <Brain className="h-3 w-3 text-blue-400" />
+                  <div className="w-[800px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden">{/* Added specific high z-index */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-2">
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <Brain className="h-4 w-4 text-blue-400" />
                           AI Analysis
                         </h4>
                         {aiAnalysisFeatures.map((feature) => (
@@ -202,9 +204,9 @@ export const TopNavigation: React.FC = () => {
                         ))}
                       </div>
                       
-                      <div className="space-y-2 pr-4">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
-                          <BarChart3 className="h-3 w-3 text-green-400" />
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <BarChart3 className="h-4 w-4 text-green-400" />
                           Market Data
                         </h4>
                         {marketDataFeatures.map((feature) => (
@@ -212,19 +214,19 @@ export const TopNavigation: React.FC = () => {
                         ))}
                       </div>
                       
-                      <div className="space-y-2 pr-4">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
-                          <TrendingUp className="h-3 w-3 text-orange-400" />
-                          Trends
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <TrendingUp className="h-4 w-4 text-orange-400" />
+                          Trends & Insights
                         </h4>
                         {trendsFeatures.map((feature) => (
                           <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
                         ))}
                       </div>
                       
-                      <div className="space-y-2">
-                        <h4 className="text-xs font-semibold leading-none text-white mb-3 flex items-center gap-2 uppercase tracking-wider">
-                          <Crown className="h-3 w-3 text-yellow-400" />
+                      <div className="space-y-1 p-3">
+                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
+                          <Crown className="h-4 w-4 text-yellow-400" />
                           Premium
                         </h4>
                         {premiumFeatures.map((feature) => (
