@@ -31,10 +31,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const aiAnalysisFeatures = [
   {
-    title: "AI Prediction Analysis",
-    href: "/ai-prediction",
-    description: "Advanced AI-powered price predictions",
-    icon: Brain
+    title: "Real-Time Market Intelligence",
+    href: "/real-time-data",
+    description: "Live market data and intelligence",
+    icon: Activity
   },
   {
     title: "AI Price Prediction", 
