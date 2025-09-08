@@ -187,56 +187,22 @@ export const TopNavigation: React.FC = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                <NavigationMenuTrigger className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:from-blue-700 hover:to-purple-700 border-none shadow-lg font-semibold">
-                  Features
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="w-[800px] bg-gray-800/95 backdrop-blur-lg border border-gray-600/30 rounded-xl shadow-2xl overflow-hidden">{/* Added specific high z-index */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 p-2">
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <Brain className="h-4 w-4 text-blue-400" />
-                          AI Analysis
-                        </h4>
-                        {aiAnalysisFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
-                        ))}
-                      </div>
-                      
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <BarChart3 className="h-4 w-4 text-green-400" />
-                          Market Data
-                        </h4>
-                        {marketDataFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
-                        ))}
-                      </div>
-                      
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <TrendingUp className="h-4 w-4 text-orange-400" />
-                          Trends & Insights
-                        </h4>
-                        {trendsFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
-                        ))}
-                      </div>
-                      
-                      <div className="space-y-1 p-3">
-                        <h4 className="text-sm font-semibold leading-none text-white mb-4 flex items-center gap-2">
-                          <Crown className="h-4 w-4 text-yellow-400" />
-                          Premium
-                        </h4>
-                        {premiumFeatures.map((feature) => (
-                          <FeatureCard key={feature.href} title={feature.title} href={feature.href} icon={feature.icon} />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
+              {aiAnalysisFeatures.map((feature) => (
+                <NavigationMenuItem key={feature.href}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to={feature.href}
+                      className={cn(
+                        "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-800/80 hover:text-white focus:bg-gray-800/80 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                        isActive(feature.href) && "bg-gray-800/80 text-white"
+                      )}
+                    >
+                      <feature.icon className="mr-2 h-4 w-4 text-blue-400" />
+                      <span className="text-gray-200">{feature.title}</span>
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
             </NavigationMenuList>
           </NavigationMenu>
 
