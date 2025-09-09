@@ -20,7 +20,7 @@ export const usePrediction = () => {
     technicalIndicator?: any,
     sentimentData?: any[], // Optional sentiment data for future use
     Alltokenmarketstats?: any
-  ): Promise<void> => {  
+  ) => {  
     setIsLoading(true);
     try {
       console.log(
@@ -42,6 +42,8 @@ export const usePrediction = () => {
       );
       setPrediction(result);
       console.log("AI Prediction generated:", result);
+      return result;
+      
     } catch (error) {
       console.error("Prediction generation failed:", error);
       toast.error("Failed to generate AI prediction");
