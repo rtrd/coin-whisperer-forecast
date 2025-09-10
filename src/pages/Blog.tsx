@@ -10,7 +10,7 @@ import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { BlogIndexSection } from "@/components/blog/BlogIndexSection";
 import { getWordPressPost } from "../../utils/api";
 import { decodeHtmlEntities } from "@/utils/htmlUtils";
-import { formatArticleForDisplay, getFeaturedArticle } from "@/utils/articleUtils";
+import { formatArticleForDisplay, getFeaturedArticle, getTrendingArticles } from "@/utils/articleUtils";
 import { generateBlogSEO } from "@/utils/pageSeo";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
@@ -167,7 +167,7 @@ const Blog = () => {
 
   // Select featured article based on "Featured" tag or fallback to first article
   const featuredArticle = getFeaturedArticle(articles);
-  const trendingArticles = articles.slice(0, 5); // Changed to get 5 items
+  const trendingArticles = getTrendingArticles(articles);
   const latestArticles = articles.slice(0, 8);
   console.log("Article:", articles.length);
   console.log("Trending Articles:", trendingArticles.length);

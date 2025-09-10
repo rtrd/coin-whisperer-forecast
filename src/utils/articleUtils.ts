@@ -134,6 +134,39 @@ export const getFeaturedArticle = (articles: any[]) => {
   return fallback;
 };
 
+export const getTrendingArticles = (articles: any[]): any[] => {
+  if (!articles || articles.length === 0) {
+    return [];
+  }
+
+  // First try exact match for "Trending" category
+  let trendingArticles = articles.filter(article => {
+    const categories = article.allCategories || [article.category];
+    return categories.some((category: string) => category === "Trending");
+  });
+
+  // If no exact match, try case-insensitive search
+  if (trendingArticles.length === 0) {
+    trendingArticles = articles.filter(article => {
+      const categories = article.allCategories || [article.category];
+      return categories.some((category: string) => 
+        category.toLowerCase() === "trending"
+      );
+    });
+  }
+
+  // Sort by date (newest first) if multiple trending articles
+  if (trendingArticles.length > 1) {
+    trendingArticles.sort((a, b) => {
+      const dateA = new Date(a.date || 0);
+      const dateB = new Date(b.date || 0);
+      return dateB.getTime() - dateA.getTime();
+    });
+  }
+
+  return trendingArticles;
+};
+
 export const getRelatedArticles = (currentArticle: any, allArticles: any[]) => {
   if (!currentArticle || !Array.isArray(currentArticle.tags)) return [];
 

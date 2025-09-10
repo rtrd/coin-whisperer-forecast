@@ -36,6 +36,12 @@ export const GAMAdUnit = ({
     });
     return () => cancelAnimationFrame(id);
   }, [adUnitId, size]);
-  return;
+  return (
+    <div 
+      ref={adRef}
+      id={adUnitId}
+      className={className}
+    />
+  );
 };
 export default GAMAdUnit;

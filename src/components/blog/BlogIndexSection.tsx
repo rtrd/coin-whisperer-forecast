@@ -39,7 +39,14 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
 
   // Filter and sort articles
   const filteredArticles = useMemo(() => {
+    // First exclude articles with special categories
     let filtered = articles.filter(article => {
+      const categories = article.allCategories || [article.category];
+      const hasSpecialCategory = categories.some((category: string) => 
+        ["Featured", "Trending"].includes(category)
+      );
+      return !hasSpecialCategory;
+    }).filter(article => {
       // Search filter
       if (filters.searchTerm) {
         const searchTerm = filters.searchTerm.toLowerCase();

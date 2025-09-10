@@ -27,12 +27,15 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
   articles,
   resultsCount,
 }) => {
-  // Extract unique values from articles
+  // Extract unique values from articles (exclude special categories)
   const uniqueCategories = useMemo(() => {
     const categories = articles.flatMap(article => 
       article.allCategories || [article.category]
     );
-    return Array.from(new Set(categories)).sort();
+    const filtered = categories.filter(category => 
+      !["Featured", "Trending"].includes(category)
+    );
+    return Array.from(new Set(filtered)).sort();
   }, [articles]);
 
   const uniqueTags = useMemo(() => {
