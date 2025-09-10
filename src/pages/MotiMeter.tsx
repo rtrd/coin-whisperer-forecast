@@ -129,7 +129,7 @@ const MotiMeter = () => {
             <CardHeader className="pb-4">
               <CardTitle className="text-white flex items-center gap-3 text-xl">
                 <BarChart3 className="h-6 w-6 text-purple-400" />
-                MOTI Scoring Criteria
+                <h2 className="text-xl">MOTI Scoring Criteria</h2>
                 <div className="ml-auto">
                   <Badge className="bg-purple-600 text-white">AI Powered</Badge>
                 </div>

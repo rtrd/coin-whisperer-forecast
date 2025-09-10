@@ -199,6 +199,7 @@ const AllTokens = () => {
             <p className="text-gray-300">
               Browse and analyze all available cryptocurrencies
             </p>
+            <h2 className="text-2xl font-semibold text-white mt-6 mb-4">Market Data & Analysis Tools</h2>
           </div>
 
           {/* Crypto Filters */}

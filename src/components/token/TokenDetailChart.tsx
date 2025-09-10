@@ -53,7 +53,7 @@ export const TokenDetailChart: React.FC<TokenDetailChartProps> = ({
         <div className="flex items-center justify-between">
           <CardTitle className="text-white flex items-center gap-2">
             <BarChart3 className="h-5 w-5 text-blue-400" />
-            Price Chart
+            <h2 className="text-xl">Price Chart</h2>
           </CardTitle>
           <div className="flex items-center gap-4">
             <Select value={timeframe} onValueChange={setTimeframe}>

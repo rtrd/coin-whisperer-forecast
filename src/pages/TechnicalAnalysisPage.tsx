@@ -175,9 +175,9 @@ const TechnicalAnalysisPage = () => {
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-green-500 to-blue-600 rounded-full mb-4">
                       <BarChart3 className="h-10 w-10 text-white" />
                     </div>
-                    <h2 className="text-3xl font-bold text-white mb-3">
+                    <h1 className="text-3xl font-bold text-white mb-3">
                       Advanced Technical Analysis
-                    </h2>
+                    </h1>
                     <p className="text-gray-300 text-lg max-w-2xl mx-auto">
                       Professional-grade technical indicators and algorithms
                       used by institutional traders
@@ -189,9 +189,9 @@ const TechnicalAnalysisPage = () => {
                       <div className="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-blue-500/20 rounded-full mb-3 sm:mb-4">
                         <Calculator className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
                       </div>
-                      <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">
+                       <h2 className="text-lg sm:text-xl font-semibold text-white mb-2">
                         50+ Indicators
-                      </h3>
+                       </h2>
                       <p className="text-gray-300 text-xs sm:text-sm leading-relaxed">
                         RSI, MACD, Bollinger Bands, Fibonacci retracements, and
                         more
@@ -202,9 +202,9 @@ const TechnicalAnalysisPage = () => {
                       <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500/20 rounded-full mb-4">
                         <Activity className="h-8 w-8 text-green-400" />
                       </div>
-                      <h3 className="text-xl font-semibold text-white mb-2">
+                       <h2 className="text-xl font-semibold text-white mb-2">
                         Real-Time Signals
-                      </h3>
+                       </h2>
                       <p className="text-gray-300 text-sm">
                         Live buy/sell signals updated every minute with market
                         data

@@ -33,7 +33,10 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
           </div>
 
           {/* Market Statistics */}
-          <TokenMarketStats marketData={marketData} />
+          <div>
+            <h2 className="text-xl font-semibold text-white mb-4">Market Statistics</h2>
+            <TokenMarketStats marketData={marketData} />
+          </div>
         </div>
       </CardContent>
     </Card>
