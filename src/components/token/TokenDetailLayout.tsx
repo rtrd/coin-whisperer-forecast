@@ -15,6 +15,8 @@ import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import { AdUnit } from "@/components/ads/AdService";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
+import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
+
 interface TokenDetailLayoutProps {
   // Header props
   cryptoId: string;
@@ -197,6 +199,20 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
         </div> */}
         <VdoFloatingAd />
+        {/* Internal Linking */}
+        <div className="mt-12 mb-8">
+          <InternalLinking 
+            currentPage="token" 
+            tokenSymbol={selectedToken?.symbol}
+            category={selectedToken?.category}
+          />
+        </div>
+
+        {/* Related Tokens */}
+        <div className="mb-8">
+          <TokenLinks currentToken={tokenId} />
+        </div>
+
         {/* Footer */}
         <div className="mt-12">
           <Footer />

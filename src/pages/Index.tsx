@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { BreadcrumbSchema, generateBreadcrumbs } from "@/components/seo/BreadcrumbSchema";
 import { FAQSchema, cryptoFAQs } from "@/components/seo/FAQSchema";
+import { CoreWebVitalsOptimizer } from "@/components/seo/CoreWebVitalsOptimizer";
+import { EnhancedStructuredData } from "@/components/seo/EnhancedStructuredData";
 import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
 import { useCryptoData } from "@/hooks/useCryptoData";
@@ -82,6 +84,19 @@ const Index = () => {
   return (
     <>
       <EnhancedSEOHead seoData={seoData} />
+      <CoreWebVitalsOptimizer 
+        preloadResources={[
+          '/src/index.css',
+          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+        ]}
+        prefetchResources={[
+          '/tokens',
+          '/ai-prediction',
+          '/blog',
+          'https://server.pumpparade.com/api/cryptos'
+        ]}
+      />
+      <EnhancedStructuredData pageType="homepage" />
       <BreadcrumbSchema items={breadcrumbs} />
       <FAQSchema faqs={cryptoFAQs} />
       

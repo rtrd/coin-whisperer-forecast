@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
+import { CoreWebVitalsOptimizer } from "@/components/seo/CoreWebVitalsOptimizer";
+import { EnhancedStructuredData } from "@/components/seo/EnhancedStructuredData";
 import { generateTokenDetailSEO } from "@/utils/pageSeo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -314,59 +316,30 @@ const TokenDetail = () => {
   return (
     <>
       <EnhancedSEOHead seoData={generateTokenDetailSEO(tokenId || "bitcoin", seoData)} />
-        <title>{generateTokenMetaTitle(seoData)}</title>
-        <meta
-          name="description"
-          content={generateTokenMetaDescription(seoData)}
-        />
-        <meta name="keywords" content={generateTokenKeywords(seoData)} />
-
-        {/* Open Graph tags */}
-        <meta property="og:title" content={generateTokenMetaTitle(seoData)} />
-        <meta
-          property="og:description"
-          content={generateTokenMetaDescription(seoData)}
-        />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:image"
-          content="https://pumpparade.com/og-image.jpg"
-        />
-        <meta
-          property="og:image:alt"
-          content={`${seoData.name} price analysis and predictions`}
-        />
-        <meta property="og:site_name" content="Pump Parade" />
-
-        {/* Twitter Card tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={generateTokenMetaTitle(seoData)} />
-        <meta
-          name="twitter:description"
-          content={generateTokenMetaDescription(seoData)}
-        />
-        <meta
-          name="twitter:image"
-          content="https://pumpparade.com/og-image.jpg"
-        />
-        <meta
-          name="twitter:image:alt"
-          content={`${seoData.name} price analysis and predictions`}
-        />
-
-        {/* Additional SEO tags */}
-        <meta
-          name="robots"
-          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
-        />
-        <meta name="author" content="Pump Parade" />
-        <meta name="theme-color" content="#1e40af" />
-
-        {/* Structured Data */}
-        <script type="application/ld+json">
-          {JSON.stringify(generateTokenStructuredData(seoData, canonicalUrl))}
-        </script>
+      <CoreWebVitalsOptimizer 
+        preloadResources={[
+          '/src/index.css',
+          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+        ]}
+        prefetchResources={[
+          '/tokens',
+          '/ai-prediction',
+          'https://server.pumpparade.com/api/cryptos'
+        ]}
+      />
+      <EnhancedStructuredData 
+        token={{
+          name: selectedToken?.name || "",
+          symbol: selectedToken?.symbol || "",
+          currentPrice,
+          priceChange,
+          marketCap: displayMarketStats.market_cap,
+          description: selectedToken?.description || `${selectedToken?.name} price analysis and predictions`,
+          category: selectedToken?.category || "Cryptocurrency",
+          url: canonicalUrl
+        }}
+        pageType="token"
+      />
       
       <TokenProvider
         tokenId={tokenId || "bitcoin"}
