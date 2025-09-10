@@ -23,6 +23,10 @@ import { getAllCryptos, getWordPressPost } from "../../utils/api";
 import { decodeHtmlEntities } from "@/utils/htmlUtils";
 import { CryptoToken } from "@/types/crypto";
 import { generateArticleSEO } from "@/utils/pageSeo";
+import { AdvancedSEOHead } from "@/components/seo/AdvancedSEOHead";
+import { EnhancedBreadcrumbSchema } from "@/components/seo/EnhancedBreadcrumbSchema";
+import { AdvancedPerformanceOptimizer } from "@/components/seo/AdvancedPerformanceOptimizer";
+import { calculateReadingTime } from "@/utils/readingTime";
 
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
@@ -154,6 +158,7 @@ const Article = () => {
 
   const article = articles.find((a) => a.id === Number(articleId));
   const seoData = article ? generateArticleSEO(article) : null;
+  const readingTime = article ? calculateReadingTime(article.content) : undefined;
 
   const transformallArticles = (articles: any[]): any[] => {
     return articles.map((a) => ({
@@ -189,40 +194,27 @@ const Article = () => {
 
   return (
     <>
+      {/* Advanced SEO Head */}
       {seoData && (
-        <Helmet>
-          <title>{seoData.title}</title>
-          <meta name="description" content={seoData.description} />
-          <meta name="keywords" content={seoData.keywords} />
-          <link rel="canonical" href={seoData.canonical} />
-
-          {/* Open Graph tags */}
-          <meta property="og:title" content={seoData.openGraph.title} />
-          <meta
-            property="og:description"
-            content={seoData.openGraph.description}
-          />
-          <meta property="og:type" content={seoData.openGraph.type} />
-          <meta property="og:url" content={seoData.openGraph.url} />
-          <meta property="og:image" content={seoData.openGraph.image} />
-
-          {/* Twitter Card tags */}
-          <meta name="twitter:card" content={seoData.twitter.card} />
-          <meta name="twitter:title" content={seoData.twitter.title} />
-          <meta
-            name="twitter:description"
-            content={seoData.twitter.description}
-          />
-          <meta name="twitter:image" content={seoData.twitter.image} />
-
-          {/* Structured Data */}
-          {seoData.structuredData && (
-            <script type="application/ld+json">
-              {JSON.stringify(seoData.structuredData)}
-            </script>
-          )}
-        </Helmet>
+        <AdvancedSEOHead 
+          seoData={seoData}
+          author={article.author}
+          publishDate={article.date}
+          readingTime={readingTime}
+          pageType="article"
+        />
       )}
+      
+      {/* Breadcrumb Schema */}
+      <EnhancedBreadcrumbSchema 
+        articleTitle={article?.title}
+      />
+      
+      {/* Performance Optimizer */}
+      <AdvancedPerformanceOptimizer 
+        pageType="article"
+        criticalResources={[article?.image].filter(Boolean)}
+      />
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-4 md:py-8">

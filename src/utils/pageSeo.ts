@@ -351,10 +351,12 @@ export const generateSubscribeSEO = (): PageSEOData => {
   };
 };
 
-// Article SEO generator
+// Article SEO generator with enhanced structured data
 export const generateArticleSEO = (article: any): PageSEOData => {
   const title = `${article.title} | Pump Parade`;
   const description = article.excerpt || article.description || "Read the latest cryptocurrency news and analysis on Pump Parade.";
+  const publishDate = article.date ? new Date(article.date).toISOString() : new Date().toISOString();
+  const modifiedDate = article.modified || publishDate;
   
   return {
     title,
@@ -376,25 +378,60 @@ export const generateArticleSEO = (article: any): PageSEOData => {
     },
     structuredData: {
       "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": article.title,
-      "description": description,
-      "author": {
-        "@type": "Person",
-        "name": article.author || "Pump Parade Team"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Pump Parade",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://pumpparade.com/og-image.jpg"
+      "@graph": [
+        {
+          "@type": "Article",
+          "@id": `https://pumpparade.com/article/${article.id}#article`,
+          "headline": article.title,
+          "description": description,
+          "image": {
+            "@type": "ImageObject",
+            "@id": `https://pumpparade.com/article/${article.id}#image`,
+            "url": article.image || "https://pumpparade.com/og-image.jpg",
+            "width": 1200,
+            "height": 630,
+            "caption": article.title
+          },
+          "author": {
+            "@type": "Person",
+            "@id": `https://pumpparade.com/author/${(article.author || 'pump-parade-team').toLowerCase().replace(/\s+/g, '-')}#person`,
+            "name": article.author || "Pump Parade Team",
+            "url": "https://pumpparade.com",
+            "jobTitle": "Crypto Analyst",
+            "worksFor": {
+              "@id": "https://pumpparade.com/#organization"
+            }
+          },
+          "publisher": {
+            "@id": "https://pumpparade.com/#organization"
+          },
+          "datePublished": publishDate,
+          "dateModified": modifiedDate,
+          "url": `https://pumpparade.com/article/${article.id}`,
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://pumpparade.com/article/${article.id}`
+          },
+          "wordCount": article.content ? article.content.replace(/<[^>]+>/g, '').split(/\s+/).length : 0,
+          "articleSection": "Cryptocurrency",
+          "articleBody": article.content ? article.content.replace(/<[^>]+>/g, '').substring(0, 500) : description
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://pumpparade.com/#organization",
+          "name": "Pump Parade",
+          "url": "https://pumpparade.com",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://pumpparade.com/og-image.jpg",
+            "width": 1200,
+            "height": 630
+          },
+          "sameAs": [
+            "https://twitter.com/PumpParade"
+          ]
         }
-      },
-      "datePublished": article.date,
-      "dateModified": article.date,
-      "image": article.image || "https://pumpparade.com/og-image.jpg",
-      "url": `https://pumpparade.com/article/${article.id}`
+      ]
     }
   };
 };

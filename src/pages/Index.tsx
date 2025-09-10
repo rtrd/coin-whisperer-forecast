@@ -4,6 +4,9 @@ import { BreadcrumbSchema, generateBreadcrumbs } from "@/components/seo/Breadcru
 import { FAQSchema, cryptoFAQs } from "@/components/seo/FAQSchema";
 import { CoreWebVitalsOptimizer } from "@/components/seo/CoreWebVitalsOptimizer";
 import { EnhancedStructuredData } from "@/components/seo/EnhancedStructuredData";
+import { AdvancedSEOHead } from "@/components/seo/AdvancedSEOHead";
+import { EnhancedBreadcrumbSchema } from "@/components/seo/EnhancedBreadcrumbSchema";
+import { AdvancedPerformanceOptimizer } from "@/components/seo/AdvancedPerformanceOptimizer";
 import { IndexContent } from "@/components/IndexContent";
 import { toast } from "sonner";
 import { useCryptoData } from "@/hooks/useCryptoData";
@@ -83,27 +86,28 @@ const Index = () => {
 
   return (
     <>
-      <EnhancedSEOHead seoData={seoData} />
-      <CoreWebVitalsOptimizer 
-        preloadResources={[
-          '/src/index.css',
-          'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
-        ]}
+      {/* Enhanced SEO Components */}
+      <AdvancedSEOHead 
+        seoData={seoData}
+        pageType="homepage"
+      />
+      <EnhancedBreadcrumbSchema />
+      <AdvancedPerformanceOptimizer 
+        pageType="homepage"
         prefetchResources={[
-          '/tokens',
-          '/ai-prediction',
           '/blog',
-          'https://server.pumpparade.com/api/cryptos'
+          '/tokens',
+          '/ai-prediction'
         ]}
       />
       <EnhancedStructuredData pageType="homepage" />
-      <BreadcrumbSchema items={breadcrumbs} />
       <FAQSchema faqs={cryptoFAQs} />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <ins className="688243f4cd78b050d770b5b9" style={{display:"inline-block",width:"1px",height:"1px"}}></ins>
         <script dangerouslySetInnerHTML={{__html: `!function(e,n,c,t,o,r,d){!function e(n,c,t,o,r,m,d,s,a){s=c.getElementsByTagName(t)[0],(a=c.createElement(t)).async=!0,a.src="https://"+r[m]+"/js/"+o+".js?v="+d,a.onerror=function(){a.remove(),(m+=1)>=r.length||e(n,c,t,o,r,m)},s.parentNode.insertBefore(a,s)}(window,document,"script","688243f4cd78b050d770b5b9",["cdn.bmcdn6.com"], 0, new Date().getTime())}();`}} />
-        <IndexContent
+    
+    <IndexContent
           selectedCrypto={selectedCrypto}
           cryptoOptions={filteredCryptos}
           currentPrice={currentPrice}
