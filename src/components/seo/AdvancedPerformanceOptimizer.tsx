@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 interface AdvancedPerformanceOptimizerProps {
@@ -7,7 +7,7 @@ interface AdvancedPerformanceOptimizerProps {
   pageType?: 'homepage' | 'article' | 'token' | 'blog';
 }
 
-export const AdvancedPerformanceOptimizer: React.FC<AdvancedPerformanceOptimizerProps> = ({
+export const AdvancedPerformanceOptimizer = ({
   criticalResources = [],
   prefetchResources = [],
   pageType = 'homepage'

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 
@@ -14,7 +13,7 @@ interface EnhancedBreadcrumbSchemaProps {
   articleTitle?: string;
 }
 
-export const EnhancedBreadcrumbSchema: React.FC<EnhancedBreadcrumbSchemaProps> = ({
+export const EnhancedBreadcrumbSchema = ({
   customBreadcrumbs,
   tokenName,
   articleTitle

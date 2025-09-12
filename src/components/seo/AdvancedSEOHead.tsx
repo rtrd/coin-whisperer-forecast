@@ -1,4 +1,3 @@
-import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import { PageSEOData } from '@/utils/pageSeo';
@@ -12,7 +11,7 @@ interface AdvancedSEOHeadProps {
   pageType?: 'homepage' | 'article' | 'token' | 'blog' | 'general';
 }
 
-export const AdvancedSEOHead: React.FC<AdvancedSEOHeadProps> = ({
+export const AdvancedSEOHead = ({
   seoData,
   author = "Pump Parade Team",
   publishDate,
