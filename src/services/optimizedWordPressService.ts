@@ -26,7 +26,7 @@ interface WordPressPost {
 class OptimizedWordPressService {
   private cache = new Map<string, CachedData>();
   private pendingRequests = new Map<string, Promise<any>>();
-  private readonly baseUrl = 'https://pumpparade.com/wp-json/wp/v2';
+  private readonly baseUrl = 'https://blog.pumpparade.com/wp-json/wp/v2';
   private readonly timeout = 5000; // 5 second timeout
 
   private isDataFresh(cached: CachedData): boolean {
