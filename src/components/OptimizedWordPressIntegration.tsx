@@ -13,13 +13,13 @@ interface OptimizedWordPressIntegrationProps {
 
 // Memoized skeleton component
 const OptimizedSkeleton = React.memo(() => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {Array.from({ length: 6 }).map((_, i) => (
-      <div key={i} className="space-y-3 animate-pulse">
-        <div className="h-48 bg-muted rounded-lg" />
-        <div className="space-y-2">
-          <div className="h-4 bg-muted rounded w-3/4" />
-          <div className="h-3 bg-muted rounded w-1/2" />
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    {Array.from({ length: 4 }).map((_, i) => (
+      <div key={i} className="space-y-2 animate-pulse">
+        <div className="h-32 bg-muted rounded-lg" />
+        <div className="space-y-1">
+          <div className="h-3 bg-muted rounded w-3/4" />
+          <div className="h-2 bg-muted rounded w-1/2" />
         </div>
       </div>
     ))}
@@ -72,7 +72,7 @@ export const OptimizedWordPressIntegration: React.FC<OptimizedWordPressIntegrati
       }
 
       // Then fetch fresh data
-      const posts = await optimizedWordPressService.getOptimizedPosts(6);
+      const posts = await optimizedWordPressService.getOptimizedPosts(4);
       
       if (posts && posts.length > 0) {
         setArticles(posts);
@@ -185,13 +185,13 @@ export const OptimizedWordPressIntegration: React.FC<OptimizedWordPressIntegrati
           </div>
         )}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.slice(0, 6).map((article) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {articles.slice(0, 4).map((article) => (
             <MemoizedArticleCard
               key={article.id}
               article={article}
               variant="blog"
-              compact={false}
+              compact={true}
             />
           ))}
         </div>
