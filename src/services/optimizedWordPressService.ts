@@ -1,4 +1,5 @@
 // Optimized WordPress service with caching, reduced API calls, and performance improvements
+import { calculateReadingTime } from '@/utils/readingTime';
 
 interface CachedData {
   data: any;
@@ -10,6 +11,7 @@ interface WordPressPost {
   id: number;
   title: { rendered: string };
   excerpt: { rendered: string };
+  content?: { rendered: string };
   date: string;
   featured_media: number;
   link: string;
@@ -129,6 +131,7 @@ class OptimizedWordPressService {
       image: this.extractFeaturedImage(post),
       url: post.link,
       category: 'Crypto News',
+      readTime: calculateReadingTime(post.content?.rendered || post.excerpt?.rendered || ''),
       tags: [] // Will be populated by background process
     }));
   }
@@ -193,6 +196,7 @@ class OptimizedWordPressService {
         image: "/placeholder.svg",
         url: "#",
         category: "Analysis",
+        readTime: "3 min read",
         tags: ["Bitcoin", "Technical Analysis"]
       },
       {
@@ -204,6 +208,7 @@ class OptimizedWordPressService {
         image: "/placeholder.svg",
         url: "#",
         category: "News",
+        readTime: "4 min read",
         tags: ["Ethereum", "DeFi"]
       },
       {
@@ -215,6 +220,7 @@ class OptimizedWordPressService {
         image: "/placeholder.svg",
         url: "#",
         category: "Market",
+        readTime: "2 min read",
         tags: ["Altcoins", "Trading"]
       }
     ];
