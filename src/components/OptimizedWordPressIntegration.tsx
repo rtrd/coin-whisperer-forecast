@@ -140,7 +140,7 @@ export const OptimizedWordPressIntegration: React.FC<OptimizedWordPressIntegrati
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CardTitle className="text-foreground">
-                <h2>Latest Crypto News & Analysis</h2>
+                <h2>Exclusive Crypto Insights</h2>
               </CardTitle>
               <Badge className="bg-green-600">Live Feed</Badge>
             </div>
@@ -162,7 +162,7 @@ export const OptimizedWordPressIntegration: React.FC<OptimizedWordPressIntegrati
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CardTitle className="text-foreground">
-              <h2>Latest Crypto News & Analysis</h2>
+              <h2>Exclusive Crypto Insights</h2>
             </CardTitle>
             <Badge className="bg-green-600">
               {isLoading ? 'Updating...' : 'Live Feed'}
