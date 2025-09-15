@@ -5,7 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 const WordPressIntegration = lazy(() => 
-  import('@/components/WordPressIntegrationOptimized')
+  import('@/components/OptimizedWordPressIntegration').then(module => ({
+    default: module.OptimizedWordPressIntegration
+  }))
 );
 
 const WordPressSkeleton = () => (

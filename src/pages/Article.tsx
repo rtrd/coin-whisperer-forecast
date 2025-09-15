@@ -196,18 +196,21 @@ const Article = () => {
     <>
       {/* Advanced SEO Head */}
       {seoData && (
-        <AdvancedSEOHead 
+         <AdvancedSEOHead 
           seoData={seoData}
           author={article.author}
           publishDate={article.date}
+          modifiedDate={article.date}
           readingTime={readingTime}
           pageType="article"
         />
       )}
       
       {/* Breadcrumb Schema */}
-      <EnhancedBreadcrumbSchema 
+       <EnhancedBreadcrumbSchema 
         articleTitle={article?.title}
+        customBreadcrumbs={undefined}
+        tokenName={undefined}
       />
       
       {/* Performance Optimizer */}
