@@ -38,7 +38,7 @@ class OptimizedBlogService {
           author: post.author,
           date: new Date(post.date).toISOString().split("T")[0],
           category: post.category,
-          allCategories: [post.category],
+          allCategories: post.allCategories || [post.category],
           readTime: "4 min read",
           image: post.image,
           url: post.url,
@@ -172,8 +172,8 @@ class OptimizedBlogService {
         if (
           category &&
           category !== "General" &&
-          category !== "Uncategorized" &&
-          category !== "Featured"
+          category !== "Uncategorized"
+          // Allow Featured and Trending in category groups
         ) {
           if (!categoryGroups[category]) {
             categoryGroups[category] = [];

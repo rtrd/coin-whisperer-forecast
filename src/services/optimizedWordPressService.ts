@@ -22,6 +22,7 @@ interface WordPressPost {
   };
   _embedded?: {
     'wp:featuredmedia'?: Array<{ source_url: string }>;
+    'wp:term'?: Array<Array<{ id: number; name: string; taxonomy: string }>>;
   };
 }
 
@@ -72,7 +73,7 @@ class OptimizedWordPressService {
     }
   }
 
-  // Optimized posts fetch - only get what we need
+  // Optimized posts fetch - get categories with posts
   async getOptimizedPosts(limit: number = 12): Promise<any[]> {
     const cacheKey = `posts_${limit}`;
     
@@ -101,9 +102,9 @@ class OptimizedWordPressService {
   }
 
   private async fetchOptimizedPosts(limit: number): Promise<any[]> {
-    // Optimized query: only fetch needed fields
+    // Optimized query: include categories for featured/trending detection
     const fields = 'id,title,excerpt,date,featured_media,link,tags,_links.author,_links.wp:featuredmedia';
-    const url = `${this.baseUrl}/posts?per_page=${limit}&_fields=${fields}&_embed=author,wp:featuredmedia`;
+    const url = `${this.baseUrl}/posts?per_page=${limit}&_fields=${fields}&_embed=author,wp:featuredmedia,wp:term`;
 
     try {
       const response = await this.fetchWithTimeout(url);
@@ -120,20 +121,39 @@ class OptimizedWordPressService {
     }
   }
 
-  // Fast post transformation with minimal processing
+  // Fast post transformation with category extraction
   private transformPostsOptimized(posts: WordPressPost[]): any[] {
-    return posts.map(post => ({
-      id: post.id,
-      title: this.fastDecodeHtml(post.title.rendered),
-      excerpt: this.fastDecodeHtml(post.excerpt.rendered),
-      date: post.date,
-      author: 'Pump Parade Team', // Default author for speed
-      image: this.extractFeaturedImage(post),
-      url: post.link,
-      category: 'Crypto News',
-      readTime: calculateReadingTime(post.content?.rendered || post.excerpt?.rendered || ''),
-      tags: [] // Will be populated by background process
-    }));
+    return posts.map(post => {
+      // Extract categories from embedded data
+      const wpCategories = post._embedded?.['wp:term']?.[0] || [];
+      let categoryName = 'Crypto News';
+      let allCategories: string[] = ['Crypto News'];
+
+      if (wpCategories.length > 0) {
+        const categories = wpCategories.filter(
+          (cat: any) => cat.taxonomy === 'category' && cat.name !== 'Uncategorized'
+        );
+        
+        if (categories.length > 0) {
+          categoryName = categories[0].name;
+          allCategories = categories.map((cat: any) => cat.name);
+        }
+      }
+
+      return {
+        id: post.id,
+        title: this.fastDecodeHtml(post.title.rendered),
+        excerpt: this.fastDecodeHtml(post.excerpt.rendered),
+        date: post.date,
+        author: 'Pump Parade Team',
+        image: this.extractFeaturedImage(post),
+        url: post.link,
+        category: categoryName,
+        allCategories: allCategories,
+        readTime: calculateReadingTime(post.content?.rendered || post.excerpt?.rendered || ''),
+        tags: [] // Will be populated by background process
+      };
+    });
   }
 
   // Optimized HTML decoding for better performance
@@ -195,7 +215,8 @@ class OptimizedWordPressService {
         author: "Pump Parade Team",
         image: "/placeholder.svg",
         url: "#",
-        category: "Analysis",
+        category: "Featured",
+        allCategories: ["Featured", "Analysis"],
         readTime: "3 min read",
         tags: ["Bitcoin", "Technical Analysis"]
       },
@@ -207,7 +228,8 @@ class OptimizedWordPressService {
         author: "Pump Parade Team",
         image: "/placeholder.svg",
         url: "#",
-        category: "News",
+        category: "Trending",
+        allCategories: ["Trending", "News"],
         readTime: "4 min read",
         tags: ["Ethereum", "DeFi"]
       },
@@ -219,7 +241,8 @@ class OptimizedWordPressService {
         author: "Pump Parade Team",
         image: "/placeholder.svg",
         url: "#",
-        category: "Market",
+        category: "Trending",
+        allCategories: ["Trending", "Market"],
         readTime: "2 min read",
         tags: ["Altcoins", "Trading"]
       }
