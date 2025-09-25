@@ -92,9 +92,9 @@ export const SignupLock: React.FC<SignupLockProps> = ({
         {skeletonData || children}
       </div>
 
-      {/* Overlay with signup form - dark glow instead of white */}
-      <div className="absolute inset-0 bg-gray-900/90 backdrop-blur-sm flex items-center justify-center p-4 rounded-lg shadow-2xl shadow-black/50">
-        <Card className="w-full max-w-md bg-gray-800/90 border-gray-700 shadow-2xl">
+      {/* Overlay with signup form - matches other components */}
+      <div className="absolute inset-0 bg-gray-800/50 backdrop-blur-sm flex items-center justify-center p-4 rounded-lg shadow-2xl">
+        <Card className="w-full max-w-md bg-gray-800/50 border-gray-700 shadow-2xl">
           <CardHeader className="text-center">
             <div className="flex items-center justify-center gap-2 mb-2">
               <Lock className="h-6 w-6 text-yellow-400" />
