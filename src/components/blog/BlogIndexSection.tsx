@@ -25,7 +25,7 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
   const [filters, setFilters] = useState<ArticleFilterState>(initialFilters);
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 24; // Increased to show more articles
+  const articlesPerPage = 12;
 
   const updateFilters = (newFilters: Partial<ArticleFilterState>) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
@@ -39,8 +39,14 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
 
   // Filter and sort articles
   const filteredArticles = useMemo(() => {
-    // Include ALL articles in the archive section (don't exclude Featured/Trending)
+    // First exclude articles with special categories
     let filtered = articles.filter(article => {
+      const categories = article.allCategories || [article.category];
+      const hasSpecialCategory = categories.some((category: string) => 
+        ["Featured", "Trending"].includes(category)
+      );
+      return !hasSpecialCategory;
+    }).filter(article => {
       // Search filter
       if (filters.searchTerm) {
         const searchTerm = filters.searchTerm.toLowerCase();
@@ -113,14 +119,11 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
 
   const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
 
-  console.log(`📄 BlogIndex: Displaying ${filteredArticles.length} of ${articles.length} total articles`);
-  console.log(`📄 BlogIndex: ${totalPages} pages with ${articlesPerPage} articles per page`);
-
   return (
     <div className="mb-12 mt-12">
       <div className="flex items-center gap-2 mb-8">
         <BookOpen className="h-6 w-6 text-blue-400" />
-        <h2 className="text-2xl font-bold text-white">Blog Archive ({filteredArticles.length} articles)</h2>
+        <h2 className="text-2xl font-bold text-white">Blog Archive</h2>
       </div>
       
       <Card className="bg-gray-800/50 border-gray-700">

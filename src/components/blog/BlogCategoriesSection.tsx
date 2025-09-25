@@ -20,9 +20,8 @@ export const BlogCategoriesSection: React.FC<BlogCategoriesSectionProps> = ({
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {Object.entries(categories)
-            .filter(([categoryName]) => categoryName.toLowerCase() !== 'trending')
-            .map(([categoryName, categoryArticles]) => (
+          {Object.entries(categories).map(
+            ([categoryName, categoryArticles]) => (
               <div key={categoryName} className="space-y-3">
                 <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                   <Hash className="h-4 w-4 text-blue-400" />

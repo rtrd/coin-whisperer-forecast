@@ -9,13 +9,11 @@ import './index.css'
 document.documentElement.classList.add('dark');
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <HelmetProvider>
-      <ErrorBoundary>
-        <App />
-      </ErrorBoundary>
-    </HelmetProvider>
-  </React.StrictMode>
+  <HelmetProvider>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </HelmetProvider>
 );
 
 declare global {

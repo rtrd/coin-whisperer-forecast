@@ -26,7 +26,6 @@ import PortfolioDashboard from "./pages/PortfolioDashboard";
 import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
-import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import VdoFloatingAd from "./components/ads/VdoFloatingAd";
 import { TopNavigation } from "./components/TopNavigation";
 
@@ -61,7 +60,6 @@ const AppRoutes = () => {
             <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
             <Route path="/portfolio-dashboard" element={<PortfolioDashboard />} />
             <Route path="/moti-meter" element={<MotiMeter />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>

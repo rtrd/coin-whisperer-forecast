@@ -87,19 +87,12 @@ const Index = () => {
   return (
     <>
       {/* Enhanced SEO Components */}
-      <AdvancedSEOHead
+      <AdvancedSEOHead 
         seoData={seoData}
-        publishDate={new Date().toISOString()}
-        modifiedDate={new Date().toISOString()}
-        readingTime="5 min read"
         pageType="homepage"
       />
-      <EnhancedBreadcrumbSchema 
-        customBreadcrumbs={undefined}
-        tokenName={undefined}
-        articleTitle={undefined}
-      />
-      <AdvancedPerformanceOptimizer
+      <EnhancedBreadcrumbSchema />
+      <AdvancedPerformanceOptimizer 
         pageType="homepage"
         prefetchResources={[
           '/blog',

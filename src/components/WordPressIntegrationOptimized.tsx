@@ -62,7 +62,7 @@ const WordPressIntegrationOptimized: React.FC<WordPressIntegrationOptimizedProps
       const articleData = await getWordPressPost();
 
       if (Array.isArray(articleData)) {
-        const formattedArticles = transformArticles(articleData).slice(0, 4);
+        const formattedArticles = transformArticles(articleData).slice(0, 6);
         setArticles(formattedArticles);
       } else {
         console.error("Fetched article data is not an array:", articleData);
@@ -98,9 +98,9 @@ const WordPressIntegrationOptimized: React.FC<WordPressIntegrationOptimizedProps
         </div>
       </CardHeader>
       <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {articles.map((article) => (
-            <ArticleCard key={article.id} article={article} compact={true} />
+            <ArticleCard key={article.id} article={article} />
           ))}
         </div>
       </CardContent>
