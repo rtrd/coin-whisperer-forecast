@@ -135,25 +135,54 @@ export const getFeaturedArticle = (articles: any[]) => {
 };
 
 export const getTrendingArticles = (articles: any[]): any[] => {
+  console.log("🔥 TRENDING ARTICLE DETECTION");
+  console.log("📊 Finding trending articles from", articles.length, "articles");
+  
   if (!articles || articles.length === 0) {
     return [];
   }
 
+  // Debug: Log all articles and their categories
+  articles.forEach((article, index) => {
+    console.log(`📄 Article ${index + 1}: "${article.title}"`);
+    console.log(`   Primary Category: ${article.category}`);
+    console.log(`   All Categories: ${JSON.stringify(article.allCategories)}`);
+  });
+
   // First try exact match for "Trending" category
   let trendingArticles = articles.filter(article => {
     const categories = article.allCategories || [article.category];
-    return categories.some((category: string) => category === "Trending");
+    const hasTrending = categories.some((category: string) => category === "Trending");
+    
+    if (hasTrending) {
+      console.log("✅ Found trending article (exact):", article.title);
+      console.log("   - Categories:", categories);
+    }
+    
+    return hasTrending;
   });
+
+  console.log(`📊 Found ${trendingArticles.length} articles with exact 'Trending' match`);
 
   // If no exact match, try case-insensitive search
   if (trendingArticles.length === 0) {
+    console.log("🔍 No exact 'Trending' match, trying case-insensitive search...");
     trendingArticles = articles.filter(article => {
       const categories = article.allCategories || [article.category];
-      return categories.some((category: string) => 
-        category.toLowerCase() === "trending"
+      const hasTrending = categories.some((category: string) => 
+        category?.toLowerCase() === "trending"
       );
+      
+      if (hasTrending) {
+        console.log("⚠️ Found trending article (case-insensitive):", article.title);
+        console.log("   - Categories:", categories);
+      }
+      
+      return hasTrending;
     });
   }
+
+  console.log(`📊 Total trending articles found: ${trendingArticles.length}`);
 
   // Sort by date (newest first) if multiple trending articles
   if (trendingArticles.length > 1) {
@@ -162,6 +191,7 @@ export const getTrendingArticles = (articles: any[]): any[] => {
       const dateB = new Date(b.date || 0);
       return dateB.getTime() - dateA.getTime();
     });
+    console.log("📅 Sorted trending articles by date");
   }
 
   return trendingArticles;

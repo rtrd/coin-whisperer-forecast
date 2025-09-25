@@ -8,19 +8,19 @@ import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
 import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
 import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 import { BlogIndexSection } from "@/components/blog/BlogIndexSection";
-import { getWordPressPost } from "../../utils/api";
-import { decodeHtmlEntities } from "@/utils/htmlUtils";
-import { formatArticleForDisplay, getFeaturedArticle, getTrendingArticles } from "@/utils/articleUtils";
+import { optimizedBlogService } from "@/services/optimizedBlogService";
+import { getFeaturedArticle, getTrendingArticles } from "@/utils/articleUtils";
 import { generateBlogSEO } from "@/utils/pageSeo";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
+  const [categories, setCategories] = useState<{ [key: string]: any[] }>({});
+  const [loading, setLoading] = useState(true);
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   
   // Initialize ad script on page load
   useAdScript();
-  const [categories, setCategories] = useState<{ [key: string]: any[] }>({});
-  const [loading, setLoading] = useState(true);
 
   const seoData = generateBlogSEO();
 
@@ -44,123 +44,38 @@ const Blog = () => {
   ];
 
   useEffect(() => {
-    fetchBlogData();
+    loadBlogData();
   }, []);
 
-  const fetchBlogData = async () => {
+  const loadBlogData = async () => {
     try {
-      const articleData = await getWordPressPost();
-      console.log("🔍 RAW WordPress data:", articleData);
+      // Step 1: Quick initial load for immediate UI response
+      console.log("🚀 Loading initial blog data...");
+      const initialData = await optimizedBlogService.getInitialBlogData();
       
-      if (Array.isArray(articleData)) {
-        console.log("🔍 Processing", articleData.length, "WordPress posts");
+      setArticles(initialData.articles);
+      setCategories(initialData.categories);
+      setLoading(false);
+      
+      console.log("✅ Initial blog data loaded:", initialData.articles.length, "articles");
+
+      // Step 2: Background load of full data for complete functionality
+      if (initialData.hasMore) {
+        console.log("📚 Loading full blog data in background...");
+        const fullData = await optimizedBlogService.getFullBlogData();
         
-        const formattedArticles = articleData.map((post, index) => {
-          const title = decodeHtmlEntities(post.title?.rendered || "No Title");
-          const excerpt = decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "");
-          const date = new Date(post.date).toISOString().split("T")[0];
-          const author = post._embedded?.author?.[0]?.name || "Unknown";
-          const image =
-            post.jetpack_featured_media_url ||
-            post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-            "https://via.placeholder.com/800x400";
-          const content = decodeHtmlEntities(post.content?.rendered || "");
-
-          // Debug raw WordPress tag data
-          console.log(`🔍 Post ${index + 1}: "${title}"`);
-          console.log("  - Raw tags array:", post.tags);
-          console.log("  - Raw tagNames array:", post.tagNames);
-          console.log("  - Filtered tagNames:", post.tagNames?.filter((t: string) => t && t.trim()));
-
-          // Extract all categories from WordPress categories
-          const wpCategories = post._embedded?.["wp:term"]?.[0] || [];
-          let categoryName = "General";
-          let allCategories: string[] = [];
-
-          if (wpCategories.length > 0) {
-            const categories = wpCategories.filter(
-              (cat: any) =>
-                cat.taxonomy === "category" && cat.name !== "Uncategorized"
-            );
-            
-            if (categories.length > 0) {
-              // Use first category as primary category
-              categoryName = categories[0].name;
-              // Store all categories for later use
-              allCategories = categories.map((cat: any) => cat.name);
-            }
-          }
-
-          return formatArticleForDisplay({
-            id: post.id,
-            title,
-            excerpt,
-            author,
-            date,
-            category: categoryName,
-            allCategories: allCategories, // Store all categories
-            readTime: "4 min read",
-            image,
-            url: post.link,
-            content,
-            tagname: post.tagNames?.filter((t: string) => t)?.join(", ") || "",
-            tagNames: post.tagNames?.filter((t: string) => t && t.trim()) || [], // Pass original array
-          });
-        });
-
-        setArticles(formattedArticles);
-
-        // Group articles by all their categories, excluding "General", "Uncategorized", and "Featured"
-        const categoryGroups: { [key: string]: any[] } = {};
-        formattedArticles.forEach((article) => {
-          console.log(article);
-          // Use all categories if available, otherwise use primary category
-          const categories = article.allCategories || [article.category];
-          
-          categories.forEach((category: string) => {
-            if (
-              category &&
-              category !== "General" &&
-              category !== "Uncategorized" &&
-              category !== "Featured"
-            ) {
-              if (!categoryGroups[category]) {
-                categoryGroups[category] = [];
-              }
-              categoryGroups[category].push(article);
-            }
-          });
-        });
-
-        // If no specific categories found, use placeholder categories with actual articles
-        if (Object.keys(categoryGroups).length === 0) {
-          const placeholderCategories = [
-            "Trading",
-            "DeFi",
-            "Bitcoin",
-            "Ethereum",
-            "Altcoins",
-            "NFTs",
-          ];
-          placeholderCategories.forEach((category, index) => {
-            const categoryArticles = formattedArticles.slice(
-              index * 3,
-              (index + 1) * 3
-            );
-            if (categoryArticles.length > 0) {
-              categoryGroups[category] = categoryArticles.map((article) => ({
-                ...article,
-                category: category,
-              }));
-            }
-          });
+        if (fullData.articles.length > initialData.articles.length) {
+          setArticles(fullData.articles);
+          setCategories(fullData.categories);
+          setIsFullyLoaded(true);
+          console.log("✅ Full blog data loaded:", fullData.articles.length, "articles");
         }
-
-        setCategories(categoryGroups);
+      } else {
+        setIsFullyLoaded(true);
       }
+      
     } catch (error) {
-      console.error("Failed to fetch blog data:", error);
-    } finally {
+      console.error("Failed to load blog data:", error);
       setLoading(false);
     }
   };
@@ -168,9 +83,9 @@ const Blog = () => {
   // Select featured article based on "Featured" tag or fallback to first article
   const featuredArticle = getFeaturedArticle(articles);
   const trendingArticles = getTrendingArticles(articles);
-  const latestArticles = articles.slice(0, 8);
-  console.log("Article:", articles.length);
-  console.log("Trending Articles:", trendingArticles.length);
+  const latestArticles = articles.slice(0, 12); // Increased from 8 to 12
+  
+  console.log(`📊 Blog Stats: ${articles.length} articles, ${trendingArticles.length} trending, fully loaded: ${isFullyLoaded}`);
 
   if (loading) {
     return (
