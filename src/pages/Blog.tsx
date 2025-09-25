@@ -83,7 +83,7 @@ const Blog = () => {
   // Select featured article based on "Featured" tag or fallback to first article
   const featuredArticle = getFeaturedArticle(articles);
   const trendingArticles = getTrendingArticles(articles);
-  const latestArticles = articles.slice(0, 8);
+  const latestArticles = articles.slice(0, 12); // Increased from 8 to 12
   
   console.log(`📊 Blog Stats: ${articles.length} articles, ${trendingArticles.length} trending, fully loaded: ${isFullyLoaded}`);
 

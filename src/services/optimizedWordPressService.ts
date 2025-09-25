@@ -73,8 +73,8 @@ class OptimizedWordPressService {
     }
   }
 
-  // Optimized posts fetch - get categories with posts
-  async getOptimizedPosts(limit: number = 12): Promise<any[]> {
+  // Optimized posts fetch - get categories with posts (increased default limit)
+  async getOptimizedPosts(limit: number = 50): Promise<any[]> {
     const cacheKey = `posts_${limit}`;
     
     // Check cache first

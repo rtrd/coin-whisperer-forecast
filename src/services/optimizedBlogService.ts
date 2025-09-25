@@ -26,8 +26,8 @@ class OptimizedBlogService {
     }
 
     try {
-      // First, try to get optimized posts for quick display
-      const optimizedPosts = await optimizedWordPressService.getOptimizedPosts(20);
+      // First, try to get optimized posts for quick display (increased from 20 to 50)
+      const optimizedPosts = await optimizedWordPressService.getOptimizedPosts(50);
       
       // Transform for consistency with full blog format
       const articles = optimizedPosts.map((post, index) => 
@@ -53,7 +53,7 @@ class OptimizedBlogService {
 
       const result: BlogLoadState = {
         articles,
-        totalCount: 100, // We know there are more
+        totalCount: 150, // Increased estimate
         hasMore: true,
         loading: false,
         categories: categoryGroups
