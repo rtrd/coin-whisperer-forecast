@@ -3,12 +3,13 @@ import { LazyLoadWrapper } from '@/components/LazyLoadWrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-
-const WordPressIntegration = lazy(() => 
-  import('@/components/OptimizedWordPressIntegration').then(module => ({
-    default: module.OptimizedWordPressIntegration
-  }))
-);
+ const WordPressIntegration = lazy(() => 
+  import('@/components/WordPressIntegrationOptimized')
+// const WordPressIntegration = lazy(() => 
+//   import('@/components/OptimizedWordPressIntegration').then(module => ({
+//     default: module.OptimizedWordPressIntegration
+//   }))
+ );
 
 const WordPressSkeleton = () => (
   <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
