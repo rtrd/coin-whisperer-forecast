@@ -108,49 +108,72 @@ class ApiService {
     }
   }
 
-  async getWordPressPost<T = any[]>(): Promise<T> {
-    try {
-      const postsResponse = await fetch(
-        "https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed&per_page=100"
-      );
-      if (!postsResponse.ok) {
-        throw new Error(`WordPress API error! status: ${postsResponse.status}`);
-      }
+ async getWordPressPost<T = any[]>(): Promise<T> {
+  try {
+    let allPosts: any[] = [];
 
-      const posts = await postsResponse.json();
-      console.log("Fetched posts:", posts);
+    // Fetch first page to know total pages
+    const firstResponse = await fetch(
+      `https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed&per_page=100&page=1`
+    );
 
-      // Collect all unique tag IDs from posts
-      const allTagIds = Array.from(
-        new Set(posts.flatMap((post: any) => post.tags))
-      );
-
-      let tagMap: Record<number, string> = {};
-
-      if (allTagIds.length > 0) {
-        const tagsUrl = `https://blog.pumpparade.com/wp-json/wp/v2/tags?include=${allTagIds.join(
-          ","
-        )}`;
-        const tagsResponse = await fetch(tagsUrl);
-        const tags = await tagsResponse.json();
-        tagMap = tags.reduce((acc: Record<number, string>, tag: any) => {
-          acc[tag.id] = tag.name;
-          return acc;
-        }, {});
-      }
-
-      // Attach tag names to each post
-      const postsWithTagNames = posts.map((post: any) => ({
-        ...post,
-        tagNames: post.tags.map((tagId: number) => tagMap[tagId] || ""),
-      }));
-
-      return postsWithTagNames as T;
-    } catch (error) {
-      console.error("WordPress fetch error:", error);
-      throw error;
+    if (!firstResponse.ok) {
+      throw new Error(`WordPress API error! status: ${firstResponse.status}`);
     }
+
+    const firstPagePosts = await firstResponse.json();
+    allPosts = [...firstPagePosts];
+
+    // WordPress provides total pages in headers
+    const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages")) || 1;
+
+    // Fetch remaining pages (if any) in parallel
+    const pageRequests: Promise<Response>[] = [];
+    for (let page = 2; page <= totalPages; page++) {
+      pageRequests.push(
+        fetch(
+          `https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed&per_page=100&page=${page}`
+        )
+      );
+    }
+
+    const responses = await Promise.all(pageRequests);
+    for (const res of responses) {
+      if (res.ok) {
+        const posts = await res.json();
+        allPosts = [...allPosts, ...posts];
+      }
+    }
+
+    // Collect unique tag IDs
+    const allTagIds = Array.from(
+      new Set(allPosts.flatMap((post: any) => post.tags))
+    );
+    let tagMap: Record<number, string> = {};
+
+    if (allTagIds.length > 0) {
+      const tagsUrl = `https://blog.pumpparade.com/wp-json/wp/v2/tags?include=${allTagIds.join(",")}`;
+      const tagsResponse = await fetch(tagsUrl);
+      const tags = await tagsResponse.json();
+      tagMap = tags.reduce((acc: Record<number, string>, tag: any) => {
+        acc[tag.id] = tag.name;
+        return acc;
+      }, {});
+    }
+
+    // Attach tag names
+    const postsWithTagNames = allPosts.map((post: any) => ({
+      ...post,
+      tagNames: post.tags.map((tagId: number) => tagMap[tagId] || ""),
+    }));
+
+    return postsWithTagNames as T;
+  } catch (error) {
+    console.error("WordPress fetch error:", error);
+    throw error;
   }
+}
+
 
   async getFearGreedIndex(): Promise<{
     value: number;
