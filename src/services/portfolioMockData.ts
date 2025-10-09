@@ -279,53 +279,80 @@ export const mockCorrelationData: CorrelationData[] = [
   { asset1: 'LINK', asset2: 'MATIC', correlation: 0.58 }
 ];
 
-export const generateMockPortfolioHistory = (): PortfolioHistory[] => {
-  const history: PortfolioHistory[] = [];
-  const now = new Date();
-  const totalDays = 30;
+// export const generateMockPortfolioHistory = (): PortfolioHistory[] => {
+//   const history: PortfolioHistory[] = [];
+//   const now = new Date();
+//   const totalDays = 30;
 
-  for (let i = totalDays; i >= 0; i--) {
-    const date = new Date(now);
-    date.setDate(date.getDate() - i);
+//   for (let i = totalDays; i >= 0; i--) {
+//     const date = new Date(now);
+//     date.setDate(date.getDate() - i);
     
-    const baseValue = 75000;
-    const randomVariation = (Math.random() - 0.5) * 0.1;
-    const trendValue = baseValue + (baseValue * randomVariation);
-    const totalValue = Math.max(trendValue + (Math.random() - 0.5) * 5000, 60000);
+//     const baseValue = 75000;
+//     const randomVariation = (Math.random() - 0.5) * 0.1;
+//     const trendValue = baseValue + (baseValue * randomVariation);
+//     const totalValue = Math.max(trendValue + (Math.random() - 0.5) * 5000, 60000);
     
-    history.push({
-      timestamp: date,
-      totalValue,
-      pnl: totalValue - 74492.15, // Initial investment
-      assets: {
-        BTC: {
-          value: totalValue * 0.458,
-          amount: 0.85,
-          price: (totalValue * 0.458) / 0.85
-        },
-        ETH: {
-          value: totalValue * 0.414,
-          amount: 12.4,
-          price: (totalValue * 0.414) / 12.4
-        },
-        SOL: {
-          value: totalValue * 0.060,
-          amount: 45.2,
-          price: (totalValue * 0.060) / 45.2
-        },
-        LINK: {
-          value: totalValue * 0.040,
-          amount: 180.5,
-          price: (totalValue * 0.040) / 180.5
-        },
-        MATIC: {
-          value: totalValue * 0.033,
-          amount: 2850,
-          price: (totalValue * 0.033) / 2850
-        }
-      }
-    });
-  }
+//     history.push({
+//       timestamp: date,
+//       totalValue,
+//       pnl: totalValue - 74492.15, // Initial investment
+//       assets: {
+//         BTC: {
+//           value: totalValue * 0.458,
+//           amount: 0.85,
+//           price: (totalValue * 0.458) / 0.85
+//         },
+//         ETH: {
+//           value: totalValue * 0.414,
+//           amount: 12.4,
+//           price: (totalValue * 0.414) / 12.4
+//         },
+//         SOL: {
+//           value: totalValue * 0.060,
+//           amount: 45.2,
+//           price: (totalValue * 0.060) / 45.2
+//         },
+//         LINK: {
+//           value: totalValue * 0.040,
+//           amount: 180.5,
+//           price: (totalValue * 0.040) / 180.5
+//         },
+//         MATIC: {
+//           value: totalValue * 0.033,
+//           amount: 2850,
+//           price: (totalValue * 0.033) / 2850
+//         }
+//       }
+//     });
+//   }
   
-  return history;
-};
+//   return history;
+// };
+
+export const GetPortfolioData = async( walletAddress, chain) => {
+  debugger;
+  if (!walletAddress) return alert("Enter wallet address");
+
+     try {
+      const response = await fetch("https://server.pumpparade.com/api/getPortfolio", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ walletAddress, chain }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch portfolio data");
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.error(err);
+      alert("Failed to fetch portfolio");
+    } finally {
+    }
+
+}

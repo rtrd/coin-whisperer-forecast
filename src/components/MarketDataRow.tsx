@@ -53,7 +53,6 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
     };
 
     const handlePredict = async (rowToken: any) => {
-      debugger;
       if (!AllCryptosData) {
         return;
       }
