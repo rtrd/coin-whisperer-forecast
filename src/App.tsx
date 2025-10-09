@@ -23,45 +23,40 @@ import SentimentAnalysisPage from "./pages/SentimentAnalysisPage";
 import RealTimeData from "./pages/RealTimeData";
 import PortfolioTracking from "./pages/PortfolioTracking";
 import PortfolioDashboard from "./pages/PortfolioDashboard";
+import { LockPortfolioDashboard } from "./pages/LockPortfolioDashboard";
 import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
 import VdoFloatingAd from "./components/ads/VdoFloatingAd";
 import { TopNavigation } from "./components/TopNavigation";
+import { WagmiAppkitProvider } from "./providers/WagmiAppkitProvider";
+import { useAlerts } from "./hooks/useAlerts";
 
 const queryClient = new QueryClient();
 
 const AppRoutes = () => {
   return (
     <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/subscribe" element={<Subscribe />} />
-            <Route path="/token/:tokenId" element={<TokenDetail />} />
-            <Route path="/article/:articleId" element={<Article />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/tokens" element={<AllTokens />} />
-            <Route path="/ai-prediction" element={<AIPrediction />} />
-            <Route path="/pump-fun" element={<PumpFun />} />
-            <Route
-              path="/ai-price-prediction"
-              element={<AIPricePrediction />}
-            />
-            <Route
-              path="/technical-analysis"
-              element={<TechnicalAnalysisPage />}
-            />
-            <Route
-              path="/sentiment-analysis"
-              element={<SentimentAnalysisPage />}
-            />
-            <Route path="/view-emails" element={<ViewEmails />} />
+      <Route path="/" element={<Index />} />
+      <Route path="/subscribe" element={<Subscribe />} />
+      <Route path="/token/:tokenId" element={<TokenDetail />} />
+      <Route path="/article/:articleId" element={<Article />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/tokens" element={<AllTokens />} />
+      <Route path="/ai-prediction" element={<AIPrediction />} />
+      <Route path="/pump-fun" element={<PumpFun />} />
+      <Route path="/ai-price-prediction" element={<AIPricePrediction />} />
+      <Route path="/technical-analysis" element={<TechnicalAnalysisPage />} />
+      <Route path="/sentiment-analysis" element={<SentimentAnalysisPage />} />
+      <Route path="/view-emails" element={<ViewEmails />} />
 
-            <Route path="/real-time-data" element={<RealTimeData />} />
-            <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
-            <Route path="/portfolio-dashboard" element={<PortfolioDashboard />} />
-            <Route path="/moti-meter" element={<MotiMeter />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/real-time-data" element={<RealTimeData />} />
+      <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
+      {/* <Route path="/portfolio-dashboard" element={<PortfolioDashboard />} /> */}
+      <Route path="/lock-portfolio-dashboard" element={<LockPortfolioDashboard />} />
+      <Route path="/moti-meter" element={<MotiMeter />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -69,9 +64,10 @@ const AppRoutes = () => {
 };
 
 const AppWithHooks = () => {
+  useAlerts(); // Initialize alerts functionality
   useAdRefresh(); // Initialize ad refresh functionality
   usePerformanceOptimization(); // Initialize performance optimizations
-  
+
   return (
     <>
       <TopNavigation />
@@ -94,7 +90,9 @@ const App = () => (
         {/* Temporarily disable AutoRefresh to prevent forced reloads */}
         {/* <AutoRefresh /> */}
         <BrowserRouter>
+          <WagmiAppkitProvider>
             <AppWithHooks />
+          </WagmiAppkitProvider>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

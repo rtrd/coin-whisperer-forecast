@@ -1,8 +1,15 @@
-import React from 'react';
-import { PortfolioAsset } from '@/types/portfolio';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Coins } from 'lucide-react';
+import React from "react";
+import { PortfolioAsset } from "@/types/portfolio";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Coins } from "lucide-react";
 
 interface HoldingsTableProps {
   assets: PortfolioAsset[];
@@ -10,7 +17,10 @@ interface HoldingsTableProps {
 
 export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
   const formatPrice = (price: number) => {
-    return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}`;
+    return `$${price.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 4,
+    })}`;
   };
 
   const formatAmount = (amount: number) => {
@@ -22,7 +32,7 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
   };
 
   const formatPercentage = (percentage: number) => {
-    const sign = percentage >= 0 ? '+' : '';
+    const sign = percentage >= 0 ? "+" : "";
     return `${sign}${percentage.toFixed(2)}%`;
   };
 
@@ -41,53 +51,78 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
         <Table>
           <TableHeader>
             <TableRow className="border-gray-700 hover:bg-transparent">
-              <TableHead className="text-gray-300 font-semibold pl-6">Token</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">Amount</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">Price</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">Total Value</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right">7d Change</TableHead>
-              <TableHead className="text-gray-300 font-semibold text-right pr-6">Allocation</TableHead>
+              <TableHead className="text-gray-300 font-semibold pl-6">
+                Token
+              </TableHead>
+              <TableHead className="text-gray-300 font-semibold text-right">
+                Amount
+              </TableHead>
+              <TableHead className="text-gray-300 font-semibold text-right">
+                Price
+              </TableHead>
+              <TableHead className="text-gray-300 font-semibold text-right">
+                Total Value
+              </TableHead>
+              <TableHead className="text-gray-300 font-semibold text-right">
+                7d Change
+              </TableHead>
+              <TableHead className="text-gray-300 font-semibold text-right pr-6">
+                Allocation
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {assets.map((asset) => (
-              <TableRow key={asset.id} className="border-gray-700 hover:bg-gray-700/30 transition-colors">
+              <TableRow
+                key={asset.id}
+                className="border-gray-700 hover:bg-gray-700/30 transition-colors"
+              >
                 <TableCell className="pl-6">
                   <div className="flex items-center gap-3">
-                    <img 
-                      src={asset.icon} 
-                      alt={asset.symbol}
-                      className="w-8 h-8 rounded-full"
+                    <img
+                      src={asset.symbol || `/default-token-icon.png`} // fallback to default image
+                      alt={asset.icon}
+                      className="w-8 h-8 rounded-full object-cover"
                     />
                     <div>
                       <div className="font-semibold text-white">
-                        {asset.name} <span className="text-gray-400 font-normal">({asset.symbol})</span>
+                        {asset.name}{" "}
+                        <span className="text-gray-400 font-normal">
+                          ({asset.icon})
+                        </span>
                       </div>
                     </div>
                   </div>
                 </TableCell>
+
                 <TableCell className="text-right">
                   <div className="font-medium text-white">
                     {formatAmount(asset.amount)}
                   </div>
                 </TableCell>
+
                 <TableCell className="text-right">
                   <div className="font-medium text-white">
                     {formatPrice(asset.currentPrice)}
                   </div>
                 </TableCell>
+
                 <TableCell className="text-right">
                   <div className="font-semibold text-white">
                     {formatValue(asset.totalValue)}
                   </div>
                 </TableCell>
+
                 <TableCell className="text-right">
-                  <div className={`font-medium ${
-                    asset.change24h >= 0 ? 'text-green-400' : 'text-red-400'
-                  }`}>
+                  <div
+                    className={`font-medium ${
+                      asset.change24h >= 0 ? "text-green-400" : "text-red-400"
+                    }`}
+                  >
                     {formatPercentage(asset.change24h)}
                   </div>
                 </TableCell>
+
                 <TableCell className="text-right pr-6">
                   <div className="font-medium text-blue-400">
                     {asset.allocation.toFixed(1)}%

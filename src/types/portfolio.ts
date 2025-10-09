@@ -108,9 +108,9 @@ export interface PortfolioStrategy {
   };
   rebalanceThreshold: number;
 }
-
 export interface PortfolioHistory {
   timestamp: Date;
+  date:Date;
   totalValue: number;
   pnl: number;
   assets: {
