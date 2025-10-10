@@ -57,7 +57,6 @@ export const SignupLock: React.FC<SignupLockProps> = ({
     }
 
     setIsLoading(true);
-    
 
     try {
       await saveEmail(email); // <-- Call the API here
@@ -65,17 +64,15 @@ export const SignupLock: React.FC<SignupLockProps> = ({
       localStorage.setItem("ai-content-unlocked", "true");
       setIsUnlocked(true);
       toast.success(
-        "Thank you for signing up! Our AI features are coming soon."
+        "Thank you for signing up! We hope you enjoy our AI features."
       );
       setEmail("");
-      
+
       // Track successful form submission and subscription
       trackFormSubmission("signup_lock", true);
-      
     } catch (err: any) {
       toast.error(err.message);
       trackFormError("signup_lock", "api_error");
-      
     } finally {
       setIsLoading(false);
     }
@@ -131,7 +128,9 @@ export const SignupLock: React.FC<SignupLockProps> = ({
                 ) : (
                   <div className="flex items-center gap-2">
                     <Mail className="h-4 w-4" />
-                    Sign Up for Updates
+                    {title === "Portfolio Analysis & Monitoring"
+                      ? "Analyze Your Portfolio Now"
+                      : "Sign Up for Updates"}
                   </div>
                 )}
               </Button>
