@@ -1,24 +1,26 @@
 import { useEffect } from "react";
 
-const VdoBannerAd = () => {
+/**
+ * Reusable Adapex Ad Unit Component
+ * @param {string} adUnit - The GAM ad unit path (e.g., "/22181265/pumpparade_300s_1")
+ * @param {object} style - Optional inline styles for the ad container
+ */
+const AdUnit = ({ adUnit, style }) => {
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-
-    return () => {
-      // Cleanup: remove script if still present
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, []);
+    // Refresh ad if Adapex is already initialized
+    const winAny = window as any;
+    if (winAny.aa && typeof winAny.aa.requestBids === "function") {
+      winAny.aa.requestBids();
+    }
+  }, [adUnit]); // re-run when adUnit changes
 
   return (
-    <div id="b_pumpparade_300x250_ATF_168a42c06b454f"></div>
+    <div
+      data-aaad="true"
+      data-aa-adunit={adUnit}
+      style={style || { width: "100%", height: "auto", margin: "auto" }}
+    ></div>
   );
 };
 
-export default VdoBannerAd;
+export default AdUnit;
