@@ -15,6 +15,7 @@ import Footer from "@/components/Footer";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
+import AdUnit from "@/components/ads/VdoBannerAd"; // Reusable Adapex Ad Unit Component
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -45,25 +46,31 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       />
 
       {/* Google Ad Manager - Header Ad */}
-      <GAMAdUnit
-        adUnitId="div-gpt-ad-1752654531765-0"
-        size={[728, 90]}
-        className="mb-6 md:mb-8"
+      <AdUnit
+        adUnit="/22181265/pumpparade_970v_1"
+        style={{ width: "970px", height: "250px", margin: "auto" }}
       />
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <LazyWordPressIntegration />
-
+      <div className="my-6 md:my-8">
+        {/* <VdoBannerAd/>
+         <VdoFloatingAd/> */}
+        <AdUnit
+          adUnit="/22181265/pumpparade_970v_2"
+          style={{ width: "970px", height: "250px", margin: "auto" }}
+        />
+      </div>
       <div className="mb-8">
         <LockedAITradingSignals />
       </div>
-         <div className="my-6 md:my-8">
-         {/* <VdoBannerAd/>
-         <VdoFloatingAd/> */}
-       </div>
+      <AdUnit
+        adUnit="/22181265/pumpparade_970v_3"
+        style={{ width: "970px", height: "250px", margin: "auto" }}
+      />
       {/* Crypto Filters - Smart Crypto Filters */}
       <CryptoFilters onFilterChange={handleFilterChange} />
-         
+
       {/* Market Data Widget - Top 10 by Market Cap */}
       <LazyMarketDataWidget
         onMarketDataFilter={handleFilterChange}
@@ -80,7 +87,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         size={[728, 90]}
         className="mb-6 md:mb-8"
       /> */}
-        {/* <div className="mb-8">
+      {/* <div className="mb-8">
           <LockedAITradingSignals />
         </div> */}
       {/* Ad Banner Before Footer */}
@@ -89,9 +96,12 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         size={[728, 90]}
         className="mb-6 md:mb-8"
       /> */}
-      <VdoFloatingAd />
       {/* Footer */}
       <Footer />
+      <AdUnit
+        adUnit="/22181265/pumpparade_mob_stickyfooter"
+        style={{ width: "970px", height: "250px", margin: "auto" }}
+      />
     </div>
   );
 };
