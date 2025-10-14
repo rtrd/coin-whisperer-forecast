@@ -1,18 +1,19 @@
 import { useEffect } from "react";
 
-/**
- * Reusable Adapex Ad Unit Component
- * @param {string} adUnit - The GAM ad unit path (e.g., "/22181265/pumpparade_300s_1")
- * @param {object} style - Optional inline styles for the ad container
- */
-const AdUnit = ({ adUnit, style }) => {
+const AdUnit = ({ adUnit, style }: { adUnit: string; style?: React.CSSProperties }) => {
   useEffect(() => {
-    // Refresh ad if Adapex is already initialized
-    const winAny = window as any;
-    if (winAny.aa && typeof winAny.aa.requestBids === "function") {
-      winAny.aa.requestBids();
-    }
-  }, [adUnit]); // re-run when adUnit changes
+    const refreshAd = () => {
+      const winAny = window as any; // 👈 safely cast
+      if (winAny.aa && typeof winAny.aa.requestBids === "function") {
+        winAny.aa.requestBids();
+      } else {
+        // Retry after 1s if Adapex script hasn't loaded yet
+        setTimeout(refreshAd, 1000);
+      }
+    };
+
+    refreshAd();
+  }, [adUnit]);
 
   return (
     <div
