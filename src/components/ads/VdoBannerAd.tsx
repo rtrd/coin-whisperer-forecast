@@ -1,25 +1,81 @@
 import { useEffect } from "react";
 
-const AdUnit = ({ adUnit, style }: { adUnit: string; style?: React.CSSProperties }) => {
+declare global {
+  interface Window {
+    aa?: any;
+  }
+}
+
+interface AdUnitProps {
+  adUnit: string;
+  style?: React.CSSProperties;
+  refreshInterval?: number; // default 60 s
+}
+
+const AdUnit = ({
+  adUnit,
+  style,
+  refreshInterval = 60000,
+}: AdUnitProps) => {
   useEffect(() => {
-    const refreshAd = () => {
-      const winAny = window as any; // 👈 safely cast
-      if (winAny.aa && typeof winAny.aa.requestBids === "function") {
-        winAny.aa.requestBids();
+    let retryTimeout: NodeJS.Timeout;
+    let refreshTimer: NodeJS.Timeout;
+
+    const requestAd = () => {
+      if (window.aa && typeof window.aa.requestBids === "function") {
+        console.log(`🔁 Requesting bids for: ${adUnit}`);
+        window.aa.requestBids();
       } else {
-        // Retry after 1s if Adapex script hasn't loaded yet
-        setTimeout(refreshAd, 1000);
+        retryTimeout = setTimeout(requestAd, 1000);
       }
     };
 
-    refreshAd();
-  }, [adUnit]);
+    const checkScriptReady = () => {
+      const script = document.querySelector(
+        "script[src*='cdn.adapex.io/hb/aaw.pumpparade.js']"
+      ) as HTMLScriptElement | null;
+
+      if (script) {
+        if (script.getAttribute("data-loaded") === "true") {
+          requestAd();
+        } else {
+          script.addEventListener("load", () => {
+            script.setAttribute("data-loaded", "true");
+            requestAd();
+          });
+        }
+      } else {
+        retryTimeout = setTimeout(checkScriptReady, 1000);
+      }
+    };
+
+    checkScriptReady();
+
+    // ♻️ Auto-refresh bids every N ms
+    refreshTimer = setInterval(() => {
+      if (window.aa && typeof window.aa.requestBids === "function") {
+        console.log(`♻️ Auto-refreshing ad: ${adUnit}`);
+        window.aa.requestBids();
+      }
+    }, refreshInterval);
+
+    return () => {
+      clearTimeout(retryTimeout);
+      clearInterval(refreshTimer);
+    };
+  }, [adUnit, refreshInterval]);
 
   return (
     <div
       data-aaad="true"
       data-aa-adunit={adUnit}
-      style={style || { width: "100%", height: "auto", margin: "auto" }}
+      style={{
+        width: "100%",
+        height: "auto",
+        minHeight: 100,
+        margin: "auto",
+        ...style,
+      }}
     ></div>
   );
 };
