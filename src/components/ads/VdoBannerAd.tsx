@@ -7,13 +7,13 @@ declare global {
 }
 
 interface AdUnitProps {
-  adUnit: string;
+  adUnit?: string;
   style?: React.CSSProperties;
   refreshInterval?: number; // default 60 s
 }
 
 const AdUnit = ({
-  adUnit,
+  adUnit = "default",
   style,
   refreshInterval = 60000,
 }: AdUnitProps) => {
