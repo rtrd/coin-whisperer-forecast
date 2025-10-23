@@ -2,32 +2,14 @@ import { useEffect } from 'react';
 
 export const AutoRefresh: React.FC = () => {
   useEffect(() => {
-    let inactivityTimer: NodeJS.Timeout;
-    
-    const resetTimer = () => {
-      clearTimeout(inactivityTimer);
-      inactivityTimer = setTimeout(() => {
-        window.location.reload();
-      }, 60000); // 60 seconds
-    };
+    // Simple auto-refresh every 1 minute (60000ms)
+    const refreshInterval = setInterval(() => {
+      window.location.reload();
+    }, 60000);
 
-    // Events that indicate user activity
-    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart', 'click'];
-    
-    // Add event listeners
-    events.forEach(event => {
-      document.addEventListener(event, resetTimer, true);
-    });
-
-    // Start the timer
-    resetTimer();
-
-    // Cleanup
+    // Cleanup on unmount
     return () => {
-      clearTimeout(inactivityTimer);
-      events.forEach(event => {
-        document.removeEventListener(event, resetTimer, true);
-      });
+      clearInterval(refreshInterval);
     };
   }, []);
 

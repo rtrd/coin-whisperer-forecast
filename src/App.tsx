@@ -71,11 +71,9 @@ const AppWithHooks = () => {
   return (
     <>
       <TopNavigation />
-      <div className="pt-16">
-        <VdoFloatingAd />
-        <ScrollToTop />
-        <AppRoutes />
-      </div>
+      <VdoFloatingAd />
+      <ScrollToTop />
+      <AppRoutes />
     </>
   );
 };
@@ -87,8 +85,7 @@ const App = () => (
         <HeadImprovements />
         <Toaster />
         <Sonner />
-        {/* Temporarily disable AutoRefresh to prevent forced reloads */}
-        {/* <AutoRefresh /> */}
+        <AutoRefresh />
         <BrowserRouter>
           <WagmiAppkitProvider>
             <AppWithHooks />

@@ -21,12 +21,10 @@ import type { AppKitNetwork } from "@reown/appkit/networks";
 const queryClient = new QueryClient();
 
 // 1. Get projectId from https://dashboard.reown.com
-const projectId = import.meta.env.VITE_PROJECT_ID;
-const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
+// Using a temporary project ID - replace with your own from https://cloud.reown.com
+const projectId = import.meta.env.VITE_PROJECT_ID || "temp-project-id-replace-me";
+const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || "https://pumpparade.com";
 
-if (!projectId) {
-  throw new Error("You need to provide a VITE_PROJECT_ID env variable");
-}
 
 // 2. Create a metadata object - optional
 const metadata = {
