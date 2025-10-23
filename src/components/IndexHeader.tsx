@@ -18,7 +18,6 @@ export const IndexHeader: React.FC<IndexHeaderProps> = ({
   currentPrice,
   priceChange
 }) => {
-  console.log('IndexHeader - currentPrice:', currentPrice, 'priceChange:', priceChange);
   
   return (
     <div className="text-center mb-8">

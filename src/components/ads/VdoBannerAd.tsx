@@ -1,61 +1,78 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 declare global {
   interface Window {
-    aa?: any;
+    aaw?: {
+      processAdsOnPage?: () => void;
+      loadAds?: () => void;
+      refreshAds?: () => void;
+    };
   }
 }
 
 interface AdUnitProps {
-  adUnit?: string;
+  adUnit: string;
+  className?: string;
   style?: React.CSSProperties;
-  refreshInterval?: number; // default 60 s
+  refreshInterval?: number; // default 60s
 }
 
 const AdUnit = ({
-  adUnit = "default",
+  adUnit,
+  className,
   style,
   refreshInterval = 60000,
 }: AdUnitProps) => {
+  // Generate a unique div id for each adUnit
+  const adDivId = `adunit-${adUnit?.replace(/\W/g, "")}`;
+
   useEffect(() => {
     let retryTimeout: NodeJS.Timeout;
     let refreshTimer: NodeJS.Timeout;
 
-    const requestAd = () => {
-      if (window.aa && typeof window.aa.requestBids === "function") {
-        console.log(`🔁 Requesting bids for: ${adUnit}`);
-        window.aa.requestBids();
-      } else {
-        retryTimeout = setTimeout(requestAd, 1000);
-      }
-    };
-
-    const checkScriptReady = () => {
-      const script = document.querySelector(
-        "script[src*='cdn.adapex.io/hb/aaw.pumpparade.js']"
-      ) as HTMLScriptElement | null;
-
-      if (script) {
-        if (script.getAttribute("data-loaded") === "true") {
-          requestAd();
+    // Function to process ads
+    const processAds = () => {
+      try {
+        if (window.aaw?.processAdsOnPage) {
+          console.log(`📢 Rendering ad: ${adUnit}`);
+          window.aaw.processAdsOnPage();
         } else {
-          script.addEventListener("load", () => {
-            script.setAttribute("data-loaded", "true");
-            requestAd();
-          });
+          retryTimeout = setTimeout(processAds, 500);
         }
-      } else {
-        retryTimeout = setTimeout(checkScriptReady, 1000);
+      } catch (err) {
+        console.error("AdUnit render error:", err);
       }
     };
 
-    checkScriptReady();
+    // Wait for Adapex script to load
+    const checkScript = () => {
+      try {
+        const script = document.querySelector(
+          "script[src*='cdn.adapex.io/hb/aaw.pumpparade.js']"
+        ) as HTMLScriptElement | null;
+        if (script) {
+          if (script.getAttribute("data-loaded") === "true") processAds();
+          else {
+            script.addEventListener("load", () => {
+              script.setAttribute("data-loaded", "true");
+              processAds();
+            });
+          }
+        } else {
+          retryTimeout = setTimeout(checkScript, 500);
+        }
+      } catch (err) {
+        console.error("Ad script check error:", err);
+      }
+    };
 
-    // ♻️ Auto-refresh bids every N ms
+    checkScript();
+
+    // Auto-refresh ads
     refreshTimer = setInterval(() => {
-      if (window.aa && typeof window.aa.requestBids === "function") {
+      if (window.aaw?.processAdsOnPage) {
         console.log(`♻️ Auto-refreshing ad: ${adUnit}`);
-        window.aa.requestBids();
+        window.aaw.processAdsOnPage();
       }
     }, refreshInterval);
 
@@ -63,20 +80,21 @@ const AdUnit = ({
       clearTimeout(retryTimeout);
       clearInterval(refreshTimer);
     };
-  }, [adUnit, refreshInterval]);
+  }, [adUnit, adDivId, refreshInterval]);
 
   return (
     <div
+      id={adDivId}
+      className={className}
       data-aaad="true"
       data-aa-adunit={adUnit}
       style={{
         width: "100%",
         height: "auto",
         minHeight: 100,
-        margin: "auto",
         ...style,
       }}
-    ></div>
+    />
   );
 };
 

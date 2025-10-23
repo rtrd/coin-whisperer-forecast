@@ -12,7 +12,6 @@ const fetchCryptoData = async (
   timeframe: string,
   AllCryptosData: []
 ): Promise<PriceData[]> => {
-  console.log(`Fetching real ${crypto} data for ${timeframe}`);
   if (timeframe === "7d") {
     timeframe = "1w";
   }
@@ -38,9 +37,6 @@ const fetchCryptoData = async (
     }
 
     const priceData = await response.json();
-    console.log(
-      `Successfully fetched ${priceData.length} data points for ${crypto}`
-    );
     const data: PriceData[] = [];
     data.push(
       ...priceData.data.map((item: any) => ({

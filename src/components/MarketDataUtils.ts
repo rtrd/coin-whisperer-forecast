@@ -7,7 +7,6 @@ export type { FilterType } from '@/types/filters';
 export { getFilterTitle } from '@/types/filters';
 
 export const generateMarketData = (cryptoOptions: CryptoToken[], activeFilter: FilterType) => {
-  console.log("Generating market data :", cryptoOptions);
   const marketData = cryptoOptions.map((crypto, index) => ({
     ...crypto,
     value: crypto.id || crypto.symbol?.toLowerCase() || `token-${index}`,
