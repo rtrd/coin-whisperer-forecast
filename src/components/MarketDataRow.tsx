@@ -39,7 +39,6 @@ export const MarketDataRow: React.FC<MarketDataRowProps> = memo(
     const getData = async (cryptoId) => {
       try {
         const response = await fetchTechnicalIndicators(cryptoId, "1m"); // or any topic
-        console.log("Fetched technical indicators:", response);
         const prices = response.map((d) => d.price);
         if (prices[0] == undefined) {
           const data = generateMockData(cryptoId, "1m", AllCryptosData);

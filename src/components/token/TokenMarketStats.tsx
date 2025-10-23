@@ -33,7 +33,6 @@ interface TokenMarketStatsProps {
 export const TokenMarketStats: React.FC<TokenMarketStatsProps> = ({
   marketData,
 }) => {
-  console.log("Market Data:", marketData);
   const statsConfig = [
     {
       icon: BarChart3,

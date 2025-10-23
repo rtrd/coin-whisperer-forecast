@@ -7,21 +7,19 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
-    port: 8080,
+    port: 3000,
   },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+  plugins: [react(), mode === "development" && componentTagger()].filter(
+    Boolean
+  ),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    target: 'esnext',
-    minify: 'esbuild',
+    target: "esnext",
+    minify: "esbuild",
     sourcemap: false,
     rollupOptions: {
       output: {
@@ -56,45 +54,47 @@ export default defineConfig(({ mode }) => ({
         //   }
         // },
         chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId.split("/").pop()
+            : "chunk";
           return `js/[name]-[hash].js`;
         },
-        entryFileNames: 'js/[name]-[hash].js',
+        entryFileNames: "js/[name]-[hash].js",
         assetFileNames: (assetInfo) => {
-          if (assetInfo.name?.endsWith('.css')) {
-            return 'css/[name]-[hash].css';
+          if (assetInfo.name?.endsWith(".css")) {
+            return "css/[name]-[hash].css";
           }
-          return 'assets/[name]-[hash][extname]';
-        }
+          return "assets/[name]-[hash][extname]";
+        },
       },
       external: (id) => {
         // Don't bundle these if they're not needed
         return false;
-      }
+      },
     },
     reportCompressedSize: false,
     chunkSizeWarningLimit: 1000,
     cssCodeSplit: true,
-    assetsInlineLimit: 4096
+    assetsInlineLimit: 4096,
   },
   optimizeDeps: {
     include: [
-      'react', 
-      'react-dom', 
-      'react-router-dom',
-      '@tanstack/react-query',
-      'clsx',
-      'tailwind-merge',
-      'class-variance-authority'
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "@tanstack/react-query",
+      "clsx",
+      "tailwind-merge",
+      "class-variance-authority",
     ],
-    exclude: ['@vite/client', '@vite/env']
+    exclude: ["@vite/client", "@vite/env"],
   },
   esbuild: {
-    target: 'esnext',
-    platform: 'browser',
+    target: "esnext",
+    platform: "browser",
     treeShaking: true,
     minifyIdentifiers: true,
     minifySyntax: true,
-    minifyWhitespace: true
-  }
+    minifyWhitespace: true,
+  },
 }));

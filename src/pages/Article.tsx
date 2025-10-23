@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useAdScript } from "@/hooks/useAdScript";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { AdUnit } from "@/components/ads/AdService";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
@@ -27,15 +26,23 @@ import { AdvancedSEOHead } from "@/components/seo/AdvancedSEOHead";
 import { EnhancedBreadcrumbSchema } from "@/components/seo/EnhancedBreadcrumbSchema";
 import { AdvancedPerformanceOptimizer } from "@/components/seo/AdvancedPerformanceOptimizer";
 import { calculateReadingTime } from "@/utils/readingTime";
+import AdUnit from "@/components/ads/VdoBannerAd";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
+  const isMobile = useIsMobile();
+
+  const customClass = useMemo(
+    () => (isMobile ? "flex justify-center !px-4" : "flex justify-center mb-6"),
+    [isMobile]
+  );
   const { articleId } = useParams<{ articleId: string }>();
 
   // Initialize ad script on page load
-  useAdScript();
+  // useAdScript();
   const [articlesData, setArticlesData] = useState<any[]>([]);
   const [allArticlesData, setallArticlesData] = useState<any[]>([]);
   const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>(
@@ -114,7 +121,9 @@ const Article = () => {
   const transformArticles = (posts: any[]) => {
     return posts.map((post) => {
       const title = decodeHtmlEntities(post.title?.rendered || "No Title");
-      const excerpt = decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || "");
+      const excerpt = decodeHtmlEntities(
+        post.excerpt?.rendered?.replace(/<[^>]+>/g, "") || ""
+      );
       const date = new Date(post.date).toISOString().split("T")[0];
       const author = post._embedded?.author?.[0]?.name || "Unknown";
       const image =
@@ -158,7 +167,9 @@ const Article = () => {
 
   const article = articles.find((a) => a.id === Number(articleId));
   const seoData = article ? generateArticleSEO(article) : null;
-  const readingTime = article ? calculateReadingTime(article.content) : undefined;
+  const readingTime = article
+    ? calculateReadingTime(article.content)
+    : undefined;
 
   const transformallArticles = (articles: any[]): any[] => {
     return articles.map((a) => ({
@@ -196,7 +207,7 @@ const Article = () => {
     <>
       {/* Advanced SEO Head */}
       {seoData && (
-         <AdvancedSEOHead 
+        <AdvancedSEOHead
           seoData={seoData}
           author={article.author}
           publishDate={article.date}
@@ -205,16 +216,16 @@ const Article = () => {
           pageType="article"
         />
       )}
-      
+
       {/* Breadcrumb Schema */}
-       <EnhancedBreadcrumbSchema 
+      <EnhancedBreadcrumbSchema
         articleTitle={article?.title}
         customBreadcrumbs={undefined}
         tokenName={undefined}
       />
-      
+
       {/* Performance Optimizer */}
-      <AdvancedPerformanceOptimizer 
+      <AdvancedPerformanceOptimizer
         pageType="article"
         criticalResources={[article?.image].filter(Boolean)}
       />
@@ -250,15 +261,26 @@ const Article = () => {
             </Link>
           </div>
 
+          <div>
+            <AdUnit
+              className={customClass}
+              adUnit={
+                isMobile
+                  ? "/22181265/pumpparade_mob_300v_1"
+                  : "/22181265/pumpparade_970v_1"
+              }
+            />
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-3 space-y-8">
               {/* Article Content with Header */}
               <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
                 <ArticleHeader article={article} />
-                <ArticleContent 
-                  content={article.content} 
-                  tags={article.tags} 
+                <ArticleContent
+                  content={article.content}
+                  tags={article.tags}
                   articleId={article.id}
                   articleTitle={article.title}
                 />
@@ -266,12 +288,14 @@ const Article = () => {
 
               {/* Square Ads between tags and related articles */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <div className="flex justify-center">
-                  <AdUnit type="square" className="ad-click" />
-                </div>
-                <div className="flex justify-center">
-                  <AdUnit type="square" className="ad-click" />
-                </div>
+                <AdUnit
+                  className={customClass}
+                  adUnit={
+                    isMobile
+                      ? "/22181265/pumpparade_mob_stickyfooter"
+                      : "/22181265/pumpparade_sticky_footer"
+                  }
+                />
               </div>
 
               {/* Related Articles */}
@@ -291,7 +315,11 @@ const Article = () => {
                 />
 
                 {/* Ad placement below Market Movers */}
-                <AdUnit type="square" className="ad-click" />
+                <AdUnit
+                  adUnit="/22181265/pumpparade_stickyrail"
+                  style={{ marginTop: "5px" }}
+                />
+
               </div>
             </div>
           </div>

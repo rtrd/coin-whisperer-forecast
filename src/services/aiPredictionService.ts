@@ -855,11 +855,9 @@ function mapTrend(trend: string): "positive" | "negative" | "neutral" {
 
 export const fetchSentimentData = async (topic = "bitcoin") => {
   try {
-    console.log(`Fetching sentiment data for topic: ${topic}`);
     const response = await fetch(
       `${SERVER_URL}/api/sentiment?topic=${encodeURIComponent(topic)}`
     );
-    console.log(`API Response status: ${response.status}`);
 
     if (!response.ok) {
       const errorText = await response.text();

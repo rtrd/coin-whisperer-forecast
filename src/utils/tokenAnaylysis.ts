@@ -10,7 +10,6 @@ export const fetchCryptoData = async (
   crypto: string,
   timeframe: string
 ): Promise<PriceData[]> => {
-  console.log(`Fetching real ${crypto} data for ${timeframe}`);
   try {
     // Use Supabase Edge Function instead of direct API call
     const response = await fetch(

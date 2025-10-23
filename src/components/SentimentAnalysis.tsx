@@ -88,8 +88,6 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
       };
     };
     const transformApiDataToSentiment = (apiData: any): SentimentData => {
-      console.log("Transforming API data:", apiData);
-
       // Handle different possible API response structures
       const dataPayload = apiData?.data || apiData;
 
@@ -212,21 +210,18 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         sources,
       };
 
-      console.log("Transformed sentiment data:", result);
       return result;
     };
 
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        console.log(`Fetching sentiment data for crypto: ${crypto}`);
         const res = await fetchSentimentData(crypto);
 
         if (res) {
           const result = transformApiDataToSentiment(res);
           setSentiment(result);
           sentimentData(result); // Update optional prop if provided
-          console.log("Successfully processed sentiment data:", result);
         } else {
           console.warn("No data received from API, using fallback");
           // Use fallback data

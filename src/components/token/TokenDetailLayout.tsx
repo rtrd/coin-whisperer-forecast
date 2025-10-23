@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -13,9 +13,10 @@ import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import { AdUnit } from "@/components/ads/AdService";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
+import AdUnit from "@/components/ads/VdoBannerAd";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -74,6 +75,12 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   allCryptosData,
   SentimentData,
 }) => {
+  const isMobile = useIsMobile();
+  const customClass = useMemo(
+    () => (isMobile ? "flex justify-center !px-4" : "flex justify-center mb-6"),
+    [isMobile]
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
       <div className="container mx-auto px-4 py-4 md:py-8">
@@ -95,12 +102,14 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         </div>
 
         {/* Ad Banner Before Price Chart */}
-        <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mb-8">
-         <span id="ct_cIDsE2QDOHw">
-          {/* <AdUnit type="leaderboard" className="max-w-full h-full ad-click" /> */}
-          </span>
-          
-        </div>
+        <AdUnit
+          className={customClass}
+          adUnit={
+            isMobile
+              ? "/22181265/pumpparade_mob_300v_1"
+              : "/22181265/pumpparade_970v_1"
+          }
+        />
 
         {/* Main Content */}
         <div className="space-y-6">
@@ -132,15 +141,14 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
 
           {/* Ad Banner After Price Chart - Responsive */}
-          <div className="w-full min-h-[90px] sm:min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-            <span id="ct_cVqQhaBjbGn">
-              {/* <GAMAdUnit
-                adUnitId="div-gpt-ad-1752654531765-2"
-                size={[728, 120]}
-                className="max-w-full h-auto"
-              /> */}
-            </span>
-          </div>
+          <AdUnit
+            className={customClass}
+            adUnit={
+              isMobile
+                ? "/22181265/pumpparade_mob_300v_2"
+                : "/22181265/pumpparade_970v_2"
+            }
+          />
 
           {/* Ad Banner After Price Chart - Centered */}
           {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
@@ -177,6 +185,10 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               cryptoOptions={cryptoOptions}
               cryptoData={cryptoData}
             />
+            <AdUnit
+              adUnit="/22181265/pumpparade_stickyrail"
+              style={{ marginTop: "5px" }}
+            />
           </div>
         </div>
 
@@ -201,8 +213,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         <VdoFloatingAd />
         {/* Internal Linking */}
         <div className="mt-12 mb-8">
-          <InternalLinking 
-            currentPage="token" 
+          <InternalLinking
+            currentPage="token"
             tokenSymbol={selectedToken?.symbol}
             category={selectedToken?.category}
           />
@@ -217,6 +229,15 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         <div className="mt-12">
           <Footer />
         </div>
+
+        <AdUnit
+          className={customClass}
+          adUnit={
+            isMobile
+              ? "/22181265/pumpparade_mob_stickyfooter"
+              : "/22181265/pumpparade_sticky_footer"
+          }
+        />
       </div>
 
       {/* Sticky Buy/Sell Buttons */}

@@ -33,6 +33,7 @@ import {
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
 import { PriceData } from "@/types/crypto";
 import { useAdScript } from "@/hooks/useAdScript";
+
 const TokenDetail = () => {
   const { tokenId } = useParams<{ tokenId: string }>();
   const location = useLocation();
@@ -65,11 +66,11 @@ const TokenDetail = () => {
   const cryptoOptions = TokenDataService.getCryptoOptions();
 
   const [technicalIndicator, setTechnicalIndicator] = React.useState<any>(null);
+  
   useEffect(() => {
     const getData = async () => {
       try {
         const response = await fetchTechnicalIndicators(cryptoId, "3m"); // or any topic
-        console.log("Fetched technical indicators:", response);
         const prices = response.map((d) => d.price);
         if (prices[0] == undefined) {
           const data = generateMockData(

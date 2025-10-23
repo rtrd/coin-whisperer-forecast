@@ -1,15 +1,10 @@
 
 export const formatArticleForDisplay = (article: any) => {
-  console.log("🔍 formatArticleForDisplay - Processing article:", article.title);
-  console.log("  - Input tagNames:", article.tagNames);
-  console.log("  - Input tagname:", article.tagname);
-  console.log("  - Input tags:", article.tags);
   
   const tagList: string[] = [];
 
   // Case 1: WordPress tagNames array (prioritize this)
   if (Array.isArray(article.tagNames)) {
-    console.log("  - Using WordPress tagNames array");
     tagList.push(
       ...article.tagNames
         .filter((tag: any) => typeof tag === "string" && tag.trim())
@@ -38,8 +33,6 @@ export const formatArticleForDisplay = (article: any) => {
 
   // Remove duplicates but preserve original case for featured detection
   const uniqueTags = [...new Set(tagList.filter(Boolean))];
-  console.log("  - Final processed tags:", uniqueTags);
-
   const formattedArticle = {
     id: article.id,
     title: article.title,
@@ -53,13 +46,10 @@ export const formatArticleForDisplay = (article: any) => {
     tags: uniqueTags.length > 0 ? uniqueTags : ["crypto", "analysis", "market"], // fallback
   };
   
-  console.log("  - Article formatted with final tags:", formattedArticle.tags);
   return formattedArticle;
 };
 
 export const getFeaturedArticle = (articles: any[]) => {
-  console.log("🎯 FEATURED ARTICLE DETECTION");
-  console.log("📊 Finding featured article from", articles.length, "articles");
   
   // Debug: Log all articles and their categories
   articles.forEach((article, index) => {
@@ -71,7 +61,6 @@ export const getFeaturedArticle = (articles: any[]) => {
   
   // Look for articles with "Featured" category (exact match with capital F)
   // Check both primary category and allCategories array
-  console.log("🔍 Looking for articles with 'Featured' category (exact match)...");
   const featuredArticles = articles.filter(article => {
     const isPrimaryFeatured = article.category === 'Featured';
     const isInAllCategories = article.allCategories?.includes('Featured');
@@ -216,7 +205,6 @@ export const getRelatedArticles = (currentArticle: any, allArticles: any[]) => {
 
       // ✅ Get only tags that match current article
       const matchedTags = articleTags.filter((tag) => currentTags.includes(tag));
-      console.log("matchedTags", matchedTags);  
 
       return {
         ...a,

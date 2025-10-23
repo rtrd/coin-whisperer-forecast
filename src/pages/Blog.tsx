@@ -50,15 +50,12 @@ const Blog = () => {
   const loadBlogData = async () => {
     try {
       // Step 1: Quick initial load for immediate UI response
-      console.log("🚀 Loading initial blog data...");
       const initialData = await optimizedBlogService.getInitialBlogData();
       
       setArticles(initialData.articles);
       setCategories(initialData.categories);
       setLoading(false);
       
-      console.log("✅ Initial blog data loaded:", initialData.articles.length, "articles");
-
       // Step 2: Background load of full data for complete functionality
       if (initialData.hasMore) {
         console.log("📚 Loading full blog data in background...");
@@ -68,7 +65,6 @@ const Blog = () => {
           setArticles(fullData.articles);
           setCategories(fullData.categories);
           setIsFullyLoaded(true);
-          console.log("✅ Full blog data loaded:", fullData.articles.length, "articles");
         }
       } else {
         setIsFullyLoaded(true);

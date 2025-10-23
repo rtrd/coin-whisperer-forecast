@@ -396,7 +396,6 @@ export const generateSubscribeSEO = (): PageSEOData => {
 
 // Article SEO generator with enhanced structured data
 export const generateArticleSEO = (article: any): PageSEOData => {
-  debugger;
   const title = `${article.title} | Pump Parade`;
   const description =
     article.excerpt ||

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useMemo } from "react";
 
 declare global {
   interface Window {
@@ -15,7 +15,8 @@ import Footer from "@/components/Footer";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
-import AdUnit from "@/components/ads/VdoBannerAd"; // Reusable Adapex Ad Unit Component
+import { useIsMobile } from "@/hooks/useIsMobile";
+import AdUnit from "@/components/ads/VdoBannerAd";
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -36,6 +37,13 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   AllCryptosData,
   handleFilterChange,
 }) => {
+  const isMobile = useIsMobile();
+
+  const customClass = useMemo(
+    () => (isMobile ? "flex justify-center !px-4" : "flex justify-center mb-6"),
+    [isMobile]
+  );
+
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
       <IndexHeader
@@ -46,9 +54,14 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       />
 
       {/* Google Ad Manager - Header Ad */}
+
       <AdUnit
-        adUnit="/22181265/pumpparade_970v_1"
-        style={{ width: "970px", height: "250px", margin: "auto" }}
+        className={customClass}
+        adUnit={
+          isMobile
+            ? "/22181265/pumpparade_mob_300v_1"
+            : "/22181265/pumpparade_970v_1"
+        }
       />
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
@@ -57,16 +70,25 @@ export const IndexContent: React.FC<IndexContentProps> = ({
         {/* <VdoBannerAd/>
          <VdoFloatingAd/> */}
         <AdUnit
-          adUnit="/22181265/pumpparade_970v_2"
-          style={{ width: "970px", height: "250px", margin: "auto" }}
+          className={customClass}
+          adUnit={
+            isMobile
+              ? "/22181265/pumpparade_mob_300v_2"
+              : "/22181265/pumpparade_970v_2"
+          }
         />
       </div>
       <div className="mb-8">
         <LockedAITradingSignals />
       </div>
+
       <AdUnit
-        adUnit="/22181265/pumpparade_970v_3"
-        style={{ width: "970px", height: "250px", margin: "auto" }}
+        className={customClass}
+        adUnit={
+          isMobile
+            ? "/22181265/pumpparade_mob_300v_3"
+            : "/22181265/pumpparade_970v_3"
+        }
       />
       {/* Crypto Filters - Smart Crypto Filters */}
       <CryptoFilters onFilterChange={handleFilterChange} />
@@ -99,8 +121,12 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       {/* Footer */}
       <Footer />
       <AdUnit
-        adUnit="/22181265/pumpparade_mob_stickyfooter"
-        style={{ width: "970px", height: "250px", margin: "auto" }}
+        className={customClass}
+        adUnit={
+          isMobile
+            ? "/22181265/pumpparade_mob_stickyfooter"
+            : "/22181265/pumpparade_sticky_footer"
+        }
       />
     </div>
   );
