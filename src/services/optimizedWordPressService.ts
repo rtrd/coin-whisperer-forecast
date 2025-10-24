@@ -103,7 +103,7 @@ class OptimizedWordPressService {
 
   private async fetchOptimizedPosts(limit: number): Promise<any[]> {
     // Optimized query: include categories for featured/trending detection
-    const fields = 'id,title,excerpt,date,featured_media,link,tags,_links.author,_links.wp:featuredmedia';
+    const fields = 'id,title,content,excerpt,date,featured_media,link,tags,_links.author,_links.wp:featuredmedia';
     const url = `${this.baseUrl}/posts?per_page=${limit}&_fields=${fields}&_embed=author,wp:featuredmedia,wp:term`;
 
     try {
@@ -144,6 +144,7 @@ class OptimizedWordPressService {
         id: post.id,
         title: this.fastDecodeHtml(post.title.rendered),
         excerpt: this.fastDecodeHtml(post.excerpt.rendered),
+        content: post?.content ? this.fastDecodeHtml(post.content.rendered) : '',
         date: post.date,
         author: 'Pump Parade Team',
         image: this.extractFeaturedImage(post),

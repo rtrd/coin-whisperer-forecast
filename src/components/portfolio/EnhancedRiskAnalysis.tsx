@@ -80,7 +80,6 @@ export const EnhancedRiskAnalysis: React.FC<EnhancedRiskAnalysisProps> = ({
   };
 
   const getAIRiskManagementSuggestions = async (riskMetrics) => {
-    debugger;
     const aisuggestion = await generateAIRiskManagementSuggestions(riskMetrics);
     setaiSuggestions(aisuggestion);
     console.log("AI Suggestion:", aisuggestion);

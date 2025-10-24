@@ -27,8 +27,7 @@ class OptimizedBlogService {
 
     try {
       // First, try to get optimized posts for quick display (increased from 20 to 50)
-      const optimizedPosts = await optimizedWordPressService.getOptimizedPosts(50);
-      
+      const optimizedPosts = await optimizedWordPressService.getOptimizedPosts(50);      
       // Transform for consistency with full blog format
       const articles = optimizedPosts.map((post, index) => 
         formatArticleForDisplay({
@@ -42,8 +41,8 @@ class OptimizedBlogService {
           readTime: "4 min read",
           image: post.image,
           url: post.url,
-          content: "",
-          tagname: "",
+          content: post?.content ?? "",
+          tagname: post?.tagname ?? "",
           tagNames: post.tags || [],
         })
       );
