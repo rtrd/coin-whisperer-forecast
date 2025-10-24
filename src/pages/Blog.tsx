@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
+import { generateBlogSEO } from "@/utils/pageSeo";
 import { useAdScript } from "@/hooks/useAdScript";
-import { BlogLayout } from "@/components/blog/BlogLayout";
+import React, { useState, useEffect } from "react";
+import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { BlogHeader } from "@/components/blog/BlogHeader";
-import { BlogFeaturedSection } from "@/components/blog/BlogFeaturedSection";
-import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
-import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
-import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
+import { BlogLayout } from "@/components/blog/BlogLayout";
+import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
 import { BlogIndexSection } from "@/components/blog/BlogIndexSection";
 import { optimizedBlogService } from "@/services/optimizedBlogService";
+import { BlogLatestSection } from "@/components/blog/BlogLatestSection";
+import { BlogFeaturedSection } from "@/components/blog/BlogFeaturedSection";
+import { BlogTrendingSection } from "@/components/blog/BlogTrendingSection";
 import { getFeaturedArticle, getTrendingArticles } from "@/utils/articleUtils";
-import { generateBlogSEO } from "@/utils/pageSeo";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
+import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);

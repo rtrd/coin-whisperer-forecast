@@ -229,7 +229,6 @@ export const getAIPortfolioInsights = async (
   strategy: string,
   walletAddress: string
 ) => {
-  debugger;
   const cacheKey = `${walletAddress}-${strategy}`;
   const now = Date.now();
 

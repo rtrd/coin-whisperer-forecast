@@ -278,6 +278,18 @@ const Article = () => {
               {/* Article Content with Header */}
               <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
                 <ArticleHeader article={article} />
+
+                <div className="flex justify-center">
+                  <AdUnit
+                    className={customClass}
+                    adUnit={
+                      isMobile
+                        ? "/22181265/pumpparade_mob_300v_2"
+                        : "/22181265/pumpparade_970v_2"
+                    }
+                  />
+                </div>
+
                 <ArticleContent
                   content={article.content}
                   tags={article.tags}
@@ -319,7 +331,6 @@ const Article = () => {
                   adUnit="/22181265/pumpparade_stickyrail"
                   style={{ marginTop: "5px" }}
                 />
-
               </div>
             </div>
           </div>

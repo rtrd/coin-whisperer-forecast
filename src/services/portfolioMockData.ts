@@ -331,7 +331,6 @@ export const mockCorrelationData: CorrelationData[] = [
 // };
 
 export const GetPortfolioData = async( walletAddress, chain) => {
-  debugger;
   if (!walletAddress) return alert("Enter wallet address");
 
      try {
