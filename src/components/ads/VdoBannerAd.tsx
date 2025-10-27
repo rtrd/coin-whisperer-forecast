@@ -11,17 +11,17 @@ declare global {
 }
 
 interface AdUnitProps {
-  adUnit: string;
+  adUnit?: string;
   className?: string;
   style?: React.CSSProperties;
-  refreshInterval?: number; // default 60s
+  refreshInterval?: number; // default 120s
 }
 
 const AdUnit = ({
-  adUnit,
+  adUnit = "/22181265/pumpparade_default",
   className,
   style,
-  refreshInterval = 60000,
+  refreshInterval = 120000,
 }: AdUnitProps) => {
   // Generate a unique div id for each adUnit
   const adDivId = `adunit-${adUnit?.replace(/\W/g, "")}`;

@@ -7,7 +7,7 @@ declare global {
 class AdRefreshService {
   private static instance: AdRefreshService;
   private lastRefreshTime = 0;
-  private readonly MIN_REFRESH_INTERVAL = 30000; // 30 seconds minimum between refreshes
+  private readonly MIN_REFRESH_INTERVAL = 120000; // 2 minutes minimum between refreshes
   private refreshedSlots = new Set<string>();
 
   private constructor() {}

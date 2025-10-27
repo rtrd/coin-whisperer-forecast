@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 
 export const AutoRefresh: React.FC = () => {
   useEffect(() => {
-    // Simple auto-refresh every 1 minute (60000ms)
+    // Simple auto-refresh every 2 minutes (120000ms)
     const refreshInterval = setInterval(() => {
       window.location.reload();
-    }, 60000);
+    }, 120000);
 
     // Cleanup on unmount
     return () => {
