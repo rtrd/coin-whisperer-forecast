@@ -187,6 +187,21 @@ export const TopNavigation: React.FC = () => {
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <Link
+                    to="/lock-portfolio-dashboard"
+                    className={cn(
+                      "group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-800/80 hover:text-white focus:bg-gray-800/80 focus:text-white focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+                      isActive('/lock-portfolio-dashboard') && "bg-gray-800/80 text-white"
+                    )}
+                  >
+                    <PieChart className="mr-2 h-4 w-4 text-blue-400" />
+                    <span className="text-gray-200">Portfolio Dashboard</span>
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
               {aiAnalysisFeatures.map((feature) => (
                 <NavigationMenuItem key={feature.href}>
                   <NavigationMenuLink asChild>
