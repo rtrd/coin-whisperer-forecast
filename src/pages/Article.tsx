@@ -278,7 +278,8 @@ const Article = () => {
               {/* Article Content with Header */}
               <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
                 <ArticleHeader article={article} />
-
+                 <br/>
+                 <br/>
                 <div className="flex justify-center">
                   <AdUnit
                     className={customClass}
@@ -317,7 +318,7 @@ const Article = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
-                <VdoBannerAd />
+                <VdoBannerAd adUnit={""} />
                 <ArticleIndex content={article.content} />
                 {/* <AdUnit type="skyscraper" className="ad-click" /> */}
                 {/* <VdoBannerAd /> */}
