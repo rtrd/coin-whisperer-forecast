@@ -197,7 +197,7 @@ export const TopNavigation: React.FC = () => {
                     )}
                   >
                     <PieChart className="mr-2 h-4 w-4 text-blue-400" />
-                    <span className="text-gray-200">Portfolio Dashboard</span>
+                    <span className="text-gray-200">AI Portfolio Analysis</span>
                   </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>

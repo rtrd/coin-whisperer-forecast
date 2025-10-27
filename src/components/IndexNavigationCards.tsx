@@ -85,7 +85,7 @@ export const IndexNavigationCards = () => {
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <Wallet className="h-5 w-5 text-cyan-400" />
-            Portfolio Dashboard
+            AI Portfolio Analysis
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -100,7 +100,7 @@ export const IndexNavigationCards = () => {
           >
             <Button className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white">
               <ExternalLink className="h-4 w-4 mr-2" />
-              View Portfolio Dashboard
+              View AI Portfolio Analysis
             </Button>
           </Link>
         </CardContent>
