@@ -80,15 +80,18 @@ export const HoldingsTable: React.FC<HoldingsTableProps> = ({ assets }) => {
                 <TableCell className="pl-6">
                   <div className="flex items-center gap-3">
                     <img
-                      src={asset.symbol || `/default-token-icon.png`} // fallback to default image
-                      alt={asset.icon}
+                      src={asset.icon || `https://cryptologos.cc/logos/${asset.symbol.toLowerCase()}-logo.png`}
+                      alt={`${asset.name} (${asset.symbol})`}
                       className="w-8 h-8 rounded-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${asset.symbol}&background=3b82f6&color=fff`;
+                      }}
                     />
                     <div>
                       <div className="font-semibold text-white">
                         {asset.name}{" "}
                         <span className="text-gray-400 font-normal">
-                          ({asset.icon})
+                          ({asset.symbol})
                         </span>
                       </div>
                     </div>
