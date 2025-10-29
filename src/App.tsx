@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
-import { AutoRefresh } from "@/components/layout/AutoRefresh";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
 import { useAdRefresh } from "./hooks/useAdRefresh";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
@@ -85,7 +84,6 @@ const App = () => (
         <HeadImprovements />
         <Toaster />
         <Sonner />
-        <AutoRefresh />
         <BrowserRouter>
           <WagmiAppkitProvider>
             <AppWithHooks />
