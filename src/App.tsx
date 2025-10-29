@@ -23,6 +23,7 @@ import RealTimeData from "./pages/RealTimeData";
 import PortfolioTracking from "./pages/PortfolioTracking";
 import PortfolioDashboard from "./pages/PortfolioDashboard";
 import { LockPortfolioDashboard } from "./pages/LockPortfolioDashboard";
+import PortfolioDashboardMockup from "./pages/PortfolioDashboardMockup";
 import MotiMeter from "./pages/MotiMeter";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
@@ -54,6 +55,7 @@ const AppRoutes = () => {
       <Route path="/portfolio-tracking" element={<PortfolioTracking />} />
       {/* <Route path="/portfolio-dashboard" element={<PortfolioDashboard />} /> */}
       <Route path="/lock-portfolio-dashboard" element={<LockPortfolioDashboard />} />
+      <Route path="/portfolio-mockup" element={<PortfolioDashboardMockup />} />
       <Route path="/moti-meter" element={<MotiMeter />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
