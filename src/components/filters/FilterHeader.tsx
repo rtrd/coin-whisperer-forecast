@@ -15,7 +15,7 @@ export const FilterHeader: React.FC<FilterHeaderProps> = ({
 }) => {
   return (
     <div className="text-white flex items-center justify-between">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 text-left">
         <Filter className="h-5 w-5 text-blue-400" />
         Smart Crypto Filters
         {activeFiltersCount > 0 && (

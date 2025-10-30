@@ -81,11 +81,11 @@ const WordPressIntegrationOptimized: React.FC<WordPressIntegrationOptimizedProps
   return (
     <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl hover:bg-gray-800/70 transition-colors">
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-wrap gap-4 md:flex-nowrap md: gap-0">
           <CardTitle className="text-white flex items-center gap-2">
             <ExternalLink className="h-5 w-5 text-blue-400" />
             <h2>Latest Crypto News & Analysis</h2>
-            <Badge className="bg-blue-600">Live Feed</Badge>
+            <Badge className="bg-blue-600 whitespace-nowrap">Live Feed</Badge>
           </CardTitle>
           <Button 
             variant="outline"

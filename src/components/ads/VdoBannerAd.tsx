@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/hooks/useIsMobile";
 import React, { useEffect } from "react";
 
 declare global {
@@ -25,6 +26,7 @@ const AdUnit = ({
 }: AdUnitProps) => {
   // Generate a unique div id for each adUnit
   const adDivId = `adunit-${adUnit?.replace(/\W/g, "")}`;
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     let retryTimeout: NodeJS.Timeout;
@@ -37,11 +39,18 @@ const AdUnit = ({
           console.log(`📢 Rendering ad: ${adUnit}`);
           window.aaw.processAdsOnPage();
         } else {
-          retryTimeout = setTimeout(processAds, 500);
+          retryTimeout = setTimeout(processAds, 1000);
         }
       } catch (err) {
         console.error("AdUnit render error:", err);
       }
+    };
+
+    const triggerAdLoad = (script: HTMLScriptElement) => {
+      script.addEventListener("load", () => {
+        script.setAttribute("data-loaded", "true");
+        processAds();
+      });
     };
 
     // Wait for Adapex script to load
@@ -53,13 +62,14 @@ const AdUnit = ({
         if (script) {
           if (script.getAttribute("data-loaded") === "true") processAds();
           else {
-            script.addEventListener("load", () => {
-              script.setAttribute("data-loaded", "true");
-              processAds();
-            });
+            triggerAdLoad(script);
           }
         } else {
-          retryTimeout = setTimeout(checkScript, 500);
+          const script = document.createElement("script");
+          script.src = "https://cdn.adapex.io/hb/aaw.pumpparade.js";
+          script.async = true;
+          triggerAdLoad(script);
+          document.body.appendChild(script);
         }
       } catch (err) {
         console.error("Ad script check error:", err);
@@ -80,7 +90,7 @@ const AdUnit = ({
       clearTimeout(retryTimeout);
       clearInterval(refreshTimer);
     };
-  }, [adUnit, adDivId, refreshInterval]);
+  }, [adUnit, adDivId, refreshInterval, isMobile]);
 
   return (
     <div

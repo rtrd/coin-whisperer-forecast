@@ -78,7 +78,7 @@ export const MarketDataWidget: React.FC<MarketDataWidgetProps> = memo(
       <TooltipProvider>
         <Card className="mb-8 bg-gray-800/50 border-gray-700 shadow-2xl">
           <CardHeader>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-6 flex-wrap gap-4 md:flex-nowrap md: gap-0">
               <div className="flex items-center gap-2">
                 <BarChart3 className="h-5 w-5 text-blue-400" />
                 <CardTitle className="text-white">{filterTitle}</CardTitle>
