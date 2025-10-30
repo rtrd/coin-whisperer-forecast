@@ -7,6 +7,7 @@ import { MarketSentimentOverview } from "@/components/trading/MarketSentimentOve
 import { LiveMarketAlerts } from "@/components/trading/LiveMarketAlerts";
 import { TradingRecommendations } from "@/components/trading/TradingRecommendations";
 import { MarketNarratives } from "@/components/trading/MarketNarratives";
+import { MarketPerformanceMetrics } from "@/components/trading/MarketPerformanceMetrics";
 import { useRealTradingSignalsData } from "@/hooks/useRealTradingSignalsData";
 import { MarketAnalysis } from '@/types/tradingSignals';
 
@@ -95,8 +96,16 @@ export const AITradingSignals = () => {
               {/* Trading Recommendations */}
               <TradingRecommendations recommendations={recommendations} />
 
+              {/* Market Performance Metrics */}
+              <MarketPerformanceMetrics
+                volumeChange24h={volumeChange24h}
+                totalVolume24h={totalVolume24h}
+                totalTVL={totalTVL}
+                defiTVLChange={defiTVLChange}
+              />
+
               {/* AI-Powered Market Narratives */}
-              <MarketNarratives 
+              <MarketNarratives
                 marketNarratives={marketNarratives}
                 fearGreedValue={sentimentScore}
                 fearGreedClassification={fearGreedSignal?.description.includes('extreme greed') ? 'Extreme Greed' : 
