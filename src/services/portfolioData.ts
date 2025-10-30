@@ -10,7 +10,7 @@ import {
   PortfolioHistory,
 } from "@/types/portfolio";
 
-const API_BASE_URL = "https://server.pumpparade.com/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export const getPortfolioData = async (walletAddress: string, chainId:number) => {
   if (!walletAddress) throw new Error("Wallet address is required");

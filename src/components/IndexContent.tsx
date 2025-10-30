@@ -8,7 +8,7 @@ declare global {
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
 import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
+// import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
@@ -90,6 +90,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
             : "/22181265/pumpparade_970v_3"
         }
       />
+
       {/* Crypto Filters - Smart Crypto Filters */}
       <CryptoFilters onFilterChange={handleFilterChange} />
 

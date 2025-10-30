@@ -25,7 +25,8 @@ export const SignupLock: React.FC<SignupLockProps> = ({
     return localStorage.getItem("ai-content-unlocked") === "true";
   });
   const [isLoading, setIsLoading] = useState(false);
-  const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+  const SERVER_URL = import.meta.env.VITE_BACKEND_URL;
+  
   const saveEmail = async (email: string) => {
     try {
       const response = await fetch(`${SERVER_URL}/save-email`, {
