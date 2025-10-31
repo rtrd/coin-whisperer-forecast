@@ -177,88 +177,7 @@ export const PortfolioDashboardMockup = () => {
     </Card>
   );
 
-  // Enhanced Risk Metrics with Tooltips
-  const EnhancedRiskMetrics = () => (
-    <TooltipProvider>
-      <Card className="bg-gray-800/80 border-gray-700">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-white text-lg">
-            <Shield className="h-4 w-4 text-blue-400" />
-            Risk Analysis
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="grid grid-cols-2 gap-2">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="p-2 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
-                  <div className="flex items-center justify-center gap-1 mb-1">
-                    <p className="text-xs text-gray-300">Sharpe Ratio</p>
-                    <Info className="h-3 w-3 text-blue-400" />
-                  </div>
-                  <p className="font-bold text-white text-base">
-                    {mockRiskMetrics.sharpeRatio}
-                  </p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-sm">
-                  Measures risk-adjusted returns. Higher is better (&gt;1 is
-                  good).
-                </p>
-              </TooltipContent>
-            </Tooltip>
-
-            <div className="p-2 rounded-lg bg-gray-700/40 text-center border border-gray-600/30">
-              <p className="text-xs text-gray-300 mb-1">Volatility</p>
-              <p className="font-bold text-white text-base">
-                {mockRiskMetrics.volatility}%
-              </p>
-            </div>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="p-2 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
-                  <div className="flex items-center justify-center gap-1 mb-1">
-                    <p className="text-xs text-gray-300">Max Drawdown</p>
-                    <Info className="h-3 w-3 text-blue-400" />
-                  </div>
-                  <p className="font-bold text-red-400 text-base">
-                    {mockRiskMetrics.maxDrawdown}%
-                  </p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-sm">
-                  Largest peak-to-trough decline. Lower is better.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="p-2 rounded-lg bg-gray-700/40 text-center cursor-help border border-gray-600/30">
-                  <div className="flex items-center justify-center gap-1 mb-1">
-                    <p className="text-xs text-gray-300">Beta</p>
-                    <Info className="h-3 w-3 text-blue-400" />
-                  </div>
-                  <p className="font-bold text-white text-base">
-                    {mockRiskMetrics.beta}
-                  </p>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="text-sm">
-                  Correlation with market. 1 = moves with market, &gt;1 = more
-                  volatile.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        </CardContent>
-      </Card>
-    </TooltipProvider>
-  );
+  // Enhanced Risk Metrics with Tooltips - Removed (using EnhancedRiskAnalysis component instead)
 
   // Recent Transactions
   const RecentTransactions = () => (
@@ -499,7 +418,7 @@ export const PortfolioDashboardMockup = () => {
 
             {/* Right Column - Sidebar */}
             <div className="space-y-4">
-              <EnhancedRiskAnalysis riskMetrics={mockRiskMetrics} />
+              {mockRiskMetrics && <EnhancedRiskAnalysis riskMetrics={mockRiskMetrics} />}
               <RecentTransactions />
             </div>
           </div>
