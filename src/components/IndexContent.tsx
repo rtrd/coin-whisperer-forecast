@@ -17,6 +17,7 @@ import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { LockedAITradingSignals } from "@/components/LockedAITradingSignals";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import AdUnit from "@/components/ads/VdoBannerAd";
+import { PortfolioAnalysisBanner } from "@/components/PortfolioAnalysisBanner";
 
 interface IndexContentProps {
   selectedCrypto: string;
@@ -65,6 +66,11 @@ export const IndexContent: React.FC<IndexContentProps> = ({
             : "/22181265/pumpparade_970v_1"
         }
       />
+
+      {/* Portfolio Analysis Banner */}
+      <div className="mb-8">
+        <PortfolioAnalysisBanner />
+      </div>
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
       <LazyWordPressIntegration />
