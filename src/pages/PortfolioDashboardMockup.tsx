@@ -27,334 +27,59 @@ import { Link } from "react-router-dom";
 import { EnhancedRiskAnalysis } from "@/components/portfolio/EnhancedRiskAnalysis";
 import { PerformanceChart } from "@/components/portfolio/PerformanceChart";
 import { HoldingsTable } from "@/components/portfolio/HoldingsTable";
-import { AssetAllocation } from "@/components/portfolio/AssetAllocation";
-import { mockRiskMetrics } from "@/services/portfolioMockData";
-
+import { 
+  mockPortfolioAssets, 
+  mockTransactions, 
+  mockDeFiPositions, 
+  mockRiskMetrics,
+  mockAIRecommendations,
+  mockSmartAlerts
+} from "@/services/portfolioMockData";
 import Footer from "@/components/Footer";
+import Alert from "@/components/Alert";
 
-// Mock portfolio data
-const mockPortfolioData = {
-  portfolioAssets: [
-    {
-      id: "1",
-      symbol: "ETH",
-      name: "Ethereum",
-      icon: "⟠",
-      amount: 0.65,
-      currentPrice: 2680,
-      averageBuyPrice: 2450,
-      totalValue: 1742,
-      pnl: 149.5,
-      pnlPercentage: 9.4,
-      allocation: 38.5,
-      change24h: 1.8,
-      volume24h: 8900000000,
-      marketCap: 322400000000,
-    },
-    {
-      id: "2",
-      symbol: "BTC",
-      name: "Bitcoin",
-      icon: "₿",
-      amount: 0.04,
-      currentPrice: 43250,
-      averageBuyPrice: 38900,
-      totalValue: 1730,
-      pnl: 174,
-      pnlPercentage: 11.2,
-      allocation: 38.2,
-      change24h: 2.3,
-      volume24h: 15600000000,
-      marketCap: 847500000000,
-    },
-    {
-      id: "3",
-      symbol: "SOL",
-      name: "Solana",
-      icon: "◎",
-      amount: 5.8,
-      currentPrice: 105.8,
-      averageBuyPrice: 95.2,
-      totalValue: 613.64,
-      pnl: 61.48,
-      pnlPercentage: 11.1,
-      allocation: 13.6,
-      change24h: 4.2,
-      volume24h: 1200000000,
-      marketCap: 47800000000,
-    },
-    {
-      id: "4",
-      symbol: "LINK",
-      name: "Chainlink",
-      icon: "🔗",
-      amount: 16.5,
-      currentPrice: 17.85,
-      averageBuyPrice: 19.2,
-      totalValue: 294.53,
-      pnl: -22.28,
-      pnlPercentage: -7.0,
-      allocation: 6.5,
-      change24h: -1.2,
-      volume24h: 450000000,
-      marketCap: 10500000000,
-    },
-    {
-      id: "5",
-      symbol: "MATIC",
-      name: "Polygon",
-      icon: "⬡",
-      amount: 160,
-      currentPrice: 0.92,
-      averageBuyPrice: 1.15,
-      totalValue: 147.2,
-      pnl: -36.8,
-      pnlPercentage: -20.0,
-      allocation: 3.2,
-      change24h: 0.8,
-      volume24h: 320000000,
-      marketCap: 8900000000,
-    },
-  ],
-  portfolioSummary: {
-    totalValue: 4527.37,
-    totalPnL: 325.9,
-    totalPnLPercentage: 7.8,
-    assets: 5,
-    change24h: {
-      absolute: 98.45,
-      percent: 2.22,
-    },
-  },
-  transactions: [
-    {
-      id: "1",
-      type: "buy",
-      asset: "ETH",
-      amount: 0.5,
-      price: 2650,
-      totalValue: 1325,
-      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-      hash: "0x1234...5678",
-      fee: 1.85,
-      status: "completed",
-    },
-    {
-      id: "2",
-      type: "sell",
-      asset: "SOL",
-      amount: 2.5,
-      price: 108.5,
-      totalValue: 271.25,
-      timestamp: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
-      hash: "0x2345...6789",
-      fee: 0.88,
-      status: "completed",
-    },
-    {
-      id: "3",
-      type: "buy",
-      asset: "BTC",
-      amount: 0.02,
-      price: 42800,
-      totalValue: 856,
-      timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-      hash: "0x3456...7890",
-      fee: 2.50,
-      status: "completed",
-    },
-    {
-      id: "4",
-      type: "buy",
-      asset: "LINK",
-      amount: 10,
-      price: 17.9,
-      totalValue: 179,
-      timestamp: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000),
-      hash: "0x4567...8901",
-      fee: 0.55,
-      status: "completed",
-    },
-    {
-      id: "5",
-      type: "buy",
-      asset: "MATIC",
-      amount: 100,
-      price: 1.12,
-      totalValue: 112,
-      timestamp: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000),
-      hash: "0x5678...9012",
-      fee: 0.38,
-      status: "completed",
-    },
-  ],
-  defiPositions: [
-    {
-      id: "1",
-      protocol: "Aave",
-      type: "lending",
-      asset: "USDC",
-      amount: 850,
-      apy: 8.2,
-      rewards: 4.82,
-      totalValue: 854.82,
-      risk: "low",
-    },
-    {
-      id: "2",
-      protocol: "Uniswap",
-      type: "liquidity",
-      asset: "ETH-USDC",
-      amount: 325.50,
-      apy: 12.4,
-      rewards: 6.85,
-      totalValue: 332.35,
-      risk: "medium",
-    },
-  ],
-};
-
-// Mock portfolio history
+// Mock portfolio history data
 const mockPortfolioHistory = Array.from({ length: 30 }, (_, i) => {
   const date = new Date();
   date.setDate(date.getDate() - (29 - i));
-  const baseValue = 4200;
-  const variation = Math.sin(i / 5) * 350 + Math.random() * 150;
-  const totalValue = baseValue + variation;
-  const pnl = totalValue - 4200;
-
+  const baseValue = 45230;
+  const variation = Math.sin(i / 3) * 3000 + Math.random() * 1000;
   return {
-    timestamp: date,
     date: date,
-    totalValue,
-    pnl,
-    assets: {
-      ETH: {
-        value: totalValue * 0.385,
-        amount: 0.65,
-        price: (totalValue * 0.385) / 0.65,
-      },
-      BTC: {
-        value: totalValue * 0.382,
-        amount: 0.04,
-        price: (totalValue * 0.382) / 0.04,
-      },
-      SOL: {
-        value: totalValue * 0.136,
-        amount: 5.8,
-        price: (totalValue * 0.136) / 5.8,
-      },
-      LINK: {
-        value: totalValue * 0.065,
-        amount: 16.5,
-        price: (totalValue * 0.065) / 16.5,
-      },
-      MATIC: {
-        value: totalValue * 0.032,
-        amount: 160,
-        price: (totalValue * 0.032) / 160,
-      },
-    },
+    timestamp: date,
+    totalValue: baseValue + variation,
+    pnl: (variation / baseValue) * 100,
+    assets: {}
   };
 });
 
-// Mock AI recommendations
-const mockAIRecommendations = [
-  {
-    id: "1",
-    type: "rebalance",
-    title: "Rebalance Portfolio to Target Allocation",
-    description:
-      "Your BTC allocation is 5.8% above target. Consider taking profits and diversifying.",
-    priority: "medium",
-    potential_impact: 8.5,
-    reasoning:
-      "Maintaining target allocation reduces concentration risk and improves risk-adjusted returns.",
-    actions: ["Reduce BTC position by 0.008 BTC (~$350)", "Increase stablecoin allocation to 15%"],
-  },
-  {
-    id: "2",
-    type: "risk_management",
-    title: "Set Stop-Loss Orders for Volatile Assets",
-    description:
-      "Your SOL and MATIC positions have high volatility. Consider protective measures.",
-    priority: "high",
-    potential_impact: 12.0,
-    reasoning:
-      "High correlation with market downturns could amplify losses.",
-    actions: ["Set trailing stop-loss at 15% for SOL position", "Consider reducing MATIC exposure by 30%"],
-  },
-  {
-    id: "3",
-    type: "diversification",
-    title: "Add Real World Assets (RWA) Exposure",
-    description:
-      "Consider adding tokenized assets for portfolio diversification.",
-    priority: "low",
-    potential_impact: 5.2,
-    reasoning:
-      "Low correlation with crypto markets provides hedge against volatility.",
-    actions: [
-      "Allocate 5-10% to tokenized real estate",
-      "Consider treasury bill tokens for yield",
-    ],
-  },
-];
-
-// Mock alerts
-const mockAlerts = [
-  {
-    id: "1",
-    type: "price",
-    asset: "BTC",
-    condition: "above",
-    threshold: 45000,
-    isActive: true,
-    lastTriggered: undefined,
-    message: "Bitcoin reached your target price of $45,000",
-  },
-  {
-    id: "2",
-    type: "portfolio",
-    condition: "total_value_change",
-    threshold: -10,
-    isActive: true,
-    lastTriggered: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-    message: "Portfolio value dropped by more than 10%",
-  },
-  {
-    id: "3",
-    type: "volume",
-    asset: "ETH",
-    condition: "above",
-    threshold: 10000000000,
-    isActive: false,
-    lastTriggered: undefined,
-    message: "Ethereum volume exceeded $10B in 24h",
-  },
-];
+// Mock portfolio summary
+const mockPortfolioSummary = {
+  totalValue: 48350,
+  assets: 8,
+  change24h: {
+    absolute: 2150,
+    percent: 4.65
+  }
+};
 
 export const PortfolioDashboardMockup = () => {
   const seoData = generatePortfolioDashboardSEO();
   const [selectedStrategy, setSelectedStrategy] = useState("moderate");
-  const [aiRecommendations, setaiRecommendations] = useState(
-    mockAIRecommendations
-  );
+  const [aiRecommendations, setAiRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
-
-  // Mock wallet info
-  const mockWalletAddress = "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb3";
-  const mockChainId = 1; // Ethereum mainnet
+  const [alerts, setAlerts] = useState(mockSmartAlerts);
 
   const GetAIPortfolioInsights = async () => {
     setLoading(true);
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setaiRecommendations(mockAIRecommendations);
-    setLoading(false);
+    // Simulate API call
+    setTimeout(() => {
+      setAiRecommendations(mockAIRecommendations as any);
+      setLoading(false);
+    }, 1500);
   };
 
-  // Enhanced AI Insights
+  // Enhanced AI Insights - More Prominent
   const EnhancedAIInsights = () => (
     <Card className="bg-gray-800/80 border-gray-700 shadow-lg">
       <CardHeader className="pb-3">
@@ -416,7 +141,7 @@ export const PortfolioDashboardMockup = () => {
       </CardHeader>
       {aiRecommendations !== null && aiRecommendations.length > 0 ? (
         <CardContent className="space-y-3 pt-0">
-          {aiRecommendations.slice(0, 3).map((rec) => (
+          {aiRecommendations.slice(0, 3).map((rec: any) => (
             <div
               key={rec.id}
               className="p-3 rounded-lg bg-gray-700/60 border border-gray-600/50"
@@ -545,7 +270,7 @@ export const PortfolioDashboardMockup = () => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2">
-        {mockPortfolioData.transactions.map((tx) => (
+        {mockTransactions.slice(0, 15).map((tx) => (
           <div
             key={tx.id}
             className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50"
@@ -592,11 +317,10 @@ export const PortfolioDashboardMockup = () => {
             <p className="text-sm text-gray-300 font-medium">Total Value</p>
           </div>
           <p className="font-bold text-white text-2xl">
-            ${mockPortfolioData.portfolioSummary.totalValue.toLocaleString()}
+            ${mockPortfolioSummary.totalValue.toLocaleString()}
           </p>
           <p className="text-sm text-green-400 mt-1">
-            +{mockPortfolioData.portfolioSummary.totalPnLPercentage.toFixed(1)}
-            %
+            +{mockPortfolioSummary.change24h.percent.toFixed(1)}%
           </p>
         </CardContent>
       </Card>
@@ -606,23 +330,25 @@ export const PortfolioDashboardMockup = () => {
             <BarChart3 className="h-4 w-4 text-blue-400" />
             <p className="text-sm text-gray-300 font-medium">24h Change</p>
           </div>
+
+          {/* Absolute Change in $ */}
           <p className="font-bold text-white text-2xl">
             $
             {Math.abs(
-              mockPortfolioData.portfolioSummary.change24h.absolute
+              mockPortfolioSummary.change24h.absolute
             ).toLocaleString()}
           </p>
+
+          {/* Percentage Change */}
           <p
             className={`text-sm mt-1 ${
-              mockPortfolioData.portfolioSummary.change24h.percent >= 0
+              mockPortfolioSummary.change24h.percent >= 0
                 ? "text-green-400"
                 : "text-red-400"
             }`}
           >
-            {mockPortfolioData.portfolioSummary.change24h.percent >= 0
-              ? "+"
-              : ""}
-            {mockPortfolioData.portfolioSummary.change24h.percent.toFixed(1)}%
+            {mockPortfolioSummary.change24h.percent >= 0 ? "+" : ""}
+            {mockPortfolioSummary.change24h.percent.toFixed(1)}%
           </p>
         </CardContent>
       </Card>
@@ -633,7 +359,7 @@ export const PortfolioDashboardMockup = () => {
             <p className="text-sm text-gray-300 font-medium">Assets</p>
           </div>
           <p className="font-bold text-white text-2xl">
-            {mockPortfolioData.portfolioSummary.assets}
+            {mockPortfolioSummary.assets}
           </p>
           <p className="text-sm text-blue-400 mt-1">Tokens</p>
         </CardContent>
@@ -645,7 +371,7 @@ export const PortfolioDashboardMockup = () => {
             <p className="text-sm text-gray-300 font-medium">Active Alerts</p>
           </div>
           <p className="font-bold text-white text-2xl">
-            {mockAlerts.filter((a) => a.isActive).length}
+            {alerts.filter((a) => a.isActive).length}
           </p>
           <p className="text-sm text-orange-400 mt-1">Monitoring</p>
         </CardContent>
@@ -659,98 +385,99 @@ export const PortfolioDashboardMockup = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-6">
+          {/* Header */}
           <div className="mb-6">
-            <Link to="/">
-              <Button
-                variant="ghost"
-                className="mb-4 text-gray-300 hover:bg-gray-700/50 hover:text-white border-gray-700 bg-gray-800/60"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
-                Back to Home
-              </Button>
-            </Link>
-          </div>
-
-          {/* Header with Wallet Info */}
-          <div className="bg-gray-800/80 border border-gray-700 rounded-lg p-6 mb-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-white mb-2">
-                  AI Portfolio Analysis
-                </h1>
-                <p className="text-gray-300">
-                  Advanced portfolio tracking with AI-powered insights
-                </p>
-              </div>
-              <div className="text-right">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <p className="text-sm text-gray-300">Connected</p>
-                </div>
-                <p className="text-xs text-gray-400 font-mono">
-                  {mockWalletAddress.slice(0, 6)}...{mockWalletAddress.slice(-4)}
-                </p>
-                <p className="text-xs text-blue-400 mt-1">Ethereum Mainnet</p>
-              </div>
+            <div className="flex items-center gap-4 mb-4">
+              <Link to="/">
+                <Button
+                  variant="ghost"
+                  className="text-gray-300 hover:bg-gray-700/50 hover:text-white border-gray-700 bg-gray-800/60"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2 text-blue-400" />
+                  Back to Home
+                </Button>
+              </Link>
             </div>
+            <h1 className="text-3xl font-bold text-white">
+              Portfolio Dashboard
+            </h1>
           </div>
 
-          {/* Quick Stats */}
+          {/* Quick Stats Row */}
           <QuickStats />
 
+          {/* AI Insights - Prominent Section */}
+          <div className="mt-6">
+            <EnhancedAIInsights />
+          </div>
+
           {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-            {/* Left Column - Charts */}
-            <div className="lg:col-span-2 space-y-6">
+          <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-4">
+            {/* Left Column - Chart and Analytics */}
+            <div className="space-y-4">
               <PerformanceChart data={mockPortfolioHistory} />
 
-              <Tabs defaultValue="holdings" className="w-full">
+              <Tabs defaultValue="holdings" className="space-y-3">
                 <TabsList className="grid w-full grid-cols-3 bg-gray-800/80 border border-gray-700">
-                  <TabsTrigger value="holdings">Holdings</TabsTrigger>
-                  <TabsTrigger value="defi">DeFi</TabsTrigger>
-                  <TabsTrigger value="alerts">Alerts</TabsTrigger>
+                  <TabsTrigger
+                    value="holdings"
+                    className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white"
+                  >
+                    Holdings
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="defi"
+                    className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white"
+                  >
+                    DeFi
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="alerts"
+                    className="text-gray-300 data-[state=active]:bg-gray-700 data-[state=active]:text-white"
+                  >
+                    Alerts
+                  </TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="holdings" className="mt-4">
-                  <HoldingsTable assets={mockPortfolioData.portfolioAssets} />
+                <TabsContent value="holdings" className="space-y-0">
+                  <HoldingsTable assets={mockPortfolioAssets} />
                 </TabsContent>
 
-                <TabsContent value="defi" className="mt-4">
+                <TabsContent value="defi" className="space-y-0">
                   <Card className="bg-gray-800/80 border-gray-700">
-                    <CardHeader>
-                      <CardTitle className="text-white">
+                    <CardHeader className="pb-3">
+                      <CardTitle className="text-white text-lg">
                         DeFi Positions
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-3">
-                      {mockPortfolioData.defiPositions.map((position) => (
+                    <CardContent className="space-y-2 pt-0">
+                      {mockDeFiPositions.map((position) => (
                         <div
                           key={position.id}
-                          className="p-4 rounded-lg bg-gray-700/60 border border-gray-600/50"
+                          className="flex items-center justify-between p-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-colors border border-gray-600/50"
                         >
-                          <div className="flex items-center justify-between mb-2">
-                            <div>
-                              <p className="font-semibold text-white">
-                                {position.protocol}
-                              </p>
-                              <p className="text-sm text-gray-400">
-                                {position.type} • {position.asset}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="font-bold text-white">
-                                ${position.totalValue.toLocaleString()}
-                              </p>
-                              <p className="text-sm text-green-400">
-                                {position.apy}% APY
-                              </p>
-                            </div>
+                          <div>
+                            <p className="font-semibold text-white text-sm">
+                              {position.protocol}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              {position.type.replace("_", " ")} •{" "}
+                              {position.asset}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              Risk: {position.risk}
+                            </p>
                           </div>
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-gray-400">Rewards</span>
-                            <span className="text-green-400">
-                              ${position.rewards.toFixed(2)}
-                            </span>
+                          <div className="text-right">
+                            <p className="font-bold text-white text-sm">
+                              ${position.totalValue.toLocaleString()}
+                            </p>
+                            <p className="text-xs text-green-400">
+                              {position.apy.toFixed(1)}% APY
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              Rewards: ${position.rewards.toLocaleString()}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -758,92 +485,21 @@ export const PortfolioDashboardMockup = () => {
                   </Card>
                 </TabsContent>
 
-                <TabsContent value="alerts" className="mt-4">
-                  <Card className="bg-gray-800/80 border-gray-700">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-white">
-                        <AlertCircle className="h-4 w-4 text-orange-400" />
-                        Active Alerts
-                        <div className="ml-auto text-sm font-normal text-orange-300">
-                          {mockAlerts.filter((a) => a.isActive).length} Active
-                        </div>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                      {mockAlerts.map((alert) => (
-                        <div
-                          key={alert.id}
-                          className="p-3 rounded-lg bg-gray-700/60 hover:bg-gray-700/80 transition-all duration-200 border border-gray-600/50"
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex items-start gap-3 flex-1">
-                              <div
-                                className={`w-3 h-3 rounded-full mt-1 ${
-                                  alert.isActive
-                                    ? "bg-green-400 shadow-lg shadow-green-400/20"
-                                    : "bg-gray-500"
-                                }`}
-                              />
-                              <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <p className="text-sm font-semibold text-white">
-                                    {alert.message}
-                                  </p>
-                                  <div
-                                    className={`px-2 py-0.5 rounded-full text-xs font-medium uppercase ${
-                                      alert.type === "price"
-                                        ? "bg-blue-500/20 text-blue-300 border border-blue-500/30"
-                                        : alert.type === "volume"
-                                        ? "bg-green-500/20 text-green-300 border border-green-500/30"
-                                        : alert.type === "portfolio"
-                                        ? "bg-purple-500/20 text-purple-300 border border-purple-500/30"
-                                        : "bg-orange-500/20 text-orange-300 border border-orange-500/30"
-                                    }`}
-                                  >
-                                    {alert.type}
-                                  </div>
-                                </div>
-                                <div className="flex items-center gap-4 text-xs text-gray-400">
-                                  {alert.threshold && (
-                                    <span>
-                                      Threshold: ${alert.threshold.toLocaleString()}
-                                    </span>
-                                  )}
-                                  {alert.asset && <span>Asset: {alert.asset}</span>}
-                                  {alert.lastTriggered && (
-                                    <span>
-                                      Last triggered:{" "}
-                                      {new Date(alert.lastTriggered).toLocaleDateString()}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2 ml-2">
-                              <Button
-                                className={`text-xs border-0 ${
-                                  alert.isActive
-                                    ? "bg-green-600/20 hover:bg-green-600/30 text-green-300 border border-green-500/30"
-                                    : "bg-gray-600/20 hover:bg-gray-600/30 text-gray-400 border border-gray-500/30"
-                                }`}
-                              >
-                                {alert.isActive ? "● Active" : "○ Inactive"}
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
+                <TabsContent value="alerts" className="space-y-0">
+                  <Alert
+                    alerts={alerts as any}
+                    setAlerts={setAlerts as any}
+                    chainId={"1"}
+                    walletAddress="0x0000000000000000000000000000000000000000"
+                    fetchAlerts={async () => {}}
+                  />
                 </TabsContent>
               </Tabs>
             </div>
 
-            {/* Right Column - Insights & Risk */}
-            <div className="space-y-6">
-              <EnhancedAIInsights />
-              <EnhancedRiskMetrics />
-              <AssetAllocation assets={mockPortfolioData.portfolioAssets} />
+            {/* Right Column - Sidebar */}
+            <div className="space-y-4">
+              <EnhancedRiskAnalysis riskMetrics={mockRiskMetrics} />
               <RecentTransactions />
             </div>
           </div>
