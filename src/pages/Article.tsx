@@ -33,13 +33,12 @@ const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
-  const isMobile = useIsMobile();
-
+  const { articleId } = useParams<{ articleId: string }>();
+  const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
   const customClass = useMemo(
-    () => (isMobile ? "flex justify-center !px-4" : "flex justify-center mb-6"),
+    () => (isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6"),
     [isMobile]
   );
-  const { articleId } = useParams<{ articleId: string }>();
 
   // Initialize ad script on page load
   // useAdScript();
@@ -263,6 +262,7 @@ const Article = () => {
 
           <div>
             <AdUnit
+              isMobile={isMobile}
               className={customClass}
               adUnit={
                 isMobile
@@ -278,10 +278,11 @@ const Article = () => {
               {/* Article Content with Header */}
               <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
                 <ArticleHeader article={article} />
-                 <br/>
-                 <br/>
+                <br />
+                <br />
                 <div className="flex justify-center">
                   <AdUnit
+                    isMobile={isMobile}
                     className={customClass}
                     adUnit={
                       isMobile
@@ -302,6 +303,7 @@ const Article = () => {
               {/* Square Ads between tags and related articles */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 <AdUnit
+                  isMobile={isMobile}
                   className={customClass}
                   adUnit={
                     isMobile
@@ -329,8 +331,8 @@ const Article = () => {
 
                 {/* Ad placement below Market Movers */}
                 <AdUnit
+                  className="flex justify-center mt-5"
                   adUnit="/22181265/pumpparade_stickyrail"
-                  style={{ marginTop: "5px" }}
                 />
               </div>
             </div>
