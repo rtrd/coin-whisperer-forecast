@@ -16,7 +16,6 @@ import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
 import AdUnit from "@/components/ads/VdoBannerAd";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -75,9 +74,11 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   allCryptosData,
   SentimentData,
 }) => {
-  const isMobile = useIsMobile();
+
+  const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
   const customClass = useMemo(
-    () => (isMobile ? "flex justify-center !px-4" : "flex justify-center mb-6"),
+    () =>
+      isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6",
     [isMobile]
   );
 
@@ -104,6 +105,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         {/* Ad Banner Before Price Chart */}
         <AdUnit
           className={customClass}
+          isMobile={isMobile}
           adUnit={
             isMobile
               ? "/22181265/pumpparade_mob_300v_1"
@@ -143,6 +145,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           {/* Ad Banner After Price Chart - Responsive */}
           <AdUnit
             className={customClass}
+            isMobile={isMobile}
             adUnit={
               isMobile
                 ? "/22181265/pumpparade_mob_300v_2"
@@ -186,8 +189,9 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               cryptoData={cryptoData}
             />
             <AdUnit
-              adUnit="/22181265/pumpparade_stickyrail"
-              style={{ marginTop: "5px" }}
+              adUnit={"/22181265/pumpparade_stickyrail"}
+              isMobile={isMobile}
+              className={customClass}
             />
           </div>
         </div>
@@ -232,6 +236,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
 
         <AdUnit
           className={customClass}
+          isMobile={isMobile}
           adUnit={
             isMobile
               ? "/22181265/pumpparade_mob_stickyfooter"

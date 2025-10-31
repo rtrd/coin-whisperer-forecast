@@ -15,6 +15,7 @@ interface AdUnitProps {
   adUnit?: string;
   className?: string;
   style?: React.CSSProperties;
+  isMobile?: boolean;
   refreshInterval?: number; // default 120s
 }
 
@@ -22,11 +23,11 @@ const AdUnit = ({
   adUnit = "/22181265/pumpparade_default",
   className,
   style,
+  isMobile = false,
   refreshInterval = 120000,
 }: AdUnitProps) => {
   // Generate a unique div id for each adUnit
   const adDivId = `adunit-${adUnit?.replace(/\W/g, "")}`;
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     let retryTimeout: NodeJS.Timeout;
@@ -90,7 +91,7 @@ const AdUnit = ({
       clearTimeout(retryTimeout);
       clearInterval(refreshTimer);
     };
-  }, [adUnit, adDivId, refreshInterval, isMobile]);
+  }, [adUnit, refreshInterval, isMobile]);
 
   return (
     <div
@@ -104,7 +105,7 @@ const AdUnit = ({
         minHeight: 100,
         ...style,
       }}
-    />
+    ></div>
   );
 };
 

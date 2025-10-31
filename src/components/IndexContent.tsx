@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 declare global {
   interface Window {
@@ -37,10 +37,11 @@ export const IndexContent: React.FC<IndexContentProps> = ({
   AllCryptosData,
   handleFilterChange,
 }) => {
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
+  const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
 
   const customClass = useMemo(
-    () => (isMobile ? "flex justify-center !px-4" : "flex justify-center mb-6"),
+    () => (isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6"),
     [isMobile]
   );
 
@@ -57,6 +58,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
 
       <AdUnit
         className={customClass}
+        isMobile={isMobile}
         adUnit={
           isMobile
             ? "/22181265/pumpparade_mob_300v_1"
@@ -71,6 +73,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
          <VdoFloatingAd/> */}
         <AdUnit
           className={customClass}
+          isMobile={isMobile}
           adUnit={
             isMobile
               ? "/22181265/pumpparade_mob_300v_2"
