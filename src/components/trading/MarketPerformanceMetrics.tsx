@@ -1,20 +1,21 @@
 import React from 'react';
-import { TrendingUp, TrendingDown, Activity, DollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, DollarSign, PieChart, Bitcoin } from "lucide-react";
 
 interface MarketPerformanceMetricsProps {
   volumeChange24h: number;
   totalVolume24h: number;
-  totalTVL: number;
-  defiTVLChange: number;
+  totalMarketCap: number;
+  btcDominance: number;
 }
 
 export const MarketPerformanceMetrics: React.FC<MarketPerformanceMetricsProps> = ({
   volumeChange24h,
   totalVolume24h,
-  totalTVL,
-  defiTVLChange
+  totalMarketCap,
+  btcDominance
 }) => {
   const formatLargeNumber = (num: number) => {
+    if (num >= 1e12) return `$${(num / 1e12).toFixed(2)}T`;
     if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;
     if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;
     return `$${num.toLocaleString()}`;
@@ -29,11 +30,18 @@ export const MarketPerformanceMetrics: React.FC<MarketPerformanceMetricsProps> =
       iconColor: 'text-purple-400'
     },
     {
-      icon: DollarSign,
-      label: 'DeFi Total Value Locked',
-      value: formatLargeNumber(totalTVL),
-      change: defiTVLChange,
-      iconColor: 'text-cyan-400'
+      icon: PieChart,
+      label: 'Total Market Cap',
+      value: formatLargeNumber(totalMarketCap),
+      change: 0, // Neutral for market cap display
+      iconColor: 'text-blue-400'
+    },
+    {
+      icon: Bitcoin,
+      label: 'BTC Dominance',
+      value: `${btcDominance.toFixed(2)}%`,
+      change: btcDominance >= 50 ? 1 : -1, // Visual indicator only
+      iconColor: 'text-orange-400'
     },
     {
       icon: volumeChange24h >= 0 ? TrendingUp : TrendingDown,
@@ -41,13 +49,6 @@ export const MarketPerformanceMetrics: React.FC<MarketPerformanceMetricsProps> =
       value: `${volumeChange24h >= 0 ? '+' : ''}${volumeChange24h.toFixed(2)}%`,
       change: volumeChange24h,
       iconColor: volumeChange24h >= 0 ? 'text-green-400' : 'text-red-400'
-    },
-    {
-      icon: defiTVLChange >= 0 ? TrendingUp : TrendingDown,
-      label: 'DeFi Momentum',
-      value: `${defiTVLChange >= 0 ? '+' : ''}${defiTVLChange.toFixed(2)}%`,
-      change: defiTVLChange,
-      iconColor: defiTVLChange >= 0 ? 'text-green-400' : 'text-red-400'
     }
   ];
 

@@ -24,7 +24,9 @@ export const AITradingSignals = () => {
     volumeChange24h,
     totalVolume24h,
     totalTVL,
-    defiTVLChange
+    defiTVLChange,
+    totalMarketCap,
+    btcDominance
   } = useRealTradingSignalsData();
 
   // Extract real market data for MarketNarratives component
@@ -100,8 +102,8 @@ export const AITradingSignals = () => {
               <MarketPerformanceMetrics
                 volumeChange24h={volumeChange24h}
                 totalVolume24h={totalVolume24h}
-                totalTVL={totalTVL}
-                defiTVLChange={defiTVLChange}
+                totalMarketCap={totalMarketCap}
+                btcDominance={btcDominance}
               />
 
               {/* AI-Powered Market Narratives */}

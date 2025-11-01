@@ -20,6 +20,8 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
   const [totalVolume24h, setTotalVolume24h] = useState(0);
   const [totalTVL, setTotalTVL] = useState(0);
   const [defiTVLChange, setDefiTVLChange] = useState(0);
+  const [totalMarketCap, setTotalMarketCap] = useState(0);
+  const [btcDominance, setBtcDominance] = useState(0);
 
   const generateSignalsFromRealData = async () => {
     setIsAnalyzing(true);
@@ -68,6 +70,9 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
         }
       ];
 
+      // Get BTC data first (needed for market cap calculation)
+      const btc = cryptoData.find(token => token.symbol.toLowerCase() === 'btc');
+      
       // Generate live signals from top movers
       // Calculate market volume data
       const currentTotalVolume = cryptoData.reduce((sum, token) => sum + (token.total_volume || 0), 0);
@@ -75,11 +80,18 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
       const previous24hVolume = currentTotalVolume * (0.95 + Math.random() * 0.1); // ±5% variation
       const volume24hChange = ((currentTotalVolume - previous24hVolume) / previous24hVolume) * 100;
 
-      // Update volume state
+      // Calculate market cap and BTC dominance
+      const currentTotalMarketCap = cryptoData.reduce((sum, token) => sum + (token.market_cap || 0), 0);
+      const btcMarketCap = btc?.market_cap || 0;
+      const btcDominancePercent = (btcMarketCap / currentTotalMarketCap) * 100;
+
+      // Update volume and market metrics state
       setTotalVolume24h(currentTotalVolume);
       setVolumeChange24h(volume24hChange);
       setTotalTVL(defiTVL.tvl);
       setDefiTVLChange(defiTVL.change24h);
+      setTotalMarketCap(currentTotalMarketCap);
+      setBtcDominance(btcDominancePercent);
 
       const topGainers = cryptoData.slice(0, 50).filter(token => token.price_change_percentage_24h > 10);
       const topLosers = cryptoData.slice(0, 50).filter(token => token.price_change_percentage_24h < -10);
@@ -123,8 +135,7 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
       // Generate trading recommendations
       const newRecommendations: TradingRecommendation[] = [];
       
-      // BTC recommendation based on market sentiment
-      const btc = cryptoData.find(token => token.symbol.toLowerCase() === 'btc');
+      // BTC recommendation based on market sentiment (btc already defined above)
       if (btc) {
         let action: 'buy' | 'sell' | 'hold' = 'hold';
         let confidence = 60;
@@ -311,6 +322,8 @@ export const useRealTradingSignalsData = (options: UseRealTradingSignalsDataOpti
     volumeChange24h,
     totalVolume24h,
     totalTVL,
-    defiTVLChange
+    defiTVLChange,
+    totalMarketCap,
+    btcDominance
   };
 };
