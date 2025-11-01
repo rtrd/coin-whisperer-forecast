@@ -25,6 +25,7 @@ import PortfolioDashboard from "./pages/PortfolioDashboard";
 import { LockPortfolioDashboard } from "./pages/LockPortfolioDashboard";
 import PortfolioDashboardMockup from "./pages/PortfolioDashboardMockup";
 import MotiMeter from "./pages/MotiMeter";
+import DefiPulse from "./pages/DefiPulse";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
@@ -57,6 +58,7 @@ const AppRoutes = () => {
       <Route path="/lock-portfolio-dashboard" element={<LockPortfolioDashboard />} />
       <Route path="/portfolio-mockup" element={<PortfolioDashboardMockup />} />
       <Route path="/moti-meter" element={<MotiMeter />} />
+      <Route path="/defi-pulse" element={<DefiPulse />} />
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
       <Route path="*" element={<NotFound />} />

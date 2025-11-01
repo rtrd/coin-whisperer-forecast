@@ -95,6 +95,12 @@ const trendsFeatures = [
     href: "/moti-meter", 
     description: "Market momentum indicators",
     icon: Target
+  },
+  {
+    title: "DeFi Pulse",
+    href: "/defi-pulse",
+    description: "Real-time DeFi analytics & TVL",
+    icon: Activity
   }
 ];
 
