@@ -30,11 +30,11 @@ import { HoldingsTable } from "@/components/portfolio/HoldingsTable";
 import { 
   mockPortfolioAssets, 
   mockTransactions, 
-  mockDeFiPositions, 
-  mockRiskMetrics,
+  mockDeFiPositions,
   mockAIRecommendations,
   mockSmartAlerts
 } from "@/services/portfolioMockData";
+import { mockRiskMetrics } from "@/services/portfolioMockData";
 import Footer from "@/components/Footer";
 import Alert from "@/components/Alert";
 
