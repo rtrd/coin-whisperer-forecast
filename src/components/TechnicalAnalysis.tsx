@@ -579,16 +579,20 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
               </div>
             </div>
             <div className="overflow-hidden">
-              {(macdHistogram && macdHistogram.length > 0) || (calculatedMACDHistogram && calculatedMACDHistogram.length > 0) ? (
-                <HistogramChart
-                  data={macdHistogram || calculatedMACDHistogram}
-                  height={140}
-                />
-              ) : (
-                <div className="flex items-center justify-center h-[140px] text-muted-foreground text-sm">
-                  Calculating MACD histogram...
-                </div>
-              )}
+              <HistogramChart
+                data={calculatedMACDHistogram}
+                height={140}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
+              <div className="space-y-1">
+                <div className="text-muted-foreground">MACD Line</div>
+                <div className="text-lg font-bold text-foreground">{macd.toFixed(4)}</div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-muted-foreground">Signal Line</div>
+                <div className="text-lg font-bold text-foreground">{signal.toFixed(4)}</div>
+              </div>
             </div>
             <div className={`mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center uppercase`}
               style={{ 
