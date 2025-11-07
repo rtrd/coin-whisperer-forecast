@@ -31,55 +31,63 @@ export const TimelineChart: React.FC<TimelineChartProps> = ({ events }) => {
 
   const getSentimentColor = (sentiment: string) => {
     switch (sentiment) {
-      case "bullish": return "text-emerald-400 bg-emerald-900/30 border-emerald-500/50";
-      case "bearish": return "text-red-400 bg-red-900/30 border-red-500/50";
-      default: return "text-amber-400 bg-amber-900/30 border-amber-500/50";
+      case "bullish": return "#10B981";
+      case "bearish": return "#EF4444";
+      default: return "#F59E0B";
     }
   };
 
   return (
-    <div className="relative w-full py-6 px-2 overflow-hidden">
+    <div className="relative w-full px-4 py-8 overflow-hidden">
       {/* Timeline line */}
-      <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-gradient-to-r from-red-500/30 via-amber-500/30 to-emerald-500/30" />
+      <div className="absolute left-8 right-8 top-1/2 h-1 bg-gradient-to-r from-border via-muted to-border rounded-full" />
 
       {/* Events */}
-      <div className="relative flex justify-between items-center px-2">
+      <div className="relative flex justify-between items-center gap-2">
         {events.map((event, index) => {
           const Icon = getSentimentIcon(event.sentiment);
+          const color = getSentimentColor(event.sentiment);
+
           return (
-            <div key={index} className="flex flex-col items-center gap-1 relative group min-w-0">
-              {/* Emoji */}
-              <div className="text-lg sm:text-xl animate-bounce" style={{ animationDelay: `${index * 100}ms` }}>
-                {getSentimentEmoji(event.sentiment)}
+            <div 
+              key={index} 
+              className="relative flex flex-col items-center group flex-1 min-w-0"
+            >
+              {/* Emoji indicator */}
+              <div className="relative z-10 mb-4">
+                <div className="text-2xl group-hover:scale-110 transition-transform">
+                  {getSentimentEmoji(event.sentiment)}
+                </div>
               </div>
 
-              {/* Dot */}
-              <div className={`w-2 h-2 rounded-full border-2 ${getSentimentColor(event.sentiment)} shrink-0`} />
+              {/* Timeline dot */}
+              <div
+                className="w-4 h-4 rounded-full border-2 border-background shadow-lg relative z-10 group-hover:scale-125 transition-all"
+                style={{ backgroundColor: color, boxShadow: `0 0 12px ${color}80` }}
+              />
 
               {/* Date label */}
-              <div className="text-[10px] text-gray-400 mt-1 truncate max-w-[40px]">
+              <div className="mt-4 text-xs font-medium truncate" style={{ color }}>
                 {event.date}
               </div>
 
-              {/* Info card - appears on hover */}
-              <div className="absolute top-full mt-12 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 pointer-events-none">
-                <div className={`px-2 py-1.5 rounded-lg border ${getSentimentColor(event.sentiment)} whitespace-nowrap shadow-lg`}>
-                  <div className="text-[10px] font-semibold">{event.date}</div>
-                  <div className="text-xs font-bold mt-0.5">{event.value}</div>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <Icon className="w-2.5 h-2.5" />
-                    <span className="text-[10px]">{event.change > 0 ? "+" : ""}{event.change.toFixed(1)}%</span>
+              {/* Hover info card */}
+              <div className="absolute top-full mt-12 opacity-0 group-hover:opacity-100 transition-all pointer-events-none z-30 transform group-hover:translate-y-0 translate-y-2">
+                <div 
+                  className="bg-popover border-2 rounded-lg p-4 shadow-xl backdrop-blur-sm min-w-[140px]"
+                  style={{ borderColor: color }}
+                >
+                  <div className="text-xs text-muted-foreground mb-2 font-medium">{event.date}</div>
+                  <div className="text-lg font-bold text-popover-foreground mb-2">{event.value}</div>
+                  <div className={`flex items-center gap-1.5 text-sm font-semibold`} style={{ color: event.change >= 0 ? '#10B981' : '#EF4444' }}>
+                    <Icon className="w-4 h-4" />
+                    <span>{event.change >= 0 ? '+' : ''}{event.change.toFixed(1)}%</span>
                   </div>
                 </div>
               </div>
             </div>
           );
         })}
-      </div>
-
-      {/* Animated pulse traveling */}
-      <div className="absolute top-1/2 left-4 w-1.5 h-1.5 rounded-full bg-primary animate-pulse">
-        <div className="absolute inset-0 rounded-full bg-primary/50 animate-ping" />
       </div>
     </div>
   );

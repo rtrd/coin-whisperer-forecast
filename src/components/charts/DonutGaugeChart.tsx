@@ -42,8 +42,8 @@ export const DonutGaugeChart: React.FC<DonutGaugeChartProps> = ({
     : [];
 
   return (
-    <div className="relative w-full max-w-xs mx-auto" style={{ height: size }}>
-      <div className="absolute inset-0" style={{ width: size, height: size, margin: '0 auto' }}>
+    <div className="relative w-full flex justify-center py-4" style={{ minHeight: size + 40 }}>
+      <div className="relative" style={{ width: size, height: size }}>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             {/* Outer ring */}
@@ -53,8 +53,8 @@ export const DonutGaugeChart: React.FC<DonutGaugeChartProps> = ({
               cy="50%"
               startAngle={90}
               endAngle={-270}
-              innerRadius="70%"
-              outerRadius="90%"
+              innerRadius="68%"
+              outerRadius="92%"
               dataKey="value"
               animationDuration={1000}
               animationBegin={0}
@@ -72,8 +72,8 @@ export const DonutGaugeChart: React.FC<DonutGaugeChartProps> = ({
                 cy="50%"
                 startAngle={90}
                 endAngle={-270}
-                innerRadius="50%"
-                outerRadius="65%"
+                innerRadius="48%"
+                outerRadius="63%"
                 dataKey="value"
                 animationDuration={1200}
                 animationBegin={200}
@@ -87,22 +87,24 @@ export const DonutGaugeChart: React.FC<DonutGaugeChartProps> = ({
         </ResponsiveContainer>
 
         {/* Center content */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          {emoji && <div className="text-3xl mb-1 animate-bounce">{emoji}</div>}
-          <div className="text-2xl font-bold truncate" style={{ color }}>
+        <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+          {emoji && <div className="text-4xl mb-2 animate-bounce">{emoji}</div>}
+          <div className="text-3xl font-bold" style={{ color }}>
             {Math.round(displayValue)}
           </div>
-          <div className="text-xs text-gray-400 mt-1 truncate max-w-[140px] text-center">{label}</div>
+          <div className="text-sm font-medium mt-2 px-3 py-1 rounded-full bg-background/80 backdrop-blur-sm text-center" style={{ color }}>
+            {label}
+          </div>
           {innerValue && (
-            <div className="text-[10px] text-gray-500 mt-1 truncate">
-              F&G: {Math.round(displayInnerValue)}
+            <div className="text-xs text-muted-foreground mt-2 px-2 py-0.5 rounded bg-muted/50">
+              Fear & Greed: {Math.round(displayInnerValue)}
             </div>
           )}
         </div>
 
         {/* Glow effect */}
         <div
-          className="absolute inset-0 rounded-full opacity-30 blur-2xl pointer-events-none"
+          className="absolute inset-0 rounded-full opacity-20 blur-2xl pointer-events-none"
           style={{ background: `radial-gradient(circle, ${color} 0%, transparent 70%)` }}
         />
       </div>

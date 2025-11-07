@@ -15,29 +15,31 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
   negativeColor = "#EF4444",
 }) => {
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-hidden px-2">
       <ResponsiveContainer width="100%" height={height}>
-        <BarChart data={data} margin={{ top: 5, right: 5, left: -10, bottom: 5 }}>
+        <BarChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
           <XAxis 
             dataKey="label" 
-            tick={{ fill: '#9CA3AF', fontSize: 10 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis 
-            tick={{ fill: '#9CA3AF', fontSize: 10 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
             axisLine={false}
             tickLine={false}
-            width={30}
+            width={40}
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: 'rgba(31, 41, 55, 0.9)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              backgroundColor: 'hsl(var(--popover))',
+              border: '1px solid hsl(var(--border))',
               borderRadius: '8px',
               fontSize: '12px',
+              color: 'hsl(var(--popover-foreground))',
             }}
-            labelStyle={{ color: '#F3F4F6' }}
+            labelStyle={{ color: 'hsl(var(--popover-foreground))', fontWeight: 'bold' }}
+            itemStyle={{ color: 'hsl(var(--popover-foreground))' }}
           />
           <Bar dataKey="value" radius={[4, 4, 0, 0]} animationDuration={800}>
             {data.map((entry, index) => (
