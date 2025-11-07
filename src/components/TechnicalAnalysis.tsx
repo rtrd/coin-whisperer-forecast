@@ -76,7 +76,8 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
   // Helper function to format dates for chart labels
   const formatDateLabel = (timestamp: number): string => {
-    const date = new Date(timestamp);
+    const tsMs = timestamp < 1e12 ? timestamp * 1000 : timestamp; // handle seconds vs ms
+    const date = new Date(tsMs);
     const month = date.toLocaleDateString('en-US', { month: 'short' });
     const day = date.getDate();
     return `${month} ${day}`;

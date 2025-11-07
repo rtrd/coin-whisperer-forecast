@@ -48,7 +48,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
     // Extract volume data from cryptoData with proper date labels
     if (cryptoData && cryptoData.length > 0) {
       const volumes = cryptoData.slice(-14).map((d) => {
-        const date = new Date(d.timestamp);
+        const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
+        const date = new Date(tsMs);
         const month = date.toLocaleDateString('en-US', { month: 'short' });
         const day = date.getDate();
         return {
