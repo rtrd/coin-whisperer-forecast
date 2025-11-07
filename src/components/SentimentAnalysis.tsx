@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   TrendingUp,
   TrendingDown,
@@ -10,6 +11,7 @@ import {
   Newspaper,
   Users,
   Zap,
+  InfoIcon,
 } from "lucide-react";
 import { fetchSentimentData } from "@/services/aiPredictionService";
 import { SentimentGauge } from "@/components/charts/SentimentGauge";
@@ -296,13 +298,24 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
   const fearGreed = sentiment.score * 0.8 + 10;
 
   return (
-    <div className="space-y-6">
-      {/* Hero Card - Large Donut Chart */}
-      <Card className={`p-8 bg-gradient-to-br ${sentimentGradient} border-border/50 relative overflow-hidden`}>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
-        <div className="relative z-10">
-          <div className="flex flex-col items-center">
-            <DonutGaugeChart
+    <TooltipProvider>
+      <div className="space-y-6">
+        {/* Hero Card - Large Donut Chart */}
+        <Card className={`p-8 bg-gradient-to-br ${sentimentGradient} border-border/50 relative overflow-hidden`}>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent_50%)]" />
+          <div className="relative z-10">
+            <div className="flex items-center justify-center mb-2">
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoIcon className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">Overall market sentiment combining social media, news, and community discussions. Higher scores indicate bullish sentiment.</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="flex flex-col items-center">
+              <DonutGaugeChart
               value={sentiment.score}
               innerValue={fearGreed}
               label={sentiment.label}
@@ -383,14 +396,22 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         })}
       </div>
 
-      {/* Sentiment Indicators - Speedometer & Bar Chart */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Fear & Greed - Speedometer */}
-        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-          <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
-            <Activity className="w-4 h-4 text-primary shrink-0" />
-            <span>Fear & Greed Index</span>
-          </h3>
+        {/* Sentiment Indicators - Speedometer & Bar Chart */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Fear & Greed - Speedometer */}
+          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
+            <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-primary shrink-0" />
+              <span>Fear & Greed Index</span>
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">Measures market emotion. Extreme fear (low values) may signal buying opportunities, while extreme greed (high values) may signal caution.</p>
+                </TooltipContent>
+              </Tooltip>
+            </h3>
           <ProgressGauge
             value={fearGreed}
             zones={[
@@ -407,12 +428,20 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           </div>
         </Card>
 
-        {/* Social Volume - 3D Bar Chart */}
-        <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30 overflow-hidden">
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
-            <Zap className="w-4 h-4 text-purple-400 shrink-0" />
-            <span className="truncate">Social Volume (7 Days)</span>
-          </h3>
+          {/* Social Volume - 3D Bar Chart */}
+          <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30 overflow-hidden">
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
+              <Zap className="w-4 h-4 text-purple-400 shrink-0" />
+              <span className="truncate">Social Volume (7 Days)</span>
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">Total mentions across social platforms. Spikes often correlate with significant price movements or news events.</p>
+                </TooltipContent>
+              </Tooltip>
+            </h3>
           <div className="overflow-hidden">
             <HistogramChart
               data={[
@@ -436,12 +465,20 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         </Card>
       </div>
 
-      {/* Recent Trends - Timeline */}
-      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-        <h3 className="text-sm font-semibold mb-6 flex items-center gap-2 truncate">
-          <TrendingUp className="w-4 h-4 text-primary shrink-0" />
-          <span className="truncate">Sentiment Timeline (7 Days)</span>
-        </h3>
+        {/* Recent Trends - Timeline */}
+        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
+          <h3 className="text-sm font-semibold mb-6 flex items-center gap-2 truncate">
+            <TrendingUp className="w-4 h-4 text-primary shrink-0" />
+            <span className="truncate">Sentiment Timeline (7 Days)</span>
+            <Tooltip>
+              <TooltipTrigger>
+                <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs">
+                <p className="text-sm">Daily sentiment trends showing shifts in market mood. Look for consistent patterns or sudden changes that may signal trend reversals.</p>
+              </TooltipContent>
+            </Tooltip>
+          </h3>
         <TimelineChart
           events={[
             { date: "Mon", value: 45, change: -5.2, sentiment: "bearish" },
@@ -454,14 +491,23 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           ]}
         />
 
-        {/* 7-Day Heatmap */}
-        <div className="mt-8">
-          <h4 className="text-sm font-semibold mb-3 text-center text-muted-foreground">
-            Weekly Sentiment Heatmap
-          </h4>
-          <SentimentHeatmap dailyValues={[45, 52, 48, 61, 58, 65, sentiment.score]} />
-        </div>
-      </Card>
-    </div>
+          {/* 7-Day Heatmap */}
+          <div className="mt-8">
+            <h4 className="text-sm font-semibold mb-3 text-center text-muted-foreground flex items-center justify-center gap-2">
+              Weekly Sentiment Heatmap
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">Visual intensity map of daily sentiment. Darker colors indicate stronger sentiment (green for bullish, red for bearish).</p>
+                </TooltipContent>
+              </Tooltip>
+            </h4>
+            <SentimentHeatmap dailyValues={[45, 52, 48, 61, 58, 65, sentiment.score]} />
+          </div>
+        </Card>
+      </div>
+    </TooltipProvider>
   );
 };

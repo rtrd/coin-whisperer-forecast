@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   TrendingUp,
   TrendingDown,
@@ -8,6 +9,7 @@ import {
   BarChart3,
   Target,
   Shield,
+  InfoIcon,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProgressGauge } from "@/components/charts/ProgressGauge";
@@ -263,15 +265,24 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      {/* Overall Signal - Progress Gauge */}
-      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_50%)]" />
-        <div className="relative z-10">
-          <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-            <Target className="w-5 h-5 text-primary" />
-            Overall Technical Signal
-          </h3>
+    <TooltipProvider>
+      <div className="space-y-6">
+        {/* Overall Signal - Progress Gauge */}
+        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_50%)]" />
+          <div className="relative z-10">
+            <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+              <Target className="w-5 h-5 text-primary" />
+              Overall Technical Signal
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoIcon className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">Aggregated signal from all technical indicators. BUY suggests upward momentum, SELL indicates downward pressure, HOLD means neutral or mixed signals.</p>
+                </TooltipContent>
+              </Tooltip>
+            </h3>
           <div className="space-y-6">
             <ProgressGauge
               value={overallSignalStrength}
@@ -315,13 +326,23 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
       {/* Individual Indicators - Unique Visualizations */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* RSI - Vertical Thermometer */}
-        {indicators[0] && (
-          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
-            <h4 className="text-sm font-semibold mb-4 flex items-center justify-between">
-              <span>{indicators[0].name}</span>
-              <span className="text-xs text-muted-foreground">{indicators[0].value.toFixed(2)}</span>
-            </h4>
+          {/* RSI - Vertical Thermometer */}
+          {indicators[0] && (
+            <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+              <h4 className="text-sm font-semibold mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span>{indicators[0].name}</span>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-sm">Relative Strength Index measures momentum. Below 30 = oversold (potential buy), above 70 = overbought (potential sell), 30-70 = normal range.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <span className="text-xs text-muted-foreground">{indicators[0].value.toFixed(2)}</span>
+              </h4>
             <div className="flex justify-center">
               <VerticalGauge
                 value={indicators[0].value}
@@ -345,14 +366,22 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           </Card>
         )}
 
-        {/* Moving Averages - Complete Redesign */}
-        <Card className="p-6 bg-gradient-to-br from-blue-900/20 via-cyan-900/10 to-background/80 border-blue-500/20 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
-          <div className="relative">
-            <h4 className="text-sm font-semibold mb-6 flex items-center gap-2">
-              <Activity className="w-4 h-4 text-blue-400" />
-              Moving Averages Analysis
-            </h4>
+          {/* Moving Averages - Complete Redesign */}
+          <Card className="p-6 bg-gradient-to-br from-blue-900/20 via-cyan-900/10 to-background/80 border-blue-500/20 overflow-hidden relative">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
+            <div className="relative">
+              <h4 className="text-sm font-semibold mb-6 flex items-center gap-2">
+                <Activity className="w-4 h-4 text-blue-400" />
+                Moving Averages Analysis
+                <Tooltip>
+                  <TooltipTrigger>
+                    <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="text-sm">Shows average price over 20 and 50 days. Price above SMA = bullish trend, below = bearish. SMA crossovers signal potential trend changes.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </h4>
             
             {/* Visual Price Position */}
             <div className="mb-6 space-y-4">
@@ -457,14 +486,22 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             </div>
           </div>
         </Card>
-
+        
         {/* MACD - Histogram with zero line and legend */}
         {indicators[3] && (
           <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-sm font-semibold flex items-center gap-2">
                 <span className="truncate">{indicators[3].name}</span>
-                <span className="text-xs text-muted-foreground">{indicators[3].value.toFixed(2)}</span>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                  </TooltipTrigger>
+                  <TooltipContent className="max-w-xs">
+                    <p className="text-sm">Moving Average Convergence Divergence shows momentum. Bars above zero = bullish momentum, below zero = bearish. Look for crossovers and divergences.</p>
+                  </TooltipContent>
+                </Tooltip>
+                <span className="text-xs text-muted-foreground ml-auto">{indicators[3].value.toFixed(2)}</span>
               </h4>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Bullish</span>
@@ -502,13 +539,21 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             </div>
           </Card>
         )}
-
+        
         {/* Volume Analysis with legend */}
         <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-800/10 border-purple-500/30 overflow-hidden">
           <div className="flex items-center justify-between mb-4">
             <h4 className="text-sm font-semibold flex items-center gap-2 truncate">
               <BarChart3 className="w-4 h-4 text-purple-400 shrink-0" />
               <span className="truncate">Volume Profile (14 Days)</span>
+              <Tooltip>
+                <TooltipTrigger>
+                  <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
+                </TooltipTrigger>
+                <TooltipContent className="max-w-xs">
+                  <p className="text-sm">Trading volume intensity over time. High volume confirms price movements. Green = buying pressure, Red = selling pressure. Increasing volume = stronger trend.</p>
+                </TooltipContent>
+              </Tooltip>
             </h4>
             <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
               <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Buy Volume</span>
@@ -542,14 +587,21 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         </Card>
       </div>
 
-      {/* Support & Resistance - Complete Redesign */}
-      <Card className="p-6 bg-gradient-to-br from-emerald-900/20 via-red-900/10 to-background/80 border-emerald-500/20 overflow-hidden relative">
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
-        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
-        <div className="relative">
-          <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+      {/* Support & Resistance - Visual Price Ladder */}
+      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.1),transparent_50%),radial-gradient(circle_at_70%_80%,rgba(239,68,68,0.1),transparent_50%)]" />
+        <div className="relative z-10">
+          <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
             <Shield className="w-5 h-5 text-primary" />
             Support & Resistance Levels
+            <Tooltip>
+              <TooltipTrigger>
+                <InfoIcon className="w-4 h-4 text-muted-foreground hover:text-foreground transition-colors" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-xs">
+                <p className="text-sm">Key price levels. Resistance is where selling pressure may stop upward movement. Support is where buying pressure may prevent further decline. Breaks of these levels signal potential trend changes.</p>
+              </TooltipContent>
+            </Tooltip>
           </h3>
           
           {/* Visual Price Ladder */}
@@ -661,5 +713,6 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         </div>
       </Card>
     </div>
+    </TooltipProvider>
   );
 };
