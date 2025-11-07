@@ -66,11 +66,7 @@ const AppRoutes = () => {
   );
 };
 
-const AppWithHooks = () => {
-  useAlerts(); // Initialize alerts functionality
-  useAdRefresh(); // Initialize ad refresh functionality
-  usePerformanceOptimization(); // Initialize performance optimizations
-
+const AppContent = () => {
   return (
     <>
       <TopNavigation />
@@ -79,6 +75,14 @@ const AppWithHooks = () => {
       <AppRoutes />
     </>
   );
+};
+
+const AppWithHooks = () => {
+  useAlerts(); // Initialize alerts functionality
+  useAdRefresh(); // Initialize ad refresh functionality
+  usePerformanceOptimization(); // Initialize performance optimizations
+
+  return <AppContent />;
 };
 
 const App = () => (
