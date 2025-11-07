@@ -13,7 +13,7 @@ import {
   Zap,
   InfoIcon,
 } from "lucide-react";
-import { fetchSentimentData } from "@/services/aiPredictionService";
+import { fetchSentimentData, fetchTechnicalIndicators } from "@/services/aiPredictionService";
 import { SentimentGauge } from "@/components/charts/SentimentGauge";
 import { SparklineChart } from "@/components/charts/SparklineChart";
 import { SentimentHeatmap } from "@/components/charts/SentimentHeatmap";
@@ -46,6 +46,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
 }) => {
   const [sentiment, setSentiment] = useState<SentimentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [tradingVolumeData, setTradingVolumeData] = useState<{ label: string; value: number }[]>([]);
 
   useEffect(() => {
     const transformApiDataToSentiment = (apiData: any): SentimentData => {
@@ -164,6 +165,36 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
     };
 
     fetchData();
+  }, [crypto]);
+
+  // Fetch real trading volume data from CoinGecko
+  useEffect(() => {
+    const loadVolumeData = async () => {
+      try {
+        const technicalData = await fetchTechnicalIndicators(crypto, "7d");
+        
+        if (technicalData && technicalData.length > 0) {
+          // Get last 7 days of volume data
+          const volumeHistory = technicalData.slice(-7).map((d: any, idx: number) => {
+            const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
+            const date = new Date(tsMs);
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+            
+            return {
+              label: dayName,
+              value: d.volume || 0
+            };
+          });
+          
+          setTradingVolumeData(volumeHistory);
+        }
+      } catch (error) {
+        console.error("Failed to fetch volume data:", error);
+        setTradingVolumeData([]);
+      }
+    };
+
+    loadVolumeData();
   }, [crypto]);
 
   const getSentimentColor = (score: number) => {
@@ -336,23 +367,23 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           />
         </Card>
 
-          {/* Social Volume - 3D Bar Chart */}
+          {/* Trading Volume - Real CoinGecko Data */}
           <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30 overflow-hidden">
             <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
               <Zap className="w-4 h-4 text-purple-400 shrink-0" />
-              <span className="truncate">Social Volume (7 Days)</span>
+              <span className="truncate">Trading Volume (7 Days)</span>
               <Tooltip>
                 <TooltipTrigger>
                   <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
-                  <p className="text-sm">Total mentions across social platforms. Spikes often correlate with significant price movements or news events.</p>
+                  <p className="text-sm">Real trading volume from CoinGecko. Higher volume indicates increased market activity and liquidity.</p>
                 </TooltipContent>
               </Tooltip>
             </h3>
           <div className="overflow-hidden">
             <HistogramChart
-              data={sentiment.socialVolume || [
+              data={tradingVolumeData.length > 0 ? tradingVolumeData : [
                 { label: "Mon", value: 0 },
                 { label: "Tue", value: 0 },
                 { label: "Wed", value: 0 },
