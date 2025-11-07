@@ -14,6 +14,7 @@ import { SpeedometerGauge } from "@/components/charts/SpeedometerGauge";
 import { VerticalGauge } from "@/components/charts/VerticalGauge";
 import { PriceChannelChart } from "@/components/charts/PriceChannelChart";
 import { HistogramChart } from "@/components/charts/HistogramChart";
+import { SparklineChart } from "@/components/charts/SparklineChart";
 
 interface PriceData {
   timestamp: number;
@@ -271,7 +272,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             <Target className="w-5 h-5 text-primary" />
             Overall Technical Signal
           </h3>
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-4 min-h-[260px]">
             <SpeedometerGauge
               value={overallSignalStrength}
               zones={[
@@ -279,11 +280,9 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 { min: 33, max: 66, color: "#F59E0B", label: "NEUTRAL" },
                 { min: 66, max: 100, color: "#10B981", label: "BUY" },
               ]}
-              label={`Based on ${indicators.length} indicators`}
             />
-            
             {/* Recommendation Badge */}
-            <div className={`px-6 py-3 rounded-lg font-bold text-lg border-2 animate-pulse`}
+            <div className={`px-6 py-3 rounded-lg font-bold text-lg border-2`}
               style={{ 
                 backgroundColor: `${overallSignalColor}20`,
                 borderColor: overallSignalColor,
@@ -342,51 +341,61 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           </Card>
         )}
 
-        {/* SMA 20/50 - Price Channel */}
+        {/* SMA 20/50 - Clear stats instead of channel chart */}
         <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-          <h4 className="text-sm font-semibold mb-4 truncate">
-            Moving Averages (SMA 20/50)
-          </h4>
-          <div className="overflow-hidden">
-            <PriceChannelChart
-              support={supportLevel}
-              resistance={resistanceLevel}
-              currentPrice={currentPrice}
-              symbol="$"
-              height={180}
-            />
-          </div>
-          <div className="mt-4 flex justify-between gap-2">
-            {indicators[1] && (
-              <div className={`flex-1 px-2 py-2 rounded-lg text-[10px] font-semibold text-center uppercase truncate`}
-                style={{ 
-                  backgroundColor: `${getSignalColor(indicators[1].signal).split(' ')[0].replace('text-', '')}20`,
-                  color: getSignalColor(indicators[1].signal).split(' ')[0].replace('text-', '')
-                }}
-              >
-                SMA 20: {indicators[1].signal}
+          <h4 className="text-sm font-semibold mb-4 truncate">Moving Averages (SMA 20/50)</h4>
+          <div className="space-y-4">
+            {/* Sparkline for recent prices */}
+            <div className="h-12">
+              <SparklineChart data={recentPrices} color="#60A5FA" height={48} />
+            </div>
+            
+            {/* SMA rows */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="rounded-lg border border-border/60 p-3">
+                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                  <span>SMA 20</span>
+                  <span>{sma20.toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full ${currentPrice > sma20 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'}`}>{currentPrice > sma20 ? 'Above' : 'Below'}</span>
+                  <span className="text-xs font-medium">{((Math.abs(currentPrice - sma20) / Math.max(sma20,1)) * 100).toFixed(1)}%</span>
+                </div>
+                <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
+                  <div className={`h-full ${currentPrice > sma20 ? 'bg-emerald-500' : 'bg-red-500'}`} style={{ width: `${Math.min(((Math.abs(currentPrice - sma20) / Math.max(sma20,1)) * 100), 100)}%` }} />
+                </div>
               </div>
-            )}
-            {indicators[2] && (
-              <div className={`flex-1 px-2 py-2 rounded-lg text-[10px] font-semibold text-center uppercase truncate`}
-                style={{ 
-                  backgroundColor: `${getSignalColor(indicators[2].signal).split(' ')[0].replace('text-', '')}20`,
-                  color: getSignalColor(indicators[2].signal).split(' ')[0].replace('text-', '')
-                }}
-              >
-                SMA 50: {indicators[2].signal}
+
+              <div className="rounded-lg border border-border/60 p-3">
+                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                  <span>SMA 50</span>
+                  <span>{sma50.toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className={`text-[10px] px-2 py-0.5 rounded-full ${currentPrice > sma50 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'}`}>{currentPrice > sma50 ? 'Above' : 'Below'}</span>
+                  <span className="text-xs font-medium">{((Math.abs(currentPrice - sma50) / Math.max(sma50,1)) * 100).toFixed(1)}%</span>
+                </div>
+                <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
+                  <div className={`h-full ${currentPrice > sma50 ? 'bg-emerald-500' : 'bg-red-500'}`} style={{ width: `${Math.min(((Math.abs(currentPrice - sma50) / Math.max(sma50,1)) * 100), 100)}%` }} />
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </Card>
 
-        {/* MACD - Histogram */}
+        {/* MACD - Histogram with zero line and legend */}
         {indicators[3] && (
           <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-            <h4 className="text-sm font-semibold mb-4 flex items-center justify-between">
-              <span className="truncate">{indicators[3].name}</span>
-              <span className="text-xs text-muted-foreground shrink-0 ml-2">{indicators[3].value.toFixed(2)}</span>
-            </h4>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-sm font-semibold flex items-center gap-2">
+                <span className="truncate">{indicators[3].name}</span>
+                <span className="text-xs text-muted-foreground">{indicators[3].value.toFixed(2)}</span>
+              </h4>
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Bullish</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Bearish</span>
+              </div>
+            </div>
             <div className="overflow-hidden">
               <HistogramChart
                 data={[
@@ -419,12 +428,18 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           </Card>
         )}
 
-        {/* Volume Analysis */}
+        {/* Volume Analysis with legend */}
         <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-800/10 border-purple-500/30 overflow-hidden">
-          <h4 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
-            <BarChart3 className="w-4 h-4 text-purple-400 shrink-0" />
-            <span className="truncate">Volume Profile (14 Days)</span>
-          </h4>
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-sm font-semibold flex items-center gap-2 truncate">
+              <BarChart3 className="w-4 h-4 text-purple-400 shrink-0" />
+              <span className="truncate">Volume Profile (14 Days)</span>
+            </h4>
+            <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-500" /> Buy Volume</span>
+              <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-500" /> Sell Volume</span>
+            </div>
+          </div>
           <div className="overflow-hidden">
             <HistogramChart
               data={[
@@ -452,7 +467,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         </Card>
       </div>
 
-      {/* Support & Resistance - Combined Price Channel */}
+      {/* Support & Resistance - Simplified channel */}
       <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Shield className="w-5 h-5 text-primary" />
@@ -466,6 +481,10 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             symbol="$"
             height={220}
           />
+        </div>
+        <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
+          <div className="px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Support: ${analysis.supportLevel.toFixed(2)}</div>
+          <div className="px-3 py-2 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 text-right">Resistance: ${analysis.resistanceLevel.toFixed(2)}</div>
         </div>
       </Card>
     </div>

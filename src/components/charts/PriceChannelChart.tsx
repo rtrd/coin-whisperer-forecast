@@ -69,15 +69,7 @@ export const PriceChannelChart: React.FC<PriceChannelChartProps> = ({
             </div>
           </div>
 
-          {/* Distance indicators */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 space-y-1 text-center max-w-[140px]">
-            <div className="text-[10px] text-emerald-400 bg-emerald-900/30 px-1.5 py-0.5 rounded truncate">
-              ↑ {distanceFromSupport.toFixed(1)}% support
-            </div>
-            <div className="text-[10px] text-red-400 bg-red-900/30 px-1.5 py-0.5 rounded truncate">
-              ↑ {distanceFromResistance.toFixed(1)}% resist
-            </div>
-          </div>
+          {/* Distance indicators removed to reduce clutter */}
         </div>
 
         {/* Support level */}
@@ -92,15 +84,15 @@ export const PriceChannelChart: React.FC<PriceChannelChartProps> = ({
         </div>
       </div>
 
-      {/* Breakout alerts */}
+      {/* Breakout alerts repositioned */}
       {isNearResistance && (
-        <div className="absolute top-0 right-0 text-[10px] font-semibold text-red-400 bg-red-900/30 px-2 py-1 rounded animate-pulse">
-          Near Resistance!
+        <div className="absolute top-2 left-2 text-[10px] font-semibold text-red-400 bg-red-900/30 px-2 py-1 rounded">
+          Near Resistance
         </div>
       )}
       {isNearSupport && (
-        <div className="absolute bottom-0 right-0 text-[10px] font-semibold text-emerald-400 bg-emerald-900/30 px-2 py-1 rounded animate-pulse">
-          Near Support!
+        <div className="absolute bottom-2 left-2 text-[10px] font-semibold text-emerald-400 bg-emerald-900/30 px-2 py-1 rounded">
+          Near Support
         </div>
       )}
     </div>

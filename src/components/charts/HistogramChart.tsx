@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell } from "recharts";
+import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, Cell, CartesianGrid, ReferenceLine } from "recharts";
 
 interface HistogramChartProps {
   data: { value: number; label: string }[];
@@ -17,7 +17,8 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
   return (
     <div className="w-full overflow-hidden px-2">
       <ResponsiveContainer width="100%" height={height}>
-        <BarChart data={data} margin={{ top: 5, right: 10, left: 0, bottom: 5 }}>
+        <BarChart data={data} margin={{ top: 10, right: 12, left: 0, bottom: 8 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" opacity={0.4} />
           <XAxis 
             dataKey="label" 
             tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
@@ -30,6 +31,7 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
             tickLine={false}
             width={40}
           />
+          <ReferenceLine y={0} stroke="hsl(var(--border))" strokeDasharray="4 4" />
           <Tooltip
             contentStyle={{
               backgroundColor: 'hsl(var(--popover))',

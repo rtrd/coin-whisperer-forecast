@@ -310,10 +310,15 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
               color={getSentimentColor(sentiment.score)}
               emoji={sentimentEmoji}
             />
-            <div className="mt-4 text-center">
+            <div className="mt-4 text-center space-y-2">
               <div className="flex items-center gap-2 justify-center">
                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-sm text-gray-400">Live Sentiment Analysis</span>
+                <span className="text-sm text-muted-foreground">Live Sentiment Analysis</span>
+              </div>
+              <div className="flex items-center justify-center">
+                <span className="text-xs px-2 py-1 rounded bg-muted/40 text-muted-foreground">
+                  Fear & Greed: {Math.round(fearGreed)} ({sentiment.label})
+                </span>
               </div>
             </div>
           </div>
@@ -386,7 +391,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
             <Activity className="w-4 h-4 text-primary shrink-0" />
             <span className="truncate">Fear & Greed Index</span>
           </h3>
-          <div className="flex justify-center overflow-hidden">
+          <div className="flex justify-center overflow-hidden min-h-[220px]">
             <SpeedometerGauge
               value={fearGreed}
               zones={[

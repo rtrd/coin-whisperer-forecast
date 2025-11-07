@@ -96,9 +96,7 @@ export const DonutGaugeChart: React.FC<DonutGaugeChartProps> = ({
             {label}
           </div>
           {innerValue && (
-            <div className="text-xs text-muted-foreground mt-2 px-2 py-0.5 rounded bg-muted/50">
-              Fear & Greed: {Math.round(displayInnerValue)}
-            </div>
+            <div className="sr-only">Fear & Greed: {Math.round(displayInnerValue)}</div>
           )}
         </div>
 

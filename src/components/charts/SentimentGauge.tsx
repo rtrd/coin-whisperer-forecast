@@ -21,23 +21,25 @@ export const SentimentGauge: React.FC<SentimentGaugeProps> = ({
   const data = [{ value, fill: getColor(value) }];
 
   return (
-    <ResponsiveContainer width={size} height={size / 2}>
-      <RadialBarChart
-        cx="50%"
-        cy="100%"
-        innerRadius="70%"
-        outerRadius="100%"
-        data={data}
-        startAngle={180}
-        endAngle={0}
-      >
-        <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-        <RadialBar
-          background={{ fill: "rgba(255,255,255,0.1)" }}
-          dataKey="value"
-          cornerRadius={4}
-        />
-      </RadialBarChart>
-    </ResponsiveContainer>
+    <div style={{ width: size, height: size / 2 }}>
+      <ResponsiveContainer width="100%" height="100%">
+        <RadialBarChart
+          cx="50%"
+          cy="100%"
+          innerRadius="70%"
+          outerRadius="100%"
+          data={data}
+          startAngle={180}
+          endAngle={0}
+        >
+          <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
+          <RadialBar
+            background={{ fill: "hsl(var(--muted))" }}
+            dataKey="value"
+            cornerRadius={4}
+          />
+        </RadialBarChart>
+      </ResponsiveContainer>
+    </div>
   );
 };
