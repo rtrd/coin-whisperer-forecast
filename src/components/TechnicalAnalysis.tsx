@@ -95,7 +95,9 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     let gains = 0;
     let losses = 0;
 
-    for (let i = 1; i <= period; i++) {
+    // Calculate from the LAST 'period' prices (most recent data)
+    const startIdx = prices.length - period;
+    for (let i = startIdx; i < prices.length; i++) {
       const change = prices[i] - prices[i - 1];
       if (change > 0) gains += change;
       else losses -= change;
@@ -103,8 +105,11 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
     const avgGain = gains / period;
     const avgLoss = losses / period;
-    const rs = avgGain / avgLoss;
 
+    // Handle edge cases for division by zero
+    if (avgLoss === 0) return avgGain === 0 ? 50 : 100;
+    
+    const rs = avgGain / avgLoss;
     return 100 - 100 / (1 + rs);
   };
 
