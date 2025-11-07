@@ -29,7 +29,10 @@ interface SentimentData {
     name: string;
     sentiment: number;
     mentions: number;
+    trend?: number[];
   }[];
+  socialVolume?: { label: string; value: number }[];
+  sentimentTimeline?: { date: string; value: number; change: number; sentiment: "bullish" | "bearish" | "neutral" }[];
 }
 
 interface SentimentAnalysisProps {
@@ -343,15 +346,8 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         {sentiment.sources.map((source, index) => {
           const Icon = getSourceIcon(source.name);
           const sourceColor = getSentimentColor(source.sentiment);
-          const trendData = [
-            Math.max(0, source.sentiment + (Math.random() - 0.5) * 20),
-            Math.max(0, source.sentiment + (Math.random() - 0.5) * 20),
-            Math.max(0, source.sentiment + (Math.random() - 0.5) * 20),
-            Math.max(0, source.sentiment + (Math.random() - 0.5) * 20),
-            Math.max(0, source.sentiment + (Math.random() - 0.5) * 20),
-            Math.max(0, source.sentiment + (Math.random() - 0.5) * 20),
-            source.sentiment
-          ];
+          // Use real historical data - no mock trend data
+          const trendData = source.trend || [source.sentiment];
           
           return (
             <Card
@@ -422,10 +418,6 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
               { min: 75, max: 100, color: "#10B981", label: "Extreme" },
             ]}
           />
-          <div className="mt-6 flex items-center justify-center gap-2 text-xs">
-            <TrendingUp className="w-3 h-3 text-emerald-400" />
-            <span className="text-emerald-400">+15 vs yesterday</span>
-          </div>
         </Card>
 
           {/* Social Volume - 3D Bar Chart */}
@@ -444,23 +436,19 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
             </h3>
           <div className="overflow-hidden">
             <HistogramChart
-              data={[
-                { label: "Mon", value: 12500 },
-                { label: "Tue", value: 15200 },
-                { label: "Wed", value: 13800 },
-                { label: "Thu", value: 18900 },
-                { label: "Fri", value: 22100 },
-                { label: "Sat", value: 19500 },
-                { label: "Sun", value: 24800 },
+              data={sentiment.socialVolume || [
+                { label: "Mon", value: 0 },
+                { label: "Tue", value: 0 },
+                { label: "Wed", value: 0 },
+                { label: "Thu", value: 0 },
+                { label: "Fri", value: 0 },
+                { label: "Sat", value: 0 },
+                { label: "Sun", value: 0 },
               ]}
               height={120}
               positiveColor="#A855F7"
               negativeColor="#EC4899"
             />
-          </div>
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs truncate">
-            <TrendingUp className="w-3 h-3 text-purple-400 shrink-0" />
-            <span className="text-purple-400 truncate">+32% increase</span>
           </div>
         </Card>
       </div>
@@ -480,14 +468,8 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
             </Tooltip>
           </h3>
         <TimelineChart
-          events={[
-            { date: "Mon", value: 45, change: -5.2, sentiment: "bearish" },
-            { date: "Tue", value: 52, change: 7.8, sentiment: "neutral" },
-            { date: "Wed", value: 48, change: -4.1, sentiment: "neutral" },
-            { date: "Thu", value: 61, change: 13.2, sentiment: "bullish" },
-            { date: "Fri", value: 58, change: -3.0, sentiment: "bullish" },
-            { date: "Sat", value: 65, change: 7.1, sentiment: "bullish" },
-            { date: "Sun", value: sentiment.score, change: sentiment.score - 65, sentiment: sentiment.label === "Bullish" || sentiment.label === "Very Bullish" ? "bullish" : sentiment.label === "Bearish" || sentiment.label === "Very Bearish" ? "bearish" : "neutral" },
+          events={sentiment.sentimentTimeline || [
+            { date: "Sun", value: sentiment.score, change: 0, sentiment: (sentiment.label === "Bullish" || sentiment.label === "Very Bullish" ? "bullish" : sentiment.label === "Bearish" || sentiment.label === "Very Bearish" ? "bearish" : "neutral") as "bullish" | "bearish" | "neutral" },
           ]}
         />
 
@@ -504,7 +486,7 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 </TooltipContent>
               </Tooltip>
             </h4>
-            <SentimentHeatmap dailyValues={[45, 52, 48, 61, 58, 65, sentiment.score]} />
+            <SentimentHeatmap dailyValues={sentiment.sentimentTimeline?.map(t => t.value) || [sentiment.score]} />
           </div>
         </Card>
       </div>

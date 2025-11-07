@@ -1,17 +1,24 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
 import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
 import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
+import { processSentimentData } from "@/services/sentimentDataService";
 
 interface TokenDetailAnalysisProps {
   cryptoId: string;
   cryptoData: any[] | undefined;
   dataLoading: boolean;
   prediction: any;
-  technicalIndicator?: any[]; // Optional, can be undefined if not used
-  sentimentData?: any; // Optional sentiment data prop
+  technicalIndicator?: any[];
+  sentimentData?: any;
+}
+
+interface ProcessedSentimentData {
+  sentimentTimeline?: { date: string; value: number; change: number; sentiment: "bullish" | "bearish" | "neutral" }[];
+  socialVolume?: { label: string; value: number }[];
+  sourcesWithTrends?: { sentiment: number; mentions: number; trend?: number[] }[];
 }
 
 export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
@@ -19,8 +26,34 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   cryptoData,
   dataLoading,
   prediction,
-  sentimentData, // Added this line
+  sentimentData,
 }) => {
+  const [processedSentiment, setProcessedSentiment] = useState<ProcessedSentimentData | null>(null);
+  const [volumeData, setVolumeData] = useState<{ label: string; value: number }[]>([]);
+  const [macdData, setMacdData] = useState<{ label: string; value: number }[]>([]);
+
+  useEffect(() => {
+    // Process sentiment data from API
+    const loadSentimentData = async () => {
+      const processed = await processSentimentData(cryptoId);
+      if (processed) {
+        setProcessedSentiment(processed);
+      }
+    };
+    
+    loadSentimentData();
+  }, [cryptoId]);
+
+  useEffect(() => {
+    // Extract volume data from cryptoData
+    if (cryptoData && cryptoData.length > 0) {
+      const volumes = cryptoData.slice(-14).map((d, i) => ({
+        label: String(i + 1),
+        value: d.volume || 0
+      }));
+      setVolumeData(volumes);
+    }
+  }, [cryptoData]);
   return (
     <div className="space-y-6">
       {/* Market Analysis - Combined Sentiment and Technical */}
@@ -48,7 +81,10 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
             <TabsContent value="sentiment" className="mt-6">
               <LockedSentimentAnalysis
                 crypto={cryptoId}
-                sentimentData={sentimentData}
+                sentimentData={{
+                  ...sentimentData,
+                  ...processedSentiment
+                }}
               />
             </TabsContent>
 
@@ -56,6 +92,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
               <LockedTechnicalAnalysis
                 data={cryptoData}
                 isLoading={dataLoading}
+                volumeData={volumeData}
+                macdHistogram={macdData}
               />
             </TabsContent>
           </Tabs>

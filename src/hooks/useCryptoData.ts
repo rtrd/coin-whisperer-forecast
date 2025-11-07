@@ -50,13 +50,14 @@ const fetchCryptoData = async (
     );
 
     if (!hasValidPrice) {
+      console.warn('No valid price data received from API');
       return generateMockData(crypto, timeframe, AllCryptosData);
     }
     return data;
   } catch (error) {
     console.error("Error fetching from secure proxy:", error);
-
-    // Fallback to mock data if proxy fails
+    // Only use mock data as absolute last resort
+    console.warn('Using fallback mock data due to API failure');
     return generateMockData(crypto, timeframe, AllCryptosData);
   }
 };
