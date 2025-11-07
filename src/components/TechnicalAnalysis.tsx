@@ -450,7 +450,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                       <>
                         {/* SMA 50 Line */}
                         <div 
-                          className="absolute left-0 right-0 h-0.5 bg-orange-500 z-10"
+                          className="absolute left-0 right-0 h-px bg-orange-500 z-10"
                           style={{ top: `${getSma50Pos()}%` }}
                         >
                           <div className="absolute left-2 -top-3 text-[10px] font-semibold text-orange-400 bg-background/95 px-2 py-1 rounded border border-orange-500/30 whitespace-nowrap">
@@ -460,7 +460,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                         
                         {/* SMA 20 Line */}
                         <div 
-                          className="absolute left-0 right-0 h-0.5 bg-cyan-500 z-10"
+                          className="absolute left-0 right-0 h-px bg-cyan-500 z-10"
                           style={{ top: `${getSma20Pos()}%` }}
                         >
                           <div className="absolute left-2 -top-3 text-[10px] font-semibold text-cyan-400 bg-background/95 px-2 py-1 rounded border border-cyan-500/30 whitespace-nowrap">
@@ -468,25 +468,14 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                           </div>
                         </div>
                         
-                        {/* Current Price Vertical Indicator */}
+                        {/* Current Price Marker */}
                         <div 
-                          className="absolute inset-y-0 w-1 bg-gradient-to-b from-primary/30 via-primary to-primary/30 z-20"
+                          className="absolute left-0 right-0 h-px bg-primary z-20"
                           style={{ 
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            boxShadow: '0 0 20px hsl(var(--primary) / 0.6)' 
-                          }}
-                        />
-                        
-                        {/* Current Price Horizontal Marker */}
-                        <div 
-                          className="absolute left-0 right-0 h-1 bg-primary z-30"
-                          style={{ 
-                            top: `${getCurrentPricePos()}%`,
-                            boxShadow: '0 0 15px hsl(var(--primary) / 0.8)'
+                            top: `${getCurrentPricePos()}%`
                           }}
                         >
-                          <div className="absolute right-2 -top-3.5 text-xs font-bold text-primary bg-background/95 px-3 py-1.5 rounded-lg border-2 border-primary/50 whitespace-nowrap shadow-xl">
+                          <div className="absolute right-2 -top-3 text-[10px] font-bold text-primary bg-background/95 px-2 py-1 rounded border-2 border-primary/50 whitespace-nowrap">
                             Current: ${currentPrice.toFixed(2)}
                           </div>
                         </div>
