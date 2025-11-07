@@ -33,15 +33,25 @@ export const HistogramChart: React.FC<HistogramChartProps> = ({
           />
           <ReferenceLine y={0} stroke="hsl(var(--border))" strokeDasharray="4 4" />
           <Tooltip
-            contentStyle={{
-              backgroundColor: 'hsl(var(--popover))',
-              border: '1px solid hsl(var(--border))',
-              borderRadius: '8px',
-              fontSize: '12px',
-              color: 'hsl(var(--popover-foreground))',
+            content={({ active, payload }) => {
+              if (active && payload && payload.length) {
+                const data = payload[0];
+                return (
+                  <div style={{
+                    backgroundColor: 'hsl(var(--popover))',
+                    border: '1px solid hsl(var(--border))',
+                    borderRadius: '8px',
+                    padding: '8px 12px',
+                    fontSize: '12px',
+                    color: 'hsl(var(--popover-foreground))',
+                  }}>
+                    <div style={{ fontWeight: 'bold', marginBottom: '4px' }}>{data.payload.label}</div>
+                    <div>Volume: {typeof data.value === 'number' ? data.value.toLocaleString(undefined, { maximumFractionDigits: 0 }) : data.value}</div>
+                  </div>
+                );
+              }
+              return null;
             }}
-            labelStyle={{ color: 'hsl(var(--popover-foreground))', fontWeight: 'bold' }}
-            itemStyle={{ color: 'hsl(var(--popover-foreground))' }}
           />
           <Bar dataKey="value" radius={[4, 4, 0, 0]} animationDuration={800}>
             {data.map((entry, index) => (

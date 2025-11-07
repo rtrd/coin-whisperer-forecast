@@ -12,18 +12,20 @@ const fetchCryptoData = async (
   timeframe: string,
   AllCryptosData: []
 ): Promise<PriceData[]> => {
+  // Map timeframes to intervals that ensure we get at least 14 days
+  let interval = timeframe;
   if (timeframe === "7d") {
-    timeframe = "1w";
-  }
-  if (timeframe === "30d") {
-    timeframe = "1m";
+    interval = "2w"; // Get 2 weeks to ensure 14 days
+  } else if (timeframe === "30d") {
+    interval = "1m";
   } else if (timeframe === "90d") {
-    timeframe = "3m";
+    interval = "3m";
   }
+  
   try {
     // Use Supabase Edge Function instead of direct API call
     const response = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=${timeframe}`,
+      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=${interval}`,
       {
         method: "GET",
         headers: {
