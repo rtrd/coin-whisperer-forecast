@@ -383,6 +383,24 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             >
               {indicators[0].signal}
             </div>
+            
+            {/* RSI Interpretation */}
+            <div className="mt-4 space-y-2 text-xs">
+              <div className="flex justify-between items-center p-2 rounded-lg bg-muted/30">
+                <span className="text-muted-foreground">Status</span>
+                <span className="font-semibold text-foreground">
+                  {indicators[0].value < 30 ? 'Oversold - Potential Buy' : 
+                   indicators[0].value > 70 ? 'Overbought - Potential Sell' : 
+                   'Neutral Range'}
+                </span>
+              </div>
+              <div className="flex justify-between items-center p-2 rounded-lg bg-muted/30">
+                <span className="text-muted-foreground">Momentum</span>
+                <span className="font-semibold text-foreground">
+                  {indicators[0].value > 50 ? 'Bullish' : 'Bearish'}
+                </span>
+              </div>
+            </div>
           </Card>
         )}
 
@@ -403,43 +421,75 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 </Tooltip>
               </h4>
             
-            {/* Visual Price Position */}
+              {/* Visual Price Position */}
             <div className="mb-6 space-y-4">
               <div className="text-center space-y-2">
                 <div className="text-xs text-muted-foreground">Current Price Position</div>
-                <div className="relative h-32 bg-gradient-to-b from-red-500/10 via-yellow-500/10 to-emerald-500/10 rounded-lg border border-border/50 overflow-hidden">
-                  {/* SMA 50 Line */}
-                  <div 
-                    className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-orange-500 to-transparent z-10"
-                    style={{ top: '25%' }}
-                  >
-                    <div className="absolute -left-2 -top-2 text-[10px] font-semibold text-orange-400 bg-background/80 px-2 py-0.5 rounded whitespace-nowrap">
-                      SMA 50: ${sma50.toFixed(2)}
-                    </div>
-                  </div>
-                  
-                  {/* SMA 20 Line */}
-                  <div 
-                    className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent z-10"
-                    style={{ top: '50%' }}
-                  >
-                    <div className="absolute -left-2 -top-2 text-[10px] font-semibold text-cyan-400 bg-background/80 px-2 py-0.5 rounded whitespace-nowrap">
-                      SMA 20: ${sma20.toFixed(2)}
-                    </div>
-                  </div>
-                  
-                  {/* Current Price Marker */}
-                  <div 
-                    className="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary/50 via-primary to-primary/50 z-20"
-                    style={{ 
-                      top: 0,
-                      boxShadow: '0 0 20px hsl(var(--primary))' 
-                    }}
-                  >
-                    <div className="absolute top-1/2 -translate-y-1/2 left-2 text-xs font-bold text-primary bg-background/90 px-3 py-1 rounded-lg border border-primary/30 whitespace-nowrap shadow-lg">
-                      ${currentPrice.toFixed(2)}
-                    </div>
-                  </div>
+                <div className="relative h-40 bg-gradient-to-b from-background/50 to-background/30 rounded-lg border border-border/50 overflow-hidden">
+                  {/* Calculate relative positions (0 = bottom, 100 = top) */}
+                  {(() => {
+                    const minPrice = Math.min(currentPrice, sma20, sma50) * 0.98;
+                    const maxPrice = Math.max(currentPrice, sma20, sma50) * 1.02;
+                    const range = maxPrice - minPrice;
+                    
+                    const getSma50Pos = () => 100 - ((sma50 - minPrice) / range * 100);
+                    const getSma20Pos = () => 100 - ((sma20 - minPrice) / range * 100);
+                    const getCurrentPricePos = () => 100 - ((currentPrice - minPrice) / range * 100);
+                    
+                    return (
+                      <>
+                        {/* SMA 50 Line */}
+                        <div 
+                          className="absolute left-0 right-0 h-0.5 bg-orange-500 z-10"
+                          style={{ top: `${getSma50Pos()}%` }}
+                        >
+                          <div className="absolute left-2 -top-3 text-[10px] font-semibold text-orange-400 bg-background/95 px-2 py-1 rounded border border-orange-500/30 whitespace-nowrap">
+                            SMA 50: ${sma50.toFixed(2)}
+                          </div>
+                        </div>
+                        
+                        {/* SMA 20 Line */}
+                        <div 
+                          className="absolute left-0 right-0 h-0.5 bg-cyan-500 z-10"
+                          style={{ top: `${getSma20Pos()}%` }}
+                        >
+                          <div className="absolute left-2 -top-3 text-[10px] font-semibold text-cyan-400 bg-background/95 px-2 py-1 rounded border border-cyan-500/30 whitespace-nowrap">
+                            SMA 20: ${sma20.toFixed(2)}
+                          </div>
+                        </div>
+                        
+                        {/* Current Price Vertical Indicator */}
+                        <div 
+                          className="absolute inset-y-0 w-1 bg-gradient-to-b from-primary/30 via-primary to-primary/30 z-20"
+                          style={{ 
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            boxShadow: '0 0 20px hsl(var(--primary) / 0.6)' 
+                          }}
+                        />
+                        
+                        {/* Current Price Horizontal Marker */}
+                        <div 
+                          className="absolute left-0 right-0 h-1 bg-primary z-30"
+                          style={{ 
+                            top: `${getCurrentPricePos()}%`,
+                            boxShadow: '0 0 15px hsl(var(--primary) / 0.8)'
+                          }}
+                        >
+                          <div className="absolute right-2 -top-3.5 text-xs font-bold text-primary bg-background/95 px-3 py-1.5 rounded-lg border-2 border-primary/50 whitespace-nowrap shadow-xl">
+                            Current: ${currentPrice.toFixed(2)}
+                          </div>
+                        </div>
+                        
+                        {/* Grid lines for reference */}
+                        <div className="absolute inset-0 flex flex-col justify-between py-2 pointer-events-none">
+                          {[0, 1, 2, 3, 4].map((i) => (
+                            <div key={i} className="h-px bg-border/20" />
+                          ))}
+                        </div>
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
               
@@ -529,10 +579,16 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
               </div>
             </div>
             <div className="overflow-hidden">
-              <HistogramChart
-                data={macdHistogram || calculatedMACDHistogram || []}
-                height={140}
-              />
+              {(macdHistogram && macdHistogram.length > 0) || (calculatedMACDHistogram && calculatedMACDHistogram.length > 0) ? (
+                <HistogramChart
+                  data={macdHistogram || calculatedMACDHistogram}
+                  height={140}
+                />
+              ) : (
+                <div className="flex items-center justify-center h-[140px] text-muted-foreground text-sm">
+                  Calculating MACD histogram...
+                </div>
+              )}
             </div>
             <div className={`mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center uppercase`}
               style={{ 
