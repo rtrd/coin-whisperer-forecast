@@ -17,6 +17,8 @@ import {
   Zap,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MiniRadialGauge } from "@/components/charts/MiniRadialGauge";
+import { SentimentGauge } from "@/components/charts/SentimentGauge";
 
 interface PriceData {
   timestamp: number;
@@ -282,43 +284,56 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
-        {/* Overall Signal - Enhanced */}
-        <div className="p-4 bg-gray-700/40 rounded-xl border border-gray-600/30 shadow-lg">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-blue-500/20">
-                <Target className="h-4 w-4 text-blue-400" />
+        {/* Overall Signal - Enhanced with Gauge */}
+        <div className="relative p-6 bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-cyan-900/30 rounded-xl border border-blue-500/30 shadow-lg overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 animate-pulse" />
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-lg bg-blue-500/30 shadow-lg shadow-blue-500/20">
+                  <Target className="h-5 w-5 text-blue-300" />
+                </div>
+                <span className="text-base font-semibold text-gray-100">
+                  Overall Signal
+                </span>
               </div>
-              <span className="text-sm font-semibold text-gray-200">
-                Overall Signal
-              </span>
+              <Badge
+                variant="outline"
+                className={`${getSignalColor(
+                  overallTrend
+                )} font-semibold backdrop-blur-sm shadow-lg text-sm`}
+              >
+                {getSignalIcon(overallTrend)}
+                <span className="ml-2 capitalize">{overallTrend}</span>
+              </Badge>
             </div>
-            <Badge
-              variant="outline"
-              className={`${getSignalColor(
-                overallTrend
-              )} font-semibold backdrop-blur-sm`}
-            >
-              {getSignalIcon(overallTrend)}
-              <span className="ml-2 capitalize">{overallTrend}</span>
-            </Badge>
-          </div>
-          <Progress
-            value={Math.abs(overallSignal) * 50}
-            className={`h-3 ${
-              overallTrend === "buy"
-                ? "[&>div]:bg-emerald-400"
-                : overallTrend === "sell"
-                ? "[&>div]:bg-red-400"
-                : "[&>div]:bg-amber-400"
-            }`}
-          />
-          <div className="flex justify-between mt-2 text-xs text-gray-400">
-            <span>
-              Strength:{" "}
-              {(Math.min(Math.abs(overallSignal), 1) * 100).toFixed(0)}%
-            </span>
-            <span>Confidence: High</span>
+            
+            <div className="flex justify-center my-6">
+              <MiniRadialGauge
+                value={Math.abs(overallSignal) * 100}
+                color={
+                  overallTrend === "buy"
+                    ? "#10B981"
+                    : overallTrend === "sell"
+                    ? "#EF4444"
+                    : "#FBBF24"
+                }
+                label="Strength"
+                size={160}
+              />
+            </div>
+            
+            <div className="flex justify-between text-sm">
+              <div className="text-center flex-1">
+                <div className="text-gray-400 text-xs mb-1">Confidence</div>
+                <div className="text-white font-bold">High</div>
+              </div>
+              <div className="w-px bg-gray-600/30" />
+              <div className="text-center flex-1">
+                <div className="text-gray-400 text-xs mb-1">Timeframe</div>
+                <div className="text-white font-bold">24h</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -333,53 +348,66 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           {indicators.map((indicator, index) => (
             <div
               key={index}
-              className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+              className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/5 hover:scale-[1.02]"
             >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-200">
-                  {indicator.name}
-                </span>
-                <Badge
-                  variant="outline"
-                  className={`${getSignalColor(
-                    indicator.signal
-                  )} text-xs font-medium backdrop-blur-sm`}
-                >
-                  {getSignalIcon(indicator.signal)}
-                  <span className="ml-1 capitalize">{indicator.signal}</span>
-                </Badge>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-gray-600/40 group-hover:bg-gray-600/60 transition-colors">
+                    {indicator.signal === "buy" ? (
+                      <TrendingUp className="h-4 w-4 text-emerald-400" />
+                    ) : indicator.signal === "sell" ? (
+                      <TrendingDown className="h-4 w-4 text-red-400" />
+                    ) : (
+                      <Activity className="h-4 w-4 text-amber-400" />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium text-gray-200 block">
+                      {indicator.name}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {indicator.name.includes("SMA") ||
+                      indicator.name.includes("MACD")
+                        ? `$${
+                            indicator.value >= 1000
+                              ? indicator.value.toLocaleString("en-US", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 5,
+                                })
+                              : indicator.value.toFixed(5)
+                          }`
+                        : indicator.value.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <SentimentGauge value={indicator.strength * 100} size={80} />
+                  <Badge
+                    variant="outline"
+                    className={`${getSignalColor(
+                      indicator.signal
+                    )} text-xs font-medium backdrop-blur-sm shadow-lg`}
+                  >
+                    {getSignalIcon(indicator.signal)}
+                    <span className="ml-1 capitalize">{indicator.signal}</span>
+                  </Badge>
+                </div>
               </div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-gray-400 font-medium">
-                  {indicator.name.includes("SMA") ||
-                  indicator.name.includes("MACD")
-                    ? `$${
-                        indicator.value >= 1000
-                          ? indicator.value.toLocaleString("en-US", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 5,
-                            })
-                          : indicator.value.toFixed(5)
-                      }`
-                    : indicator.value.toFixed(5)}
-                </span>
-                <span className="text-xs text-gray-400 font-medium">
-                  {indicator.name.includes("MACD")
-                    ? (indicator.strength * 100).toFixed(2)
-                    : (indicator.strength * 100).toFixed(2)}
-                  % strength
+              <div className="flex items-center gap-2">
+                <Progress
+                  value={indicator.strength * 100}
+                  className={`h-2 flex-1 ${
+                    indicator.signal === "buy"
+                      ? "[&>div]:bg-gradient-to-r [&>div]:from-emerald-500 [&>div]:to-emerald-400"
+                      : indicator.signal === "sell"
+                      ? "[&>div]:bg-gradient-to-r [&>div]:from-red-500 [&>div]:to-red-400"
+                      : "[&>div]:bg-gradient-to-r [&>div]:from-amber-500 [&>div]:to-amber-400"
+                  }`}
+                />
+                <span className="text-xs text-gray-400 font-medium whitespace-nowrap">
+                  {(indicator.strength * 100).toFixed(0)}%
                 </span>
               </div>
-              <Progress
-                value={indicator.strength * 100}
-                className={`h-2 ${
-                  indicator.signal === "buy"
-                    ? "[&>div]:bg-emerald-400"
-                    : indicator.signal === "sell"
-                    ? "[&>div]:bg-red-400"
-                    : "[&>div]:bg-amber-400"
-                }`}
-              />
             </div>
           ))}
         </div>
@@ -392,48 +420,66 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
               Key Price Levels
             </h4>
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="p-4 bg-emerald-900/20 rounded-xl border border-emerald-700/30 hover:border-emerald-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="p-1 rounded-full bg-emerald-500/20">
-                  <TrendingUp className="h-3 w-3 text-emerald-400" />
+          <div className="grid grid-cols-2 gap-4">
+            <div className="relative p-5 bg-gradient-to-br from-emerald-900/30 to-emerald-800/20 rounded-xl border border-emerald-700/40 hover:border-emerald-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-emerald-500/10 group-hover:from-emerald-500/5 group-hover:to-emerald-500/15 transition-all duration-300" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-1.5 rounded-full bg-emerald-500/30 shadow-lg shadow-emerald-500/20">
+                    <TrendingUp className="h-4 w-4 text-emerald-300" />
+                  </div>
+                  <p className="text-xs text-emerald-300 font-semibold">
+                    Support Level
+                  </p>
                 </div>
-                <p className="text-xs text-emerald-400 font-semibold">
-                  Support Level
+                <p className="text-xl font-bold text-white mb-2">
+                  $
+                  {supportLevel >= 1000
+                    ? supportLevel.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 5,
+                      })
+                    : supportLevel.toFixed(5)}
                 </p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-1.5 bg-emerald-900/30 rounded-full overflow-hidden">
+                    <div className="h-full w-3/4 bg-gradient-to-r from-emerald-400 to-emerald-300 rounded-full" />
+                  </div>
+                  <p className="text-xs text-emerald-300/80 whitespace-nowrap">
+                    Strong
+                  </p>
+                </div>
               </div>
-              <p className="text-lg font-bold text-white">
-                $
-                {supportLevel >= 1000
-                  ? supportLevel.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 5,
-                    })
-                  : supportLevel.toFixed(5)}
-              </p>
-              <p className="text-xs text-emerald-300/80">
-                Strong buying interest
-              </p>
             </div>
-            <div className="p-4 bg-red-900/20 rounded-xl border border-red-700/30 hover:border-red-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/10">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="p-1 rounded-full bg-red-500/20">
-                  <TrendingDown className="h-3 w-3 text-red-400" />
+            <div className="relative p-5 bg-gradient-to-br from-red-900/30 to-red-800/20 rounded-xl border border-red-700/40 hover:border-red-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 to-red-500/10 group-hover:from-red-500/5 group-hover:to-red-500/15 transition-all duration-300" />
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="p-1.5 rounded-full bg-red-500/30 shadow-lg shadow-red-500/20">
+                    <TrendingDown className="h-4 w-4 text-red-300" />
+                  </div>
+                  <p className="text-xs text-red-300 font-semibold">
+                    Resistance Level
+                  </p>
                 </div>
-                <p className="text-xs text-red-400 font-semibold">
-                  Resistance Level
+                <p className="text-xl font-bold text-white mb-2">
+                  $
+                  {resistanceLevel >= 1000
+                    ? resistanceLevel.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 5,
+                      })
+                    : resistanceLevel.toFixed(5)}
                 </p>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 h-1.5 bg-red-900/30 rounded-full overflow-hidden">
+                    <div className="h-full w-2/3 bg-gradient-to-r from-red-400 to-red-300 rounded-full" />
+                  </div>
+                  <p className="text-xs text-red-300/80 whitespace-nowrap">
+                    Moderate
+                  </p>
+                </div>
               </div>
-              <p className="text-lg font-bold text-white">
-                $
-                {resistanceLevel >= 1000
-                  ? resistanceLevel.toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 5,
-                    })
-                  : resistanceLevel.toFixed(5)}
-              </p>
-              <p className="text-xs text-red-300/80">Selling pressure zone</p>
             </div>
           </div>
         </div>

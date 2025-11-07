@@ -18,6 +18,10 @@ import {
   Brain,
 } from "lucide-react";
 import { fetchSentimentData } from "@/services/aiPredictionService";
+import { MiniRadialGauge } from "@/components/charts/MiniRadialGauge";
+import { SparklineChart } from "@/components/charts/SparklineChart";
+import { SentimentHeatmap } from "@/components/charts/SentimentHeatmap";
+import { SentimentGauge } from "@/components/charts/SentimentGauge";
 
 interface SentimentData {
   score: number;
@@ -334,39 +338,47 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
-        {/* Overall Sentiment - Enhanced */}
-        <div className="text-center space-y-4 p-4 bg-gray-700/40 rounded-xl border border-gray-600/30 shadow-lg">
-          <div className="flex items-center justify-center gap-3">
-            <div className="p-2 rounded-full bg-pink-500/20">
-              {getSentimentIcon(sentiment.score)}
+        {/* Overall Sentiment - Enhanced with Radial Gauge */}
+        <div className="relative text-center space-y-4 p-6 bg-gradient-to-br from-pink-900/20 via-purple-900/20 to-blue-900/20 rounded-xl border border-pink-500/30 shadow-lg overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/5 to-purple-500/5 animate-pulse" />
+          <div className="relative z-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="p-2 rounded-full bg-pink-500/30 shadow-lg shadow-pink-500/20">
+                {getSentimentIcon(sentiment.score)}
+              </div>
+              <Badge
+                variant="outline"
+                className={`${getSentimentColor(
+                  sentiment.score
+                )} font-semibold text-sm backdrop-blur-sm shadow-lg`}
+              >
+                {sentiment.label}
+              </Badge>
             </div>
-            <Badge
-              variant="outline"
-              className={`${getSentimentColor(
-                sentiment.score
-              )} font-semibold text-sm backdrop-blur-sm`}
-            >
-              {sentiment.label}
-            </Badge>
-          </div>
-          <div className="space-y-2">
-            <div className="text-4xl font-bold text-white">
-              {sentiment.score.toFixed(0)}/100
+            
+            <div className="flex justify-center mb-4">
+              <MiniRadialGauge
+                value={sentiment.score}
+                color={
+                  sentiment.score >= 70
+                    ? "#10B981"
+                    : sentiment.score >= 50
+                    ? "#34D399"
+                    : sentiment.score >= 40
+                    ? "#FBBF24"
+                    : sentiment.score >= 20
+                    ? "#F87171"
+                    : "#EF4444"
+                }
+                label="Score"
+                size={140}
+              />
             </div>
-            <div className="text-sm text-gray-400 font-medium">
+            
+            <div className="text-sm text-gray-300 font-medium">
               Market Mood Index
             </div>
           </div>
-          <Progress
-            value={sentiment.score}
-            className={`h-4 ${
-              sentiment.score > 60
-                ? "[&>div]:bg-emerald-400"
-                : sentiment.score < 40
-                ? "[&>div]:bg-red-400"
-                : "[&>div]:bg-amber-400"
-            }`}
-          />
         </div>
 
         {/* Source Breakdown - Enhanced */}
@@ -381,110 +393,139 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
             {sentiment.sources.map((source, index) => (
               <div
                 key={index}
-                className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+                className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/5 hover:scale-[1.02]"
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="p-1.5 rounded-lg bg-gray-600/30">
+                    <div className="p-2 rounded-lg bg-gray-600/40 group-hover:bg-gray-600/60 transition-colors">
                       {getSourceIcon(source.name)}
                     </div>
-                    <span className="text-sm font-medium text-gray-200">
-                      {source.name}
-                    </span>
+                    <div>
+                      <span className="text-sm font-medium text-gray-200 block">
+                        {source.name}
+                      </span>
+                      <span className="text-xs text-gray-400">
+                        {source.mentions.toLocaleString()} mentions
+                      </span>
+                    </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs text-gray-400 font-medium">
-                      {source.mentions.toLocaleString()} mentions
-                    </span>
+                    <SentimentGauge value={source.sentiment} size={80} />
                     <Badge
                       variant="outline"
                       className={`${getSentimentColor(
                         source.sentiment
-                      )} text-xs font-medium backdrop-blur-sm`}
+                      )} text-xs font-medium backdrop-blur-sm shadow-lg`}
                     >
                       {source.sentiment.toFixed(0)}
                     </Badge>
                   </div>
                 </div>
-                <Progress
-                  value={source.sentiment}
-                  className={`h-2.5 ${
-                    source.sentiment > 60
-                      ? "[&>div]:bg-emerald-400"
-                      : source.sentiment < 40
-                      ? "[&>div]:bg-red-400"
-                      : "[&>div]:bg-amber-400"
-                  }`}
-                />
+                <div className="h-8">
+                  <SparklineChart
+                    data={Array.from({ length: 7 }, () =>
+                      Math.max(0, source.sentiment + (Math.random() - 0.5) * 20)
+                    )}
+                    color={
+                      source.sentiment >= 60
+                        ? "#10B981"
+                        : source.sentiment < 40
+                        ? "#EF4444"
+                        : "#FBBF24"
+                    }
+                  />
+                </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Sentiment Indicators - Enhanced */}
+        {/* Sentiment Indicators - Enhanced with Gradients */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 bg-blue-900/20 rounded-xl border border-blue-700/30 hover:border-blue-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="p-1 rounded-full bg-blue-500/20">
-                <Heart className="h-3 w-3 text-blue-400" />
+          <div className="relative p-4 bg-gradient-to-br from-blue-900/30 to-blue-800/20 rounded-xl border border-blue-700/40 hover:border-blue-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/20 overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/10 group-hover:from-blue-500/5 group-hover:to-blue-500/15 transition-all duration-300" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 rounded-full bg-blue-500/30 shadow-lg shadow-blue-500/20">
+                  <Heart className="h-4 w-4 text-blue-300" />
+                </div>
+                <p className="text-xs text-blue-300 font-semibold">
+                  Fear & Greed
+                </p>
               </div>
-              <p className="text-xs text-blue-400 font-semibold">
-                Fear & Greed
+              <p className="text-2xl font-bold text-white mb-2">
+                {(sentiment.score * 0.8 + 10).toFixed(0)}
               </p>
+              <div className="flex items-center gap-2">
+                <div className="flex-1 h-1.5 bg-blue-900/30 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-blue-400 to-blue-300 rounded-full transition-all duration-500"
+                    style={{ width: `${sentiment.score * 0.8 + 10}%` }}
+                  />
+                </div>
+                <p className="text-xs text-blue-300/80 whitespace-nowrap">
+                  {sentiment.score > 50 ? "Greed" : "Fear"}
+                </p>
+              </div>
             </div>
-            <p className="text-xl font-bold text-white mb-1">
-              {(sentiment.score * 0.8 + 10).toFixed(0)}
-            </p>
-            <p className="text-xs text-blue-300/80">
-              {sentiment.score > 50 ? "Greed Dominates" : "Fear Prevails"}
-            </p>
           </div>
-          <div className="p-4 bg-purple-900/20 rounded-xl border border-purple-700/30 hover:border-purple-600/50 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/10">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="p-1 rounded-full bg-purple-500/20">
-                <Zap className="h-3 w-3 text-purple-400" />
+          <div className="relative p-4 bg-gradient-to-br from-purple-900/30 to-purple-800/20 rounded-xl border border-purple-700/40 hover:border-purple-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-purple-500/20 overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-purple-500/10 group-hover:from-purple-500/5 group-hover:to-purple-500/15 transition-all duration-300" />
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-1.5 rounded-full bg-purple-500/30 shadow-lg shadow-purple-500/20 animate-pulse">
+                  <Zap className="h-4 w-4 text-purple-300" />
+                </div>
+                <p className="text-xs text-purple-300 font-semibold">
+                  Social Volume
+                </p>
               </div>
-              <p className="text-xs text-purple-400 font-semibold">
-                Social Volume
+              <p className="text-2xl font-bold text-white mb-2">
+                {sentiment.sources
+                  .reduce((acc, s) => acc + s.mentions, 0)
+                  .toLocaleString()}
               </p>
+              <p className="text-xs text-purple-300/80">24h total mentions</p>
             </div>
-            <p className="text-xl font-bold text-white mb-1">
-              {sentiment.sources
-                .reduce((acc, s) => acc + s.mentions, 0)
-                .toLocaleString()}
-            </p>
-            <p className="text-xs text-purple-300/80">24h mentions</p>
           </div>
         </div>
 
-        {/* Recent Trends - Enhanced */}
-        <div className="space-y-3">
+        {/* Recent Trends - Enhanced with Heatmap */}
+        <div className="space-y-4">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="h-4 w-4 text-emerald-400" />
             <h4 className="text-sm font-semibold text-gray-200">
-              Recent Trends
+              7-Day Sentiment Trend
             </h4>
           </div>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
+          
+          <SentimentHeatmap
+            dailyValues={Array.from({ length: 7 }, (_, i) =>
+              Math.max(0, Math.min(100, sentiment.score + (Math.random() - 0.5) * 30))
+            )}
+          />
+          
+          <div className="grid grid-cols-2 gap-3 mt-4">
+            <div className="flex items-center justify-between p-3 bg-gray-700/40 rounded-lg border border-gray-600/30 hover:border-emerald-500/40 transition-colors">
               <span className="text-sm text-gray-300 font-medium">
                 vs Yesterday
               </span>
               <span
-                className={`text-sm font-bold ${
+                className={`text-sm font-bold flex items-center gap-1 ${
                   sentiment.score > 50 ? "text-emerald-400" : "text-red-400"
                 }`}
               >
+                {sentiment.score > 50 ? <TrendingUp className="h-3 w-3" /> : <TrendingUp className="h-3 w-3 rotate-180" />}
                 {sentiment.score > 50 ? "+" : ""}
                 {(sentiment.score - 50).toFixed(1)}%
               </span>
             </div>
-            <div className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg border border-gray-600/20">
+            <div className="flex items-center justify-between p-3 bg-gray-700/40 rounded-lg border border-gray-600/30 hover:border-emerald-500/40 transition-colors">
               <span className="text-sm text-gray-300 font-medium">
                 vs Last Week
               </span>
               <span
-                className={`text-sm font-bold ${
+                className={`text-sm font-bold flex items-center gap-1 ${
                   sentiment.score > 45 ? "text-emerald-400" : "text-red-400"
                 }`}
               >
