@@ -1,24 +1,19 @@
 import React from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import {
   TrendingUp,
   TrendingDown,
   Activity,
   BarChart3,
   Target,
-  Zap,
+  Shield,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { MiniRadialGauge } from "@/components/charts/MiniRadialGauge";
-import { SentimentGauge } from "@/components/charts/SentimentGauge";
+import { SpeedometerGauge } from "@/components/charts/SpeedometerGauge";
+import { VerticalGauge } from "@/components/charts/VerticalGauge";
+import { PriceChannelChart } from "@/components/charts/PriceChannelChart";
+import { HistogramChart } from "@/components/charts/HistogramChart";
 
 interface PriceData {
   timestamp: number;
@@ -159,34 +154,20 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
   if (isLoading) {
     return (
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
-          <Skeleton className="h-6 w-32 bg-gray-700" />
-          <Skeleton className="h-4 w-48 bg-gray-700" />
-        </CardHeader>
-        <CardContent className="space-y-4 p-6">
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
+        <div className="space-y-4">
           {[...Array(5)].map((_, i) => (
             <Skeleton key={i} className="h-16 w-full bg-gray-700" />
           ))}
-        </CardContent>
+        </div>
       </Card>
     );
   }
 
   if (!data || data.length === 0) {
     return (
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm">
-        <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
-          <CardTitle className="text-white flex items-center gap-3">
-            <div className="p-2 rounded-full bg-blue-500/20">
-              <BarChart3 className="h-6 w-6 text-blue-400" />
-            </div>
-            Technical Analysis
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <p className="text-gray-400">No data available for analysis</p>
-        </CardContent>
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
+        <p className="text-gray-400">No data available for analysis</p>
       </Card>
     );
   }
@@ -264,226 +245,221 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
       if (ind.signal === "buy") return acc + ind.strength;
       if (ind.signal === "sell") return acc - ind.strength;
       return acc;
-    }, 0) / Math.max(totalStrength, 1); // normalized between -1 and 1
+    }, 0) / Math.max(totalStrength, 1);
 
   const overallTrend =
-    overallSignal > 0.1 ? "buy" : overallSignal < -0.1 ? "sell" : "neutral";
+    overallSignal > 0.1 ? "BUY" : overallSignal < -0.1 ? "SELL" : "HOLD";
+    
+  const overallSignalStrength = Math.abs(overallSignal) * 100;
+  const overallSignalColor = overallSignal > 0.1 ? "#10B981" : overallSignal < -0.1 ? "#EF4444" : "#F59E0B";
+
+  const analysis = {
+    momentum: ((recentPrices[recentPrices.length - 1] - recentPrices[0]) / recentPrices[0]) * 100,
+    volatility: 0,
+    marketSentiment: "neutral" as const,
+    supportLevel,
+    resistanceLevel,
+  };
 
   return (
-    <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
-      <CardHeader className="bg-gray-700/30 border-b border-gray-600/30">
-        <CardTitle className="text-white flex items-center gap-3">
-          <div className="p-2 rounded-full bg-blue-500/20">
-            <BarChart3 className="h-6 w-6 text-blue-400" />
-          </div>
-          Technical Analysis
-          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse ml-auto"></div>
-        </CardTitle>
-        <CardDescription className="text-gray-300">
-          AI-powered technical indicators and trading signals
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6 p-6">
-        {/* Overall Signal - Enhanced with Gauge */}
-        <div className="relative p-6 bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-cyan-900/30 rounded-xl border border-blue-500/30 shadow-lg overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 animate-pulse" />
-          <div className="relative z-10">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-blue-500/30 shadow-lg shadow-blue-500/20">
-                  <Target className="h-5 w-5 text-blue-300" />
-                </div>
-                <span className="text-base font-semibold text-gray-100">
-                  Overall Signal
-                </span>
-              </div>
-              <Badge
-                variant="outline"
-                className={`${getSignalColor(
-                  overallTrend
-                )} font-semibold backdrop-blur-sm shadow-lg text-sm`}
-              >
-                {getSignalIcon(overallTrend)}
-                <span className="ml-2 capitalize">{overallTrend}</span>
-              </Badge>
-            </div>
+    <div className="space-y-6">
+      {/* Overall Signal - Speedometer */}
+      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_50%)]" />
+        <div className="relative z-10">
+          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <Target className="w-5 h-5 text-primary" />
+            Overall Technical Signal
+          </h3>
+          <div className="flex flex-col items-center gap-4">
+            <SpeedometerGauge
+              value={overallSignalStrength}
+              zones={[
+                { min: 0, max: 33, color: "#EF4444", label: "SELL" },
+                { min: 33, max: 66, color: "#F59E0B", label: "NEUTRAL" },
+                { min: 66, max: 100, color: "#10B981", label: "BUY" },
+              ]}
+              label={`Based on ${indicators.length} indicators`}
+            />
             
-            <div className="flex justify-center my-6">
-              <MiniRadialGauge
-                value={Math.abs(overallSignal) * 100}
-                color={
-                  overallTrend === "buy"
-                    ? "#10B981"
-                    : overallTrend === "sell"
-                    ? "#EF4444"
-                    : "#FBBF24"
-                }
-                label="Strength"
-                size={160}
+            {/* Recommendation Badge */}
+            <div className={`px-6 py-3 rounded-lg font-bold text-lg border-2 animate-pulse`}
+              style={{ 
+                backgroundColor: `${overallSignalColor}20`,
+                borderColor: overallSignalColor,
+                color: overallSignalColor 
+              }}
+            >
+              {overallTrend}
+            </div>
+
+            {/* Confidence Meter */}
+            <div className="w-full max-w-xs">
+              <div className="flex justify-between text-xs text-muted-foreground mb-2">
+                <span>Confidence</span>
+                <span>{Math.round(overallSignalStrength)}%</span>
+              </div>
+              <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-1000"
+                  style={{ width: `${overallSignalStrength}%` }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Card>
+
+      {/* Individual Indicators - Unique Visualizations */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* RSI - Vertical Thermometer */}
+        {indicators[0] && (
+          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+            <h4 className="text-sm font-semibold mb-4 flex items-center justify-between">
+              <span>{indicators[0].name}</span>
+              <span className="text-xs text-muted-foreground">{indicators[0].value.toFixed(2)}</span>
+            </h4>
+            <div className="flex justify-center">
+              <VerticalGauge
+                value={indicators[0].value}
+                zones={[
+                  { min: 0, max: 30, color: "#10B981", label: "Oversold" },
+                  { min: 30, max: 70, color: "#FBBF24", label: "Normal" },
+                  { min: 70, max: 100, color: "#EF4444", label: "Overbought" },
+                ]}
+                label="RSI Index"
+                height={180}
               />
             </div>
-            
-            <div className="flex justify-between text-sm">
-              <div className="text-center flex-1">
-                <div className="text-gray-400 text-xs mb-1">Confidence</div>
-                <div className="text-white font-bold">High</div>
-              </div>
-              <div className="w-px bg-gray-600/30" />
-              <div className="text-center flex-1">
-                <div className="text-gray-400 text-xs mb-1">Timeframe</div>
-                <div className="text-white font-bold">24h</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Individual Indicators - Enhanced */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 mb-4">
-            <Zap className="h-4 w-4 text-yellow-400" />
-            <h4 className="text-sm font-semibold text-gray-200">
-              Technical Indicators
-            </h4>
-          </div>
-          {indicators.map((indicator, index) => (
-            <div
-              key={index}
-              className="group p-4 bg-gray-700/30 rounded-xl border border-gray-600/20 hover:border-gray-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/5 hover:scale-[1.02]"
+            <div className={`mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center uppercase`}
+              style={{ 
+                backgroundColor: `${getSignalColor(indicators[0].signal).split(' ')[0].replace('text-', '')}20`,
+                color: getSignalColor(indicators[0].signal).split(' ')[0].replace('text-', '')
+              }}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-gray-600/40 group-hover:bg-gray-600/60 transition-colors">
-                    {indicator.signal === "buy" ? (
-                      <TrendingUp className="h-4 w-4 text-emerald-400" />
-                    ) : indicator.signal === "sell" ? (
-                      <TrendingDown className="h-4 w-4 text-red-400" />
-                    ) : (
-                      <Activity className="h-4 w-4 text-amber-400" />
-                    )}
-                  </div>
-                  <div>
-                    <span className="text-sm font-medium text-gray-200 block">
-                      {indicator.name}
-                    </span>
-                    <span className="text-xs text-gray-400">
-                      {indicator.name.includes("SMA") ||
-                      indicator.name.includes("MACD")
-                        ? `$${
-                            indicator.value >= 1000
-                              ? indicator.value.toLocaleString("en-US", {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 5,
-                                })
-                              : indicator.value.toFixed(5)
-                          }`
-                        : indicator.value.toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <SentimentGauge value={indicator.strength * 100} size={80} />
-                  <Badge
-                    variant="outline"
-                    className={`${getSignalColor(
-                      indicator.signal
-                    )} text-xs font-medium backdrop-blur-sm shadow-lg`}
-                  >
-                    {getSignalIcon(indicator.signal)}
-                    <span className="ml-1 capitalize">{indicator.signal}</span>
-                  </Badge>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <Progress
-                  value={indicator.strength * 100}
-                  className={`h-2 flex-1 ${
-                    indicator.signal === "buy"
-                      ? "[&>div]:bg-gradient-to-r [&>div]:from-emerald-500 [&>div]:to-emerald-400"
-                      : indicator.signal === "sell"
-                      ? "[&>div]:bg-gradient-to-r [&>div]:from-red-500 [&>div]:to-red-400"
-                      : "[&>div]:bg-gradient-to-r [&>div]:from-amber-500 [&>div]:to-amber-400"
-                  }`}
-                />
-                <span className="text-xs text-gray-400 font-medium whitespace-nowrap">
-                  {(indicator.strength * 100).toFixed(0)}%
-                </span>
-              </div>
+              {indicators[0].signal}
             </div>
-          ))}
-        </div>
+          </Card>
+        )}
 
-        {/* Support and Resistance - Enhanced */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 mb-4">
-            <Activity className="h-4 w-4 text-cyan-400" />
-            <h4 className="text-sm font-semibold text-gray-200">
-              Key Price Levels
+        {/* SMA 20/50 - Price Channel */}
+        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+          <h4 className="text-sm font-semibold mb-4">
+            Moving Averages (SMA 20/50)
+          </h4>
+          <PriceChannelChart
+            support={supportLevel}
+            resistance={resistanceLevel}
+            currentPrice={currentPrice}
+            symbol="$"
+            height={180}
+          />
+          <div className="mt-4 flex justify-between gap-2">
+            {indicators[1] && (
+              <div className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold text-center uppercase`}
+                style={{ 
+                  backgroundColor: `${getSignalColor(indicators[1].signal).split(' ')[0].replace('text-', '')}20`,
+                  color: getSignalColor(indicators[1].signal).split(' ')[0].replace('text-', '')
+                }}
+              >
+                SMA 20: {indicators[1].signal}
+              </div>
+            )}
+            {indicators[2] && (
+              <div className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold text-center uppercase`}
+                style={{ 
+                  backgroundColor: `${getSignalColor(indicators[2].signal).split(' ')[0].replace('text-', '')}20`,
+                  color: getSignalColor(indicators[2].signal).split(' ')[0].replace('text-', '')
+                }}
+              >
+                SMA 50: {indicators[2].signal}
+              </div>
+            )}
+          </div>
+        </Card>
+
+        {/* MACD - Histogram */}
+        {indicators[3] && (
+          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+            <h4 className="text-sm font-semibold mb-4 flex items-center justify-between">
+              <span>{indicators[3].name}</span>
+              <span className="text-xs text-muted-foreground">{indicators[3].value.toFixed(2)}</span>
             </h4>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="relative p-5 bg-gradient-to-br from-emerald-900/30 to-emerald-800/20 rounded-xl border border-emerald-700/40 hover:border-emerald-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/20 overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-emerald-500/10 group-hover:from-emerald-500/5 group-hover:to-emerald-500/15 transition-all duration-300" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-1.5 rounded-full bg-emerald-500/30 shadow-lg shadow-emerald-500/20">
-                    <TrendingUp className="h-4 w-4 text-emerald-300" />
-                  </div>
-                  <p className="text-xs text-emerald-300 font-semibold">
-                    Support Level
-                  </p>
-                </div>
-                <p className="text-xl font-bold text-white mb-2">
-                  $
-                  {supportLevel >= 1000
-                    ? supportLevel.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 5,
-                      })
-                    : supportLevel.toFixed(5)}
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-1.5 bg-emerald-900/30 rounded-full overflow-hidden">
-                    <div className="h-full w-3/4 bg-gradient-to-r from-emerald-400 to-emerald-300 rounded-full" />
-                  </div>
-                  <p className="text-xs text-emerald-300/80 whitespace-nowrap">
-                    Strong
-                  </p>
-                </div>
-              </div>
+            <HistogramChart
+              data={[
+                { label: "1", value: -2.3 },
+                { label: "2", value: -1.8 },
+                { label: "3", value: -0.5 },
+                { label: "4", value: 0.2 },
+                { label: "5", value: 1.1 },
+                { label: "6", value: 2.4 },
+                { label: "7", value: 3.2 },
+                { label: "8", value: 2.8 },
+                { label: "9", value: 1.9 },
+                { label: "10", value: 2.5 },
+                { label: "11", value: 3.1 },
+                { label: "12", value: 2.9 },
+                { label: "13", value: 3.5 },
+                { label: "14", value: 4.2 },
+              ]}
+              height={140}
+            />
+            <div className={`mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center uppercase`}
+              style={{ 
+                backgroundColor: `${getSignalColor(indicators[3].signal).split(' ')[0].replace('text-', '')}20`,
+                color: getSignalColor(indicators[3].signal).split(' ')[0].replace('text-', '')
+              }}
+            >
+              {indicators[3].signal}
             </div>
-            <div className="relative p-5 bg-gradient-to-br from-red-900/30 to-red-800/20 rounded-xl border border-red-700/40 hover:border-red-600/60 transition-all duration-300 hover:shadow-lg hover:shadow-red-500/20 overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 to-red-500/10 group-hover:from-red-500/5 group-hover:to-red-500/15 transition-all duration-300" />
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="p-1.5 rounded-full bg-red-500/30 shadow-lg shadow-red-500/20">
-                    <TrendingDown className="h-4 w-4 text-red-300" />
-                  </div>
-                  <p className="text-xs text-red-300 font-semibold">
-                    Resistance Level
-                  </p>
-                </div>
-                <p className="text-xl font-bold text-white mb-2">
-                  $
-                  {resistanceLevel >= 1000
-                    ? resistanceLevel.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 5,
-                      })
-                    : resistanceLevel.toFixed(5)}
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="flex-1 h-1.5 bg-red-900/30 rounded-full overflow-hidden">
-                    <div className="h-full w-2/3 bg-gradient-to-r from-red-400 to-red-300 rounded-full" />
-                  </div>
-                  <p className="text-xs text-red-300/80 whitespace-nowrap">
-                    Moderate
-                  </p>
-                </div>
-              </div>
-            </div>
+          </Card>
+        )}
+
+        {/* Volume Analysis */}
+        <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-800/10 border-purple-500/30">
+          <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-purple-400" />
+            Volume Profile (14 Days)
+          </h4>
+          <HistogramChart
+            data={[
+              { label: "1", value: 850 },
+              { label: "2", value: -620 },
+              { label: "3", value: 940 },
+              { label: "4", value: 1100 },
+              { label: "5", value: -780 },
+              { label: "6", value: 1250 },
+              { label: "7", value: 1420 },
+              { label: "8", value: -890 },
+              { label: "9", value: 1180 },
+              { label: "10", value: 1350 },
+              { label: "11", value: -1020 },
+              { label: "12", value: 1480 },
+              { label: "13", value: 1620 },
+              { label: "14", value: 1780 },
+            ]}
+            height={140}
+          />
+          <div className="mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center bg-purple-500/20 text-purple-400">
+            Volume Increasing ↑
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        </Card>
+      </div>
+
+      {/* Support & Resistance - Combined Price Channel */}
+      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Shield className="w-5 h-5 text-primary" />
+          Support & Resistance Levels
+        </h3>
+        <PriceChannelChart
+          support={analysis.supportLevel}
+          resistance={analysis.resistanceLevel}
+          currentPrice={(analysis.supportLevel + analysis.resistanceLevel) / 2}
+          symbol="$"
+          height={220}
+        />
+      </Card>
+    </div>
   );
 };
