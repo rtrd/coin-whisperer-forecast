@@ -194,7 +194,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     const histogram: MACDHistogramData[] = [];
     const startIdx = Math.max(0, macdLine.length - 14);
     for (let i = startIdx; i < macdLine.length; i++) {
-      const dataIndex = Math.max(0, data.length - macdLine.length + i);
+      const dataIndex = data.length - (macdLine.length - i);
       histogram.push({
         label: formatDateLabel(data[dataIndex].timestamp),
         value: macdLine[i] - (signalLine[i] ?? 0)

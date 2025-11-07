@@ -45,12 +45,17 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   }, [cryptoId]);
 
   useEffect(() => {
-    // Extract volume data from cryptoData
+    // Extract volume data from cryptoData with proper date labels
     if (cryptoData && cryptoData.length > 0) {
-      const volumes = cryptoData.slice(-14).map((d, i) => ({
-        label: String(i + 1),
-        value: d.volume || 0
-      }));
+      const volumes = cryptoData.slice(-14).map((d) => {
+        const date = new Date(d.timestamp);
+        const month = date.toLocaleDateString('en-US', { month: 'short' });
+        const day = date.getDate();
+        return {
+          label: `${month} ${day}`,
+          value: d.volume || 0
+        };
+      });
       setVolumeData(volumes);
     }
   }, [cryptoData]);
