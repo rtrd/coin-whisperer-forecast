@@ -72,9 +72,6 @@ export const TokenPriceTimeline: React.FC<TokenPriceTimelineProps> = ({
       <CardContent className="space-y-6">
         {/* Modern Timeline Grid */}
         <div className="relative">
-          {/* Connecting line */}
-          <div className="absolute left-0 right-0 top-1/2 h-0.5 bg-gradient-to-r from-primary/20 via-primary/40 to-primary/20 hidden md:block" />
-          
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative">
             {timelineItems.map((item, index) => {
               const Icon = getChangeIcon(item.change);
@@ -88,9 +85,6 @@ export const TokenPriceTimeline: React.FC<TokenPriceTimelineProps> = ({
                   className="group relative"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  {/* Timeline node */}
-                  <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-primary border-2 border-background shadow-lg z-10 hidden md:block group-hover:scale-150 transition-transform" />
-                  
                   {/* Card */}
                   <div className={`bg-gradient-to-br ${item.color} p-[2px] rounded-xl group-hover:scale-105 transition-all duration-300`}>
                     <div className="bg-background/95 backdrop-blur-sm rounded-xl p-4 h-full">
