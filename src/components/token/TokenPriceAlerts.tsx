@@ -41,7 +41,7 @@ export const TokenPriceAlerts: React.FC<TokenPriceAlertsProps> = ({
           </div>
 
           <Button
-            className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white"
+            className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground"
             onClick={() => setShowSignup(true)}
           >
             <Bell className="h-4 w-4 mr-2" />
