@@ -382,30 +382,32 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
         {/* MACD - Histogram */}
         {indicators[3] && (
-          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
             <h4 className="text-sm font-semibold mb-4 flex items-center justify-between">
-              <span>{indicators[3].name}</span>
-              <span className="text-xs text-muted-foreground">{indicators[3].value.toFixed(2)}</span>
+              <span className="truncate">{indicators[3].name}</span>
+              <span className="text-xs text-muted-foreground shrink-0 ml-2">{indicators[3].value.toFixed(2)}</span>
             </h4>
-            <HistogramChart
-              data={[
-                { label: "1", value: -2.3 },
-                { label: "2", value: -1.8 },
-                { label: "3", value: -0.5 },
-                { label: "4", value: 0.2 },
-                { label: "5", value: 1.1 },
-                { label: "6", value: 2.4 },
-                { label: "7", value: 3.2 },
-                { label: "8", value: 2.8 },
-                { label: "9", value: 1.9 },
-                { label: "10", value: 2.5 },
-                { label: "11", value: 3.1 },
-                { label: "12", value: 2.9 },
-                { label: "13", value: 3.5 },
-                { label: "14", value: 4.2 },
-              ]}
-              height={140}
-            />
+            <div className="overflow-hidden">
+              <HistogramChart
+                data={[
+                  { label: "1", value: -2.3 },
+                  { label: "2", value: -1.8 },
+                  { label: "3", value: -0.5 },
+                  { label: "4", value: 0.2 },
+                  { label: "5", value: 1.1 },
+                  { label: "6", value: 2.4 },
+                  { label: "7", value: 3.2 },
+                  { label: "8", value: 2.8 },
+                  { label: "9", value: 1.9 },
+                  { label: "10", value: 2.5 },
+                  { label: "11", value: 3.1 },
+                  { label: "12", value: 2.9 },
+                  { label: "13", value: 3.5 },
+                  { label: "14", value: 4.2 },
+                ]}
+                height={140}
+              />
+            </div>
             <div className={`mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center uppercase`}
               style={{ 
                 backgroundColor: `${getSignalColor(indicators[3].signal).split(' ')[0].replace('text-', '')}20`,
@@ -418,31 +420,33 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         )}
 
         {/* Volume Analysis */}
-        <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-800/10 border-purple-500/30">
-          <h4 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <BarChart3 className="w-4 h-4 text-purple-400" />
-            Volume Profile (14 Days)
+        <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-purple-800/10 border-purple-500/30 overflow-hidden">
+          <h4 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
+            <BarChart3 className="w-4 h-4 text-purple-400 shrink-0" />
+            <span className="truncate">Volume Profile (14 Days)</span>
           </h4>
-          <HistogramChart
-            data={[
-              { label: "1", value: 850 },
-              { label: "2", value: -620 },
-              { label: "3", value: 940 },
-              { label: "4", value: 1100 },
-              { label: "5", value: -780 },
-              { label: "6", value: 1250 },
-              { label: "7", value: 1420 },
-              { label: "8", value: -890 },
-              { label: "9", value: 1180 },
-              { label: "10", value: 1350 },
-              { label: "11", value: -1020 },
-              { label: "12", value: 1480 },
-              { label: "13", value: 1620 },
-              { label: "14", value: 1780 },
-            ]}
-            height={140}
-          />
-          <div className="mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center bg-purple-500/20 text-purple-400">
+          <div className="overflow-hidden">
+            <HistogramChart
+              data={[
+                { label: "1", value: 850 },
+                { label: "2", value: -620 },
+                { label: "3", value: 940 },
+                { label: "4", value: 1100 },
+                { label: "5", value: -780 },
+                { label: "6", value: 1250 },
+                { label: "7", value: 1420 },
+                { label: "8", value: -890 },
+                { label: "9", value: 1180 },
+                { label: "10", value: 1350 },
+                { label: "11", value: -1020 },
+                { label: "12", value: 1480 },
+                { label: "13", value: 1620 },
+                { label: "14", value: 1780 },
+              ]}
+              height={140}
+            />
+          </div>
+          <div className="mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center bg-purple-500/20 text-purple-400 truncate">
             Volume Increasing ↑
           </div>
         </Card>

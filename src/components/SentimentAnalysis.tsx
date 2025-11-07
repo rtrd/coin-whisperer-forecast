@@ -405,37 +405,39 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         </Card>
 
         {/* Social Volume - 3D Bar Chart */}
-        <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Zap className="w-5 h-5 text-purple-400" />
-            Social Volume (7 Days)
+        <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30 overflow-hidden">
+          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
+            <Zap className="w-4 h-4 text-purple-400 shrink-0" />
+            <span className="truncate">Social Volume (7 Days)</span>
           </h3>
-          <HistogramChart
-            data={[
-              { label: "Mon", value: 12500 },
-              { label: "Tue", value: 15200 },
-              { label: "Wed", value: 13800 },
-              { label: "Thu", value: 18900 },
-              { label: "Fri", value: 22100 },
-              { label: "Sat", value: 19500 },
-              { label: "Sun", value: 24800 },
-            ]}
-            height={120}
-            positiveColor="#A855F7"
-            negativeColor="#EC4899"
-          />
-          <div className="mt-4 flex items-center justify-center gap-2 text-sm">
-            <TrendingUp className="w-4 h-4 text-purple-400" />
-            <span className="text-purple-400">+32% increase this week</span>
+          <div className="overflow-hidden">
+            <HistogramChart
+              data={[
+                { label: "Mon", value: 12500 },
+                { label: "Tue", value: 15200 },
+                { label: "Wed", value: 13800 },
+                { label: "Thu", value: 18900 },
+                { label: "Fri", value: 22100 },
+                { label: "Sat", value: 19500 },
+                { label: "Sun", value: 24800 },
+              ]}
+              height={120}
+              positiveColor="#A855F7"
+              negativeColor="#EC4899"
+            />
+          </div>
+          <div className="mt-4 flex items-center justify-center gap-2 text-xs truncate">
+            <TrendingUp className="w-3 h-3 text-purple-400 shrink-0" />
+            <span className="text-purple-400 truncate">+32% increase</span>
           </div>
         </Card>
       </div>
 
       {/* Recent Trends - Timeline */}
-      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
-        <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-primary" />
-          Sentiment Timeline (7 Days)
+      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
+        <h3 className="text-sm font-semibold mb-6 flex items-center gap-2 truncate">
+          <TrendingUp className="w-4 h-4 text-primary shrink-0" />
+          <span className="truncate">Sentiment Timeline (7 Days)</span>
         </h3>
         <TimelineChart
           events={[
