@@ -51,8 +51,27 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   volumeData,
   macdHistogram,
 }) => {
-  const prices = data.map((d) => d.price);
+  if (isLoading) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
+        <div className="space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <Skeleton key={i} className="h-16 w-full bg-gray-700" />
+          ))}
+        </div>
+      </Card>
+    );
+  }
 
+  if (!data || data.length === 0) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
+        <p className="text-gray-400">No data available for analysis</p>
+      </Card>
+    );
+  }
+
+  const prices = data.map((d) => d.price);
   const currentPrice = prices[prices.length - 1];
 
   // Scale normalized values to 0.2 to 0.8 (20% to 80%)
@@ -175,26 +194,6 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
     return { macd: latestMACD, signal: latestSignal, strength: scaled, histogram };
   };
-
-  if (isLoading) {
-    return (
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
-        <div className="space-y-4">
-          {[...Array(5)].map((_, i) => (
-            <Skeleton key={i} className="h-16 w-full bg-gray-700" />
-          ))}
-        </div>
-      </Card>
-    );
-  }
-
-  if (!data || data.length === 0) {
-    return (
-      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
-        <p className="text-gray-400">No data available for analysis</p>
-      </Card>
-    );
-  }
 
   // Calculate technical indicators
   const rsi = calculateRSI(prices);
