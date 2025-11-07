@@ -3,7 +3,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { TokenHeader } from "./TokenHeader";
 import { TokenPriceDisplay } from "./TokenPriceDisplay";
 import { TokenMarketStats } from "./TokenMarketStats";
-
+import { TokenQuickStats } from "./TokenQuickStats";
+import { useTokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenDetailInfoProps {
   currentPrice: number;
@@ -18,6 +19,8 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
   marketData,
   tokenId,
 }) => {
+  const { data: tokenInfo, isLoading: tokenInfoLoading } = useTokenInfo(tokenId);
+
   return (
     <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm overflow-hidden">
       <CardContent className="p-8">
@@ -31,6 +34,16 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
               tokenSymbol={marketData?.symbol}
             />
           </div>
+
+          {/* Quick Stats Grid - NEW */}
+          <TokenQuickStats
+            marketCapRank={tokenInfo?.market_cap_rank || marketData?.market_cap_rank}
+            marketCap={marketData?.market_cap}
+            totalVolume={marketData?.total_volume}
+            circulatingSupply={marketData?.circulating_supply}
+            totalSupply={marketData?.total_supply}
+            maxSupply={marketData?.max_supply}
+          />
 
           {/* Market Statistics */}
           <div>

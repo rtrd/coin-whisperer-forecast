@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-// import { AdBanner } from "@/components/AdBanner";
 import Footer from "@/components/Footer";
 import { TokenDetailHeader } from "./TokenDetailHeader";
 import { TokenDetailInfo } from "./TokenDetailInfo";
@@ -11,11 +10,15 @@ import { TokenDetailAnalysis } from "./TokenDetailAnalysis";
 import { TokenSidebar } from "./TokenSidebar";
 import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
 import AdUnit from "@/components/ads/VdoBannerAd";
+import { TokenSocialHub } from "./TokenSocialHub";
+import { TokenResourcesPanel } from "./TokenResourcesPanel";
+import { TokenPriceTimeline } from "./TokenPriceTimeline";
+import { TokenPriceAlerts } from "./TokenPriceAlerts";
+import { useTokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenDetailLayoutProps {
   // Header props
@@ -81,6 +84,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
       isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6",
     [isMobile]
   );
+
+  const { data: tokenInfo, isLoading: tokenInfoLoading } = useTokenInfo(tokenId);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -162,6 +167,31 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               className="max-w-full h-full"
             />
           </div> */}
+        </div>
+
+        {/* Enhanced Social & Resources Section - NEW */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          <TokenSocialHub tokenInfo={tokenInfo} isLoading={tokenInfoLoading} />
+          <TokenResourcesPanel tokenInfo={tokenInfo} tokenId={tokenId} isLoading={tokenInfoLoading} />
+          <TokenPriceAlerts 
+            tokenName={selectedToken?.name || tokenId}
+            tokenSymbol={selectedToken?.symbol || tokenId}
+            currentPrice={currentPrice}
+          />
+        </div>
+
+        {/* Price Performance Timeline - NEW */}
+        <div className="mt-6">
+          <TokenPriceTimeline
+            currentPrice={currentPrice}
+            ath={marketData?.ath}
+            atl={marketData?.atl}
+            priceChange24h={marketData?.price_change_percentage_24h}
+            priceChange7d={marketData?.price_change_percentage_7d_in_currency}
+            priceChange30d={marketData?.price_change_percentage_30d_in_currency}
+            athDate={marketData?.ath_date}
+            atlDate={marketData?.atl_date}
+          />
         </div>
 
         {/* Market Analysis and Sidebar Layout */}
