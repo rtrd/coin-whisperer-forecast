@@ -343,20 +343,22 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         )}
 
         {/* SMA 20/50 - Price Channel */}
-        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
-          <h4 className="text-sm font-semibold mb-4">
+        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
+          <h4 className="text-sm font-semibold mb-4 truncate">
             Moving Averages (SMA 20/50)
           </h4>
-          <PriceChannelChart
-            support={supportLevel}
-            resistance={resistanceLevel}
-            currentPrice={currentPrice}
-            symbol="$"
-            height={180}
-          />
+          <div className="overflow-hidden">
+            <PriceChannelChart
+              support={supportLevel}
+              resistance={resistanceLevel}
+              currentPrice={currentPrice}
+              symbol="$"
+              height={180}
+            />
+          </div>
           <div className="mt-4 flex justify-between gap-2">
             {indicators[1] && (
-              <div className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold text-center uppercase`}
+              <div className={`flex-1 px-2 py-2 rounded-lg text-[10px] font-semibold text-center uppercase truncate`}
                 style={{ 
                   backgroundColor: `${getSignalColor(indicators[1].signal).split(' ')[0].replace('text-', '')}20`,
                   color: getSignalColor(indicators[1].signal).split(' ')[0].replace('text-', '')
@@ -366,7 +368,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
               </div>
             )}
             {indicators[2] && (
-              <div className={`flex-1 px-3 py-2 rounded-lg text-xs font-semibold text-center uppercase`}
+              <div className={`flex-1 px-2 py-2 rounded-lg text-[10px] font-semibold text-center uppercase truncate`}
                 style={{ 
                   backgroundColor: `${getSignalColor(indicators[2].signal).split(' ')[0].replace('text-', '')}20`,
                   color: getSignalColor(indicators[2].signal).split(' ')[0].replace('text-', '')
@@ -447,18 +449,20 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
       </div>
 
       {/* Support & Resistance - Combined Price Channel */}
-      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
+      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
         <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Shield className="w-5 h-5 text-primary" />
           Support & Resistance Levels
         </h3>
-        <PriceChannelChart
-          support={analysis.supportLevel}
-          resistance={analysis.resistanceLevel}
-          currentPrice={(analysis.supportLevel + analysis.resistanceLevel) / 2}
-          symbol="$"
-          height={220}
-        />
+        <div className="overflow-hidden">
+          <PriceChannelChart
+            support={analysis.supportLevel}
+            resistance={analysis.resistanceLevel}
+            currentPrice={(analysis.supportLevel + analysis.resistanceLevel) / 2}
+            symbol="$"
+            height={220}
+          />
+        </div>
       </Card>
     </div>
   );

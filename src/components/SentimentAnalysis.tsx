@@ -325,38 +325,38 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           return (
             <Card
               key={index}
-              className="p-4 bg-gradient-to-br from-background/95 to-background/80 border-border/50 hover:scale-105 transition-all duration-300 hover:shadow-lg group"
+              className="p-4 bg-gradient-to-br from-background/95 to-background/80 border-border/50 hover:scale-105 transition-all duration-300 hover:shadow-lg group overflow-hidden"
             >
               <div className="flex flex-col items-center gap-3">
                 {/* Large animated icon */}
-                <div className="relative">
+                <div className="relative shrink-0">
                   <Icon 
-                    className="w-12 h-12 group-hover:scale-110 transition-transform duration-300" 
+                    className="w-10 h-10 group-hover:scale-110 transition-transform duration-300" 
                     style={{ color: sourceColor }}
                   />
                   <div 
-                    className="absolute -inset-2 rounded-full opacity-50 blur-md group-hover:opacity-75 transition-opacity"
+                    className="absolute -inset-2 rounded-full opacity-50 blur-md group-hover:opacity-75 transition-opacity pointer-events-none"
                     style={{ backgroundColor: `${sourceColor}30` }}
                   />
                 </div>
 
                 {/* Circular progress ring */}
-                <div className="relative">
-                  <SentimentGauge value={source.sentiment} size={100} />
+                <div className="relative w-full flex justify-center">
+                  <SentimentGauge value={source.sentiment} size={90} />
                 </div>
 
                 {/* Source info */}
-                <div className="text-center w-full">
-                  <h4 className="text-sm font-semibold text-foreground mb-1">
+                <div className="text-center w-full min-w-0">
+                  <h4 className="text-xs font-semibold text-foreground mb-1 truncate px-2">
                     {source.name}
                   </h4>
-                  <p className="text-xs text-muted-foreground mb-2">
+                  <p className="text-[10px] text-muted-foreground mb-2 truncate">
                     {source.mentions.toLocaleString()} mentions
                   </p>
 
                   {/* Mini trend chart */}
-                  <div className="h-8 mt-2">
-                    <SparklineChart data={trendData} color={sourceColor} height={32} />
+                  <div className="h-6 mt-2 w-full px-2">
+                    <SparklineChart data={trendData} color={sourceColor} height={24} />
                   </div>
                 </div>
               </div>
@@ -368,12 +368,12 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
       {/* Sentiment Indicators - Speedometer & Bar Chart */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Fear & Greed - Speedometer */}
-        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Activity className="w-5 h-5 text-primary" />
-            Fear & Greed Index
+        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
+          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
+            <Activity className="w-4 h-4 text-primary shrink-0" />
+            <span className="truncate">Fear & Greed Index</span>
           </h3>
-          <div className="flex justify-center">
+          <div className="flex justify-center overflow-hidden">
             <SpeedometerGauge
               value={fearGreed}
               zones={[
@@ -385,9 +385,9 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
               ]}
             />
           </div>
-          <div className="mt-4 flex items-center justify-center gap-2 text-sm">
-            <TrendingUp className="w-4 h-4 text-emerald-400" />
-            <span className="text-emerald-400">+15 vs yesterday</span>
+          <div className="mt-4 flex items-center justify-center gap-2 text-xs truncate">
+            <TrendingUp className="w-3 h-3 text-emerald-400 shrink-0" />
+            <span className="text-emerald-400 truncate">+15 vs yesterday</span>
           </div>
         </Card>
 

@@ -39,7 +39,7 @@ export const VerticalGauge: React.FC<VerticalGaugeProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center gap-3">
+    <div className="flex flex-col items-center gap-3 w-full max-w-[120px] mx-auto">
       <div className="relative" style={{ width: 60, height }}>
         {/* Background zones */}
         <div className="absolute inset-0 rounded-full bg-gray-800/50 overflow-hidden">
@@ -78,14 +78,14 @@ export const VerticalGauge: React.FC<VerticalGaugeProps> = ({
       </div>
 
       {/* Value display */}
-      <div className="text-center">
-        <div className="text-2xl font-bold" style={{ color: getColor() }}>
+      <div className="text-center w-full">
+        <div className="text-xl font-bold truncate" style={{ color: getColor() }}>
           {Math.round(displayValue)}
         </div>
-        <div className="text-sm font-semibold mt-1" style={{ color: getColor() }}>
+        <div className="text-xs font-semibold mt-1 truncate" style={{ color: getColor() }}>
           {getZoneLabel()}
         </div>
-        {label && <div className="text-xs text-gray-400 mt-1">{label}</div>}
+        {label && <div className="text-xs text-gray-400 mt-1 truncate">{label}</div>}
       </div>
     </div>
   );
