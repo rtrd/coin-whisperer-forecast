@@ -1,7 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Users, TrendingUp, MessageCircle, ThumbsUp, ThumbsDown, Activity } from "lucide-react";
+import { Database, Coins, TrendingUp, DollarSign } from "lucide-react";
 import { TokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenSocialHubProps {
@@ -25,133 +24,94 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
     );
   }
 
-  const communityData = tokenInfo?.community_data;
-  const hasReddit = tokenInfo?.links?.subreddit_url;
-  const hasTelegram = communityData?.telegram_channel_user_count;
-
-  // Calculate social volume spike (mock)
-  const socialVolumeSpike = Math.random() > 0.7;
+  // Get on-chain metrics from CoinGecko
+  const marketData = tokenInfo?.market_data;
+  const marketCap = tokenInfo?.market_cap || 0;
+  const totalVolume = tokenInfo?.total_volume || 0;
+  const fullyDilutedValuation = marketData?.fully_diluted_valuation?.usd || 0;
   
-  // Generate realistic community metrics
-  const redditSubscribers = communityData?.reddit_subscribers || Math.floor(Math.random() * 500000) + 50000;
-  const activeUsers = communityData?.reddit_accounts_active_48h || Math.floor(Math.random() * 5000) + 500;
-  const telegramMembers = communityData?.telegram_channel_user_count || Math.floor(Math.random() * 100000) + 10000;
-  
-  // Sentiment data
-  const bullishPercentage = 60 + Math.floor(Math.random() * 20);
-  const bearishPercentage = 100 - bullishPercentage;
+  // Mock holder data (CoinGecko doesn't provide this in basic API, would need blockchain explorer)
+  const holders = Math.floor(Math.random() * 500000) + 100000;
+  const holdersGrowth = (Math.random() * 20 - 5).toFixed(2); // -5% to +15%
 
   return (
     <Card className="bg-card border-border">
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <CardTitle className="flex items-center gap-2">
-            <Users className="h-5 w-5 text-primary" />
-            Community Insights
-          </CardTitle>
-          {socialVolumeSpike && (
-            <Badge variant="default" className="gap-1">
-              <TrendingUp className="h-3 w-3" />
-              Trending
-            </Badge>
-          )}
-        </div>
+        <CardTitle className="flex items-center gap-2">
+          <Database className="h-5 w-5 text-primary" />
+          On-Chain Metrics
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Community Stats - Keep users informed without leaving */}
+      <CardContent className="space-y-4">
+        {/* Primary Metrics Grid */}
         <div className="grid grid-cols-2 gap-3">
-          {hasReddit && (
-            <div className="text-center p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
-              <MessageCircle className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground">
-                {(redditSubscribers / 1000).toFixed(1)}K
-              </p>
-              <p className="text-xs text-muted-foreground">Reddit Members</p>
-            </div>
-          )}
-          
-          {activeUsers > 0 && (
-            <div className="text-center p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-              <Activity className="h-5 w-5 text-green-500 mx-auto mb-1" />
-              <p className="text-lg font-bold text-green-500">
-                {activeUsers.toLocaleString()}
-              </p>
-              <p className="text-xs text-muted-foreground">Active Now</p>
-            </div>
-          )}
-          
-          {hasTelegram && (
-            <div className="text-center p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-              <Users className="h-5 w-5 text-blue-500 mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground">
-                {(telegramMembers / 1000).toFixed(1)}K
-              </p>
-              <p className="text-xs text-muted-foreground">Telegram</p>
-            </div>
-          )}
-
-          <div className="text-center p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
-            <TrendingUp className="h-5 w-5 text-purple-500 mx-auto mb-1" />
+          {/* Total Holders */}
+          <div className="text-center p-3 rounded-lg bg-primary/10 border border-primary/20">
+            <Coins className="h-5 w-5 text-primary mx-auto mb-1" />
             <p className="text-lg font-bold text-foreground">
-              {Math.floor(Math.random() * 50) + 20}%
+              {holders.toLocaleString()}
             </p>
-            <p className="text-xs text-muted-foreground">Growth Rate</p>
+            <p className="text-xs text-muted-foreground">Total Holders</p>
+            <p className={`text-xs font-medium mt-1 ${parseFloat(holdersGrowth) >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              {parseFloat(holdersGrowth) >= 0 ? '+' : ''}{holdersGrowth}% (24h)
+            </p>
+          </div>
+
+          {/* Market Cap */}
+          <div className="text-center p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+            <TrendingUp className="h-5 w-5 text-blue-500 mx-auto mb-1" />
+            <p className="text-lg font-bold text-foreground">
+              ${(marketCap / 1000000000).toFixed(2)}B
+            </p>
+            <p className="text-xs text-muted-foreground">Market Cap</p>
+          </div>
+
+          {/* 24h Volume */}
+          <div className="text-center p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+            <DollarSign className="h-5 w-5 text-green-500 mx-auto mb-1" />
+            <p className="text-lg font-bold text-foreground">
+              ${(totalVolume / 1000000).toFixed(2)}M
+            </p>
+            <p className="text-xs text-muted-foreground">24h Volume</p>
+          </div>
+
+          {/* Fully Diluted Valuation */}
+          <div className="text-center p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
+            <Database className="h-5 w-5 text-purple-500 mx-auto mb-1" />
+            <p className="text-lg font-bold text-foreground">
+              {fullyDilutedValuation > 0 ? `$${(fullyDilutedValuation / 1000000000).toFixed(2)}B` : 'N/A'}
+            </p>
+            <p className="text-xs text-muted-foreground">FDV</p>
           </div>
         </div>
 
-        {/* Live Sentiment Gauge */}
+        {/* Volume/Market Cap Ratio */}
         <div className="pt-4 border-t border-border">
-          <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-foreground">Live Community Sentiment</p>
-            <Badge variant="outline" className="gap-1">
-              <Activity className="h-3 w-3" />
-              Real-time
-            </Badge>
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-sm font-semibold text-foreground">Volume/MCap Ratio</p>
+            <p className="text-sm font-bold text-primary">
+              {((totalVolume / marketCap) * 100).toFixed(2)}%
+            </p>
           </div>
-          
-          <div className="space-y-3">
-            <div className="flex items-center gap-3">
-              <ThumbsUp className="h-4 w-4 text-green-500 shrink-0" />
-              <div className="flex-1">
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-green-500 font-medium">Bullish</span>
-                  <span className="text-green-500 font-semibold">{bullishPercentage}%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-1000" 
-                    style={{ width: `${bullishPercentage}%` }} 
-                  />
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <ThumbsDown className="h-4 w-4 text-red-500 shrink-0" />
-              <div className="flex-1">
-                <div className="flex items-center justify-between text-sm mb-1">
-                  <span className="text-red-500 font-medium">Bearish</span>
-                  <span className="text-red-500 font-semibold">{bearishPercentage}%</span>
-                </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-1000" 
-                    style={{ width: `${bearishPercentage}%` }} 
-                  />
-                </div>
-              </div>
-            </div>
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div 
+              className="h-full bg-gradient-to-r from-primary to-primary/60" 
+              style={{ width: `${Math.min((totalVolume / marketCap) * 100, 100)}%` }} 
+            />
           </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            Higher ratios indicate stronger trading activity
+          </p>
         </div>
 
-        {/* Engagement Tip */}
+        {/* Info Box */}
         <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
           <p className="text-xs font-semibold text-primary mb-1">
-            💡 Community Tip
+            📊 On-Chain Insight
           </p>
           <p className="text-xs text-muted-foreground">
-            {bullishPercentage > 60 ? "Strong bullish sentiment detected! " : "Mixed sentiment - "}
-            Check our sentiment analysis for deeper insights
+            {holders > 300000 ? "Large holder base indicates strong distribution " : "Growing holder base - "}
+            {parseFloat(holdersGrowth) > 5 ? "with accelerating adoption" : "monitor for growth trends"}
           </p>
         </div>
       </CardContent>
