@@ -219,7 +219,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
   const indicators: TechnicalIndicator[] = [
     {
-      name: "RSI (14)",
+      name: "RSI",
       value: rsi,
       signal: rsi > 70 ? "sell" : rsi < 30 ? "buy" : "neutral",
       strength: calculateRSIStrength(rsi), // max deviation from neutral
@@ -614,7 +614,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           <div className="flex items-center justify-between mb-4">
             <h4 className="text-sm font-semibold flex items-center gap-2 truncate">
               <BarChart3 className="w-4 h-4 text-purple-400 shrink-0" />
-              <span className="truncate">Volume Profile (14 Days)</span>
+              <span className="truncate">Volume Profile</span>
               <Tooltip>
                 <TooltipTrigger>
                   <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
