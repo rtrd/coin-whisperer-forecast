@@ -268,6 +268,19 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
     }
   };
 
+  // Add loading and null checks
+  if (isLoading || !sentiment) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
+        <div className="space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="h-16 w-full bg-gray-700 animate-pulse rounded" />
+          ))}
+        </div>
+      </Card>
+    );
+  }
+
   const sentimentEmoji = sentiment.score >= 70 ? "🤑" : sentiment.score >= 50 ? "😊" : sentiment.score >= 40 ? "😐" : sentiment.score >= 20 ? "😟" : "😰";
   
   const sentimentGradient = sentiment.score >= 70 
