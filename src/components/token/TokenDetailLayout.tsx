@@ -18,6 +18,10 @@ import { TokenSocialHub } from "./TokenSocialHub";
 import { TokenResourcesPanel } from "./TokenResourcesPanel";
 import { TokenPriceTimeline } from "./TokenPriceTimeline";
 import { TokenPriceAlerts } from "./TokenPriceAlerts";
+import { TokenGalaxyScore } from "./TokenGalaxyScore";
+import { TokenComparison } from "./TokenComparison";
+import { TokenLiveFeed } from "./TokenLiveFeed";
+import { TokenDeveloperActivity } from "./TokenDeveloperActivity";
 import { useTokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenDetailLayoutProps {
@@ -186,11 +190,31 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             currentPrice={currentPrice}
             ath={marketData?.ath}
             atl={marketData?.atl}
+            priceChange1h={tokenInfo?.market_data?.price_change_percentage_1h_in_currency?.usd}
             priceChange24h={marketData?.price_change_percentage_24h}
             priceChange7d={marketData?.price_change_percentage_7d_in_currency}
+            priceChange14d={tokenInfo?.market_data?.price_change_percentage_14d_in_currency?.usd}
             priceChange30d={marketData?.price_change_percentage_30d_in_currency}
+            priceChange60d={tokenInfo?.market_data?.price_change_percentage_60d_in_currency?.usd}
+            priceChange200d={tokenInfo?.market_data?.price_change_percentage_200d_in_currency?.usd}
+            priceChange1y={tokenInfo?.market_data?.price_change_percentage_1y_in_currency?.usd}
             athDate={marketData?.ath_date}
             atlDate={marketData?.atl_date}
+          />
+        </div>
+
+        {/* Galaxy Score Widget - Full Width */}
+        <div className="mt-6">
+          <TokenGalaxyScore tokenSymbol={selectedToken?.symbol || tokenId} />
+        </div>
+
+        {/* Comparison Tool - Full Width */}
+        <div className="mt-6">
+          <TokenComparison
+            tokenSymbol={selectedToken?.symbol || tokenId}
+            marketCap={marketData?.market_cap}
+            volume24h={marketData?.total_volume}
+            priceChange24h={marketData?.price_change_percentage_24h || 0}
           />
         </div>
 
@@ -207,7 +231,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             />
           </div>
 
-          {/* Sidebar with Ad + TokenSidebar */}
+          {/* Sidebar with Ad + TokenSidebar + Developer Activity */}
           <div className="lg:col-span-1 space-y-6">
             <VdoBannerAd />
             <TokenSidebar
@@ -218,12 +242,21 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               cryptoOptions={cryptoOptions}
               cryptoData={cryptoData}
             />
+            <TokenDeveloperActivity tokenInfo={tokenInfo} isLoading={tokenInfoLoading} />
             <AdUnit
               adUnit={"/22181265/pumpparade_stickyrail"}
               isMobile={isMobile}
               className={customClass}
             />
           </div>
+        </div>
+
+        {/* Live Social Feed - Full Width */}
+        <div className="mt-6">
+          <TokenLiveFeed
+            tokenSymbol={selectedToken?.symbol || tokenId}
+            tokenName={selectedToken?.name || tokenId}
+          />
         </div>
 
         {/* Other Tokens Section */}

@@ -8,9 +8,14 @@ interface TokenPriceTimelineProps {
   currentPrice: number;
   ath?: number;
   atl?: number;
+  priceChange1h?: number;
   priceChange24h?: number;
   priceChange7d?: number;
+  priceChange14d?: number;
   priceChange30d?: number;
+  priceChange60d?: number;
+  priceChange200d?: number;
+  priceChange1y?: number;
   athDate?: string;
   atlDate?: string;
 }
