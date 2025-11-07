@@ -24,6 +24,13 @@ interface PriceData {
   volume?: number;
 }
 
+interface VolumeData {
+  label: string;
+  value: number;
+}
+
+interface MACDHistogramData extends VolumeData {}
+
 interface TechnicalIndicator {
   name: string;
   value: number;
@@ -33,12 +40,16 @@ interface TechnicalIndicator {
 
 interface TechnicalAnalysisProps {
   data: PriceData[] | null;
-  isLoading: boolean; // Adjust type as needed based on your data structure
+  isLoading: boolean;
+  volumeData?: VolumeData[];
+  macdHistogram?: MACDHistogramData[];
 }
 
 export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   data,
   isLoading,
+  volumeData,
+  macdHistogram,
 }) => {
   const prices = data.map((d) => d.price);
 
@@ -152,7 +163,17 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     const rawStrength = Math.abs(diff) / Math.max(Math.abs(latestSignal), 1);
     const scaled = scaleStrength(rawStrength);
 
-    return { macd: latestMACD, signal: latestSignal, strength: scaled };
+    // Generate histogram data for last 14 periods
+    const histogram: MACDHistogramData[] = [];
+    const startIdx = Math.max(0, macdLine.length - 14);
+    for (let i = startIdx; i < macdLine.length; i++) {
+      histogram.push({
+        label: String(i - startIdx + 1),
+        value: macdLine[i] - (signalLine[i] ?? 0)
+      });
+    }
+
+    return { macd: latestMACD, signal: latestSignal, strength: scaled, histogram };
   };
 
   if (isLoading) {
@@ -180,7 +201,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   const { sma20, strength: sma20Strength } = calculateSMA20Strength(prices);
   const { sma50, strength: sma50Strength } = calculateSMA50Strength(prices);
 
-  const { macd, signal, strength: macdStrength } = calculateMACD(prices);
+  const { macd, signal, strength: macdStrength, histogram: calculatedMACDHistogram } = calculateMACD(prices);
 
   const indicators: TechnicalIndicator[] = [
     {
@@ -510,22 +531,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             </div>
             <div className="overflow-hidden">
               <HistogramChart
-                data={[
-                  { label: "1", value: -2.3 },
-                  { label: "2", value: -1.8 },
-                  { label: "3", value: -0.5 },
-                  { label: "4", value: 0.2 },
-                  { label: "5", value: 1.1 },
-                  { label: "6", value: 2.4 },
-                  { label: "7", value: 3.2 },
-                  { label: "8", value: 2.8 },
-                  { label: "9", value: 1.9 },
-                  { label: "10", value: 2.5 },
-                  { label: "11", value: 3.1 },
-                  { label: "12", value: 2.9 },
-                  { label: "13", value: 3.5 },
-                  { label: "14", value: 4.2 },
-                ]}
+                data={macdHistogram || calculatedMACDHistogram || []}
                 height={140}
               />
             </div>
@@ -561,28 +567,27 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             </div>
           </div>
           <div className="overflow-hidden">
-            <HistogramChart
-              data={[
-                { label: "1", value: 850 },
-                { label: "2", value: -620 },
-                { label: "3", value: 940 },
-                { label: "4", value: 1100 },
-                { label: "5", value: -780 },
-                { label: "6", value: 1250 },
-                { label: "7", value: 1420 },
-                { label: "8", value: -890 },
-                { label: "9", value: 1180 },
-                { label: "10", value: 1350 },
-                { label: "11", value: -1020 },
-                { label: "12", value: 1480 },
-                { label: "13", value: 1620 },
-                { label: "14", value: 1780 },
-              ]}
-              height={140}
-            />
+            {volumeData && volumeData.length > 0 ? (
+              <HistogramChart
+                data={volumeData}
+                height={140}
+              />
+            ) : data && data.length > 0 ? (
+              <HistogramChart
+                data={data.slice(-14).map((d, i) => ({
+                  label: String(i + 1),
+                  value: d.volume || 0
+                }))}
+                height={140}
+              />
+            ) : (
+              <div className="flex items-center justify-center h-[140px] text-muted-foreground text-sm">
+                No volume data available
+              </div>
+            )}
           </div>
           <div className="mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center bg-purple-500/20 text-purple-400 truncate">
-            Volume Increasing ↑
+            Volume Data
           </div>
         </Card>
       </div>
