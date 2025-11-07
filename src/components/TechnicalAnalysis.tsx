@@ -74,6 +74,14 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   const prices = data.map((d) => d.price);
   const currentPrice = prices[prices.length - 1];
 
+  // Helper function to format dates for chart labels
+  const formatDateLabel = (timestamp: number): string => {
+    const date = new Date(timestamp);
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const day = date.getDate();
+    return `${month} ${day}`;
+  };
+
   // Scale normalized values to 0.2 to 0.8 (20% to 80%)
   const scaleStrength = (raw: number): number => {
     const clamped = Math.min(Math.max(raw, 0), 1); // 0 to 1
@@ -182,12 +190,13 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     const rawStrength = Math.abs(diff) / Math.max(Math.abs(latestSignal), 1);
     const scaled = scaleStrength(rawStrength);
 
-    // Generate histogram data for last 14 periods
+    // Generate histogram data for last 14 periods with date labels
     const histogram: MACDHistogramData[] = [];
     const startIdx = Math.max(0, macdLine.length - 14);
     for (let i = startIdx; i < macdLine.length; i++) {
+      const dataIndex = Math.max(0, data.length - macdLine.length + i);
       histogram.push({
-        label: String(i - startIdx + 1),
+        label: formatDateLabel(data[dataIndex].timestamp),
         value: macdLine[i] - (signalLine[i] ?? 0)
       });
     }
@@ -634,7 +643,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             ) : data && data.length > 0 ? (
               <HistogramChart
                 data={data.slice(-14).map((d, i) => ({
-                  label: String(i + 1),
+                  label: formatDateLabel(d.timestamp),
                   value: d.volume || 0
                 }))}
                 height={140}
