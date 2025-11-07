@@ -430,8 +430,12 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 )}
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <p className="text-sm">No LunarCrush data available</p>
+              <div className="text-center py-8">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg">
+                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                  <p className="text-sm text-red-400">LunarCrush API Error (401)</p>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">Check API key: VITE_LUNAR_API</p>
               </div>
             )}
         </Card>
