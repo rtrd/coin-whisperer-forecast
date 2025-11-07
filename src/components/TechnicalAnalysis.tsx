@@ -345,42 +345,113 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
           </Card>
         )}
 
-        {/* SMA 20/50 - Clear stats instead of channel chart */}
-        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-          <h4 className="text-sm font-semibold mb-4 truncate">Moving Averages (SMA 20/50)</h4>
-          <div className="space-y-4">
-            {/* Sparkline for recent prices */}
-            <div className="h-12">
-              <SparklineChart data={recentPrices} color="#60A5FA" height={48} />
-            </div>
+        {/* Moving Averages - Complete Redesign */}
+        <Card className="p-6 bg-gradient-to-br from-blue-900/20 via-cyan-900/10 to-background/80 border-blue-500/20 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
+          <div className="relative">
+            <h4 className="text-sm font-semibold mb-6 flex items-center gap-2">
+              <Activity className="w-4 h-4 text-blue-400" />
+              Moving Averages Analysis
+            </h4>
             
-            {/* SMA rows */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="rounded-lg border border-border/60 p-3">
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-                  <span>SMA 20</span>
-                  <span>{sma20.toFixed(2)}</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full ${currentPrice > sma20 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'}`}>{currentPrice > sma20 ? 'Above' : 'Below'}</span>
-                  <span className="text-xs font-medium">{((Math.abs(currentPrice - sma20) / Math.max(sma20,1)) * 100).toFixed(1)}%</span>
-                </div>
-                <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
-                  <div className={`h-full ${currentPrice > sma20 ? 'bg-emerald-500' : 'bg-red-500'}`} style={{ width: `${Math.min(((Math.abs(currentPrice - sma20) / Math.max(sma20,1)) * 100), 100)}%` }} />
+            {/* Visual Price Position */}
+            <div className="mb-6 space-y-4">
+              <div className="text-center space-y-2">
+                <div className="text-xs text-muted-foreground">Current Price Position</div>
+                <div className="relative h-32 bg-gradient-to-b from-red-500/10 via-yellow-500/10 to-emerald-500/10 rounded-lg border border-border/50 overflow-hidden">
+                  {/* SMA 50 Line */}
+                  <div 
+                    className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-orange-500 to-transparent z-10"
+                    style={{ top: '25%' }}
+                  >
+                    <div className="absolute -left-2 -top-2 text-[10px] font-semibold text-orange-400 bg-background/80 px-2 py-0.5 rounded whitespace-nowrap">
+                      SMA 50: ${sma50.toFixed(2)}
+                    </div>
+                  </div>
+                  
+                  {/* SMA 20 Line */}
+                  <div 
+                    className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent z-10"
+                    style={{ top: '50%' }}
+                  >
+                    <div className="absolute -left-2 -top-2 text-[10px] font-semibold text-cyan-400 bg-background/80 px-2 py-0.5 rounded whitespace-nowrap">
+                      SMA 20: ${sma20.toFixed(2)}
+                    </div>
+                  </div>
+                  
+                  {/* Current Price Marker */}
+                  <div 
+                    className="absolute left-1/2 -translate-x-1/2 w-1 h-full bg-gradient-to-b from-primary/50 via-primary to-primary/50 z-20"
+                    style={{ 
+                      top: 0,
+                      boxShadow: '0 0 20px hsl(var(--primary))' 
+                    }}
+                  >
+                    <div className="absolute top-1/2 -translate-y-1/2 left-2 text-xs font-bold text-primary bg-background/90 px-3 py-1 rounded-lg border border-primary/30 whitespace-nowrap shadow-lg">
+                      ${currentPrice.toFixed(2)}
+                    </div>
+                  </div>
                 </div>
               </div>
+              
+              {/* Interpretation Cards */}
+              <div className="grid grid-cols-2 gap-3">
+                <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-cyan-500" />
+                      <span className="text-xs font-semibold text-cyan-400">SMA 20</span>
+                    </div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${currentPrice > sma20 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+                      {currentPrice > sma20 ? 'Bullish' : 'Bearish'}
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-foreground">${sma20.toFixed(2)}</div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Distance</span>
+                    <span className={currentPrice > sma20 ? 'text-emerald-400 font-semibold' : 'text-red-400 font-semibold'}>
+                      {currentPrice > sma20 ? '+' : ''}{((currentPrice - sma20) / sma20 * 100).toFixed(2)}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all ${currentPrice > sma20 ? 'bg-emerald-500' : 'bg-red-500'}`} 
+                      style={{ width: `${Math.min(Math.abs((currentPrice - sma20) / sma20 * 100) * 10, 100)}%` }} 
+                    />
+                  </div>
+                </div>
 
-              <div className="rounded-lg border border-border/60 p-3">
-                <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
-                  <span>SMA 50</span>
-                  <span>{sma50.toFixed(2)}</span>
+                <div className="rounded-xl border border-orange-500/30 bg-orange-500/5 p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-orange-500" />
+                      <span className="text-xs font-semibold text-orange-400">SMA 50</span>
+                    </div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${currentPrice > sma50 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' : 'bg-red-500/20 text-red-400 border border-red-500/30'}`}>
+                      {currentPrice > sma50 ? 'Bullish' : 'Bearish'}
+                    </span>
+                  </div>
+                  <div className="text-2xl font-bold text-foreground">${sma50.toFixed(2)}</div>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">Distance</span>
+                    <span className={currentPrice > sma50 ? 'text-emerald-400 font-semibold' : 'text-red-400 font-semibold'}>
+                      {currentPrice > sma50 ? '+' : ''}{((currentPrice - sma50) / sma50 * 100).toFixed(2)}%
+                    </span>
+                  </div>
+                  <div className="h-1.5 bg-muted/30 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all ${currentPrice > sma50 ? 'bg-emerald-500' : 'bg-red-500'}`} 
+                      style={{ width: `${Math.min(Math.abs((currentPrice - sma50) / sma50 * 100) * 10, 100)}%` }} 
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] px-2 py-0.5 rounded-full ${currentPrice > sma50 ? 'bg-emerald-500/15 text-emerald-400' : 'bg-red-500/15 text-red-400'}`}>{currentPrice > sma50 ? 'Above' : 'Below'}</span>
-                  <span className="text-xs font-medium">{((Math.abs(currentPrice - sma50) / Math.max(sma50,1)) * 100).toFixed(1)}%</span>
-                </div>
-                <div className="mt-2 h-2 bg-muted rounded-full overflow-hidden">
-                  <div className={`h-full ${currentPrice > sma50 ? 'bg-emerald-500' : 'bg-red-500'}`} style={{ width: `${Math.min(((Math.abs(currentPrice - sma50) / Math.max(sma50,1)) * 100), 100)}%` }} />
+              </div>
+              
+              {/* Overall Signal */}
+              <div className="text-center py-3 px-4 rounded-xl bg-gradient-to-r from-background/50 to-background/30 border border-border/50">
+                <div className="text-xs text-muted-foreground mb-1">Moving Average Signal</div>
+                <div className={`text-lg font-bold ${(currentPrice > sma20 && currentPrice > sma50) ? 'text-emerald-400' : (currentPrice < sma20 && currentPrice < sma50) ? 'text-red-400' : 'text-yellow-400'}`}>
+                  {(currentPrice > sma20 && currentPrice > sma50) ? 'Strong Bullish' : (currentPrice < sma20 && currentPrice < sma50) ? 'Strong Bearish' : 'Mixed Signal'}
                 </div>
               </div>
             </div>
@@ -471,24 +542,122 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
         </Card>
       </div>
 
-      {/* Support & Resistance - Simplified channel */}
-      <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-        <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-          <Shield className="w-5 h-5 text-primary" />
-          Support & Resistance Levels
-        </h3>
-        <div className="overflow-hidden">
-          <PriceChannelChart
-            support={analysis.supportLevel}
-            resistance={analysis.resistanceLevel}
-            currentPrice={(analysis.supportLevel + analysis.resistanceLevel) / 2}
-            symbol="$"
-            height={220}
-          />
-        </div>
-        <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
-          <div className="px-3 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Support: ${analysis.supportLevel.toFixed(2)}</div>
-          <div className="px-3 py-2 rounded-lg bg-red-500/10 text-red-400 border border-red-500/20 text-right">Resistance: ${analysis.resistanceLevel.toFixed(2)}</div>
+      {/* Support & Resistance - Complete Redesign */}
+      <Card className="p-6 bg-gradient-to-br from-emerald-900/20 via-red-900/10 to-background/80 border-emerald-500/20 overflow-hidden relative">
+        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl" />
+        <div className="relative">
+          <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+            <Shield className="w-5 h-5 text-primary" />
+            Support & Resistance Levels
+          </h3>
+          
+          {/* Visual Price Ladder */}
+          <div className="space-y-6">
+            <div className="relative">
+              {/* Resistance Level */}
+              <div className="mb-8 p-4 rounded-xl border-2 border-red-500/30 bg-gradient-to-br from-red-500/10 to-red-500/5 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent" />
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-red-400" />
+                    <span className="text-sm font-semibold text-red-400">Resistance</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
+                    Sell Pressure
+                  </span>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-2">${analysis.resistanceLevel.toFixed(2)}</div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Distance from current</span>
+                  <span className="text-red-400 font-semibold">
+                    +{(((analysis.resistanceLevel - currentPrice) / currentPrice) * 100).toFixed(2)}%
+                  </span>
+                </div>
+                <div className="mt-3 h-2 bg-muted/30 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-red-500/50 to-red-500" 
+                    style={{ width: `${Math.min(((analysis.resistanceLevel - currentPrice) / currentPrice) * 100, 100)}%` }} 
+                  />
+                </div>
+              </div>
+              
+              {/* Price Range Visualization */}
+              <div className="relative h-48 mb-8 rounded-xl bg-gradient-to-b from-red-500/5 via-background/50 to-emerald-500/5 border border-border/50 overflow-hidden">
+                <div className="absolute inset-x-0 top-0 h-8 flex items-center justify-center border-b border-red-500/20 bg-red-500/5">
+                  <span className="text-xs font-medium text-red-400">Resistance Zone</span>
+                </div>
+                <div className="absolute inset-x-0 bottom-0 h-8 flex items-center justify-center border-t border-emerald-500/20 bg-emerald-500/5">
+                  <span className="text-xs font-medium text-emerald-400">Support Zone</span>
+                </div>
+                
+                {/* Current Price Indicator */}
+                <div 
+                  className="absolute left-0 right-0 h-0.5 bg-primary z-10 flex items-center justify-center"
+                  style={{ 
+                    top: `${((analysis.resistanceLevel - currentPrice) / (analysis.resistanceLevel - analysis.supportLevel)) * 100}%`,
+                  }}
+                >
+                  <div className="absolute left-1/2 -translate-x-1/2 -top-6 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-bold shadow-lg whitespace-nowrap">
+                    Current: ${currentPrice.toFixed(2)}
+                  </div>
+                  <div className="absolute left-0 w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <div className="absolute right-0 w-2 h-2 rounded-full bg-primary animate-pulse" />
+                </div>
+                
+                {/* Distance Labels */}
+                <div className="absolute left-4 top-1/4 text-xs text-muted-foreground bg-background/80 px-2 py-1 rounded">
+                  {(((analysis.resistanceLevel - currentPrice) / currentPrice) * 100).toFixed(1)}% to resist
+                </div>
+                <div className="absolute left-4 bottom-1/4 text-xs text-muted-foreground bg-background/80 px-2 py-1 rounded">
+                  {(((currentPrice - analysis.supportLevel) / currentPrice) * 100).toFixed(1)}% to support
+                </div>
+              </div>
+              
+              {/* Support Level */}
+              <div className="p-4 rounded-xl border-2 border-emerald-500/30 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 relative overflow-hidden">
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <TrendingDown className="w-4 h-4 text-emerald-400" />
+                    <span className="text-sm font-semibold text-emerald-400">Support</span>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    Buy Pressure
+                  </span>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-2">${analysis.supportLevel.toFixed(2)}</div>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">Distance from current</span>
+                  <span className="text-emerald-400 font-semibold">
+                    -{(((currentPrice - analysis.supportLevel) / currentPrice) * 100).toFixed(2)}%
+                  </span>
+                </div>
+                <div className="mt-3 h-2 bg-muted/30 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-emerald-500 to-emerald-500/50" 
+                    style={{ width: `${Math.min(((currentPrice - analysis.supportLevel) / currentPrice) * 100, 100)}%` }} 
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Trading Range Info */}
+            <div className="grid grid-cols-2 gap-3 pt-4 border-t border-border/50">
+              <div className="text-center p-3 rounded-lg bg-muted/20">
+                <div className="text-xs text-muted-foreground mb-1">Range Width</div>
+                <div className="text-lg font-bold text-foreground">
+                  ${(analysis.resistanceLevel - analysis.supportLevel).toFixed(2)}
+                </div>
+              </div>
+              <div className="text-center p-3 rounded-lg bg-muted/20">
+                <div className="text-xs text-muted-foreground mb-1">Price Position</div>
+                <div className="text-lg font-bold text-foreground">
+                  {(((currentPrice - analysis.supportLevel) / (analysis.resistanceLevel - analysis.supportLevel)) * 100).toFixed(0)}%
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </Card>
     </div>
