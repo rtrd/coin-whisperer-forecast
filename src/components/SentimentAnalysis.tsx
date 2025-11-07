@@ -13,7 +13,8 @@ import {
   Zap,
   InfoIcon,
 } from "lucide-react";
-import { fetchSentimentData, fetchTechnicalIndicators } from "@/services/aiPredictionService";
+import { fetchSentimentData } from "@/services/aiPredictionService";
+import { useLunarCrushMetrics } from "@/hooks/useLunarCrushMetrics";
 import { SentimentGauge } from "@/components/charts/SentimentGauge";
 import { SparklineChart } from "@/components/charts/SparklineChart";
 import { SentimentHeatmap } from "@/components/charts/SentimentHeatmap";
@@ -46,7 +47,9 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
 }) => {
   const [sentiment, setSentiment] = useState<SentimentData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [tradingVolumeData, setTradingVolumeData] = useState<{ label: string; value: number }[]>([]);
+  
+  // Fetch real LunarCrush metrics
+  const { data: lunarCrushData, isLoading: lunarCrushLoading } = useLunarCrushMetrics(crypto);
 
   useEffect(() => {
     const transformApiDataToSentiment = (apiData: any): SentimentData => {
@@ -165,36 +168,6 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
     };
 
     fetchData();
-  }, [crypto]);
-
-  // Fetch real trading volume data from CoinGecko
-  useEffect(() => {
-    const loadVolumeData = async () => {
-      try {
-        const technicalData = await fetchTechnicalIndicators(crypto, "7d");
-        
-        if (technicalData && technicalData.length > 0) {
-          // Get last 7 days of volume data
-          const volumeHistory = technicalData.slice(-7).map((d: any, idx: number) => {
-            const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
-            const date = new Date(tsMs);
-            const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
-            
-            return {
-              label: dayName,
-              value: d.volume || 0
-            };
-          });
-          
-          setTradingVolumeData(volumeHistory);
-        }
-      } catch (error) {
-        console.error("Failed to fetch volume data:", error);
-        setTradingVolumeData([]);
-      }
-    };
-
-    loadVolumeData();
   }, [crypto]);
 
   const getSentimentColor = (score: number) => {
@@ -367,36 +340,100 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           />
         </Card>
 
-          {/* Trading Volume - Real CoinGecko Data */}
+          {/* LunarCrush Social Metrics */}
           <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30 overflow-hidden">
             <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
               <Zap className="w-4 h-4 text-purple-400 shrink-0" />
-              <span className="truncate">Trading Volume (7 Days)</span>
+              <span className="truncate">Social Metrics - LunarCrush</span>
               <Tooltip>
                 <TooltipTrigger>
                   <InfoIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground transition-colors" />
                 </TooltipTrigger>
                 <TooltipContent className="max-w-xs">
-                  <p className="text-sm">Real trading volume from CoinGecko. Higher volume indicates increased market activity and liquidity.</p>
+                  <p className="text-sm">Real-time social metrics from LunarCrush tracking community engagement and activity.</p>
                 </TooltipContent>
               </Tooltip>
             </h3>
-          <div className="overflow-hidden">
-            <HistogramChart
-              data={tradingVolumeData.length > 0 ? tradingVolumeData : [
-                { label: "Mon", value: 0 },
-                { label: "Tue", value: 0 },
-                { label: "Wed", value: 0 },
-                { label: "Thu", value: 0 },
-                { label: "Fri", value: 0 },
-                { label: "Sat", value: 0 },
-                { label: "Sun", value: 0 },
-              ]}
-              height={120}
-              positiveColor="#A855F7"
-              negativeColor="#EC4899"
-            />
-          </div>
+            
+            {lunarCrushLoading ? (
+              <div className="space-y-3">
+                <div className="h-8 bg-purple-500/20 animate-pulse rounded" />
+                <div className="h-8 bg-purple-500/20 animate-pulse rounded" />
+                <div className="h-8 bg-purple-500/20 animate-pulse rounded" />
+              </div>
+            ) : lunarCrushData ? (
+              <div className="space-y-3">
+                {/* Galaxy Score */}
+                {lunarCrushData.galaxy_score !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-purple-400" />
+                      <span className="text-sm text-muted-foreground">Galaxy Score</span>
+                    </div>
+                    <span className="text-lg font-bold text-purple-400">{lunarCrushData.galaxy_score.toFixed(1)}</span>
+                  </div>
+                )}
+                
+                {/* Social Volume 24h */}
+                {lunarCrushData.social_volume_24h !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-pink-400" />
+                      <span className="text-sm text-muted-foreground">Social Volume (24h)</span>
+                    </div>
+                    <span className="text-lg font-bold text-pink-400">{lunarCrushData.social_volume_24h.toLocaleString()}</span>
+                  </div>
+                )}
+                
+                {/* Social Engagement 24h */}
+                {lunarCrushData.social_engagement_24h !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-violet-400" />
+                      <span className="text-sm text-muted-foreground">Social Engagement (24h)</span>
+                    </div>
+                    <span className="text-lg font-bold text-violet-400">{lunarCrushData.social_engagement_24h.toLocaleString()}</span>
+                  </div>
+                )}
+                
+                {/* Social Contributors */}
+                {lunarCrushData.social_contributors !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-fuchsia-400" />
+                      <span className="text-sm text-muted-foreground">Contributors</span>
+                    </div>
+                    <span className="text-lg font-bold text-fuchsia-400">{lunarCrushData.social_contributors.toLocaleString()}</span>
+                  </div>
+                )}
+                
+                {/* Social Dominance */}
+                {lunarCrushData.social_dominance !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-purple-300" />
+                      <span className="text-sm text-muted-foreground">Social Dominance</span>
+                    </div>
+                    <span className="text-lg font-bold text-purple-300">{lunarCrushData.social_dominance.toFixed(2)}%</span>
+                  </div>
+                )}
+                
+                {/* AltRank */}
+                {lunarCrushData.alt_rank !== undefined && (
+                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-pink-300" />
+                      <span className="text-sm text-muted-foreground">AltRank™</span>
+                    </div>
+                    <span className="text-lg font-bold text-pink-300">#{lunarCrushData.alt_rank}</span>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-muted-foreground">
+                <p className="text-sm">No LunarCrush data available</p>
+              </div>
+            )}
         </Card>
       </div>
 
