@@ -175,7 +175,6 @@ export const EnhancedRiskAnalysis: React.FC<EnhancedRiskAnalysisProps> = ({
     }
   };
   const riskSuggestions = generateRiskSuggestions(riskMetrics.riskMetrics);
-  console.log(riskSuggestions);
   return (
     <TooltipProvider>
       <div className="space-y-6">

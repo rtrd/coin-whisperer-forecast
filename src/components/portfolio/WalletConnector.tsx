@@ -15,28 +15,33 @@ import {
   useDisconnect,
 } from "@reown/appkit/react";
 import { removeAddressFromStorage } from "@/lib/storage";
+import { ChainNamespace } from "@reown/appkit/networks";
 
 // Network icons (you can replace with your own SVGs or images)
 
 const SUPPORTED_CHAINS = [
   {
-    name: "Ethereum",
     id: 1,
+    name: "Ethereum",
+    namespace: "eip155",
     icon: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
   },
   {
     name: "Polygon",
     id: 137,
+    namespace: "eip155",
     icon: "https://assets.coingecko.com/coins/images/4713/small/matic-token-icon.png",
   },
   {
     name: "Arbitrum",
     id: 42161,
+    namespace: "eip155",
     icon: "public/images/Arbitrum.png",
   },
   {
     name: "Optimism",
     id: 10,
+    namespace: "eip155",
     icon: "https://assets.coingecko.com/coins/images/25244/small/Optimism.png",
   },
   {
@@ -61,7 +66,8 @@ const SUPPORTED_CHAINS = [
   },
   {
     name: "Solana",
-    id: "solana",
+    id: "solana-mainnet",
+    namespace: "solana",
     icon: "https://assets.coingecko.com/coins/images/4128/small/solana.png",
   },
   {
@@ -78,9 +84,8 @@ const SUPPORTED_CHAINS = [
     name: "Aptos",
     id: "aptos",
     icon: "https://assets.coingecko.com/coins/images/26455/small/aptos_round.png",
-  },
+  }
 ];
-
 
 export const WalletConnector: React.FC<{
   onConnect: (addr: string, chainId: string | number) => void;
@@ -90,10 +95,13 @@ export const WalletConnector: React.FC<{
   const [walletAddress, setWalletAddress] = useState("");
   const [chainId, setChainId] = useState<string | number | null>(null);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
+  const [selectNamespace, setNamespace] = useState<ChainNamespace>("eip155");
 
-  const { open, close } = useAppKit();
-  const { address, isConnected: isAccountConnected } = useAppKitAccount();
+  const { open } = useAppKit();
   const { disconnect } = useDisconnect();
+  const { address, isConnected: isAccountConnected } = useAppKitAccount({
+    namespace: selectNamespace,
+  });
 
   const handleAppkitConnect = () => {
     setIsConnecting(true);
@@ -105,9 +113,10 @@ export const WalletConnector: React.FC<{
     if (isAccountConnected && address) {
       setWalletAddress(address);
       setIsConnected(true);
+      onConnect(address, chainId);
       setTimeout(() => setShowNetworkModal(true), 300);
     }
-  }, [isAccountConnected, address]);
+  }, [isAccountConnected, address, chainId]);
 
   useEffect(() => {
     if (!isAccountConnected) {
@@ -130,15 +139,20 @@ export const WalletConnector: React.FC<{
     }
   };
 
-  const handleNetworkSelect = (selectedChainId: string | number) => {
+  const handleNetworkSelect = (
+    selectedChainId: string | number,
+    namespace: ChainNamespace = "eip155"
+  ) => {
+    // debugger;
+    handleAppkitConnect();
     setChainId(selectedChainId);
+    setNamespace(namespace);
     setShowNetworkModal(false);
     toast.success(
       `Connected to ${
         SUPPORTED_CHAINS.find((c) => c.id === selectedChainId)?.name
       }`
     );
-    onConnect(walletAddress, selectedChainId);
   };
 
   const copyAddress = () => {
@@ -192,7 +206,9 @@ export const WalletConnector: React.FC<{
           )}
 
           <Button
-            onClick={isConnected ? handleDisconnect : handleAppkitConnect}
+            onClick={
+              isConnected ? handleDisconnect : () => setShowNetworkModal(true)
+            }
             disabled={isConnecting}
             className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white"
           >
@@ -225,7 +241,6 @@ export const WalletConnector: React.FC<{
       </Card>
 
       {/* Network Selection Modal */}
-      {/* Network Selection Modal */}
       {showNetworkModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 backdrop-blur-sm">
           <div className="bg-gray-900 rounded-2xl p-6 w-80 max-h-[80vh] shadow-2xl relative animate-fade-in-up overflow-hidden">
@@ -250,7 +265,12 @@ export const WalletConnector: React.FC<{
                 acc[sectionIndex].push(
                   <button
                     key={chain.id}
-                    onClick={() => handleNetworkSelect(chain.id)}
+                    onClick={() =>
+                      handleNetworkSelect(
+                        chain.id,
+                        chain?.namespace as ChainNamespace
+                      )
+                    }
                     className="flex items-center gap-3 justify-start rounded-xl px-4 py-2 bg-gray-800 hover:bg-blue-600 transform transition duration-300 ease-out hover:shadow-[0_0_15px_rgba(59,130,246,0.7)] w-full"
                   >
                     <img

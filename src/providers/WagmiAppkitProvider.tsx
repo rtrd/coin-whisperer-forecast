@@ -10,6 +10,7 @@ import {
   solana,
   solanaDevnet,
   solanaTestnet,
+  defineChain 
 } from "@reown/appkit/networks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
@@ -22,9 +23,10 @@ const queryClient = new QueryClient();
 
 // 1. Get projectId from https://dashboard.reown.com
 // Using a temporary project ID - replace with your own from https://cloud.reown.com
-const projectId = import.meta.env.VITE_PROJECT_ID || "temp-project-id-replace-me";
-const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL || "https://pumpparade.com";
-
+const projectId =
+  import.meta.env.VITE_PROJECT_ID || "temp-project-id-replace-me";
+const FRONTEND_URL =
+  import.meta.env.VITE_FRONTEND_URL || "https://pumpparade.com";
 
 // 2. Create a metadata object - optional
 const metadata = {
@@ -33,6 +35,20 @@ const metadata = {
   url: FRONTEND_URL,
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
+
+// Define Cosmos chain
+const cosmos = defineChain({
+  id: 'cosmoshub-3',
+  name: 'Cosmos',
+  nativeCurrency: { name: 'Cosmos', symbol: 'ATOM', decimals: 6 },
+  rpcUrls: {
+    default: { http: ['https://cosmos-rpc.publicnode.com:443'] }
+  },
+  blockExplorers: { default: { name: 'Mint Scan', url: 'https://www.mintscan.io/cosmos' } },
+  testnet: false,
+  chainNamespace: 'cosmos',
+  caipNetworkId: 'cosmos:cosmoshub-4'
+})
 
 // 3. Set the networks
 const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
@@ -45,6 +61,7 @@ const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
   solanaDevnet,
   solanaTestnet,
   sepolia,
+  cosmos
 ];
 
 // 4. Create Solana Adapter
@@ -57,6 +74,7 @@ const bitcoinWeb3JsAdapter = new BitcoinAdapter({ projectId });
 const wagmiAdapter = new WagmiAdapter({
   networks,
   projectId,
+  cacheTime: 30 * 1000,
 });
 
 // 7. Create modal
@@ -68,10 +86,9 @@ createAppKit({
   features: {
     analytics: true,
   },
-  enableNetworkSwitch: true,     // allow choosing network in modal
-  enableReconnect: false,        // disable auto-reconnect on reload
-  themeMode: "dark",
-  defaultNetwork: sepolia,
+  enableNetworkSwitch: true, // allow choosing network in modal
+  enableReconnect: false, // disable auto-reconnect on reload
+  themeMode: "dark"
 });
 
 export function WagmiAppkitProvider({ children }) {
