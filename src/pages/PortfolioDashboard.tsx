@@ -28,7 +28,7 @@ import { WalletConnector } from "@/components/portfolio/WalletConnector";
 import { EnhancedRiskAnalysis } from "@/components/portfolio/EnhancedRiskAnalysis";
 import { PerformanceChart } from "@/components/portfolio/PerformanceChart";
 import { HoldingsTable } from "@/components/portfolio/HoldingsTable";
-import { mockRiskMetrics} from "@/services/portfolioMockData";
+import { mockRiskMetrics } from "@/services/portfolioMockData";
 import axios from "axios";
 import Alert from "@/components/Alert";
 
@@ -39,6 +39,7 @@ import {
 } from "@/services/portfolioData";
 import Footer from "@/components/Footer";
 import { setAddressInStorage } from "@/lib/storage";
+import { useAppKitAccount, useDisconnect } from "@reown/appkit/react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -57,17 +58,17 @@ export const PortfolioDashboard = () => {
   const [defiPosition, setDefiPosition] = useState<any>(null);
   const [alerts, setAlerts] = useState<any[]>([]);
 
+  const { disconnect } = useDisconnect();
 
   const fetchAlerts = async (address: string) => {
-      try {
-        const res = await axios.get(`${BASE_URL}/alerts?address=${address}`);
-        setAlerts(Array.isArray(res?.data?.data) ? res?.data?.data : []);
-      } catch (err) {
-        console.error("Failed to fetch alerts:", err);
-        setAlerts([]);
-      }
-    };
-
+    try {
+      const res = await axios.get(`${BASE_URL}/alerts?address=${address}`);
+      setAlerts(Array.isArray(res?.data?.data) ? res?.data?.data : []);
+    } catch (err) {
+      console.error("Failed to fetch alerts:", err);
+      setAlerts([]);
+    }
+  };
 
   const handleWalletConnect = async (address: string, chainId: number) => {
     setIsWalletConnected(true);
@@ -110,6 +111,7 @@ export const PortfolioDashboard = () => {
       setLoading(false);
     }
   };
+
   // Enhanced AI Insights - More Prominent
   const EnhancedAIInsights = () => (
     <Card className="bg-gray-800/80 border-gray-700 shadow-lg">
@@ -189,12 +191,13 @@ export const PortfolioDashboard = () => {
                 </h4>
                 <div className="flex items-center gap-2">
                   <span
-                    className={`px-2 py-1 rounded-full text-xs font-medium uppercase ${rec.priority === "high"
-                      ? "bg-red-500/20 text-red-300 border border-red-500/30"
-                      : rec.priority === "medium"
+                    className={`px-2 py-1 rounded-full text-xs font-medium uppercase ${
+                      rec.priority === "high"
+                        ? "bg-red-500/20 text-red-300 border border-red-500/30"
+                        : rec.priority === "medium"
                         ? "bg-yellow-500/20 text-yellow-300 border border-yellow-500/30"
                         : "bg-green-500/20 text-green-300 border border-green-500/30"
-                      }`}
+                    }`}
                   >
                     {rec.priority}
                   </span>
@@ -326,12 +329,13 @@ export const PortfolioDashboard = () => {
                   : "$0"}
               </p>
               <p
-                className={`text-xs ${tx.type === "buy"
-                  ? "text-green-400"
-                  : tx.type === "sell"
+                className={`text-xs ${
+                  tx.type === "buy"
+                    ? "text-green-400"
+                    : tx.type === "sell"
                     ? "text-red-400"
                     : "text-gray-400"
-                  }`}
+                }`}
               >
                 {tx.amount.toFixed(4)} {tx.asset}
               </p>
@@ -376,10 +380,11 @@ export const PortfolioDashboard = () => {
 
           {/* Percentage Change */}
           <p
-            className={`text-sm mt-1 ${portfolioData.portfolioSummary.change24h.percent >= 0
-              ? "text-green-400"
-              : "text-red-400"
-              }`}
+            className={`text-sm mt-1 ${
+              portfolioData.portfolioSummary.change24h.percent >= 0
+                ? "text-green-400"
+                : "text-red-400"
+            }`}
           >
             {portfolioData.portfolioSummary.change24h.percent >= 0 ? "+" : ""}
             {portfolioData.portfolioSummary.change24h.percent.toFixed(1)}%
@@ -507,9 +512,23 @@ export const PortfolioDashboard = () => {
                 </Button>
               </Link>
             </div>
-            <h1 className="text-3xl font-bold text-white">
-              Portfolio Dashboard
-            </h1>
+
+            <div className="flex items-center justify-between">
+              <h1 className="text-3xl font-bold text-white">
+                Portfolio Dashboard
+              </h1>
+
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                onClick={async () => {
+                  console.log('Disconnect wallet button is triggered')
+                  window.location.reload();
+                  await disconnect();
+                }}
+              >
+                Disconnect Wallet
+              </Button>
+            </div>
           </div>
 
           {/* Quick Stats Row */}
@@ -528,7 +547,7 @@ export const PortfolioDashboard = () => {
                 <PerformanceChart data={portfolioHistory} />
               ) : null}
 
-              <Tabs defaultValue="holdings" className="space-y-3">
+              <Tabs defaultValue="alerts" className="space-y-3">
                 <TabsList className="grid w-full grid-cols-3 bg-gray-800/80 border border-gray-700">
                   <TabsTrigger
                     value="holdings"
