@@ -450,7 +450,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                       <>
                         {/* SMA 50 Line */}
                         <div 
-                          className="absolute left-0 right-0 h-px bg-orange-500 z-10"
+                          className="absolute left-0 right-0 h-0.5 bg-orange-500 z-10 shadow-[0_0_8px_rgba(249,115,22,0.5)]"
                           style={{ top: `${getSma50Pos()}%` }}
                         >
                           <div className="absolute left-2 -top-3 text-[10px] font-semibold text-orange-400 bg-background/95 px-2 py-1 rounded border border-orange-500/30 whitespace-nowrap">
@@ -460,7 +460,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                         
                         {/* SMA 20 Line */}
                         <div 
-                          className="absolute left-0 right-0 h-px bg-cyan-500 z-10"
+                          className="absolute left-0 right-0 h-0.5 bg-cyan-500 z-10 shadow-[0_0_8px_rgba(6,182,212,0.5)]"
                           style={{ top: `${getSma20Pos()}%` }}
                         >
                           <div className="absolute left-2 -top-3 text-[10px] font-semibold text-cyan-400 bg-background/95 px-2 py-1 rounded border border-cyan-500/30 whitespace-nowrap">
@@ -470,7 +470,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                         
                         {/* Current Price Marker */}
                         <div 
-                          className="absolute left-0 right-0 h-px bg-primary z-20"
+                          className="absolute left-0 right-0 h-0.5 bg-primary z-20 shadow-[0_0_10px_hsl(var(--primary)/0.6)]"
                           style={{ 
                             top: `${getCurrentPricePos()}%`
                           }}
