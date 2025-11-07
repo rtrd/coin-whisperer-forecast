@@ -47,7 +47,7 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h3 className="text-white font-semibold mb-4">Connect</h3>
-            <div className="flex space-x-4">
+            <div className="flex flex-wrap gap-4">
               <a href="https://x.com/PumpParade_" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-400 transition-colors">
                 <Twitter className="h-5 w-5" />
               </a>
