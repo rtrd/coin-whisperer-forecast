@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
 import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
-import { fetchTechnicalIndicators } from "@/services/aiPredictionService";
+import { fetchTechnicalIndicators, fetchSentimentData } from "@/services/aiPredictionService";
 import { processSentimentData } from "@/services/sentimentDataService";
+import { calculateMACD } from "@/utils/technicalAnalysis";
 
 interface TokenDetailAnalysisProps {
   cryptoId: string;
@@ -26,40 +27,89 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   cryptoData,
   dataLoading,
   prediction,
-  sentimentData,
+  sentimentData: initialSentimentData,
 }) => {
   const [processedSentiment, setProcessedSentiment] = useState<ProcessedSentimentData | null>(null);
   const [volumeData, setVolumeData] = useState<{ label: string; value: number }[]>([]);
   const [macdData, setMacdData] = useState<{ label: string; value: number }[]>([]);
+  const [realSentimentData, setRealSentimentData] = useState<any>(null);
 
+  // Fetch and process real sentiment data from LunarCrush API
   useEffect(() => {
-    // Process sentiment data from API
     const loadSentimentData = async () => {
-      const processed = await processSentimentData(cryptoId);
-      if (processed) {
-        setProcessedSentiment(processed);
+      try {
+        // Fetch real sentiment data from backend (LunarCrush)
+        const apiData = await fetchSentimentData(cryptoId);
+        
+        if (apiData?.data) {
+          setRealSentimentData(apiData.data);
+          
+          // Process additional sentiment metrics
+          const processed = await processSentimentData(cryptoId);
+          if (processed) {
+            setProcessedSentiment(processed);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load sentiment data:", error);
+        setRealSentimentData(null);
       }
     };
     
     loadSentimentData();
   }, [cryptoId]);
 
+  // Fetch and process real technical data from CoinGecko API
   useEffect(() => {
-    // Extract volume data from cryptoData with proper date labels
-    if (cryptoData && cryptoData.length > 0) {
-      const volumes = cryptoData.slice(-14).map((d) => {
-        const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
-        const date = new Date(tsMs);
-        const month = date.toLocaleDateString('en-US', { month: 'short' });
-        const day = date.getDate();
-        return {
-          label: `${month} ${day}`,
-          value: d.volume || 0
-        };
-      });
-      setVolumeData(volumes);
-    }
-  }, [cryptoData]);
+    const loadTechnicalData = async () => {
+      try {
+        // Fetch real price/volume data from backend (CoinGecko)
+        const technicalData = await fetchTechnicalIndicators(cryptoId, "3m");
+        
+        if (technicalData && technicalData.length > 0) {
+          // Extract volume data from the last 14 days
+          const volumes = technicalData.slice(-14).map((d: any, idx: number) => {
+            const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
+            const date = new Date(tsMs);
+            const month = date.toLocaleDateString('en-US', { month: 'short' });
+            const day = date.getDate();
+            return {
+              label: `${month} ${day}`,
+              value: d.volume || 0
+            };
+          });
+          setVolumeData(volumes);
+
+          // Calculate MACD histogram from real price data
+          const prices = technicalData.map((d: any) => d.price).filter((p: number) => p > 0);
+          if (prices.length >= 26) {
+            const macdResult = calculateMACD(prices);
+            
+            // Create MACD histogram data for the last 14 days
+            const recentPrices = prices.slice(-14);
+            const macdHistogram = recentPrices.map((_, idx: number) => {
+              const priceSlice = prices.slice(0, prices.length - 14 + idx + 1);
+              if (priceSlice.length >= 26) {
+                const { macd, signal } = calculateMACD(priceSlice);
+                return {
+                  label: volumes[idx]?.label || `D${idx + 1}`,
+                  value: macd - signal, // Histogram is MACD minus signal line
+                };
+              }
+              return { label: `D${idx + 1}`, value: 0 };
+            });
+            setMacdData(macdHistogram);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to load technical data:", error);
+        setVolumeData([]);
+        setMacdData([]);
+      }
+    };
+
+    loadTechnicalData();
+  }, [cryptoId]);
   return (
     <div className="space-y-6">
       {/* Market Analysis - Combined Sentiment and Technical */}
@@ -87,8 +137,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
             <TabsContent value="sentiment" className="mt-6">
               <LockedSentimentAnalysis
                 crypto={cryptoId}
-                sentimentData={{
-                  ...sentimentData,
+                sentimentData={realSentimentData || {
+                  ...initialSentimentData,
                   ...processedSentiment
                 }}
               />

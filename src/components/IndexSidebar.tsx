@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle } from "lucide-react";
@@ -6,6 +6,8 @@ import { AdUnit } from "@/components/ads/AdService";
 import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
 import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
 import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
+import { fetchSentimentData, fetchTechnicalIndicators } from "@/services/aiPredictionService";
+import { calculateMACD } from "@/utils/technicalAnalysis";
 
 interface IndexSidebarProps {
   selectedCrypto: string;
@@ -24,6 +26,71 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
   dataLoading,
   cryptoOptions,
 }) => {
+  const [sentimentData, setSentimentData] = useState<any>(null);
+  const [volumeData, setVolumeData] = useState<{ label: string; value: number }[]>([]);
+  const [macdData, setMacdData] = useState<{ label: string; value: number }[]>([]);
+
+  // Fetch real sentiment data
+  useEffect(() => {
+    const loadSentiment = async () => {
+      try {
+        const data = await fetchSentimentData(selectedCrypto);
+        if (data?.data) {
+          setSentimentData(data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch sentiment data:", error);
+      }
+    };
+    
+    loadSentiment();
+  }, [selectedCrypto]);
+
+  // Fetch real technical data
+  useEffect(() => {
+    const loadTechnicalData = async () => {
+      try {
+        const technicalData = await fetchTechnicalIndicators(selectedCrypto, "3m");
+        
+        if (technicalData && technicalData.length > 0) {
+          // Extract volume data
+          const volumes = technicalData.slice(-14).map((d: any, idx: number) => {
+            const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
+            const date = new Date(tsMs);
+            const month = date.toLocaleDateString('en-US', { month: 'short' });
+            const day = date.getDate();
+            return {
+              label: `${month} ${day}`,
+              value: d.volume || 0
+            };
+          });
+          setVolumeData(volumes);
+
+          // Calculate MACD histogram
+          const prices = technicalData.map((d: any) => d.price).filter((p: number) => p > 0);
+          if (prices.length >= 26) {
+            const recentPrices = prices.slice(-14);
+            const macdHistogram = recentPrices.map((_, idx: number) => {
+              const priceSlice = prices.slice(0, prices.length - 14 + idx + 1);
+              if (priceSlice.length >= 26) {
+                const { macd, signal } = calculateMACD(priceSlice);
+                return {
+                  label: volumes[idx]?.label || `D${idx + 1}`,
+                  value: macd - signal,
+                };
+              }
+              return { label: `D${idx + 1}`, value: 0 };
+            });
+            setMacdData(macdHistogram);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch technical data:", error);
+      }
+    };
+    
+    loadTechnicalData();
+  }, [selectedCrypto]);
   return (
     <div className="space-y-6">
       {/* Side Ad - Full width to match other components */}
@@ -55,11 +122,19 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
         </TabsList>
 
         <TabsContent value="technical">
-          <LockedTechnicalAnalysis data={cryptoData} isLoading={dataLoading} />
+          <LockedTechnicalAnalysis 
+            data={cryptoData} 
+            isLoading={dataLoading}
+            volumeData={volumeData}
+            macdHistogram={macdData}
+          />
         </TabsContent>
 
         <TabsContent value="sentiment">
-          <LockedSentimentAnalysis crypto={selectedCrypto} sentimentData={[]} />
+          <LockedSentimentAnalysis 
+            crypto={selectedCrypto} 
+            sentimentData={sentimentData}
+          />
         </TabsContent>
       </Tabs>
 

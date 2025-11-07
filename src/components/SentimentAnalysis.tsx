@@ -48,51 +48,6 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate sentiment analysis data
-    const generateSentimentData = (): SentimentData => {
-      const score = Math.random() * 100;
-      const getSentimentLabel = (
-        score: number
-      ):
-        | "Very Bearish"
-        | "Bearish"
-        | "Neutral"
-        | "Bullish"
-        | "Very Bullish" => {
-        if (score < 20) return "Very Bearish";
-        if (score < 40) return "Bearish";
-        if (score < 60) return "Neutral";
-        if (score < 80) return "Bullish";
-        return "Very Bullish";
-      };
-
-      return {
-        score,
-        label: getSentimentLabel(score),
-        sources: [
-          {
-            name: "Twitter/X",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 10000) + 1000,
-          },
-          {
-            name: "Reddit",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 5000) + 500,
-          },
-          {
-            name: "News Media",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 1000) + 100,
-          },
-          {
-            name: "Crypto Forums",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 2000) + 200,
-          },
-        ],
-      };
-    };
     const transformApiDataToSentiment = (apiData: any): SentimentData => {
       // Handle different possible API response structures
       const dataPayload = apiData?.data || apiData;
@@ -112,86 +67,54 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
       }> = [];
       let avgScore = 0;
 
-      try {
-        // Check if we have the expected data structure
-        if (
-          dataPayload?.types_sentiment &&
-          typeof dataPayload.types_sentiment === "object"
-        ) {
-          sources = Object.keys(dataPayload.types_sentiment)
-            .filter((key) => sourceNameMap[key]) // only include mapped sources
-            .map((key) => ({
-              name: sourceNameMap[key],
-              sentiment: dataPayload.types_sentiment[key] || 0,
-              mentions:
-                dataPayload.types_interactions?.[key] ||
-                Math.floor(Math.random() * 1000) + 100,
-            }));
-
-          // Calculate overall average sentiment score
-          const totalScore = sources.reduce(
-            (sum, source) => sum + source.sentiment,
-            0
-          );
-          avgScore = sources.length ? totalScore / sources.length : 0;
-        } else {
-          // Fallback: create mock data based on overall sentiment if available
-          const fallbackSentiment =
-            dataPayload?.sentiment || Math.random() * 100;
-          avgScore = fallbackSentiment;
-
-          sources = [
-            {
-              name: "Twitter/X",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 10000) + 1000,
-            },
-            {
-              name: "Reddit",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 5000) + 500,
-            },
-            {
-              name: "News Media",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 1000) + 100,
-            },
-            {
-              name: "Crypto Forums",
-              sentiment: fallbackSentiment + (Math.random() - 0.5) * 20,
-              mentions: Math.floor(Math.random() * 2000) + 200,
-            },
-          ].map((source) => ({
-            ...source,
-            sentiment: Math.max(0, Math.min(100, source.sentiment)), // Clamp between 0-100
+      // Check if we have the expected data structure
+      if (
+        dataPayload?.types_sentiment &&
+        typeof dataPayload.types_sentiment === "object"
+      ) {
+        sources = Object.keys(dataPayload.types_sentiment)
+          .filter((key) => sourceNameMap[key]) // only include mapped sources
+          .map((key) => ({
+            name: sourceNameMap[key],
+            sentiment: dataPayload.types_sentiment[key] || 0,
+            mentions:
+              dataPayload.types_interactions?.[key] || 0,
           }));
-        }
-      } catch (error) {
-        console.error("Error processing sentiment data:", error);
-        // Complete fallback with random data
-        avgScore = Math.random() * 100;
+
+        // Calculate overall average sentiment score
+        const totalScore = sources.reduce(
+          (sum, source) => sum + source.sentiment,
+          0
+        );
+        avgScore = sources.length ? totalScore / sources.length : 0;
+      } else if (dataPayload?.sentiment !== undefined) {
+        // Use overall sentiment if detailed breakdown not available
+        avgScore = dataPayload.sentiment;
+
         sources = [
           {
             name: "Twitter/X",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 10000) + 1000,
+            sentiment: avgScore,
+            mentions: dataPayload.types_interactions?.tweet || 0,
           },
           {
             name: "Reddit",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 5000) + 500,
+            sentiment: avgScore,
+            mentions: dataPayload.types_interactions?.["reddit-post"] || 0,
           },
           {
             name: "News Media",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 1000) + 100,
+            sentiment: avgScore,
+            mentions: dataPayload.types_interactions?.news || 0,
           },
           {
             name: "Crypto Forums",
-            sentiment: Math.random() * 100,
-            mentions: Math.floor(Math.random() * 2000) + 200,
+            sentiment: avgScore,
+            mentions: dataPayload.types_interactions?.["youtube-video"] || 0,
           },
         ];
+      } else {
+        throw new Error("Invalid sentiment data structure from API");
       }
 
       // Determine sentiment label from score
@@ -222,32 +145,25 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await fetchSentimentData(crypto);
+        // Fetch real sentiment data from LunarCrush API via backend
+        const apiResponse = await fetchSentimentData(crypto);
 
-        if (res) {
-          const result = transformApiDataToSentiment(res);
+        if (apiResponse && (apiResponse.data || apiResponse)) {
+          const result = transformApiDataToSentiment(apiResponse);
           setSentiment(result);
-          sentimentData(result); // Update optional prop if provided
         } else {
-          console.warn("No data received from API, using fallback");
-          // Use fallback data
-          const fallbackData = generateSentimentData();
-          setSentiment(fallbackData);
-          sentimentData(fallbackData); // Update optional prop if provided
+          console.error("No sentiment data received from API");
+          setSentiment(null);
         }
       } catch (error) {
-        console.error("Error in sentiment data fetch:", error);
-        // Use fallback data on error
-        const fallbackData = generateSentimentData();
-        setSentiment(fallbackData);
-        sentimentData(fallbackData); // Update optional prop if provided
+        console.error("Error fetching sentiment data:", error);
+        setSentiment(null);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-    // Optionally, if you want to simulate loading delay, use setTimeout(() => fetchData(), 1500);
   }, [crypto]);
 
   const getSentimentColor = (score: number) => {
