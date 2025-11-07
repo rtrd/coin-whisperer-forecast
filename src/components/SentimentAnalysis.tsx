@@ -16,7 +16,7 @@ import { SentimentGauge } from "@/components/charts/SentimentGauge";
 import { SparklineChart } from "@/components/charts/SparklineChart";
 import { SentimentHeatmap } from "@/components/charts/SentimentHeatmap";
 import { DonutGaugeChart } from "@/components/charts/DonutGaugeChart";
-import { SpeedometerGauge } from "@/components/charts/SpeedometerGauge";
+import { ProgressGauge } from "@/components/charts/ProgressGauge";
 import { HistogramChart } from "@/components/charts/HistogramChart";
 import { TimelineChart } from "@/components/charts/TimelineChart";
 
@@ -387,25 +387,23 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Fear & Greed - Speedometer */}
         <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
+          <h3 className="text-sm font-semibold mb-6 flex items-center gap-2">
             <Activity className="w-4 h-4 text-primary shrink-0" />
-            <span className="truncate">Fear & Greed Index</span>
+            <span>Fear & Greed Index</span>
           </h3>
-          <div className="flex justify-center overflow-hidden min-h-[220px]">
-            <SpeedometerGauge
-              value={fearGreed}
-              zones={[
-                { min: 0, max: 25, color: "#EF4444", label: "Fear" },
-                { min: 25, max: 45, color: "#F59E0B", label: "Caution" },
-                { min: 45, max: 55, color: "#FBBF24", label: "Neutral" },
-                { min: 55, max: 75, color: "#34D399", label: "Greed" },
-                { min: 75, max: 100, color: "#10B981", label: "Extreme" },
-              ]}
-            />
-          </div>
-          <div className="mt-4 flex items-center justify-center gap-2 text-xs truncate">
-            <TrendingUp className="w-3 h-3 text-emerald-400 shrink-0" />
-            <span className="text-emerald-400 truncate">+15 vs yesterday</span>
+          <ProgressGauge
+            value={fearGreed}
+            zones={[
+              { min: 0, max: 25, color: "#EF4444", label: "Fear" },
+              { min: 25, max: 45, color: "#F59E0B", label: "Caution" },
+              { min: 45, max: 55, color: "#FBBF24", label: "Neutral" },
+              { min: 55, max: 75, color: "#34D399", label: "Greed" },
+              { min: 75, max: 100, color: "#10B981", label: "Extreme" },
+            ]}
+          />
+          <div className="mt-6 flex items-center justify-center gap-2 text-xs">
+            <TrendingUp className="w-3 h-3 text-emerald-400" />
+            <span className="text-emerald-400">+15 vs yesterday</span>
           </div>
         </Card>
 

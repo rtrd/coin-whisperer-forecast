@@ -10,7 +10,7 @@ import {
   Shield,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SpeedometerGauge } from "@/components/charts/SpeedometerGauge";
+import { ProgressGauge } from "@/components/charts/ProgressGauge";
 import { VerticalGauge } from "@/components/charts/VerticalGauge";
 import { PriceChannelChart } from "@/components/charts/PriceChannelChart";
 import { HistogramChart } from "@/components/charts/HistogramChart";
@@ -264,43 +264,47 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Overall Signal - Speedometer */}
+      {/* Overall Signal - Progress Gauge */}
       <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_50%)]" />
         <div className="relative z-10">
-          <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
             <Target className="w-5 h-5 text-primary" />
             Overall Technical Signal
           </h3>
-          <div className="flex flex-col items-center gap-4 min-h-[260px]">
-            <SpeedometerGauge
+          <div className="space-y-6">
+            <ProgressGauge
               value={overallSignalStrength}
               zones={[
                 { min: 0, max: 33, color: "#EF4444", label: "SELL" },
                 { min: 33, max: 66, color: "#F59E0B", label: "NEUTRAL" },
                 { min: 66, max: 100, color: "#10B981", label: "BUY" },
               ]}
+              label={`Based on ${indicators.length} indicators`}
             />
+            
             {/* Recommendation Badge */}
-            <div className={`px-6 py-3 rounded-lg font-bold text-lg border-2`}
-              style={{ 
-                backgroundColor: `${overallSignalColor}20`,
-                borderColor: overallSignalColor,
-                color: overallSignalColor 
-              }}
-            >
-              {overallTrend}
+            <div className="text-center">
+              <div className={`inline-block px-8 py-3 rounded-lg font-bold text-xl border-2`}
+                style={{ 
+                  backgroundColor: `${overallSignalColor}20`,
+                  borderColor: overallSignalColor,
+                  color: overallSignalColor 
+                }}
+              >
+                {overallTrend}
+              </div>
             </div>
 
             {/* Confidence Meter */}
-            <div className="w-full max-w-xs">
+            <div className="w-full max-w-md mx-auto">
               <div className="flex justify-between text-xs text-muted-foreground mb-2">
-                <span>Confidence</span>
-                <span>{Math.round(overallSignalStrength)}%</span>
+                <span>Confidence Level</span>
+                <span className="font-semibold">{Math.round(overallSignalStrength)}%</span>
               </div>
-              <div className="h-2 bg-secondary rounded-full overflow-hidden">
+              <div className="h-3 bg-secondary rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-1000"
+                  className="h-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-1000 rounded-full"
                   style={{ width: `${overallSignalStrength}%` }}
                 />
               </div>
