@@ -367,18 +367,24 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 <div className="h-8 bg-purple-500/20 animate-pulse rounded" />
                 <div className="h-8 bg-purple-500/20 animate-pulse rounded" />
               </div>
-            ) : lunarCrushData ? (
+            ) : lunarCrushData && lunarCrushData.galaxy_score !== undefined ? (
               <div className="space-y-3">
                 {/* Galaxy Score */}
-                {lunarCrushData.galaxy_score !== undefined && (
-                  <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-purple-400" />
-                      <span className="text-sm text-muted-foreground">Galaxy Score</span>
-                    </div>
-                    <span className="text-lg font-bold text-purple-400">{lunarCrushData.galaxy_score.toFixed(1)}</span>
+                <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-purple-400" />
+                    <span className="text-sm text-muted-foreground">Galaxy Score</span>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <InfoIcon className="w-3 h-3 text-muted-foreground hover:text-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent className="max-w-xs">
+                        <p className="text-xs">Galaxy Score is LunarCrush's proprietary metric combining social activity, price performance, and market data</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
-                )}
+                  <span className="text-lg font-bold text-purple-400">{lunarCrushData.galaxy_score.toFixed(1)}</span>
+                </div>
                 
                 {/* Social Volume 24h */}
                 {lunarCrushData.social_volume_24h !== undefined && (
@@ -436,12 +442,16 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 )}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg">
-                  <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <p className="text-sm text-red-400">LunarCrush API Error (401)</p>
+              <div className="text-center py-6 space-y-3">
+                <Zap className="w-10 h-10 text-red-400 mx-auto opacity-50" />
+                <div>
+                  <p className="text-sm font-semibold text-red-400 mb-1">Galaxy Score Unavailable</p>
+                  <p className="text-xs text-muted-foreground">LunarCrush API authentication failed (401)</p>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2">Check API key: VITE_LUNAR_API</p>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-md">
+                  <InfoIcon className="w-3 h-3 text-muted-foreground" />
+                  <p className="text-[10px] text-muted-foreground">Add VITE_LUNAR_API secret in project settings</p>
+                </div>
               </div>
              )}
         </Card>
