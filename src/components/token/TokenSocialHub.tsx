@@ -14,10 +14,23 @@ interface TokenSocialHubProps {
 
 export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoading }) => {
   const tokenContract = tokenInfo ? getTokenContract(tokenInfo.id) : null;
-  const { data: onChainData, isLoading: onChainLoading } = useOnChainMetrics(
+  
+  console.log('[TokenSocialHub] Token info:', {
+    tokenId: tokenInfo?.id,
+    contractAddress: tokenContract?.address,
+    network: tokenContract?.network
+  });
+  
+  const { data: onChainData, isLoading: onChainLoading, error } = useOnChainMetrics(
     tokenContract?.address,
     tokenContract?.network
   );
+  
+  console.log('[TokenSocialHub] On-chain metrics:', { 
+    onChainData, 
+    isLoadingMetrics: onChainLoading, 
+    error 
+  });
 
   if (isLoading) {
     return (
@@ -122,6 +135,27 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
             <p className="text-xs text-muted-foreground mt-1">
               Available for EVM and Solana tokens only
             </p>
+            {import.meta.env.DEV && tokenInfo && (
+              <div className="text-xs text-muted-foreground/70 space-y-1 mt-3">
+                <p>Debug: Token ID = {tokenInfo.id}</p>
+                <p>Contract mapping not found in tokenContractMapping.ts</p>
+              </div>
+            )}
+          </div>
+        ) : tokenContract && !onChainData ? (
+          <div className="text-center py-6 px-4 rounded-lg bg-muted/30 border border-border">
+            <Activity className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-sm text-muted-foreground">
+              Unable to fetch on-chain metrics
+            </p>
+            {import.meta.env.DEV && (
+              <div className="text-xs text-muted-foreground/70 space-y-1 mt-3 max-w-md mx-auto text-left">
+                <p className="font-semibold">Debug Info:</p>
+                <p>Network: {tokenContract.network}</p>
+                <p>Contract: {tokenContract.address}</p>
+                {error && <p className="text-destructive">Error: {String(error)}</p>}
+              </div>
+            )}
           </div>
         ) : null}
 

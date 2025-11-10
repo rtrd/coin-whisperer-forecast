@@ -49,7 +49,7 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
       }
 
       try {
-        console.debug('[onchain] fetching', { network, contract: contractAddress?.slice(0, 8) });
+        console.log('[onchain] Fetching metrics for:', { network, contractAddress });
 
         const [holdersRes, topRes] = await Promise.allSettled([
           invokeEdgeFunction('coingecko-proxy', {
@@ -64,8 +64,23 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
           }),
         ]);
 
+        console.log('[onchain] API responses:', { 
+          holdersStatus: holdersRes.status, 
+          topStatus: topRes.status,
+          holdersData: holdersRes.status === 'fulfilled' ? holdersRes.value : holdersRes.reason,
+          topData: topRes.status === 'fulfilled' ? topRes.value : topRes.reason
+        });
+
         const holdersData = holdersRes.status === 'fulfilled' ? holdersRes.value : null;
         const topHoldersData = topRes.status === 'fulfilled' ? topRes.value : null;
+        
+        // Check for API errors
+        if (holdersData?.error || topHoldersData?.error) {
+          console.error('[onchain] API returned errors:', {
+            holdersError: holdersData?.error,
+            topHoldersError: topHoldersData?.error
+          });
+        }
 
         const currentHolders = holdersData?.total_holders ?? 0;
         const holders24hAgo = holdersData?.holders_24h_ago ?? currentHolders;
