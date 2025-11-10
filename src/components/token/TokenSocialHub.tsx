@@ -114,7 +114,13 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
               Available for EVM and Solana tokens only
             </p>
           </div>
-        ) : null}
+        ) : (
+          <div className="text-center p-4 rounded-lg bg-muted/50 border border-border">
+            <p className="text-sm text-muted-foreground">
+              Unable to load on-chain metrics right now. Please try again shortly.
+            </p>
+          </div>
+        )}
 
         {/* Supply Distribution - Always available if data exists */}
         {supplyDistribution !== null && (

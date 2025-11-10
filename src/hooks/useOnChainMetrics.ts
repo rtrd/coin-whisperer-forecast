@@ -40,31 +40,38 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
       }
 
       try {
-        // Fetch current holder data
-        const holdersData = await invokeEdgeFunction('coingecko-proxy', { 
-          endpoint: 'holders',
-          network,
-          contractAddress 
-        });
+        console.debug('[onchain] fetching', { network, contract: contractAddress?.slice(0, 8) });
 
-        // Fetch top holders for concentration
-        const topHoldersData = await invokeEdgeFunction('coingecko-proxy', { 
-          endpoint: 'top-holders',
-          network,
-          contractAddress 
-        });
+        const [holdersRes, topRes] = await Promise.allSettled([
+          invokeEdgeFunction('coingecko-proxy', {
+            endpoint: 'holders',
+            network,
+            contractAddress,
+          }),
+          invokeEdgeFunction('coingecko-proxy', {
+            endpoint: 'top-holders',
+            network,
+            contractAddress,
+          }),
+        ]);
 
-        const currentHolders = holdersData?.total_holders || 0;
-        const holders24hAgo = holdersData?.holders_24h_ago || currentHolders;
-        const holdersGrowth24h = holders24hAgo > 0 
-          ? ((currentHolders - holders24hAgo) / holders24hAgo) * 100 
+        const holdersData = holdersRes.status === 'fulfilled' ? holdersRes.value : null;
+        const topHoldersData = topRes.status === 'fulfilled' ? topRes.value : null;
+
+        const currentHolders = holdersData?.total_holders ?? 0;
+        const holders24hAgo = holdersData?.holders_24h_ago ?? currentHolders;
+        const holdersGrowth24h = holders24hAgo > 0
+          ? ((currentHolders - holders24hAgo) / holders24hAgo) * 100
           : 0;
 
-        // Calculate top 10 holder concentration
-        const topHolders = topHoldersData?.items || [];
+        const topHolders = topHoldersData?.items ?? [];
         const topHolderConcentration = topHolders
           .slice(0, 10)
-          .reduce((sum: number, holder: any) => sum + (typeof holder.percentage === 'string' ? parseFloat(holder.percentage) : (holder.percentage || 0)), 0);
+          .reduce((sum: number, holder: any) => {
+            const p = holder?.percentage ?? holder?.percent ?? holder?.pct ?? holder?.share;
+            const num = typeof p === 'string' ? parseFloat(p) : (typeof p === 'number' ? p : 0);
+            return sum + (isFinite(num) ? num : 0);
+          }, 0);
 
         // Determine trend
         let holderTrend: 'increasing' | 'decreasing' | 'stable' = 'stable';
@@ -76,7 +83,7 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
           holdersGrowth24h: parseFloat(holdersGrowth24h.toFixed(2)),
           topHolderConcentration: parseFloat(topHolderConcentration.toFixed(2)),
           holderTrend,
-          lastUpdated: new Date().toISOString()
+          lastUpdated: new Date().toISOString(),
         };
       } catch (error) {
         console.error('Error fetching on-chain metrics:', error);

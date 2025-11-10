@@ -22,7 +22,10 @@ export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
     network: 'bsc' 
   },
   'cardano': null, // Native blockchain
-  'solana': null, // Native blockchain
+  'solana': {
+    address: 'So11111111111111111111111111111111111111112',
+    network: 'solana'
+  },
   'ripple': null, // Native blockchain
   'polkadot': null, // Native blockchain
   'dogecoin': null, // Native blockchain

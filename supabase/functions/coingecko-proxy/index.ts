@@ -23,6 +23,9 @@ serve(async (req) => {
 
     let responseData;
 
+    // Basic log for debugging (no sensitive data)
+    console.log('[coingecko-proxy] request', { endpoint, network, addr: contractAddress ? String(contractAddress).slice(0, 8) : undefined, crypto, days });
+
     // Handle different endpoint types
     if (endpoint === 'market-chart') {
       // Price and volume data for technical analysis
@@ -56,7 +59,7 @@ serve(async (req) => {
         `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/info`,
         {
           headers: {
-            'x-cg-pro-api-key': COINGECKO_API_KEY,
+'X-CG-Pro-API-Key': COINGECKO_API_KEY,
           },
         }
       );
@@ -73,7 +76,7 @@ serve(async (req) => {
         `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/token_holders_chart?before_timestamp=${Math.floor(Date.now()/1000)}&aggregate=1`,
         {
           headers: {
-            'x-cg-pro-api-key': COINGECKO_API_KEY,
+'X-CG-Pro-API-Key': COINGECKO_API_KEY,
           },
         }
       );
@@ -99,7 +102,7 @@ serve(async (req) => {
         `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/top_holders`,
         {
           headers: {
-            'x-cg-pro-api-key': COINGECKO_API_KEY,
+            'X-CG-Pro-API-Key': COINGECKO_API_KEY,
           },
         }
       );
@@ -110,9 +113,16 @@ serve(async (req) => {
 
       const data = await response.json();
 
-      // Extract and normalize the holders array
+      // Extract and normalize the holders array, normalize percent keys
+      const rawHolders = data.data?.attributes?.holders || [];
+      const items = rawHolders.map((h: any) => {
+        const p = (h.percentage ?? h.percent ?? h.pct ?? h.share);
+        const num = typeof p === 'string' ? parseFloat(p) : (typeof p === 'number' ? p : 0);
+        return { ...h, percentage: isFinite(num) ? Math.max(0, Math.min(100, num)) : 0 };
+      });
+
       responseData = {
-        items: data.data?.attributes?.holders || [],
+        items,
         last_updated: data.data?.attributes?.last_updated_at
       };
     } else {
