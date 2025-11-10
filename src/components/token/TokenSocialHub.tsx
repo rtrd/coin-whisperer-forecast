@@ -5,6 +5,7 @@ import { TokenInfo } from "@/hooks/useTokenInfo";
 import { useOnChainMetrics } from "@/hooks/useOnChainMetrics";
 import { getTokenContract } from "@/utils/tokenContractMapping";
 import { Skeleton } from "@/components/ui/skeleton";
+import { OnChainDebugPanel } from "./OnChainDebugPanel";
 
 interface TokenSocialHubProps {
   tokenInfo?: TokenInfo;
@@ -163,6 +164,16 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
             </p>
             <p className="text-[10px] text-muted-foreground mt-2">Updated: {new Date(onChainData.lastUpdated).toLocaleTimeString()}</p>
           </div>
+        )}
+
+        {/* Debug Panel - Shows raw API responses */}
+        {tokenContract && (
+          <OnChainDebugPanel 
+            rawData={onChainData?.rawData || null}
+            contractAddress={tokenContract.address}
+            network={tokenContract.network}
+            isLoading={onChainLoading}
+          />
         )}
       </CardContent>
     </Card>

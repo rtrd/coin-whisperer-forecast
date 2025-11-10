@@ -30,6 +30,10 @@ export interface OnChainMetrics {
   topHolderConcentration: number;
   holderTrend: 'increasing' | 'decreasing' | 'stable';
   lastUpdated: string;
+  rawData?: {
+    holders: any;
+    topHolders: any;
+  };
 }
 
 export const useOnChainMetrics = (contractAddress?: string, network?: string) => {
@@ -91,6 +95,10 @@ return {
   topHolderConcentration: parseFloat(topHolderConcentration.toFixed(2)),
   holderTrend,
   lastUpdated: new Date().toISOString(),
+  rawData: {
+    holders: holdersData,
+    topHolders: topHoldersData,
+  },
 };
       } catch (error) {
         console.error('Error fetching on-chain metrics:', error);
