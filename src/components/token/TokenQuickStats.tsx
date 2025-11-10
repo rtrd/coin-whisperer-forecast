@@ -43,11 +43,8 @@ export const TokenQuickStats: React.FC<TokenQuickStatsProps> = ({
             <TrendingUp className="h-4 w-4 text-primary" />
             <span className="text-xs text-muted-foreground font-medium">Market Rank</span>
           </div>
-          <div className="flex items-baseline gap-2">
+          <div>
             <span className="text-2xl font-bold text-foreground">#{marketCapRank}</span>
-            <Badge variant="outline" className="text-xs border-primary/50 text-primary">
-              Top {marketCapRank <= 10 ? '10' : marketCapRank <= 50 ? '50' : '100'}
-            </Badge>
           </div>
         </div>
       )}
@@ -59,18 +56,8 @@ export const TokenQuickStats: React.FC<TokenQuickStatsProps> = ({
             <Activity className="h-4 w-4 text-accent" />
             <span className="text-xs text-muted-foreground font-medium">Liquidity</span>
           </div>
-          <div className="flex items-baseline gap-2">
+          <div>
             <span className="text-2xl font-bold text-foreground">{volumeToMcRatio}%</span>
-            <Badge 
-              variant="outline" 
-              className={`text-xs ${
-                parseFloat(volumeToMcRatio) > 10 
-                  ? 'border-green-500/50 text-green-400' 
-                  : 'border-yellow-500/50 text-yellow-400'
-              }`}
-            >
-              {parseFloat(volumeToMcRatio) > 10 ? 'High' : 'Normal'}
-            </Badge>
           </div>
         </div>
       )}
@@ -83,7 +70,7 @@ export const TokenQuickStats: React.FC<TokenQuickStatsProps> = ({
             <span className="text-xs text-muted-foreground font-medium">Fully Diluted</span>
           </div>
           <div>
-            <span className="text-xl font-bold text-foreground">
+            <span className="text-2xl font-bold text-foreground">
               {formatMarketCap(fullyDilutedValue)}
             </span>
           </div>
@@ -97,14 +84,8 @@ export const TokenQuickStats: React.FC<TokenQuickStatsProps> = ({
             <TrendingDown className="h-4 w-4 text-muted-foreground" />
             <span className="text-xs text-muted-foreground font-medium">In Circulation</span>
           </div>
-          <div className="space-y-2">
+          <div>
             <span className="text-2xl font-bold text-foreground">{circulatingPercent}%</span>
-            <div className="w-full bg-muted/30 rounded-full h-2">
-              <div 
-                className="bg-gradient-to-r from-primary to-accent h-2 rounded-full transition-all duration-500"
-                style={{ width: `${circulatingPercent}%` }}
-              />
-            </div>
           </div>
         </div>
       )}
