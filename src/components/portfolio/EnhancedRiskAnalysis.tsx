@@ -59,19 +59,22 @@ export const EnhancedRiskAnalysis: React.FC<EnhancedRiskAnalysisProps> = ({
   riskMetrics,
 }) => {
   const [aiSuggestions, setaiSuggestions] = React.useState(null);
+  
+  // Handle both nested and direct riskMetrics structure
+  const metrics = riskMetrics?.riskMetrics || riskMetrics;
+  
   // Format all numeric values to 2 decimal places
   const formattedRiskMetrics = {
-    ...riskMetrics.riskMetrics,
-    sharpeRatio: riskMetrics.riskMetrics.sharpeRatio?.toFixed(2),
-    volatility: riskMetrics.riskMetrics.volatility?.toFixed(2),
-    maxDrawdown: riskMetrics.riskMetrics.maxDrawdown?.toFixed(2),
-    beta: riskMetrics.riskMetrics.beta?.toFixed(2),
-    var95: riskMetrics.riskMetrics.var95?.toFixed(2),
-    sortino: riskMetrics.riskMetrics.sortino?.toFixed(2),
-    calmar: riskMetrics.riskMetrics.calmar?.toFixed(2),
-    concentrationRisk: riskMetrics.riskMetrics.concentrationRisk?.toFixed(2),
-    correlationRisk: riskMetrics.riskMetrics.correlationRisk?.toFixed(2),
-    liquidityRisk: riskMetrics.riskMetrics.liquidityRisk?.toFixed(2),
+    sharpeRatio: metrics?.sharpeRatio?.toFixed(2) || '0.00',
+    volatility: metrics?.volatility?.toFixed(2) || '0.00',
+    maxDrawdown: metrics?.maxDrawdown?.toFixed(2) || '0.00',
+    beta: metrics?.beta?.toFixed(2) || '0.00',
+    var95: metrics?.var95?.toFixed(2) || '0.00',
+    sortino: metrics?.sortino?.toFixed(2) || '0.00',
+    calmar: metrics?.calmar?.toFixed(2) || '0.00',
+    concentrationRisk: metrics?.concentrationRisk?.toFixed(2) || '0.00',
+    correlationRisk: metrics?.correlationRisk?.toFixed(2) || '0.00',
+    liquidityRisk: metrics?.liquidityRisk?.toFixed(2) || '0.00',
   };
   const riskThresholds = {
     concentrationRisk: { high: 70, medium: 40 },
@@ -174,7 +177,7 @@ export const EnhancedRiskAnalysis: React.FC<EnhancedRiskAnalysisProps> = ({
         return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
-  const riskSuggestions = generateRiskSuggestions(riskMetrics.riskMetrics);
+  const riskSuggestions = generateRiskSuggestions(metrics);
   return (
     <TooltipProvider>
       <div className="space-y-6">
