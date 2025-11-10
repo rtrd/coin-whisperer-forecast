@@ -90,24 +90,20 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   };
 
   const calculateRSI = (prices: number[], period: number = 14): number => {
-    if (prices.length < period + 1) return 50;
-
+    const n = Math.min(period, prices.length - 1);
+    if (n <= 0) return 50;
+    
     let gains = 0;
     let losses = 0;
-
-    // Start from the last 'period + 1' prices so we have enough data for changes
-    const startIdx = Math.max(1, prices.length - period - 1);
-    for (let i = startIdx; i < prices.length; i++) {
-      const change = prices[i] - prices[i - 1];
-      if (change > 0) gains += change;
-      else losses -= change;
+    
+    for (let i = prices.length - n; i < prices.length; i++) {
+      const diff = prices[i] - prices[i - 1];
+      if (diff > 0) gains += diff;
+      else losses -= diff;
     }
-
-    const count = prices.length - startIdx;
-    const avgGain = gains / count;
-    const avgLoss = losses / count;
-
-    // Handle edge cases for division by zero
+    
+    const avgGain = gains / n;
+    const avgLoss = losses / n;
     if (avgLoss === 0) return avgGain === 0 ? 50 : 100;
     
     const rs = avgGain / avgLoss;
@@ -144,10 +140,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
   const calculateSMA20Strength = (prices: number[]) => {
     if (prices.length < 20) {
-      const sma20 = prices.reduce((a, b) => a + b, 0) / prices.length;
-      const currentPrice = prices.at(-1) ?? 0;
-      const deviation = Math.abs(currentPrice - sma20) / Math.max(sma20, 1);
-      return { sma20, strength: scaleStrength(deviation) };
+      return { sma20: undefined, strength: 0, insufficient: true };
     }
     
     // Calculate SMA20 for the last available point (same as chart)
@@ -161,15 +154,13 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     return {
       sma20,
       strength: scaleStrength(rawStrength),
+      insufficient: false,
     };
   };
 
   const calculateSMA50Strength = (prices: number[]) => {
     if (prices.length < 50) {
-      const sma50 = prices.reduce((a, b) => a + b, 0) / prices.length;
-      const currentPrice = prices.at(-1) ?? 0;
-      const deviation = Math.abs(currentPrice - sma50) / Math.max(sma50, 1);
-      return { sma50, strength: scaleStrength(deviation) };
+      return { sma50: undefined, strength: 0, insufficient: true };
     }
     
     // Calculate SMA50 for the last available point (same as chart)
@@ -183,6 +174,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     return {
       sma50,
       strength: scaleStrength(rawStrength),
+      insufficient: false,
     };
   };
 
@@ -321,7 +313,8 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   const overallTrend =
     overallSignal > 0.1 ? "BUY" : overallSignal < -0.1 ? "SELL" : "HOLD";
     
-  const overallSignalStrength = Math.abs(overallSignal) * 100;
+  // Make gauge directional: 0-33 = SELL, 33-66 = NEUTRAL, 66-100 = BUY
+  const gaugeValue = Math.max(0, Math.min(100, 50 + overallSignal * 50));
   const overallSignalColor = overallSignal > 0.1 ? "#10B981" : overallSignal < -0.1 ? "#EF4444" : "#F59E0B";
 
   const analysis = {
@@ -353,7 +346,7 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             </h3>
           <div className="space-y-6">
             <ProgressGauge
-              value={overallSignalStrength}
+              value={gaugeValue}
               zones={[
                 { min: 0, max: 33, color: "#EF4444", label: "SELL" },
                 { min: 33, max: 66, color: "#F59E0B", label: "NEUTRAL" },
@@ -378,13 +371,13 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
             {/* Confidence Meter */}
             <div className="w-full max-w-md mx-auto">
               <div className="flex justify-between text-xs text-muted-foreground mb-2">
-                <span>Confidence Level</span>
-                <span className="font-semibold">{Math.round(overallSignalStrength)}%</span>
+                <span>Signal Strength</span>
+                <span className="font-semibold">{Math.round(Math.abs(overallSignal) * 100)}%</span>
               </div>
               <div className="h-3 bg-secondary rounded-full overflow-hidden">
                 <div
                   className="h-full bg-gradient-to-r from-primary to-primary/60 transition-all duration-1000 rounded-full"
-                  style={{ width: `${overallSignalStrength}%` }}
+                  style={{ width: `${Math.abs(overallSignal) * 100}%` }}
                 />
               </div>
             </div>

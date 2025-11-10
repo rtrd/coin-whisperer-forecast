@@ -33,6 +33,7 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   const [volumeData, setVolumeData] = useState<{ label: string; value: number }[]>([]);
   const [macdData, setMacdData] = useState<{ label: string; value: number }[]>([]);
   const [realSentimentData, setRealSentimentData] = useState<any>(null);
+  const [technicalSeries, setTechnicalSeries] = useState<any[]>([]);
 
   // Fetch and process real sentiment data from LunarCrush API
   useEffect(() => {
@@ -67,6 +68,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
         const technicalData = await fetchTechnicalIndicators(cryptoId, "3m");
         
         if (technicalData && technicalData.length > 0) {
+          // Store the full technical series for the TechnicalAnalysis component
+          setTechnicalSeries(technicalData);
           // Extract volume data from the last 14 days
           const volumes = technicalData.slice(-14).map((d: any, idx: number) => {
             const tsMs = d.timestamp < 1e12 ? d.timestamp * 1000 : d.timestamp;
@@ -146,7 +149,7 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
 
             <TabsContent value="technical" className="mt-6">
               <LockedTechnicalAnalysis
-                data={cryptoData}
+                data={technicalSeries.length > 0 ? technicalSeries : cryptoData}
                 isLoading={dataLoading}
                 volumeData={volumeData}
                 macdHistogram={macdData}

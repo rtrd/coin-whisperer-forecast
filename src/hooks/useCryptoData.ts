@@ -7,46 +7,54 @@ interface PriceData {
 }
 const API_KEY = import.meta.env.VITE_LUNAR_API;
 
+// Seeded random for deterministic mock data
+function seededRandom(seed: string) {
+  const m = 2**31 - 1;
+  const a = 48271;
+  let state = seed.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % m;
+  return () => {
+    state = (a * state) % m;
+    return state / m;
+  };
+}
+
 const fetchCryptoData = async (
   crypto: string,
   timeframe: string,
   AllCryptosData: []
 ): Promise<PriceData[]> => {
-  // Map timeframes to intervals that ensure we get at least 14 days
-  let interval = timeframe;
-  if (timeframe === "7d") {
-    interval = "2w"; // Get 2 weeks to ensure 14 days
-  } else if (timeframe === "30d") {
-    interval = "1m";
-  } else if (timeframe === "90d") {
-    interval = "3m";
-  }
+  // Map timeframes to days parameter
+  const daysMap: { [key: string]: number } = {
+    "1d": 1,
+    "7d": 7,
+    "30d": 30,
+    "3m": 90,
+    "90d": 90,
+  };
+  const days = daysMap[timeframe] || 90;
   
   try {
-    // Use Supabase Edge Function instead of direct API call
-    const response = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=${interval}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-        },
-      }
-    );
+    // Use CoinGecko proxy for technical analysis data
+    const response = await fetch('/functions/v1/coingecko-proxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        endpoint: 'market-chart',
+        crypto: crypto,
+        timeframe: timeframe,
+        days: days,
+      }),
+    });
 
     if (!response.ok) {
-      throw new Error(`Proxy API error: ${response.status}`);
+      throw new Error(`CoinGecko proxy error: ${response.status}`);
     }
 
     const priceData = await response.json();
-    const data: PriceData[] = [];
-    data.push(
-      ...priceData.data.map((item: any) => ({
-        timestamp: item.time,
-        price: item.close,
-        volume: item.volume_24h,
-      }))
-    );
+    // Data is already in the correct format from the proxy
+    const data: PriceData[] = Array.isArray(priceData) ? priceData : [];
     const hasValidPrice = data.some(
       (d) => typeof d.price === "number" && !isNaN(d.price)
     );
@@ -57,9 +65,9 @@ const fetchCryptoData = async (
     }
     return data;
   } catch (error) {
-    console.error("Error fetching from secure proxy:", error);
-    // Only use mock data as absolute last resort
-    console.warn('Using fallback mock data due to API failure');
+    console.error("Error fetching from CoinGecko proxy:", error);
+    // Use deterministic mock data as fallback
+    console.warn('Using deterministic fallback mock data due to API failure');
     return generateMockData(crypto, timeframe, AllCryptosData);
   }
 };
@@ -69,27 +77,25 @@ const generateMockData = (
   timeframe: string,
   AllCryptosData: any[]
 ): PriceData[] => {
+  // Create deterministic seed from crypto + timeframe + current date
+  const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  const seed = `${crypto}|${timeframe}|${today}`;
+  const random = seededRandom(seed);
+  
   const now = new Date();
   now.setHours(0, 0, 0, 0); // normalize to midnight
 
-  // Normalize timeframe
-  const normalizedTimeframe =
-    timeframe === "7d"
-      ? "1w"
-      : timeframe === "30d"
-      ? "1m"
-      : timeframe === "90d"
-      ? "3m"
-      : timeframe;
-
-  const days =
-    normalizedTimeframe === "1d"
-      ? 1
-      : normalizedTimeframe === "1w"
-      ? 7
-      : normalizedTimeframe === "1m"
-      ? 30
-      : 90;
+  // Map timeframe to days
+  const daysMap: { [key: string]: number } = {
+    "1d": 1,
+    "7d": 7,
+    "1w": 7,
+    "30d": 30,
+    "1m": 30,
+    "90d": 90,
+    "3m": 90,
+  };
+  const days = daysMap[timeframe] || 90;
 
   const pointsPerDay = days === 1 ? 24 : 1;
   const totalPoints = days * pointsPerDay;
@@ -132,7 +138,7 @@ const generateMockData = (
       volatility = 0.015;
     }
 
-    const change = (Math.random() - 0.5) * volatility;
+    const change = (random() - 0.5) * volatility;
     currentPrice *= 1 + change;
 
     // Trend logic
@@ -150,7 +156,7 @@ const generateMockData = (
       crypto.includes("shib") ||
       crypto.includes("pepe")
     ) {
-      trend = (Math.random() - 0.5) * 0.0005;
+      trend = (random() - 0.5) * 0.0005;
     }
 
     currentPrice *= 1 + trend;
@@ -159,7 +165,7 @@ const generateMockData = (
       timestamp,
       price: Math.max(currentPrice, 0.0000001),
       volume:
-        Math.random() *
+        random() *
         (basePrice > 100
           ? 100_000_000
           : basePrice > 1
@@ -179,7 +185,7 @@ export const useCryptoData = (
   return useQuery({
     queryKey: ["crypto-data", crypto, timeframe],
     queryFn: () => fetchCryptoData(crypto, timeframe, AllCryptosData),
-    // staleTime: 60000,
-    // refetchInterval: 30000,
+    staleTime: 600000, // 10 minutes
+    refetchInterval: false, // Don't auto-refetch
   });
 };

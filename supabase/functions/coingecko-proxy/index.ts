@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { crypto, timeframe, endpoint, network, contractAddress } = await req.json()
+    const { crypto, timeframe, endpoint, network, contractAddress, days } = await req.json()
     
     // Get API key from Supabase secrets
     const COINGECKO_API_KEY = Deno.env.get('COINGECKO_API_KEY')
@@ -24,7 +24,33 @@ serve(async (req) => {
     let responseData;
 
     // Handle different endpoint types
-    if (endpoint === 'holders' && network && contractAddress) {
+    if (endpoint === 'market-chart') {
+      // Price and volume data for technical analysis
+      const daysParam = days || (timeframe === '1d' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90);
+      const interval = daysParam === 1 ? 'hourly' : 'daily';
+      
+      const response = await fetch(
+        `https://pro-api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=${daysParam}&interval=${interval}`,
+        {
+          headers: {
+            'X-CG-Pro-API-Key': COINGECKO_API_KEY,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`CoinGecko API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Transform to our format with timestamp in seconds
+      responseData = data.prices.map((price: [number, number], index: number) => ({
+        timestamp: Math.floor(price[0] / 1000), // Convert ms to seconds
+        price: price[1],
+        volume: data.total_volumes?.[index]?.[1] || 0
+      }));
+    } else if (endpoint === 'holders' && network && contractAddress) {
       // Fetch current holders
       const holdersResponse = await fetch(
         `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}`,
@@ -76,11 +102,12 @@ serve(async (req) => {
 
       responseData = await response.json();
     } else {
-      // Default: price chart data
-      const days = timeframe === '1d' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90;
+      // Default fallback: price chart data
+      const daysParam = timeframe === '1d' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90;
+      const interval = daysParam === 1 ? 'hourly' : 'daily';
       
       const response = await fetch(
-        `https://pro-api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=${days}&interval=${days === 1 ? 'hourly' : 'daily'}`,
+        `https://pro-api.coingecko.com/api/v3/coins/${crypto}/market_chart?vs_currency=usd&days=${daysParam}&interval=${interval}`,
         {
           headers: {
             'X-CG-Pro-API-Key': COINGECKO_API_KEY,
@@ -94,9 +121,9 @@ serve(async (req) => {
 
       const data = await response.json();
       
-      // Transform CoinGecko data to our format
+      // Transform to our format with timestamp in seconds
       responseData = data.prices.map((price: [number, number], index: number) => ({
-        timestamp: price[0],
+        timestamp: Math.floor(price[0] / 1000), // Convert ms to seconds
         price: price[1],
         volume: data.total_volumes?.[index]?.[1] || 0
       }));

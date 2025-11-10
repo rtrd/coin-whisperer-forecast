@@ -10,27 +10,42 @@ export const fetchCryptoData = async (
   crypto: string,
   timeframe: string
 ): Promise<PriceData[]> => {
+  // Map timeframes to days parameter
+  const daysMap: { [key: string]: number } = {
+    "1d": 1,
+    "7d": 7,
+    "30d": 30,
+    "3m": 90,
+    "90d": 90,
+  };
+  const days = daysMap[timeframe] || 90;
+  
   try {
-    // Use Supabase Edge Function instead of direct API call
-    const response = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${crypto}/time-series/v2?bucket=day&interval=${timeframe}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${API_KEY}`,
-        },
-      }
-    );
+    // Use CoinGecko proxy for technical analysis data
+    const response = await fetch('/functions/v1/coingecko-proxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        endpoint: 'market-chart',
+        crypto: crypto,
+        timeframe: timeframe,
+        days: days,
+      }),
+    });
 
     if (!response.ok) {
-      throw new Error(`Proxy API error: ${response.status}`);
+      throw new Error(`CoinGecko proxy error: ${response.status}`);
     }
+    
     const priceData = await response.json();
     console.log(
       `Successfully fetched ${priceData.length} data points for ${crypto}`
     );
-    return priceData.data;
+    return Array.isArray(priceData) ? priceData : [];
   } catch (error) {
-    console.error("Error fetching from secure proxy:", error);
+    console.error("Error fetching from CoinGecko proxy:", error);
+    return [];
   }
 };
