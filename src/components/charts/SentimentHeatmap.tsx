@@ -27,8 +27,12 @@ export const SentimentHeatmap: React.FC<SentimentHeatmapProps> = ({
               <div
                 className={`w-8 h-8 rounded transition-all duration-300 hover:scale-110 cursor-pointer ${getColorForValue(
                   value
-                )}`}
-              />
+                )} flex items-center justify-center`}
+              >
+                <span className="text-[10px] font-semibold text-white drop-shadow-md">
+                  {Math.round(value)}
+                </span>
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <p className="text-xs">
