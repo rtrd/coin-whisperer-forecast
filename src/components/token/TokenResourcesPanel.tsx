@@ -3,19 +3,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Lightbulb, TrendingUp, BarChart3, BookOpen, Zap, Target } from "lucide-react";
 import { TokenInfo } from "@/hooks/useTokenInfo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface TokenResourcesPanelProps {
   tokenInfo?: TokenInfo;
   tokenId: string;
   isLoading?: boolean;
+  onNavigateToChart?: () => void;
+  onNavigateToTab?: (tab: 'sentiment' | 'technical') => void;
 }
 
 export const TokenResourcesPanel: React.FC<TokenResourcesPanelProps> = ({ 
   tokenInfo, 
   tokenId,
-  isLoading 
+  isLoading,
+  onNavigateToChart,
+  onNavigateToTab
 }) => {
+  const navigate = useNavigate();
   if (isLoading) {
     return (
       <Card className="bg-card border-border animate-pulse">
@@ -36,6 +41,28 @@ export const TokenResourcesPanel: React.FC<TokenResourcesPanelProps> = ({
   const tokenName = tokenInfo?.name || tokenId;
   const tokenSymbol = tokenInfo?.symbol || tokenId.toUpperCase();
 
+  const handlePriceChartClick = () => {
+    if (onNavigateToChart) {
+      onNavigateToChart();
+    }
+  };
+
+  const handleSentimentClick = () => {
+    if (onNavigateToTab) {
+      onNavigateToTab('sentiment');
+    }
+  };
+
+  const handleTechnicalClick = () => {
+    if (onNavigateToTab) {
+      onNavigateToTab('technical');
+    }
+  };
+
+  const handleBlogClick = () => {
+    navigate('/blog', { state: { scrollToArchive: true } });
+  };
+
   return (
     <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20">
       <CardHeader>
@@ -46,46 +73,54 @@ export const TokenResourcesPanel: React.FC<TokenResourcesPanelProps> = ({
       </CardHeader>
       <CardContent className="space-y-3">
         {/* AI Price Predictions */}
-        <Link to="/ai-price-prediction">
-          <Button variant="default" className="w-full justify-start gap-2 bg-primary hover:bg-primary/90">
-            <Zap className="h-4 w-4" />
-            AI Price Prediction for {tokenSymbol}
-          </Button>
-        </Link>
+        <Button 
+          variant="default" 
+          className="w-full justify-start gap-2 bg-primary hover:bg-primary/90"
+          onClick={handlePriceChartClick}
+        >
+          <Zap className="h-4 w-4" />
+          AI Price Prediction for {tokenSymbol}
+        </Button>
 
         {/* Market Sentiment */}
-        <Link to="/sentiment-analysis">
-          <Button variant="outline" className="w-full justify-start gap-2 hover:bg-primary/10">
-            <TrendingUp className="h-4 w-4 text-green-500" />
-            Live Sentiment Analysis
-          </Button>
-        </Link>
+        <Button 
+          variant="outline" 
+          className="w-full justify-start gap-2 hover:bg-primary/10"
+          onClick={handleSentimentClick}
+        >
+          <TrendingUp className="h-4 w-4 text-green-500" />
+          Live Sentiment Analysis
+        </Button>
 
         {/* Technical Analysis */}
-        <Link to="/technical-analysis">
-          <Button variant="outline" className="w-full justify-start gap-2 hover:bg-primary/10">
-            <BarChart3 className="h-4 w-4 text-blue-500" />
-            Technical Indicators
-          </Button>
-        </Link>
+        <Button 
+          variant="outline" 
+          className="w-full justify-start gap-2 hover:bg-primary/10"
+          onClick={handleTechnicalClick}
+        >
+          <BarChart3 className="h-4 w-4 text-blue-500" />
+          Technical Indicators
+        </Button>
 
         {/* Portfolio Tracking */}
         <div className="pt-3 border-t border-border">
           <p className="text-xs text-muted-foreground mb-2">Portfolio Tools</p>
           
-          <Link to="/portfolio">
+          <Link to="/lock-portfolio">
             <Button variant="outline" className="w-full justify-start gap-2 mb-2 hover:bg-primary/10">
               <Target className="h-4 w-4 text-purple-500" />
               Track in Portfolio
             </Button>
           </Link>
 
-          <Link to="/blog">
-            <Button variant="outline" className="w-full justify-start gap-2 hover:bg-primary/10">
-              <BookOpen className="h-4 w-4 text-orange-500" />
-              {tokenName} Analysis Articles
-            </Button>
-          </Link>
+          <Button 
+            variant="outline" 
+            className="w-full justify-start gap-2 hover:bg-primary/10"
+            onClick={handleBlogClick}
+          >
+            <BookOpen className="h-4 w-4 text-orange-500" />
+            {tokenName} Analysis Articles
+          </Button>
         </div>
 
         {/* Value Proposition */}

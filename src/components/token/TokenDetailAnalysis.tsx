@@ -14,6 +14,8 @@ interface TokenDetailAnalysisProps {
   prediction: any;
   technicalIndicator?: any[];
   sentimentData?: any;
+  activeTab?: 'sentiment' | 'technical';
+  onTabChange?: (tab: 'sentiment' | 'technical') => void;
 }
 
 interface ProcessedSentimentData {
@@ -28,6 +30,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   dataLoading,
   prediction,
   sentimentData: initialSentimentData,
+  activeTab = 'sentiment',
+  onTabChange,
 }) => {
   const [processedSentiment, setProcessedSentiment] = useState<ProcessedSentimentData | null>(null);
   const [volumeData, setVolumeData] = useState<{ label: string; value: number }[]>([]);
@@ -121,7 +125,7 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
           <CardTitle className="text-white">Market Analysis</CardTitle>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="sentiment" className="w-full">
+          <Tabs value={activeTab} onValueChange={(value) => onTabChange?.(value as 'sentiment' | 'technical')} className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-gray-700 border-gray-600">
               <TabsTrigger
                 value="sentiment"

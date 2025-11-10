@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -80,7 +80,10 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   selectedToken,
   allCryptosData,
   SentimentData,
-}) => {
+ }) => {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const analysisRef = useRef<HTMLDivElement>(null);
+  const [activeTab, setActiveTab] = useState<'sentiment' | 'technical'>('sentiment');
 
   const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
   const customClass = useMemo(
@@ -90,6 +93,17 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   );
 
   const { data: tokenInfo, isLoading: tokenInfoLoading } = useTokenInfo(tokenId);
+
+  const handleNavigateToChart = () => {
+    chartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const handleNavigateToTab = (tab: 'sentiment' | 'technical') => {
+    setActiveTab(tab);
+    setTimeout(() => {
+      analysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -133,23 +147,25 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
 
           {/* Price Chart with AI Prediction Engine */}
-          <TokenDetailChart
-            cryptoData={cryptoData}
-            dataLoading={dataLoading}
-            prediction={prediction}
-            showPrediction={showPrediction}
-            cryptoId={cryptoId}
-            currentPrice={currentPrice}
-            timeframe={timeframe}
-            setTimeframe={setTimeframe}
-            predictionDays={predictionDays}
-            setPredictionDays={setPredictionDays}
-            modelType={modelType}
-            setModelType={setModelType}
-            predictionLoading={predictionLoading}
-            handlePredict={handlePredict}
-            handleClearPrediction={handleClearPrediction}
-          />
+          <div ref={chartRef}>
+            <TokenDetailChart
+              cryptoData={cryptoData}
+              dataLoading={dataLoading}
+              prediction={prediction}
+              showPrediction={showPrediction}
+              cryptoId={cryptoId}
+              currentPrice={currentPrice}
+              timeframe={timeframe}
+              setTimeframe={setTimeframe}
+              predictionDays={predictionDays}
+              setPredictionDays={setPredictionDays}
+              modelType={modelType}
+              setModelType={setModelType}
+              predictionLoading={predictionLoading}
+              handlePredict={handlePredict}
+              handleClearPrediction={handleClearPrediction}
+            />
+          </div>
 
           {/* Ad Banner After Price Chart - Responsive */}
           <AdUnit
@@ -176,7 +192,13 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         {/* Enhanced Social & Resources Section - NEW */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
           <TokenSocialHub tokenInfo={tokenInfo} isLoading={tokenInfoLoading} />
-          <TokenResourcesPanel tokenInfo={tokenInfo} tokenId={tokenId} isLoading={tokenInfoLoading} />
+          <TokenResourcesPanel 
+            tokenInfo={tokenInfo} 
+            tokenId={tokenId} 
+            isLoading={tokenInfoLoading}
+            onNavigateToChart={handleNavigateToChart}
+            onNavigateToTab={handleNavigateToTab}
+          />
           <TokenPriceAlerts 
             tokenName={selectedToken?.name || tokenId}
             tokenSymbol={selectedToken?.symbol || tokenId}
@@ -219,7 +241,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
         </div>
 
         {/* Market Analysis and Sidebar Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mt-6" ref={analysisRef}>
           {/* Market Analysis - 3/4 width */}
           <div className="lg:col-span-3">
             <TokenDetailAnalysis
@@ -228,6 +250,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               dataLoading={dataLoading}
               prediction={prediction}
               sentimentData={SentimentData}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
             />
           </div>
 

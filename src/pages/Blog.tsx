@@ -1,6 +1,7 @@
 import { generateBlogSEO } from "@/utils/pageSeo";
 import { useAdScript } from "@/hooks/useAdScript";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogLayout } from "@/components/blog/BlogLayout";
@@ -14,6 +15,8 @@ import { getFeaturedArticle, getTrendingArticles } from "@/utils/articleUtils";
 import { BlogCategoriesSection } from "@/components/blog/BlogCategoriesSection";
 
 const Blog = () => {
+  const location = useLocation();
+  const archiveRef = useRef<HTMLDivElement>(null);
   const [articles, setArticles] = useState<any[]>([]);
   const [categories, setCategories] = useState<{ [key: string]: any[] }>({});
   const [loading, setLoading] = useState(true);
@@ -76,6 +79,15 @@ const Blog = () => {
     }
   };
 
+  // Scroll to archive section if navigated from token page
+  useEffect(() => {
+    if (location.state?.scrollToArchive && archiveRef.current && !loading) {
+      setTimeout(() => {
+        archiveRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
+  }, [location.state, loading]);
+
   // Select featured article based on "Featured" tag or fallback to first article
   const featuredArticle = getFeaturedArticle(articles);
   const trendingArticles = getTrendingArticles(articles);
@@ -111,7 +123,9 @@ const Blog = () => {
         <BlogCategoriesSection categories={categories} />
         
         {/* All Articles Index Section */}
-        <BlogIndexSection articles={articles} />
+        <div ref={archiveRef}>
+          <BlogIndexSection articles={articles} />
+        </div>
         
         {/* Ad Banner Before Footer */}
         <GAMAdUnit
