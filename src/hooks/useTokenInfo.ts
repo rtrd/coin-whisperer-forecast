@@ -57,8 +57,12 @@ export interface TokenInfo {
     price_change_percentage_1y_in_currency?: { usd?: number };
     market_cap_change_24h?: number;
     fully_diluted_valuation?: { usd?: number };
+    circulating_supply?: number;
+    total_supply?: number;
+    max_supply?: number;
     last_updated?: string;
   };
+  platforms?: Record<string, string>;
 }
 
 export const useTokenInfo = (tokenId: string) => {
