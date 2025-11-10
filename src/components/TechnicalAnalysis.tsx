@@ -95,16 +95,17 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     let gains = 0;
     let losses = 0;
 
-    // Calculate from the LAST 'period' prices (most recent data)
-    const startIdx = prices.length - period;
+    // Start from the last 'period + 1' prices so we have enough data for changes
+    const startIdx = Math.max(1, prices.length - period - 1);
     for (let i = startIdx; i < prices.length; i++) {
       const change = prices[i] - prices[i - 1];
       if (change > 0) gains += change;
       else losses -= change;
     }
 
-    const avgGain = gains / period;
-    const avgLoss = losses / period;
+    const count = prices.length - startIdx;
+    const avgGain = gains / count;
+    const avgLoss = losses / count;
 
     // Handle edge cases for division by zero
     if (avgLoss === 0) return avgGain === 0 ? 50 : 100;
@@ -130,27 +131,59 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
     return scaleStrength(raw); // Scale to 20%–80%
   };
 
-  const calculateSMA = (prices: number[], period: number): number => {
-    if (prices.length < period)
-      return prices.reduce((a, b) => a + b, 0) / prices.length;
-    const recent = prices.slice(-period);
-    return recent.reduce((a, b) => a + b, 0) / period;
+  // Calculate SMA at a specific index (aligned with PriceChart)
+  const calculateSMAAtIndex = (prices: number[], period: number, index: number): number => {
+    if (index < period - 1) {
+      // Not enough data, use all available
+      const slice = prices.slice(0, index + 1);
+      return slice.reduce((a, b) => a + b, 0) / slice.length;
+    }
+    const slice = prices.slice(index - period + 1, index + 1);
+    return slice.reduce((a, b) => a + b, 0) / period;
   };
 
   const calculateSMA20Strength = (prices: number[]) => {
-    const sma20 = calculateSMA(prices, 20);
-    const currentPrice = prices.at(-1) ?? 0;
-    const deviation = Math.abs(currentPrice - sma20) / Math.max(sma20, 1);
-
-    return { sma20, strength: scaleStrength(deviation) }; // scale to 20-80%
+    if (prices.length < 20) {
+      const sma20 = prices.reduce((a, b) => a + b, 0) / prices.length;
+      const currentPrice = prices.at(-1) ?? 0;
+      const deviation = Math.abs(currentPrice - sma20) / Math.max(sma20, 1);
+      return { sma20, strength: scaleStrength(deviation) };
+    }
+    
+    // Calculate SMA20 for the last available point (same as chart)
+    const lastIndex = prices.length - 1;
+    const sma20 = calculateSMAAtIndex(prices, 20, lastIndex);
+    const currentPrice = prices[lastIndex];
+    
+    const deviation = ((currentPrice - sma20) / sma20) * 100;
+    const rawStrength = Math.abs(deviation) / 10;
+    
+    return {
+      sma20,
+      strength: scaleStrength(rawStrength),
+    };
   };
 
   const calculateSMA50Strength = (prices: number[]) => {
-    const sma50 = calculateSMA(prices, 50);
-    const currentPrice = prices.at(-1) ?? 0;
-    const deviation = Math.abs(currentPrice - sma50) / Math.max(sma50, 1);
-
-    return { sma50, strength: scaleStrength(deviation) }; // scale to 20-80%
+    if (prices.length < 50) {
+      const sma50 = prices.reduce((a, b) => a + b, 0) / prices.length;
+      const currentPrice = prices.at(-1) ?? 0;
+      const deviation = Math.abs(currentPrice - sma50) / Math.max(sma50, 1);
+      return { sma50, strength: scaleStrength(deviation) };
+    }
+    
+    // Calculate SMA50 for the last available point (same as chart)
+    const lastIndex = prices.length - 1;
+    const sma50 = calculateSMAAtIndex(prices, 50, lastIndex);
+    const currentPrice = prices[lastIndex];
+    
+    const deviation = ((currentPrice - sma50) / sma50) * 100;
+    const rawStrength = Math.abs(deviation) / 10;
+    
+    return {
+      sma50,
+      strength: scaleStrength(rawStrength),
+    };
   };
 
   const recentWindow = Math.min(20, prices.length);

@@ -102,8 +102,9 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     }),
     price: d.price,
     volume: d.volume || 0,
-    sma20: calculateSMA(prices, 20, index),
-    sma50: calculateSMA(prices, 50, index),
+    // Only calculate SMA if we have enough data points
+    sma20: index >= 19 ? calculateSMA(prices, 20, index) : undefined,
+    sma50: index >= 49 ? calculateSMA(prices, 50, index) : undefined,
   }));
   if (prediction && prediction.length > 0) {
     const lastHistoricalPrice = data[data.length - 1]?.price;
@@ -326,8 +327,8 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 4, fill: "#06B6D4", strokeWidth: 2 }}
-                strokeOpacity={0.85}
-                connectNulls
+                strokeOpacity={0.9}
+                connectNulls={false}
               />
 
               {/* SMA 50 Line */}
@@ -335,12 +336,12 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 type="monotone"
                 dataKey="sma50"
                 stroke="#FB923C"
-                strokeWidth={2.5}
+                strokeWidth={3}
                 dot={false}
                 activeDot={{ r: 4, fill: "#FB923C", strokeWidth: 2 }}
                 strokeOpacity={0.85}
                 strokeDasharray="5 3"
-                connectNulls
+                connectNulls={false}
               />
 
               {/* AI Prediction */}
