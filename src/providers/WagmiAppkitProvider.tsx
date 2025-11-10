@@ -12,14 +12,10 @@ import {
   solanaTestnet,
   defineChain 
 } from "@reown/appkit/networks";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { SolanaAdapter } from "@reown/appkit-adapter-solana";
 import { BitcoinAdapter } from "@reown/appkit-adapter-bitcoin";
 import type { AppKitNetwork } from "@reown/appkit/networks";
-
-// 0. Setup queryClient
-const queryClient = new QueryClient();
 
 // 1. Get projectId from https://dashboard.reown.com
 // Using a temporary project ID - replace with your own from https://cloud.reown.com
@@ -94,9 +90,7 @@ createAppKit({
 export function WagmiAppkitProvider({ children }) {
   return (
     <WagmiProvider config={wagmiAdapter.wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      {children}
     </WagmiProvider>
   );
 }
