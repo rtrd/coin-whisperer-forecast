@@ -598,13 +598,31 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
                 <div className="text-lg font-bold text-foreground">{signal.toFixed(4)}</div>
               </div>
             </div>
-            <div className={`mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center uppercase`}
-              style={{ 
-                backgroundColor: `${getSignalColor(indicators[3].signal).split(' ')[0].replace('text-', '')}20`,
-                color: getSignalColor(indicators[3].signal).split(' ')[0].replace('text-', '')
-              }}
-            >
-              {indicators[3].signal}
+            <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
+              <div className="space-y-1">
+                <div className="text-muted-foreground">Histogram</div>
+                <div className={`text-lg font-bold ${macd - signal > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                  {(macd - signal).toFixed(4)}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-muted-foreground">Divergence</div>
+                <div className={`text-lg font-bold ${macd - signal > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                  {(((macd - signal) / Math.abs(signal || 1)) * 100).toFixed(2)}%
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-muted-foreground">Momentum</div>
+                <div className="text-lg font-bold text-foreground">
+                  {macd > signal ? 'Bullish' : 'Bearish'}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-muted-foreground">Crossover</div>
+                <div className={`text-lg font-bold ${Math.abs(macd - signal) < 0.001 ? 'text-amber-500' : 'text-muted-foreground'}`}>
+                  {Math.abs(macd - signal) < 0.001 ? 'Near' : 'None'}
+                </div>
+              </div>
             </div>
           </Card>
         )}
@@ -649,8 +667,66 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
               </div>
             )}
           </div>
-          <div className="mt-4 px-3 py-2 rounded-lg text-sm font-semibold text-center bg-purple-500/20 text-purple-400 truncate">
-            Volume Data
+          <div className="grid grid-cols-2 gap-4 mt-4 text-xs">
+            <div className="space-y-1">
+              <div className="text-muted-foreground">Avg Volume</div>
+              <div className="text-lg font-bold text-foreground">
+                {(() => {
+                  const volumes = volumeData && volumeData.length > 0 
+                    ? volumeData.map(v => v.value)
+                    : data && data.length > 0 
+                      ? data.slice(-14).map(d => d.volume || 0)
+                      : [];
+                  const avg = volumes.length > 0 ? volumes.reduce((a, b) => a + b, 0) / volumes.length : 0;
+                  return avg >= 1e9 ? `${(avg / 1e9).toFixed(2)}B` : avg >= 1e6 ? `${(avg / 1e6).toFixed(2)}M` : `${(avg / 1e3).toFixed(2)}K`;
+                })()}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-muted-foreground">Total Volume</div>
+              <div className="text-lg font-bold text-foreground">
+                {(() => {
+                  const volumes = volumeData && volumeData.length > 0 
+                    ? volumeData.map(v => v.value)
+                    : data && data.length > 0 
+                      ? data.slice(-14).map(d => d.volume || 0)
+                      : [];
+                  const total = volumes.reduce((a, b) => a + b, 0);
+                  return total >= 1e9 ? `${(total / 1e9).toFixed(2)}B` : total >= 1e6 ? `${(total / 1e6).toFixed(2)}M` : `${(total / 1e3).toFixed(2)}K`;
+                })()}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-muted-foreground">Trend</div>
+              <div className="text-lg font-bold text-foreground">
+                {(() => {
+                  const volumes = volumeData && volumeData.length > 0 
+                    ? volumeData.map(v => v.value)
+                    : data && data.length > 0 
+                      ? data.slice(-14).map(d => d.volume || 0)
+                      : [];
+                  if (volumes.length < 4) return 'N/A';
+                  const mid = Math.floor(volumes.length / 2);
+                  const firstHalf = volumes.slice(0, mid).reduce((a, b) => a + b, 0) / mid;
+                  const secondHalf = volumes.slice(mid).reduce((a, b) => a + b, 0) / (volumes.length - mid);
+                  return secondHalf > firstHalf ? 'Increasing' : 'Decreasing';
+                })()}
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="text-muted-foreground">Peak Volume</div>
+              <div className="text-lg font-bold text-foreground">
+                {(() => {
+                  const volumes = volumeData && volumeData.length > 0 
+                    ? volumeData.map(v => v.value)
+                    : data && data.length > 0 
+                      ? data.slice(-14).map(d => d.volume || 0)
+                      : [];
+                  const peak = Math.max(...volumes, 0);
+                  return peak >= 1e9 ? `${(peak / 1e9).toFixed(2)}B` : peak >= 1e6 ? `${(peak / 1e6).toFixed(2)}M` : `${(peak / 1e3).toFixed(2)}K`;
+                })()}
+              </div>
+            </div>
           </div>
         </Card>
       </div>
