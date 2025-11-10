@@ -17,10 +17,8 @@ export const TokenComparison: React.FC<TokenComparisonProps> = ({
   volume24h = 0,
   priceChange24h = 0,
 }) => {
-  const [compareWith, setCompareWith] = useState<"BTC" | "ETH">("BTC");
-
   // Mock comparison data (in production, fetch from API)
-  const comparisonData = {
+  const comparisonData: Record<string, { marketCap: number; volume24h: number; priceChange24h: number }> = {
     BTC: {
       marketCap: 1990641709458,
       volume24h: 82455671958,
@@ -31,7 +29,43 @@ export const TokenComparison: React.FC<TokenComparisonProps> = ({
       volume24h: 37128591180,
       priceChange24h: -3.92,
     },
+    BNB: {
+      marketCap: 89234567890,
+      volume24h: 3456789012,
+      priceChange24h: 1.45,
+    },
+    SOL: {
+      marketCap: 78901234567,
+      volume24h: 4567890123,
+      priceChange24h: 2.67,
+    },
+    ADA: {
+      marketCap: 34567890123,
+      volume24h: 1234567890,
+      priceChange24h: -1.23,
+    },
+    XRP: {
+      marketCap: 56789012345,
+      volume24h: 2345678901,
+      priceChange24h: 0.89,
+    },
   };
+
+  // Determine available comparison options based on current token
+  const getComparisonOptions = (): string[] => {
+    const currentTokenUpper = tokenSymbol.toUpperCase();
+    
+    // If viewing BTC or ETH, use alternative comparisons
+    if (currentTokenUpper === "BTC" || currentTokenUpper === "ETH") {
+      return ["BNB", "SOL"];
+    }
+    
+    // Default comparison options
+    return ["BTC", "ETH"];
+  };
+
+  const comparisonOptions = getComparisonOptions();
+  const [compareWith, setCompareWith] = useState<string>(comparisonOptions[0]);
 
   const compareData = comparisonData[compareWith];
   const marketCapRatio = marketCap / compareData.marketCap;
@@ -53,20 +87,16 @@ export const TokenComparison: React.FC<TokenComparisonProps> = ({
             Compare Performance
           </CardTitle>
           <div className="flex gap-2">
-            <Button
-              variant={compareWith === "BTC" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setCompareWith("BTC")}
-            >
-              vs Bitcoin
-            </Button>
-            <Button
-              variant={compareWith === "ETH" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setCompareWith("ETH")}
-            >
-              vs Ethereum
-            </Button>
+            {comparisonOptions.map((option) => (
+              <Button
+                key={option}
+                variant={compareWith === option ? "default" : "outline"}
+                size="sm"
+                onClick={() => setCompareWith(option)}
+              >
+                vs {option === "BTC" ? "Bitcoin" : option === "ETH" ? "Ethereum" : option === "BNB" ? "BNB" : option === "SOL" ? "Solana" : option}
+              </Button>
+            ))}
           </div>
         </div>
       </CardHeader>
