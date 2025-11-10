@@ -25,6 +25,7 @@ const invokeEdgeFunction = async (functionName: string, body: any) => {
 
 export interface OnChainMetrics {
   totalHolders: number;
+  holders24hAgo: number;
   holdersGrowth24h: number;
   topHolderConcentration: number;
   holderTrend: 'increasing' | 'decreasing' | 'stable';
@@ -65,26 +66,32 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
           : 0;
 
         const topHolders = topHoldersData?.items ?? [];
-        const topHolderConcentration = topHolders
+        let topHolderConcentration = topHolders
           .slice(0, 10)
           .reduce((sum: number, holder: any) => {
             const p = holder?.percentage ?? holder?.percent ?? holder?.pct ?? holder?.share;
             const num = typeof p === 'string' ? parseFloat(p) : (typeof p === 'number' ? p : 0);
             return sum + (isFinite(num) ? num : 0);
           }, 0);
+        if ((!topHolders || topHolders.length === 0) && holdersData?.distribution?.top_10) {
+          const fallbackPct = holdersData.distribution.top_10;
+          const num = typeof fallbackPct === 'string' ? parseFloat(fallbackPct) : (typeof fallbackPct === 'number' ? fallbackPct : 0);
+          topHolderConcentration = isFinite(num) ? num : 0;
+        }
 
         // Determine trend
         let holderTrend: 'increasing' | 'decreasing' | 'stable' = 'stable';
         if (holdersGrowth24h > 2) holderTrend = 'increasing';
         else if (holdersGrowth24h < -2) holderTrend = 'decreasing';
 
-        return {
-          totalHolders: currentHolders,
-          holdersGrowth24h: parseFloat(holdersGrowth24h.toFixed(2)),
-          topHolderConcentration: parseFloat(topHolderConcentration.toFixed(2)),
-          holderTrend,
-          lastUpdated: new Date().toISOString(),
-        };
+return {
+  totalHolders: currentHolders,
+  holders24hAgo,
+  holdersGrowth24h: parseFloat(holdersGrowth24h.toFixed(2)),
+  topHolderConcentration: parseFloat(topHolderConcentration.toFixed(2)),
+  holderTrend,
+  lastUpdated: new Date().toISOString(),
+};
       } catch (error) {
         console.error('Error fetching on-chain metrics:', error);
         return null;

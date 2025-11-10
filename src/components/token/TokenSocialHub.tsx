@@ -52,6 +52,9 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
         <CardTitle className="flex items-center gap-2">
           <Database className="h-5 w-5 text-primary" />
           On-Chain Metrics
+          {tokenInfo?.id === 'bitcoin' && (
+            <span className="ml-2 text-xs text-muted-foreground">Using WBTC proxy</span>
+          )}
           {hasOnChainData && (
             <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
               <Clock className="h-3 w-3" />
@@ -90,6 +93,9 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
               <p className="text-xs text-muted-foreground">Total Holders</p>
               <p className={`text-xs font-medium mt-1 ${onChainData.holdersGrowth24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                 {onChainData.holdersGrowth24h >= 0 ? '+' : ''}{onChainData.holdersGrowth24h}% (24h)
+              </p>
+              <p className="text-[10px] text-muted-foreground mt-1">
+                Δ {Math.max(onChainData.totalHolders - (onChainData.holders24hAgo || onChainData.totalHolders), 0).toLocaleString()} holders
               </p>
             </div>
 
@@ -152,9 +158,10 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
             </p>
             <p className="text-xs text-muted-foreground">
               {onChainData.totalHolders > 100000 ? "Large holder base indicates strong distribution. " : "Growing holder base - "}
-              {onChainData.holderTrend === 'increasing' ? "📈 Holder count trending up. " : ""}
+              {onChainData.holderTrend === 'increasing' ? "📈 Holder count trending up. " : onChainData.holderTrend === 'decreasing' ? "📉 Holder count trending down. " : ""}
               {onChainData.topHolderConcentration > 50 ? "⚠️ High whale concentration detected." : "Well distributed among holders."}
             </p>
+            <p className="text-[10px] text-muted-foreground mt-2">Updated: {new Date(onChainData.lastUpdated).toLocaleTimeString()}</p>
           </div>
         )}
       </CardContent>
