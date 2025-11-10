@@ -13,7 +13,7 @@ export interface LunarCrushMetrics {
   bearish_sentiment?: number;
 }
 
-const API_KEY = import.meta.env.VITE_LUNAR_API;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
 export const useLunarCrushMetrics = (tokenSymbol: string) => {
   return useQuery({
@@ -21,36 +21,26 @@ export const useLunarCrushMetrics = (tokenSymbol: string) => {
     queryFn: async (): Promise<LunarCrushMetrics> => {
       try {
         const response = await fetch(
-          `https://lunarcrush.com/api4/public/coins/${tokenSymbol}/v1`,
+          `${SUPABASE_URL}/functions/v1/lunarcrush-proxy`,
           {
-            method: 'GET',
+            method: 'POST',
             headers: {
-              Authorization: `Bearer ${API_KEY}`,
+              'Content-Type': 'application/json',
             },
+            body: JSON.stringify({ tokenSymbol }),
           }
         );
 
         if (!response.ok) {
-          throw new Error(`LunarCrush API error: ${response.status}`);
+          const errorData = await response.json();
+          throw new Error(errorData.error || `LunarCrush proxy error: ${response.status}`);
         }
 
         const data = await response.json();
-        
-        return {
-          galaxy_score: data.galaxy_score,
-          alt_rank: data.alt_rank,
-          social_volume_24h: data.social_volume_24h,
-          social_engagement_24h: data.social_engagement_24h,
-          social_contributors: data.social_contributors,
-          social_dominance: data.social_dominance,
-          sentiment: data.sentiment,
-          price_score: data.price_score,
-          bullish_sentiment: data.bullish_sentiment,
-          bearish_sentiment: data.bearish_sentiment,
-        };
+        return data;
       } catch (error) {
         console.error('LunarCrush metrics fetch error:', error);
-        throw error; // Don't return mock data, let the component handle the error
+        throw error;
       }
     },
     enabled: !!tokenSymbol,
