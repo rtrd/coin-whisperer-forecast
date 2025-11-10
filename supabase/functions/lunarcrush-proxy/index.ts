@@ -41,21 +41,22 @@ serve(async (req) => {
       throw new Error(`LunarCrush API error: ${response.status}`);
     }
 
-    const data = await response.json();
-    console.log(`Successfully fetched metrics for ${tokenSymbol}`);
+    const raw = await response.json();
+    const src: any = raw?.data ?? raw;
+    console.log(`Successfully fetched metrics for ${symbol}`);
     
     return new Response(
       JSON.stringify({
-        galaxy_score: data.galaxy_score,
-        alt_rank: data.alt_rank,
-        social_volume_24h: data.social_volume_24h,
-        social_engagement_24h: data.social_engagement_24h,
-        social_contributors: data.social_contributors,
-        social_dominance: data.social_dominance,
-        sentiment: data.sentiment,
-        price_score: data.price_score,
-        bullish_sentiment: data.bullish_sentiment,
-        bearish_sentiment: data.bearish_sentiment,
+        galaxy_score: src.galaxy_score ?? src.galaxyScore ?? src.metrics?.galaxy_score,
+        alt_rank: src.alt_rank ?? src.altRank ?? src.metrics?.alt_rank,
+        social_volume_24h: src.social_volume_24h ?? src.metrics?.social_volume_24h,
+        social_engagement_24h: src.social_engagement_24h ?? src.metrics?.social_engagement_24h,
+        social_contributors: src.social_contributors ?? src.metrics?.social_contributors,
+        social_dominance: src.social_dominance ?? src.metrics?.social_dominance,
+        sentiment: src.sentiment ?? src.metrics?.sentiment,
+        price_score: src.price_score ?? src.metrics?.price_score,
+        bullish_sentiment: src.bullish_sentiment ?? src.metrics?.bullish_sentiment,
+        bearish_sentiment: src.bearish_sentiment ?? src.metrics?.bearish_sentiment,
       }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },

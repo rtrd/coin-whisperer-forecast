@@ -89,19 +89,17 @@ export const TokenQuickStats: React.FC<TokenQuickStatsProps> = ({
       )}
 
       {/* Fully Diluted Valuation */}
-      {fullyDilutedValue && (
-        <div className="bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 rounded-lg p-4 hover:scale-105 transition-transform duration-200">
-          <div className="flex items-center gap-2 mb-2">
-            <DollarSign className="h-4 w-4 text-secondary" />
-            <span className="text-xs text-muted-foreground font-medium">Fully Diluted</span>
-          </div>
-          <div>
-            <span className="text-2xl font-bold text-foreground">
-              {formatMarketCap(fullyDilutedValue)}
-            </span>
-          </div>
+      <div className="bg-gradient-to-br from-secondary/20 to-secondary/5 border border-secondary/30 rounded-lg p-4 hover:scale-105 transition-transform duration-200">
+        <div className="flex items-center gap-2 mb-2">
+          <DollarSign className="h-4 w-4 text-secondary" />
+          <span className="text-xs text-muted-foreground font-medium">Fully Diluted</span>
         </div>
-      )}
+        <div>
+          <span className="text-2xl font-bold text-foreground">
+            {fullyDilutedValue ? formatMarketCap(fullyDilutedValue) : '—'}
+          </span>
+        </div>
+      </div>
 
       {/* Circulating Supply % */}
       {circulatingPercent && (

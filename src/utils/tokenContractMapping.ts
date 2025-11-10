@@ -6,19 +6,19 @@ export interface TokenContract {
 export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
   'bitcoin': { 
     address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', // WBTC proxy for BTC
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'ethereum': { 
     address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'tether': { 
     address: '0xdac17f958d2ee523a2206206994597c13d831ec7', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'usd-coin': { 
     address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'binancecoin': { 
     address: '0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c', 
@@ -38,11 +38,11 @@ export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
   },
   'shiba-inu': { 
     address: '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'dai': { 
     address: '0x6b175474e89094c44da98b954eedeac495271d0f', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'uniswap': { 
     address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 
@@ -50,11 +50,11 @@ export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
   },
   'chainlink': { 
     address: '0x514910771af9ca656af840dff83e8264ecf986ca', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'wrapped-bitcoin': { 
     address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'avalanche-2': { 
     address: '0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7', 
