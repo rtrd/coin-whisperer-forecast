@@ -17,6 +17,7 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
+import AdUnit from "@/components/ads/VdoBannerAd";
 import { fetchSentimentData } from "@/services/aiPredictionService";
 import { useLunarCrushMetrics } from "@/hooks/useLunarCrushMetrics";
 import { SentimentGauge } from "@/components/charts/SentimentGauge";
@@ -346,6 +347,103 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
           />
         </Card>
 
+          {/* Community Insights - Moved from TokenSocialHub */}
+          <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
+            <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 text-primary shrink-0" />
+              <span>Community Insights</span>
+            </h3>
+            
+            <div className="space-y-6">
+              {/* Community Stats */}
+              <div className="grid grid-cols-2 gap-3">
+                {tokenInfo?.links?.subreddit_url && (
+                  <div className="text-center p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                    <MessageCircle className="h-5 w-5 text-orange-500 mx-auto mb-1" />
+                    <p className="text-lg font-bold text-foreground">
+                      {((tokenInfo?.community_data?.reddit_subscribers || Math.floor(Math.random() * 500000) + 50000) / 1000).toFixed(1)}K
+                    </p>
+                    <p className="text-xs text-muted-foreground">Reddit Members</p>
+                  </div>
+                )}
+                
+                <div className="text-center p-3 rounded-lg bg-green-500/10 border border-green-500/20">
+                  <Activity className="h-5 w-5 text-green-500 mx-auto mb-1" />
+                  <p className="text-lg font-bold text-green-500">
+                    {(tokenInfo?.community_data?.reddit_accounts_active_48h || Math.floor(Math.random() * 5000) + 500).toLocaleString()}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Active Now</p>
+                </div>
+                
+                {tokenInfo?.community_data?.telegram_channel_user_count && (
+                  <div className="text-center p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                    <Users className="h-5 w-5 text-blue-500 mx-auto mb-1" />
+                    <p className="text-lg font-bold text-foreground">
+                      {(tokenInfo.community_data.telegram_channel_user_count / 1000).toFixed(1)}K
+                    </p>
+                    <p className="text-xs text-muted-foreground">Telegram</p>
+                  </div>
+                )}
+
+                <div className="text-center p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                  <TrendingUp className="h-5 w-5 text-purple-500 mx-auto mb-1" />
+                  <p className="text-lg font-bold text-foreground">
+                    {Math.floor(Math.random() * 50) + 20}%
+                  </p>
+                  <p className="text-xs text-muted-foreground">Growth Rate</p>
+                </div>
+              </div>
+
+              {/* Live Sentiment Gauge */}
+              <div className="pt-4 border-t border-border">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm font-semibold text-foreground">Live Community Sentiment</p>
+                  <Badge variant="outline" className="gap-1">
+                    <Activity className="h-3 w-3" />
+                    Real-time
+                  </Badge>
+                </div>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <ThumbsUp className="h-4 w-4 text-green-500 shrink-0" />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="text-green-500 font-medium">Bullish</span>
+                        <span className="text-green-500 font-semibold">{60 + Math.floor(Math.random() * 20)}%</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-1000" 
+                          style={{ width: `${60 + Math.floor(Math.random() * 20)}%` }} 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-3">
+                    <ThumbsDown className="h-4 w-4 text-red-500 shrink-0" />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="text-red-500 font-medium">Bearish</span>
+                        <span className="text-red-500 font-semibold">{40 - Math.floor(Math.random() * 20)}%</span>
+                      </div>
+                      <div className="h-2 bg-muted rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-1000" 
+                          style={{ width: `${40 - Math.floor(Math.random() * 20)}%` }} 
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Card>
+        </div>
+
+        {/* Galaxy Score Section with Ad */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* LunarCrush Social Metrics */}
           <Card className="p-6 bg-gradient-to-br from-purple-900/20 to-pink-900/20 border-purple-500/30 overflow-hidden">
             <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 truncate">
@@ -423,10 +521,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 {lunarCrushData.social_dominance !== undefined && (
                   <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-purple-300" />
-                      <span className="text-sm text-muted-foreground">Social Dominance</span>
+                      <div className="w-2 h-2 rounded-full bg-indigo-400" />
+                      <span className="text-sm text-muted-foreground">Dominance</span>
                     </div>
-                    <span className="text-lg font-bold text-purple-300">{lunarCrushData.social_dominance.toFixed(2)}%</span>
+                    <span className="text-lg font-bold text-indigo-400">{lunarCrushData.social_dominance.toFixed(2)}%</span>
                   </div>
                 )}
                 
@@ -434,10 +532,10 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 {lunarCrushData.alt_rank !== undefined && (
                   <div className="flex items-center justify-between p-3 bg-background/40 rounded-lg border border-purple-500/20">
                     <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full bg-pink-300" />
-                      <span className="text-sm text-muted-foreground">AltRank™</span>
+                      <div className="w-2 h-2 rounded-full bg-cyan-400" />
+                      <span className="text-sm text-muted-foreground">Alt Rank</span>
                     </div>
-                    <span className="text-lg font-bold text-pink-300">#{lunarCrushData.alt_rank}</span>
+                    <span className="text-lg font-bold text-cyan-400">#{lunarCrushData.alt_rank}</span>
                   </div>
                 )}
               </div>
@@ -454,102 +552,13 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
                 </div>
               </div>
              )}
-        </Card>
+          </Card>
 
-        {/* Community Insights - Moved from TokenSocialHub */}
-        <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
-          <h3 className="text-sm font-semibold mb-4 flex items-center gap-2">
-            <Users className="w-4 h-4 text-primary shrink-0" />
-            <span>Community Insights</span>
-          </h3>
-          
-          <div className="space-y-6">
-            {/* Community Stats */}
-            <div className="grid grid-cols-2 gap-3">
-              {tokenInfo?.links?.subreddit_url && (
-                <div className="text-center p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
-                  <MessageCircle className="h-5 w-5 text-orange-500 mx-auto mb-1" />
-                  <p className="text-lg font-bold text-foreground">
-                    {((tokenInfo?.community_data?.reddit_subscribers || Math.floor(Math.random() * 500000) + 50000) / 1000).toFixed(1)}K
-                  </p>
-                  <p className="text-xs text-muted-foreground">Reddit Members</p>
-                </div>
-              )}
-              
-              <div className="text-center p-3 rounded-lg bg-green-500/10 border border-green-500/20">
-                <Activity className="h-5 w-5 text-green-500 mx-auto mb-1" />
-                <p className="text-lg font-bold text-green-500">
-                  {(tokenInfo?.community_data?.reddit_accounts_active_48h || Math.floor(Math.random() * 5000) + 500).toLocaleString()}
-                </p>
-                <p className="text-xs text-muted-foreground">Active Now</p>
-              </div>
-              
-              {tokenInfo?.community_data?.telegram_channel_user_count && (
-                <div className="text-center p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                  <Users className="h-5 w-5 text-blue-500 mx-auto mb-1" />
-                  <p className="text-lg font-bold text-foreground">
-                    {(tokenInfo.community_data.telegram_channel_user_count / 1000).toFixed(1)}K
-                  </p>
-                  <p className="text-xs text-muted-foreground">Telegram</p>
-                </div>
-              )}
-
-              <div className="text-center p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                <TrendingUp className="h-5 w-5 text-purple-500 mx-auto mb-1" />
-                <p className="text-lg font-bold text-foreground">
-                  {Math.floor(Math.random() * 50) + 20}%
-                </p>
-                <p className="text-xs text-muted-foreground">Growth Rate</p>
-              </div>
-            </div>
-
-            {/* Live Sentiment Gauge */}
-            <div className="pt-4 border-t border-border">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-sm font-semibold text-foreground">Live Community Sentiment</p>
-                <Badge variant="outline" className="gap-1">
-                  <Activity className="h-3 w-3" />
-                  Real-time
-                </Badge>
-              </div>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <ThumbsUp className="h-4 w-4 text-green-500 shrink-0" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between text-sm mb-1">
-                      <span className="text-green-500 font-medium">Bullish</span>
-                      <span className="text-green-500 font-semibold">{60 + Math.floor(Math.random() * 20)}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-1000" 
-                        style={{ width: `${60 + Math.floor(Math.random() * 20)}%` }} 
-                      />
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <ThumbsDown className="h-4 w-4 text-red-500 shrink-0" />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between text-sm mb-1">
-                      <span className="text-red-500 font-medium">Bearish</span>
-                      <span className="text-red-500 font-semibold">{40 - Math.floor(Math.random() * 20)}%</span>
-                    </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-1000" 
-                        style={{ width: `${40 - Math.floor(Math.random() * 20)}%` }} 
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
+          {/* Ad Placement */}
+          <Card className="p-4 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden flex items-center justify-center min-h-[300px]">
+            <AdUnit adUnit="/22181265/pumpparade_sentiment" className="w-full" />
+          </Card>
+        </div>
 
         {/* Recent Trends - Timeline */}
         <Card className="p-6 bg-gradient-to-br from-background/95 to-background/80 border-border/50 overflow-hidden">
