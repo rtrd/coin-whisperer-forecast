@@ -51,39 +51,47 @@ serve(async (req) => {
         volume: data.total_volumes?.[index]?.[1] || 0
       }));
     } else if (endpoint === 'holders' && network && contractAddress) {
-      // Fetch current holders
-      const holdersResponse = await fetch(
-        `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}`,
+      // Fetch token info which includes holder count and distribution
+      const infoResponse = await fetch(
+        `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/info`,
         {
           headers: {
-            'X-CG-Pro-API-Key': COINGECKO_API_KEY,
+            'x-cg-pro-api-key': COINGECKO_API_KEY,
           },
         }
       );
 
-      if (!holdersResponse.ok) {
-        throw new Error(`CoinGecko API error: ${holdersResponse.status}`);
+      if (!infoResponse.ok) {
+        throw new Error(`CoinGecko API error: ${infoResponse.status}`);
       }
 
-      const holdersData = await holdersResponse.json();
-      
-      // Fetch 24h ago data for growth calculation
-      const yesterday = Math.floor((Date.now() - 86400000) / 1000);
+      const infoData = await infoResponse.json();
+      const currentHolders = infoData.data?.attributes?.holders?.count || 0;
+
+      // Fetch historical data for 24h growth calculation
       const chartResponse = await fetch(
-        `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/holders_chart?from=${yesterday}`,
+        `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/token_holders_chart?before_timestamp=${Math.floor(Date.now()/1000)}&aggregate=1`,
         {
           headers: {
-            'X-CG-Pro-API-Key': COINGECKO_API_KEY,
+            'x-cg-pro-api-key': COINGECKO_API_KEY,
           },
         }
       );
 
-      const chartData = chartResponse.ok ? await chartResponse.json() : null;
-      const holders24hAgo = chartData?.data?.[0]?.value || holdersData.data?.attributes?.total_holders;
+      let holders24hAgo = currentHolders;
+      if (chartResponse.ok) {
+        const chartData = await chartResponse.json();
+        const holdersList = chartData.data?.attributes?.token_holders_list || [];
+        // Get holder count from ~24h ago (second to last entry if available)
+        if (holdersList.length > 1) {
+          holders24hAgo = holdersList[holdersList.length - 2][1];
+        }
+      }
 
       responseData = {
-        total_holders: holdersData.data?.attributes?.total_holders || 0,
-        holders_24h_ago: holders24hAgo || 0
+        total_holders: currentHolders,
+        holders_24h_ago: holders24hAgo,
+        distribution: infoData.data?.attributes?.holders?.distribution_percentage || {}
       };
     } else if (endpoint === 'top-holders' && network && contractAddress) {
       // Fetch top holders
@@ -91,7 +99,7 @@ serve(async (req) => {
         `https://pro-api.coingecko.com/api/v3/onchain/networks/${network}/tokens/${contractAddress}/top_holders`,
         {
           headers: {
-            'X-CG-Pro-API-Key': COINGECKO_API_KEY,
+            'x-cg-pro-api-key': COINGECKO_API_KEY,
           },
         }
       );
@@ -100,7 +108,13 @@ serve(async (req) => {
         throw new Error(`CoinGecko API error: ${response.status}`);
       }
 
-      responseData = await response.json();
+      const data = await response.json();
+
+      // Extract and normalize the holders array
+      responseData = {
+        items: data.data?.attributes?.holders || [],
+        last_updated: data.data?.attributes?.last_updated_at
+      };
     } else {
       // Default fallback: price chart data
       const daysParam = timeframe === '1d' ? 1 : timeframe === '7d' ? 7 : timeframe === '30d' ? 30 : 90;
