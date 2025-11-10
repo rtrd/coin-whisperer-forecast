@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
   Area,
   AreaChart,
+  Line,
 } from "recharts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -39,7 +40,17 @@ interface ChartDataPoint {
   volume: number;
   predictedPrice?: number;
   confidence?: number;
+  sma20?: number;
+  sma50?: number;
 }
+
+// Calculate Simple Moving Average
+const calculateSMA = (data: number[], period: number, index: number): number | undefined => {
+  if (index < period - 1) return undefined;
+  const slice = data.slice(index - period + 1, index + 1);
+  const sum = slice.reduce((acc, val) => acc + val, 0);
+  return sum / period;
+};
 
 // ✅ Safe hook to get window width (no SSR crash)
 function useWindowWidth() {
@@ -80,7 +91,10 @@ export const PriceChart: React.FC<PriceChartProps> = ({
       </div>
     );
   }
-  const chartData: ChartDataPoint[] = data.map((d) => ({
+  // Extract prices for SMA calculation
+  const prices = data.map(d => d.price);
+  
+  const chartData: ChartDataPoint[] = data.map((d, index) => ({
     timestamp: d.timestamp,
     date: new Date(d.timestamp * 1000).toLocaleDateString("en-US", {
       month: "short",
@@ -88,6 +102,8 @@ export const PriceChart: React.FC<PriceChartProps> = ({
     }),
     price: d.price,
     volume: d.volume || 0,
+    sma20: calculateSMA(prices, 20, index),
+    sma50: calculateSMA(prices, 50, index),
   }));
   if (prediction && prediction.length > 0) {
     const lastHistoricalPrice = data[data.length - 1]?.price;
@@ -137,20 +153,27 @@ export const PriceChart: React.FC<PriceChartProps> = ({
       return (
         <div className="bg-gradient-to-br from-gray-800/95 to-gray-900/95 backdrop-blur-sm border border-gray-600/50 rounded-xl p-4 shadow-2xl">
           <p className="text-gray-300 text-sm font-medium mb-2">{`Date: ${label}`}</p>
-          {payload.map((entry: any, index: number) => (
-            <div key={index} className="flex items-center gap-2 mb-1">
-              <div
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: entry.color }}
-              />
-              <span className="text-white font-semibold">
-                {entry.dataKey === "price"
-                  ? "Historical Price: "
-                  : "AI Prediction: "}
-                {formatPrice(entry.value)}
-              </span>
-            </div>
-          ))}
+          {payload.map((entry: any, index: number) => {
+            let label = "";
+            if (entry.dataKey === "price") label = "Price";
+            else if (entry.dataKey === "predictedPrice") label = "AI Prediction";
+            else if (entry.dataKey === "sma20") label = "SMA 20";
+            else if (entry.dataKey === "sma50") label = "SMA 50";
+            
+            if (!label || entry.value === null || entry.value === undefined) return null;
+            
+            return (
+              <div key={index} className="flex items-center gap-2 mb-1">
+                <div
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: entry.color }}
+                />
+                <span className="text-white font-semibold text-sm">
+                  {label}: {formatPrice(entry.value)}
+                </span>
+              </div>
+            );
+          })}
         </div>
       );
     }
@@ -158,6 +181,30 @@ export const PriceChart: React.FC<PriceChartProps> = ({
   };
 
   const isMobile = width < 768;
+  
+  // Legend component for the chart
+  const ChartLegend = () => (
+    <div className="flex flex-wrap items-center justify-center gap-3 px-4 py-3 bg-muted/30 rounded-lg border border-border/50">
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-1 bg-blue-500 rounded-full" />
+        <span className="text-xs font-medium text-foreground">Price</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-1 bg-cyan-400 rounded-full" />
+        <span className="text-xs font-medium text-foreground">SMA 20</span>
+      </div>
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-1 bg-orange-400 rounded-full" />
+        <span className="text-xs font-medium text-foreground">SMA 50</span>
+      </div>
+      {prediction && prediction.length > 0 && (
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-1 bg-green-500 rounded-full" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #10B981 0, #10B981 4px, transparent 4px, transparent 8px)' }} />
+          <span className="text-xs font-medium text-foreground">AI Prediction</span>
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="space-y-4">
@@ -259,7 +306,7 @@ export const PriceChart: React.FC<PriceChartProps> = ({
 
               <Tooltip content={CustomTooltip} />
 
-
+              {/* Price Area */}
               <Area
                 type="monotone"
                 dataKey="price"
@@ -268,9 +315,35 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                 fill="url(#priceGradient)"
                 connectNulls={false}
                 dot={false}
-                activeDot={false}
+                activeDot={{ r: 5, fill: "#3B82F6" }}
               />
 
+              {/* SMA 20 Line */}
+              <Line
+                type="monotone"
+                dataKey="sma20"
+                stroke="#06B6D4"
+                strokeWidth={2.5}
+                dot={false}
+                activeDot={{ r: 4, fill: "#06B6D4", strokeWidth: 2 }}
+                strokeOpacity={0.85}
+                connectNulls
+              />
+
+              {/* SMA 50 Line */}
+              <Line
+                type="monotone"
+                dataKey="sma50"
+                stroke="#FB923C"
+                strokeWidth={2.5}
+                dot={false}
+                activeDot={{ r: 4, fill: "#FB923C", strokeWidth: 2 }}
+                strokeOpacity={0.85}
+                strokeDasharray="5 3"
+                connectNulls
+              />
+
+              {/* AI Prediction */}
               {prediction && prediction.length > 0 && (
                 <Area
                   type="monotone"
@@ -281,11 +354,16 @@ export const PriceChart: React.FC<PriceChartProps> = ({
                   fill="url(#predictionGradient)"
                   connectNulls
                   dot={false}
-                  activeDot={false}
+                  activeDot={{ r: 5, fill: "#10B981" }}
                 />
               )}
             </AreaChart>
           </ResponsiveContainer>
+        </div>
+        
+        {/* Chart Legend */}
+        <div className="px-4 pb-4">
+          <ChartLegend />
         </div>
       </div>
     </div>
