@@ -1,18 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 
-// Create a simple fetch wrapper since we don't have Supabase client
+// Create a simple fetch wrapper that works in all environments (no env URL required)
 const invokeEdgeFunction = async (functionName: string, body: any) => {
-  const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/${functionName}`, {
+  const url = `/functions/v1/${functionName}`;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+  if (anon) headers['Authorization'] = `Bearer ${anon}`;
+
+  const response = await fetch(url, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-    },
+    headers,
     body: JSON.stringify(body),
   });
 
   if (!response.ok) {
-    throw new Error(`Function invocation failed: ${response.statusText}`);
+    const text = await response.text().catch(() => '');
+    throw new Error(`Function invoke failed (${response.status}): ${text || response.statusText}`);
   }
 
   return response.json();
@@ -59,7 +64,7 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
         const topHolders = topHoldersData?.items || [];
         const topHolderConcentration = topHolders
           .slice(0, 10)
-          .reduce((sum: number, holder: any) => sum + (holder.percentage || 0), 0);
+          .reduce((sum: number, holder: any) => sum + (typeof holder.percentage === 'string' ? parseFloat(holder.percentage) : (holder.percentage || 0)), 0);
 
         // Determine trend
         let holderTrend: 'increasing' | 'decreasing' | 'stable' = 'stable';
