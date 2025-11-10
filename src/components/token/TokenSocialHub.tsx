@@ -52,9 +52,6 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
         <CardTitle className="flex items-center gap-2">
           <Database className="h-5 w-5 text-primary" />
           On-Chain Metrics
-          {tokenInfo?.id === 'bitcoin' && tokenContract && (
-            <span className="ml-2 text-xs text-muted-foreground">Using WBTC proxy</span>
-          )}
           {hasOnChainData && (
             <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
               <Clock className="h-3 w-3" />

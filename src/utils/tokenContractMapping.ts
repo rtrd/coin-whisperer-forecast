@@ -4,10 +4,7 @@ export interface TokenContract {
 }
 
 export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
-  'bitcoin': { 
-    address: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', // WBTC on Ethereum
-    network: 'eth' 
-  },
+  'bitcoin': null, // BTC has no single contract
   'ethereum': { 
     address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2', // WETH
     network: 'eth' 
