@@ -30,9 +30,23 @@ export const TokenQuickStats: React.FC<TokenQuickStatsProps> = ({
     ? ((circulatingSupply / (maxSupply || totalSupply!)) * 100).toFixed(1)
     : null;
 
-  const fullyDilutedValue = fdv || (maxSupply && (marketCap && circulatingSupply) 
-    ? (marketCap / circulatingSupply) * maxSupply 
-    : null);
+  // Calculate FDV with better fallback logic
+  const fullyDilutedValue = fdv || (
+    maxSupply && marketCap && circulatingSupply && circulatingSupply > 0
+      ? (marketCap / circulatingSupply) * maxSupply 
+      : null
+  );
+
+  // Log for debugging
+  if (import.meta.env.DEV) {
+    console.log('[TokenQuickStats] FDV calculation:', { 
+      fdv, 
+      fullyDilutedValue, 
+      marketCap, 
+      circulatingSupply, 
+      maxSupply 
+    });
+  }
 
   // Liquidity health assessment
   const getLiquidityHealth = (ratio: number) => {

@@ -10,7 +10,7 @@ interface TokenGalaxyScoreProps {
 }
 
 export const TokenGalaxyScore: React.FC<TokenGalaxyScoreProps> = ({ tokenSymbol }) => {
-  const { data: metrics, isLoading } = useLunarCrushMetrics(tokenSymbol);
+  const { data: metrics, isLoading, error } = useLunarCrushMetrics(tokenSymbol);
 
   if (isLoading) {
     return (
@@ -30,7 +30,11 @@ export const TokenGalaxyScore: React.FC<TokenGalaxyScoreProps> = ({ tokenSymbol 
     );
   }
 
-  if (!metrics) return null;
+  // Show error state with helpful message
+  if (error || !metrics) {
+    console.log('[TokenGalaxyScore] Error or no metrics:', { error, tokenSymbol });
+    return null;
+  }
 
   const galaxyScore = metrics.galaxy_score || 0;
   const getScoreColor = (score: number) => {

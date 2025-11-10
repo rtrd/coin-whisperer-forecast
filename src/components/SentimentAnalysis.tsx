@@ -564,14 +564,14 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
               </div>
             ) : (
               <div className="text-center py-6 space-y-3">
-                <Zap className="w-10 h-10 text-red-400 mx-auto opacity-50" />
+                <Zap className="w-10 h-10 text-muted-foreground mx-auto opacity-50" />
                 <div>
-                  <p className="text-sm font-semibold text-red-400 mb-1">Galaxy Score Unavailable</p>
-                  <p className="text-xs text-muted-foreground">LunarCrush API authentication failed (401)</p>
+                  <p className="text-sm font-semibold text-muted-foreground mb-1">Galaxy Score Unavailable</p>
+                  <p className="text-xs text-muted-foreground">Social metrics data is currently unavailable</p>
                 </div>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-muted/50 rounded-md">
                   <InfoIcon className="w-3 h-3 text-muted-foreground" />
-                  <p className="text-[10px] text-muted-foreground">Add VITE_LUNAR_API secret in project settings</p>
+                  <p className="text-[10px] text-muted-foreground">Please try again later or check another token</p>
                 </div>
               </div>
              )}

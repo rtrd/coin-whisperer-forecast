@@ -46,7 +46,7 @@ export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
   },
   'uniswap': { 
     address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'chainlink': { 
     address: '0x514910771af9ca656af840dff83e8264ecf986ca', 
@@ -66,11 +66,11 @@ export const TOKEN_CONTRACTS: Record<string, TokenContract | null> = {
   'tron': null, // Native blockchain
   'okb': { 
     address: '0x75231f58b43240c9718dd58b4967c5114342a86c', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
   'the-graph': { 
     address: '0xc944e90c64b2c07662a292be6244bdf05cda44a7', 
-    network: 'eth' 
+    network: 'ethereum' 
   },
 };
 
