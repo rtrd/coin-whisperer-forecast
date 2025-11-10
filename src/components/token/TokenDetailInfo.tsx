@@ -43,6 +43,7 @@ export const TokenDetailInfo: React.FC<TokenDetailInfoProps> = ({
             circulatingSupply={marketData?.circulating_supply}
             totalSupply={marketData?.total_supply}
             maxSupply={marketData?.max_supply}
+            fdv={marketData?.fully_diluted_valuation}
           />
 
           {/* Market Statistics */}
