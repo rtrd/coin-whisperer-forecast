@@ -13,31 +13,38 @@ export interface LunarCrushMetrics {
   bearish_sentiment?: number;
 }
 
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+// Use relative edge function URL and optional anon key for auth
+const invokeLunarCrush = async (body: any) => {
+  const url = `/functions/v1/lunarcrush-proxy`;
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+  if (anon) headers['Authorization'] = `Bearer ${anon}`;
+
+  const res = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body) });
+  const contentType = res.headers.get('content-type') || '';
+
+  if (!res.ok) {
+    let details: any = null;
+    try {
+      details = contentType.includes('application/json') ? await res.json() : await res.text();
+    } catch {}
+    throw new Error(typeof details === 'string' ? details : details?.error || `LunarCrush proxy error: ${res.status}`);
+  }
+
+  // Safely parse JSON, handle empty body
+  const text = await res.text();
+  return text ? JSON.parse(text) : {};
+};
 
 export const useLunarCrushMetrics = (tokenSymbol: string) => {
   return useQuery({
     queryKey: ['lunarcrush-metrics', tokenSymbol],
     queryFn: async (): Promise<LunarCrushMetrics> => {
       try {
-        const response = await fetch(
-          `${SUPABASE_URL}/functions/v1/lunarcrush-proxy`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ tokenSymbol }),
-          }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `LunarCrush proxy error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        return data;
+        const data = await invokeLunarCrush({ tokenSymbol });
+        return data as LunarCrushMetrics;
       } catch (error) {
         console.error('LunarCrush metrics fetch error:', error);
         throw error;

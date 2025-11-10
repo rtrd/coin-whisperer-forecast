@@ -21,10 +21,12 @@ serve(async (req) => {
       throw new Error('tokenSymbol is required');
     }
 
-    console.log(`Fetching LunarCrush metrics for: ${tokenSymbol}`);
+    const symbol = String(tokenSymbol).toUpperCase();
+
+    console.log(`Fetching LunarCrush metrics for: ${symbol}`);
 
     const response = await fetch(
-      `https://lunarcrush.com/api4/public/coins/${tokenSymbol}/v1`,
+      `https://lunarcrush.com/api4/public/coins/${symbol}/v1`,
       {
         method: 'GET',
         headers: {
