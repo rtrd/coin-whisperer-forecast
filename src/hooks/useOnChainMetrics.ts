@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-// Create a simple fetch wrapper that works in all environments (no env URL required)
+// Enhanced fetch wrapper with better error handling and logging
 const invokeEdgeFunction = async (functionName: string, body: any) => {
   const url = `/functions/v1/${functionName}`;
   const headers: Record<string, string> = {
@@ -8,6 +8,8 @@ const invokeEdgeFunction = async (functionName: string, body: any) => {
   };
   const anon = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
   if (anon) headers['Authorization'] = `Bearer ${anon}`;
+
+  console.log(`[onchain] Invoking edge function: ${functionName}`, { url, body });
 
   const response = await fetch(url, {
     method: 'POST',
@@ -17,6 +19,14 @@ const invokeEdgeFunction = async (functionName: string, body: any) => {
 
   if (!response.ok) {
     const text = await response.text().catch(() => '');
+    
+    // Special handling for 404 - function not deployed
+    if (response.status === 404) {
+      console.error(`[onchain] Edge function not found (404): ${functionName}. Ensure the function is deployed.`);
+      throw new Error(`Edge function '${functionName}' not deployed or not accessible`);
+    }
+    
+    console.error(`[onchain] Edge function error (${response.status}):`, text);
     throw new Error(`Function invoke failed (${response.status}): ${text || response.statusText}`);
   }
 

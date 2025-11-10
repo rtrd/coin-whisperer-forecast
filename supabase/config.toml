@@ -1,0 +1,10 @@
+project_id = "default"
+
+[functions.coingecko-proxy]
+verify_jwt = false
+
+[functions.lunarcrush-proxy]
+verify_jwt = false
+
+[functions.openrouter-proxy]
+verify_jwt = false
