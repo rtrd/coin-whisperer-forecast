@@ -65,7 +65,11 @@ serve(async (req) => {
       );
 
       if (!infoResponse.ok) {
-        throw new Error(`CoinGecko API error: ${infoResponse.status}`);
+        console.warn(`[holders] API returned ${infoResponse.status}, returning empty data`);
+        return new Response(
+          JSON.stringify({ total_holders: 0, holders_24h_ago: 0, distribution: {} }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
       const infoData = await infoResponse.json();
@@ -108,7 +112,11 @@ serve(async (req) => {
       );
 
       if (!response.ok) {
-        throw new Error(`CoinGecko API error: ${response.status}`);
+        console.warn(`[top-holders] API returned ${response.status}, returning empty data`);
+        return new Response(
+          JSON.stringify({ items: [], last_updated: new Date().toISOString() }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
       }
 
       const data = await response.json();

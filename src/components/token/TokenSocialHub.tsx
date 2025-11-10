@@ -1,11 +1,11 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Database, Coins, TrendingUp, DollarSign, Clock } from "lucide-react";
+import { Database, Users, TrendingUp, Activity, Coins } from "lucide-react";
 import { TokenInfo } from "@/hooks/useTokenInfo";
 import { useOnChainMetrics } from "@/hooks/useOnChainMetrics";
 import { getTokenContract } from "@/utils/tokenContractMapping";
 import { Skeleton } from "@/components/ui/skeleton";
-import { OnChainDebugPanel } from "./OnChainDebugPanel";
+import { HolderDistributionChart } from "./HolderDistributionChart";
 
 interface TokenSocialHubProps {
   tokenInfo?: TokenInfo;
@@ -25,10 +25,13 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
         <CardHeader>
           <Skeleton className="h-6 w-1/3" />
         </CardHeader>
-        <CardContent className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-16" />
-          ))}
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-3 gap-3">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-24" />
+            ))}
+          </div>
+          <Skeleton className="h-32" />
         </CardContent>
       </Card>
     );
@@ -36,84 +39,83 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
 
   const marketCap = tokenInfo?.market_cap || 0;
   const totalVolume = tokenInfo?.total_volume || 0;
+  const volMcapRatio = marketCap > 0 ? ((totalVolume / marketCap) * 100) : 0;
   
-  // Real supply distribution from API
+  // Supply data
   const circulatingSupply = tokenInfo?.market_data?.circulating_supply || 0;
   const totalSupply = tokenInfo?.market_data?.total_supply || 0;
   const maxSupply = tokenInfo?.market_data?.max_supply;
-  const supplyDistribution = totalSupply > 0 
+  const supplyPercentage = totalSupply > 0 
     ? ((circulatingSupply / totalSupply) * 100)
     : null;
 
   const hasOnChainData = tokenContract && onChainData;
+  const showOnChainMetrics = !onChainLoading && hasOnChainData;
 
   return (
     <Card className="bg-card border-border">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <CardTitle className="flex items-center gap-2 text-lg">
           <Database className="h-5 w-5 text-primary" />
           On-Chain Metrics
-          {tokenInfo?.id === 'bitcoin' && (
-            <span className="ml-2 text-xs text-muted-foreground">Using WBTC proxy</span>
-          )}
           {hasOnChainData && (
-            <span className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
-              <Clock className="h-3 w-3" />
+            <span className="ml-auto text-xs font-normal text-muted-foreground">
               Live data
             </span>
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Volume/Market Cap Ratio - Always available */}
-        <div className="grid grid-cols-1 gap-3">
-          <div className="text-center p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-            <TrendingUp className="h-5 w-5 text-blue-500 mx-auto mb-1" />
-            <p className="text-lg font-bold text-foreground">
-              {((totalVolume / marketCap) * 100).toFixed(2)}%
-            </p>
-            <p className="text-xs text-muted-foreground">Vol/MCap Ratio</p>
-            <p className="text-xs text-muted-foreground mt-1">Trading activity</p>
-          </div>
-        </div>
-
-        {/* Holder Metrics - Only for tokens with on-chain data */}
+      <CardContent className="space-y-6">
+        {/* Hero Metrics - Only show if we have on-chain data */}
         {onChainLoading && tokenContract ? (
-          <div className="grid grid-cols-2 gap-3">
-            <Skeleton className="h-24" />
-            <Skeleton className="h-24" />
+          <div className="grid grid-cols-3 gap-3">
+            {[1, 2, 3].map((i) => (
+              <Skeleton key={i} className="h-24" />
+            ))}
           </div>
-        ) : hasOnChainData ? (
-          <div className="grid grid-cols-2 gap-3">
+        ) : showOnChainMetrics ? (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {/* Total Holders */}
-            <div className="text-center p-3 rounded-lg bg-primary/10 border border-primary/20">
-              <Coins className="h-5 w-5 text-primary mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground">
+            <div className="bg-primary/5 rounded-lg p-4 border border-primary/10">
+              <Users className="h-5 w-5 text-primary mb-2" />
+              <p className="text-2xl font-bold text-foreground">
                 {onChainData.totalHolders.toLocaleString()}
               </p>
-              <p className="text-xs text-muted-foreground">Total Holders</p>
-              <p className={`text-xs font-medium mt-1 ${onChainData.holdersGrowth24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                {onChainData.holdersGrowth24h >= 0 ? '+' : ''}{onChainData.holdersGrowth24h}% (24h)
+              <p className="text-xs text-muted-foreground mt-1">Total Holders</p>
+              {onChainData.holdersGrowth24h !== 0 && (
+                <p className={`text-xs font-semibold mt-2 ${onChainData.holdersGrowth24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  {onChainData.holdersGrowth24h >= 0 ? '+' : ''}{onChainData.holdersGrowth24h}% (24h)
+                </p>
+              )}
+            </div>
+
+            {/* 24h Change */}
+            <div className="bg-muted/50 rounded-lg p-4 border border-border">
+              <TrendingUp className="h-5 w-5 text-chart-2 mb-2" />
+              <p className="text-2xl font-bold text-foreground">
+                {Math.abs(onChainData.totalHolders - onChainData.holders24hAgo).toLocaleString()}
               </p>
-              <p className="text-[10px] text-muted-foreground mt-1">
-                Δ {Math.max(onChainData.totalHolders - (onChainData.holders24hAgo || onChainData.totalHolders), 0).toLocaleString()} holders
+              <p className="text-xs text-muted-foreground mt-1">New Holders (24h)</p>
+              <p className="text-xs text-muted-foreground mt-2">
+                {onChainData.holderTrend === 'increasing' ? '📈 Growing' : onChainData.holderTrend === 'decreasing' ? '📉 Declining' : '➡️ Stable'}
               </p>
             </div>
 
-            {/* Top Holder Concentration */}
-            <div className="text-center p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-              <DollarSign className="h-5 w-5 text-amber-500 mx-auto mb-1" />
-              <p className="text-lg font-bold text-foreground">
+            {/* Concentration */}
+            <div className={`rounded-lg p-4 border ${onChainData.topHolderConcentration > 50 ? 'bg-destructive/5 border-destructive/20' : 'bg-muted/50 border-border'}`}>
+              <Coins className={`h-5 w-5 mb-2 ${onChainData.topHolderConcentration > 50 ? 'text-destructive' : 'text-chart-3'}`} />
+              <p className="text-2xl font-bold text-foreground">
                 {onChainData.topHolderConcentration.toFixed(1)}%
               </p>
-              <p className="text-xs text-muted-foreground">Top 10 Holdings</p>
+              <p className="text-xs text-muted-foreground mt-1">Top 10 Holdings</p>
               {onChainData.topHolderConcentration > 50 && (
-                <p className="text-xs text-amber-500 mt-1">⚠️ High concentration</p>
+                <p className="text-xs text-destructive font-semibold mt-2">⚠️ High concentration</p>
               )}
             </div>
           </div>
         ) : !tokenContract ? (
-          <div className="text-center p-4 rounded-lg bg-muted/50 border border-border">
+          <div className="text-center py-6 px-4 rounded-lg bg-muted/30 border border-border">
+            <Activity className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
             <p className="text-sm text-muted-foreground">
               On-chain holder data not available for this token
             </p>
@@ -121,59 +123,55 @@ export const TokenSocialHub: React.FC<TokenSocialHubProps> = ({ tokenInfo, isLoa
               Available for EVM and Solana tokens only
             </p>
           </div>
-        ) : (
-          <div className="text-center p-4 rounded-lg bg-muted/50 border border-border">
-            <p className="text-sm text-muted-foreground">
-              Unable to load on-chain metrics right now. Please try again shortly.
-            </p>
+        ) : null}
+
+        {/* Holder Distribution Chart */}
+        {showOnChainMetrics && onChainData.holderDistribution && (
+          <div className="pt-4 border-t border-border">
+            <HolderDistributionChart distribution={onChainData.holderDistribution} />
           </div>
         )}
 
-        {/* Supply Distribution - Always available if data exists */}
-        {supplyDistribution !== null && (
-          <div className="pt-3 border-t border-border">
-            <div className="flex items-center justify-between mb-2">
+        {/* Activity Metrics */}
+        <div className="pt-4 border-t border-border space-y-3">
+          <p className="text-sm font-semibold text-foreground">Market Activity</p>
+          <div className="grid grid-cols-1 gap-2">
+            <div className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+              <span className="text-sm text-muted-foreground">Vol/MCap Ratio</span>
+              <span className="text-sm font-bold text-foreground">
+                {volMcapRatio.toFixed(2)}%
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Supply Distribution */}
+        {supplyPercentage !== null && (
+          <div className="pt-4 border-t border-border space-y-3">
+            <div className="flex items-center justify-between">
               <p className="text-sm font-semibold text-foreground">Supply Distribution</p>
               <p className="text-sm font-bold text-primary">
-                {supplyDistribution.toFixed(1)}%
+                {supplyPercentage.toFixed(1)}%
               </p>
             </div>
-            <div className="h-2 bg-muted rounded-full overflow-hidden">
+            <div className="h-2 bg-muted/50 rounded-full overflow-hidden">
               <div 
-                className="h-full bg-gradient-to-r from-primary to-primary/60" 
-                style={{ width: `${supplyDistribution}%` }} 
+                className="h-full bg-gradient-to-r from-primary to-chart-2 transition-all duration-500" 
+                style={{ width: `${supplyPercentage}%` }} 
               />
             </div>
-            <div className="flex justify-between text-xs text-muted-foreground mt-1">
-              <span>Circulating: {circulatingSupply.toLocaleString()}</span>
-              <span>{maxSupply ? `Max: ${maxSupply.toLocaleString()}` : `Total: ${totalSupply.toLocaleString()}`}</span>
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>
+                Circulating: {circulatingSupply.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </span>
+              <span>
+                {maxSupply 
+                  ? `Max: ${maxSupply.toLocaleString(undefined, { maximumFractionDigits: 0 })}` 
+                  : `Total: ${totalSupply.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+                }
+              </span>
             </div>
           </div>
-        )}
-
-        {/* On-Chain Insight - Dynamic based on available data */}
-        {hasOnChainData && (
-          <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
-            <p className="text-xs font-semibold text-primary mb-1">
-              📊 On-Chain Insight
-            </p>
-            <p className="text-xs text-muted-foreground">
-              {onChainData.totalHolders > 100000 ? "Large holder base indicates strong distribution. " : "Growing holder base - "}
-              {onChainData.holderTrend === 'increasing' ? "📈 Holder count trending up. " : onChainData.holderTrend === 'decreasing' ? "📉 Holder count trending down. " : ""}
-              {onChainData.topHolderConcentration > 50 ? "⚠️ High whale concentration detected." : "Well distributed among holders."}
-            </p>
-            <p className="text-[10px] text-muted-foreground mt-2">Updated: {new Date(onChainData.lastUpdated).toLocaleTimeString()}</p>
-          </div>
-        )}
-
-        {/* Debug Panel - Shows raw API responses */}
-        {tokenContract && (
-          <OnChainDebugPanel 
-            rawData={onChainData?.rawData || null}
-            contractAddress={tokenContract.address}
-            network={tokenContract.network}
-            isLoading={onChainLoading}
-          />
         )}
       </CardContent>
     </Card>

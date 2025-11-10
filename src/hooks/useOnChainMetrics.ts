@@ -29,11 +29,15 @@ export interface OnChainMetrics {
   holdersGrowth24h: number;
   topHolderConcentration: number;
   holderTrend: 'increasing' | 'decreasing' | 'stable';
-  lastUpdated: string;
-  rawData?: {
-    holders: any;
-    topHolders: any;
+  holderDistribution?: {
+    whales: number;
+    investors: number;
+    retail: number;
   };
+  transactions24h?: number;
+  activeAddresses24h?: number;
+  networkActivity?: number;
+  lastUpdated: string;
 }
 
 export const useOnChainMetrics = (contractAddress?: string, network?: string) => {
@@ -88,18 +92,31 @@ export const useOnChainMetrics = (contractAddress?: string, network?: string) =>
         if (holdersGrowth24h > 2) holderTrend = 'increasing';
         else if (holdersGrowth24h < -2) holderTrend = 'decreasing';
 
-return {
-  totalHolders: currentHolders,
-  holders24hAgo,
-  holdersGrowth24h: parseFloat(holdersGrowth24h.toFixed(2)),
-  topHolderConcentration: parseFloat(topHolderConcentration.toFixed(2)),
-  holderTrend,
-  lastUpdated: new Date().toISOString(),
-  rawData: {
-    holders: holdersData,
-    topHolders: topHoldersData,
-  },
-};
+        // Parse holder distribution from API data
+        const distributionData = holdersData?.distribution;
+        let holderDistribution;
+        if (distributionData) {
+          // Calculate whales (>1%), investors (0.1-1%), retail (<0.1%)
+          const top10 = parseFloat(distributionData.top_10 || 0);
+          const top50 = parseFloat(distributionData.top_50 || 0);
+          const top100 = parseFloat(distributionData.top_100 || 0);
+          
+          holderDistribution = {
+            whales: top10,
+            investors: Math.max(0, top50 - top10),
+            retail: Math.max(0, 100 - top100),
+          };
+        }
+
+        return {
+          totalHolders: currentHolders,
+          holders24hAgo,
+          holdersGrowth24h: parseFloat(holdersGrowth24h.toFixed(2)),
+          topHolderConcentration: parseFloat(topHolderConcentration.toFixed(2)),
+          holderTrend,
+          holderDistribution,
+          lastUpdated: new Date().toISOString(),
+        };
       } catch (error) {
         console.error('Error fetching on-chain metrics:', error);
         return null;
