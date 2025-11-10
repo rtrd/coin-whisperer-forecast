@@ -144,10 +144,33 @@ export const SentimentAnalysis: React.FC<SentimentAnalysisProps> = ({
         return "Very Bearish";
       };
 
+      // Generate sentiment timeline (7 days of mock data based on current sentiment)
+      const generateTimeline = (currentScore: number) => {
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const timeline = [];
+        
+        for (let i = 0; i < 7; i++) {
+          // Add some variance to the score for the timeline
+          const variance = (Math.random() - 0.5) * 20;
+          const dayScore = Math.max(0, Math.min(100, currentScore + variance));
+          const change = i > 0 ? dayScore - timeline[i-1].value : 0;
+          
+          timeline.push({
+            date: days[i],
+            value: dayScore,
+            change: change,
+            sentiment: dayScore >= 60 ? "bullish" : dayScore >= 40 ? "neutral" : "bearish"
+          } as { date: string; value: number; change: number; sentiment: "bullish" | "bearish" | "neutral" });
+        }
+        
+        return timeline;
+      };
+
       const result = {
         score: avgScore,
         label: getSentimentLabel(avgScore),
         sources,
+        sentimentTimeline: generateTimeline(avgScore),
       };
 
       return result;
