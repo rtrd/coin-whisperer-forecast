@@ -39,7 +39,7 @@ import {
 } from "@/services/portfolioData";
 import Footer from "@/components/Footer";
 import { setAddressInStorage } from "@/lib/storage";
-import { useAppKitAccount, useDisconnect } from "@reown/appkit/react";
+import { useDisconnect } from "@reown/appkit/react";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 

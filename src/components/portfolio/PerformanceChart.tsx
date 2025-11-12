@@ -39,6 +39,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({ data }) => {
     -(timeframes.find((t) => t.value === timeframe)?.days || 30)
   );
 
+
   // ✅ Dynamically detect all unique tokens
   const tokens = useMemo(() => {
     const set = new Set<string>();
