@@ -1,3 +1,4 @@
+import { IRiskMetrics } from "@/components/portfolio/EnhancedRiskAnalysis";
 import {
   PortfolioAsset,
   PortfolioMetrics,
@@ -329,7 +330,7 @@ export const parseAIRecommendations = (apiText: string): AIRecommendation[] => {
 
     return suggestions;
   }
-const AIRiskManagementSuggestionsprompt = (riskMetrics: RiskMetrics) => {
+const AIRiskManagementSuggestionsprompt = (riskMetrics: IRiskMetrics) => {
    const prompt = `
 You are a financial risk analysis assistant. 
 Given the following riskMetrics:
@@ -356,7 +357,7 @@ return prompt
 }
 // In-memory cache
 
-export const generateAIRiskManagementSuggestions = async (riskMetrics: RiskMetrics) => {
+export const generateAIRiskManagementSuggestions = async (riskMetrics: IRiskMetrics) => {
   const prompt = AIRiskManagementSuggestionsprompt(riskMetrics);
 
 
