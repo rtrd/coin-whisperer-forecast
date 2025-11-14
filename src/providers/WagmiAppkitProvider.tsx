@@ -6,7 +6,6 @@ import {
   base,
   scroll,
   polygon,
-  sepolia,
   solana,
   solanaDevnet,
   solanaTestnet,
@@ -46,6 +45,55 @@ const cosmos = defineChain({
   caipNetworkId: 'cosmos:cosmoshub-4'
 })
 
+const linea = defineChain({
+  id: 59144,
+  name: "Linea",
+  nativeCurrency: { name: "Ethereum", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://rpc.linea.build"] },
+    public: { http: ["https://rpc.linea.build"] },
+  },
+  blockExplorers: {
+    default: { name: "LineaScan", url: "https://lineascan.build" },
+  },
+  testnet: false,
+  chainNamespace: "eip155",
+  caipNetworkId: "eip155:59144"
+});
+
+const optimism = defineChain({
+  id: 10,
+  name: "Optimism",
+  nativeCurrency: { name: "Ethereum", symbol: "ETH", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://mainnet.optimism.io"] },
+    public: { http: ["https://mainnet.optimism.io"] },
+  },
+  blockExplorers: {
+    default: { name: "Optimism Explorer", url: "https://optimistic.etherscan.io" },
+  },
+  testnet: false,
+  chainNamespace: "eip155",
+  caipNetworkId: "eip155:10"
+});
+
+
+const avalanche = defineChain({
+  id: 43114,
+  name: "Avalanche",
+  nativeCurrency: { name: "Avalanche", symbol: "AVAX", decimals: 18 },
+  rpcUrls: {
+    default: { http: ["https://api.avax.network/ext/bc/C/rpc"] },
+    public: { http: ["https://api.avax.network/ext/bc/C/rpc"] },
+  },
+  blockExplorers: {
+    default: { name: "SnowTrace", url: "https://snowtrace.io" },
+  },
+  testnet: false,
+  chainNamespace: "eip155",
+  caipNetworkId: "eip155:43114"
+});
+
 // 3. Set the networks
 const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
   mainnet,
@@ -56,8 +104,10 @@ const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
   solana,
   solanaDevnet,
   solanaTestnet,
-  sepolia,
-  cosmos
+  cosmos,
+  linea,
+  optimism,
+  avalanche
 ];
 
 // 4. Create Solana Adapter

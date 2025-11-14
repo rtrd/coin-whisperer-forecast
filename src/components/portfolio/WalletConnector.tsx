@@ -55,36 +55,17 @@ const SUPPORTED_CHAINS = [
     icon: "https://assets.coingecko.com/coins/images/12559/small/coin-round-red.png",
   },
   {
-    name: "Fantom",
-    id: 250,
-    icon: "https://assets.coingecko.com/coins/images/4001/small/Fantom.png",
-  },
-  {
-    name: "Moonbeam",
-    id: 1284,
-    icon: "https://assets.coingecko.com/coins/images/22459/small/glmr.png",
-  },
-  {
     name: "Solana",
     id: "solana-mainnet",
     namespace: "solana",
     icon: "https://assets.coingecko.com/coins/images/4128/small/solana.png",
   },
   {
-    name: "Near",
-    id: "near",
-    icon: "public/images/Near.png",
+    name: "Linea",
+    id: 59144,
+    namespace: "eip155",
+    icon: "https://assets.coingecko.com/coins/images/68507/standard/linea-logo.jpeg",
   },
-  {
-    name: "Terra",
-    id: "terra",
-    icon: "public/images/Terra.png",
-  },
-  {
-    name: "Aptos",
-    id: "aptos",
-    icon: "https://assets.coingecko.com/coins/images/26455/small/aptos_round.png",
-  }
 ];
 
 export const WalletConnector: React.FC<{
@@ -279,7 +260,7 @@ export const WalletConnector: React.FC<{
                       className="w-6 h-6 object-contain rounded-full"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
-                          "https://cryptologos.cc/logos/aptos-apt-logo.png?v=023";
+                          "/public/images/fallback.png";
                       }}
                     />
                     <span className="font-medium text-white">{chain.name}</span>

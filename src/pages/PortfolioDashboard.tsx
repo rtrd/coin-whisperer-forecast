@@ -178,6 +178,7 @@ export const PortfolioDashboard = () => {
           </div>
         </div>
       </CardHeader>
+      
       {aiRecommendations !== null && aiRecommendations.length > 0 ? (
         <CardContent className="space-y-3 pt-0">
           {aiRecommendations.slice(0, 3).map((rec) => (

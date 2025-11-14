@@ -29,7 +29,7 @@ import {
 } from "lucide-react";
 import { generateAIRiskManagementSuggestions } from "@/services/portfolioData";
 
-interface RiskMetrics {
+export interface IRiskMetrics {
   sharpeRatio: number;
   volatility: number;
   maxDrawdown: number;
@@ -76,13 +76,14 @@ export const EnhancedRiskAnalysis: React.FC<EnhancedRiskAnalysisProps> = ({
     correlationRisk: metrics?.correlationRisk?.toFixed(2) || '0.00',
     liquidityRisk: metrics?.liquidityRisk?.toFixed(2) || '0.00',
   };
+  
   const riskThresholds = {
     concentrationRisk: { high: 70, medium: 40 },
     beta: { high: 1.2, medium: 0.8 },
     maxDrawdown: { high: -20, medium: -10 },
   };
 
-  const getAIRiskManagementSuggestions = async (riskMetrics) => {
+  const getAIRiskManagementSuggestions = async (riskMetrics: IRiskMetrics) => {
     const aisuggestion = await generateAIRiskManagementSuggestions(riskMetrics);
     setaiSuggestions(aisuggestion);
     console.log("AI Suggestion:", aisuggestion);
