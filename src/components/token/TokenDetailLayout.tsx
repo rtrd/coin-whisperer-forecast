@@ -14,14 +14,14 @@ import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
 import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
 import AdUnit from "@/components/ads/VdoBannerAd";
-import { TokenSocialHub } from "./TokenSocialHub";
 import { TokenResourcesPanel } from "./TokenResourcesPanel";
 import { TokenPriceTimeline } from "./TokenPriceTimeline";
 import { TokenPriceAlerts } from "./TokenPriceAlerts";
-import { TokenGalaxyScore } from "./TokenGalaxyScore";
 import { TokenComparison } from "./TokenComparison";
 import { TokenLiveFeed } from "./TokenLiveFeed";
 import { TokenDeveloperActivity } from "./TokenDeveloperActivity";
+import { TokenMarketMetrics } from "./TokenMarketMetrics";
+import { TokenPricePerformance } from "./TokenPricePerformance";
 import { useTokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenDetailLayoutProps {
@@ -189,9 +189,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           </div> */}
         </div>
 
-        {/* Enhanced Social & Resources Section - NEW */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          <TokenSocialHub tokenInfo={tokenInfo} isLoading={tokenInfoLoading} />
+        {/* Enhanced Resources & Alerts Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <TokenResourcesPanel 
             tokenInfo={tokenInfo} 
             tokenId={tokenId} 
@@ -206,7 +205,25 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
         </div>
 
-        {/* Price Performance Timeline - NEW */}
+        {/* Market Metrics - Full Width */}
+        <div className="mt-6">
+          <TokenMarketMetrics
+            tokenInfo={tokenInfo}
+            marketData={marketData}
+            isLoading={tokenInfoLoading}
+          />
+        </div>
+
+        {/* Price Performance - Full Width */}
+        <div className="mt-6">
+          <TokenPricePerformance
+            tokenInfo={tokenInfo}
+            marketData={marketData}
+            isLoading={tokenInfoLoading}
+          />
+        </div>
+
+        {/* Price Performance Timeline */}
         <div className="mt-6">
           <TokenPriceTimeline
             currentPrice={currentPrice}
@@ -223,11 +240,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             athDate={marketData?.ath_date}
             atlDate={marketData?.atl_date}
           />
-        </div>
-
-        {/* Galaxy Score Widget - Full Width */}
-        <div className="mt-6">
-          <TokenGalaxyScore tokenSymbol={selectedToken?.symbol || tokenId} />
         </div>
 
         {/* Comparison Tool - Full Width */}
