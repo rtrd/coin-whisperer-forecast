@@ -1,9 +1,9 @@
+import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
 import { useAdRefresh } from "./hooks/useAdRefresh";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
@@ -86,20 +86,18 @@ const AppWithHooks = () => {
 };
 
 const App = () => (
-  <HelmetProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <HeadImprovements />
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <WagmiAppkitProvider>
-            <AppWithHooks />
-          </WagmiAppkitProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </HelmetProvider>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <HeadImprovements />
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <WagmiAppkitProvider>
+          <AppWithHooks />
+        </WagmiAppkitProvider>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
 );
 
 export default App;
