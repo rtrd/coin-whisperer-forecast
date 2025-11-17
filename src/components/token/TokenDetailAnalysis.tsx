@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
 import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
+import { TokenLiveFeed } from "./TokenLiveFeed";
 import { fetchTechnicalIndicators, fetchSentimentData } from "@/services/aiPredictionService";
 import { processSentimentData } from "@/services/sentimentDataService";
 import { calculateMACD } from "@/utils/technicalAnalysis";
@@ -14,8 +15,10 @@ interface TokenDetailAnalysisProps {
   prediction: any;
   technicalIndicator?: any[];
   sentimentData?: any;
-  activeTab?: 'sentiment' | 'technical';
-  onTabChange?: (tab: 'sentiment' | 'technical') => void;
+  activeTab?: 'sentiment' | 'technical' | 'social';
+  onTabChange?: (tab: 'sentiment' | 'technical' | 'social') => void;
+  tokenSymbol?: string;
+  tokenName?: string;
 }
 
 interface ProcessedSentimentData {
@@ -32,6 +35,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   sentimentData: initialSentimentData,
   activeTab = 'sentiment',
   onTabChange,
+  tokenSymbol,
+  tokenName,
 }) => {
   const [processedSentiment, setProcessedSentiment] = useState<ProcessedSentimentData | null>(null);
   const [volumeData, setVolumeData] = useState<{ label: string; value: number }[]>([]);
@@ -138,8 +143,8 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
           <CardTitle className="text-white">Market Analysis</CardTitle>
         </CardHeader>
         <CardContent>
-          <Tabs value={activeTab} onValueChange={(value) => onTabChange?.(value as 'sentiment' | 'technical')} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-gray-700 border-gray-600">
+          <Tabs value={activeTab} onValueChange={(value) => onTabChange?.(value as 'sentiment' | 'technical' | 'social')} className="w-full">
+            <TabsList className="grid w-full grid-cols-3 bg-gray-700 border-gray-600">
               <TabsTrigger
                 value="sentiment"
                 className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600"
@@ -151,6 +156,12 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
                 className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600"
               >
                 Technical Analysis
+              </TabsTrigger>
+              <TabsTrigger
+                value="social"
+                className="text-gray-300 data-[state=active]:text-white data-[state=active]:bg-gray-600"
+              >
+                Live Social Feed
               </TabsTrigger>
             </TabsList>
 
@@ -170,6 +181,13 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
                 isLoading={dataLoading}
                 volumeData={volumeData}
                 macdHistogram={macdData}
+              />
+            </TabsContent>
+
+            <TabsContent value="social" className="mt-6">
+              <TokenLiveFeed
+                tokenSymbol={tokenSymbol || cryptoId}
+                tokenName={tokenName || cryptoId}
               />
             </TabsContent>
           </Tabs>
