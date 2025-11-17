@@ -204,24 +204,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
         </div>
 
-        {/* Market Metrics - Full Width */}
-        <div className="mt-6">
-          <TokenMarketMetrics
-            tokenInfo={tokenInfo}
-            marketData={marketData}
-            isLoading={tokenInfoLoading}
-          />
-        </div>
-
-        {/* Price Performance - Full Width */}
-        <div className="mt-6">
-          <TokenPricePerformance
-            tokenInfo={tokenInfo}
-            marketData={marketData}
-            isLoading={tokenInfoLoading}
-          />
-        </div>
-
         {/* Price Performance Timeline */}
         <div className="mt-6">
           <TokenPriceTimeline
