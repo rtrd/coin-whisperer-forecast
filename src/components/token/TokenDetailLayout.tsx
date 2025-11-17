@@ -233,6 +233,17 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
         </div>
 
+        {/* Ad Banner Between Comparison and Market Analysis */}
+        <AdUnit
+          className={customClass}
+          isMobile={isMobile}
+          adUnit={
+            isMobile
+              ? "/22181265/pumpparade_mob_300v_3"
+              : "/22181265/pumpparade_970v_3"
+          }
+        />
+
         {/* Market Analysis and Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mt-6" ref={analysisRef}>
           {/* Market Analysis - 3/4 width */}
@@ -269,6 +280,17 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             />
           </div>
         </div>
+
+        {/* Ad Banner Between Market Analysis and Other Tokens */}
+        <AdUnit
+          className={customClass}
+          isMobile={isMobile}
+          adUnit={
+            isMobile
+              ? "/22181265/pumpparade_mob_300v_4"
+              : "/22181265/pumpparade_970v_4"
+          }
+        />
 
         {/* Other Tokens Section */}
         <div className="mt-6">
