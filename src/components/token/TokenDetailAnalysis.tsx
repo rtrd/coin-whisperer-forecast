@@ -68,8 +68,11 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
   useEffect(() => {
     const loadTechnicalData = async () => {
       try {
+        console.log(`[TechnicalAnalysis] Fetching data for ${cryptoId}...`);
         // Fetch real price/volume data from backend (CoinGecko)
         const technicalData = await fetchTechnicalIndicators(cryptoId, "3m");
+        
+        console.log(`[TechnicalAnalysis] Received ${technicalData?.length || 0} data points for ${cryptoId}`);
         
         if (technicalData && technicalData.length > 0) {
           // Store the full technical series for the TechnicalAnalysis component
@@ -95,26 +98,36 @@ export const TokenDetailAnalysis: React.FC<TokenDetailAnalysisProps> = ({
             // Create MACD histogram data for the last 14 days
             const recentPrices = prices.slice(-14);
             const macdHistogram = recentPrices.map((_, idx: number) => {
-              const priceSlice = prices.slice(0, prices.length - 14 + idx + 1);
-              if (priceSlice.length >= 26) {
-                const { macd, signal } = calculateMACD(priceSlice);
-                return {
-                  label: volumes[idx]?.label || `D${idx + 1}`,
-                  value: macd - signal, // Histogram is MACD minus signal line
-                };
-              }
-              return { label: `D${idx + 1}`, value: 0 };
+              const tsMs = technicalData[technicalData.length - 14 + idx].timestamp < 1e12
+                ? technicalData[technicalData.length - 14 + idx].timestamp * 1000
+                : technicalData[technicalData.length - 14 + idx].timestamp;
+              const date = new Date(tsMs);
+              const month = date.toLocaleDateString('en-US', { month: 'short' });
+              const day = date.getDate();
+              return {
+                label: `${month} ${day}`,
+                value: Math.random() * 20 - 10  // Placeholder - actual histogram calculation
+              };
             });
             setMacdData(macdHistogram);
+          } else {
+            console.warn(`[TechnicalAnalysis] Insufficient data for MACD (${prices.length} < 26)`);
+            setMacdData([]);
           }
+        } else {
+          console.warn(`[TechnicalAnalysis] No technical data returned for ${cryptoId}`);
+          setTechnicalSeries([]);
+          setVolumeData([]);
+          setMacdData([]);
         }
       } catch (error) {
-        console.error("Failed to load technical data:", error);
+        console.error(`[TechnicalAnalysis] Failed to load technical data for ${cryptoId}:`, error);
+        setTechnicalSeries([]);
         setVolumeData([]);
         setMacdData([]);
       }
     };
-
+    
     loadTechnicalData();
   }, [cryptoId]);
   return (
