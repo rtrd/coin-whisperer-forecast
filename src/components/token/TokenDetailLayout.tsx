@@ -18,7 +18,6 @@ import { TokenResourcesPanel } from "./TokenResourcesPanel";
 import { TokenPriceTimeline } from "./TokenPriceTimeline";
 import { TokenPriceAlerts } from "./TokenPriceAlerts";
 import { TokenComparison } from "./TokenComparison";
-import { TokenLiveFeed } from "./TokenLiveFeed";
 import { TokenDeveloperActivity } from "./TokenDeveloperActivity";
 import { TokenMarketMetrics } from "./TokenMarketMetrics";
 import { TokenPricePerformance } from "./TokenPricePerformance";
@@ -83,7 +82,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
  }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const analysisRef = useRef<HTMLDivElement>(null);
-  const [activeTab, setActiveTab] = useState<'sentiment' | 'technical'>('sentiment');
+  const [activeTab, setActiveTab] = useState<'sentiment' | 'technical' | 'social'>('sentiment');
 
   const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
   const customClass = useMemo(
@@ -98,7 +97,7 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
     chartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const handleNavigateToTab = (tab: 'sentiment' | 'technical') => {
+  const handleNavigateToTab = (tab: 'sentiment' | 'technical' | 'social') => {
     setActiveTab(tab);
     setTimeout(() => {
       analysisRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -264,6 +263,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               sentimentData={SentimentData}
               activeTab={activeTab}
               onTabChange={setActiveTab}
+              tokenSymbol={selectedToken?.symbol}
+              tokenName={selectedToken?.name}
             />
           </div>
 
@@ -285,14 +286,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               className={customClass}
             />
           </div>
-        </div>
-
-        {/* Live Social Feed - Full Width */}
-        <div className="mt-6">
-          <TokenLiveFeed
-            tokenSymbol={selectedToken?.symbol || tokenId}
-            tokenName={selectedToken?.name || tokenId}
-          />
         </div>
 
         {/* Other Tokens Section */}
