@@ -66,12 +66,32 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
   if (!data || data.length === 0) {
     return (
       <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
-        <p className="text-gray-400">No data available for analysis</p>
+        <div className="text-center py-8">
+          <Activity className="h-12 w-12 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400 font-medium mb-2">No Technical Data Available</p>
+          <p className="text-gray-500 text-sm">Unable to fetch price data for this token</p>
+        </div>
       </Card>
     );
   }
 
-  const prices = data.map((d) => d.price);
+  // Validate minimum data requirements
+  const prices = data.map((d) => d.price).filter(p => p > 0);
+  
+  if (prices.length < 26) {
+    return (
+      <Card className="bg-gray-800/50 border-gray-700 shadow-2xl backdrop-blur-sm p-6">
+        <div className="text-center py-8">
+          <BarChart3 className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+          <p className="text-gray-400 font-medium mb-2">Insufficient Data for Analysis</p>
+          <p className="text-gray-500 text-sm">
+            Need at least 26 data points for technical indicators. Currently have {prices.length}.
+          </p>
+        </div>
+      </Card>
+    );
+  }
+
   const currentPrice = prices[prices.length - 1];
 
   // Helper function to format dates for chart labels
@@ -303,12 +323,15 @@ export const TechnicalAnalysis: React.FC<TechnicalAnalysisProps> = ({
 
   const totalStrength = indicators.reduce((sum, ind) => sum + ind.strength, 0);
 
+  // Prevent division by zero or very small values that cause stuck signals
   const overallSignal =
-    indicators.reduce((acc, ind) => {
-      if (ind.signal === "buy") return acc + ind.strength;
-      if (ind.signal === "sell") return acc - ind.strength;
-      return acc;
-    }, 0) / Math.max(totalStrength, 1);
+    totalStrength > 0.01
+      ? indicators.reduce((acc, ind) => {
+          if (ind.signal === "buy") return acc + ind.strength;
+          if (ind.signal === "sell") return acc - ind.strength;
+          return acc;
+        }, 0) / totalStrength
+      : 0;
 
   const overallTrend =
     overallSignal > 0.1 ? "BUY" : overallSignal < -0.1 ? "SELL" : "HOLD";
