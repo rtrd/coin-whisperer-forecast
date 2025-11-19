@@ -36,7 +36,7 @@ const SUPPORTED_CHAINS = [
     name: "Arbitrum",
     id: 42161,
     namespace: "eip155",
-    icon: "public/images/Arbitrum.png",
+    icon: "/images/Arbitrum.png",
   },
   {
     name: "Optimism",
@@ -260,7 +260,7 @@ export const WalletConnector: React.FC<{
                       className="w-6 h-6 object-contain rounded-full"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
-                          "/public/images/fallback.png";
+                          "/images/fallback.png";
                       }}
                     />
                     <span className="font-medium text-white">{chain.name}</span>
