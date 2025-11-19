@@ -136,7 +136,7 @@ createAppKit({
   features: {
     analytics: true,
   },
-  enableNetworkSwitch: true, // allow choosing network in modal
+  enableNetworkSwitch: false, // allow choosing network in modal
   enableReconnect: false, // disable auto-reconnect on reload
   themeMode: "dark"
 });
