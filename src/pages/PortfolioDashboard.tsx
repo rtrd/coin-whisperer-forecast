@@ -78,6 +78,7 @@ export const PortfolioDashboard = () => {
     try {
       setLoadingPortfolio(true);
       const data = await getPortfolioData(address, chainId);
+      console.log("Fetched portfolio data:", data);
       setPortfolioData(data);
       setPortfolioHistory(data.portfolioHistory);
       setDefiPosition(data.defiPositions);
@@ -489,6 +490,20 @@ export const PortfolioDashboard = () => {
             </div>
           </div>
           <Footer />
+        </div>
+      </>
+    );
+  }
+
+  if (isWalletConnected && loadingPortfolio) {
+    return (
+      <>
+        <EnhancedSEOHead seoData={seoData} /> 
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto mb-4"></div>
+            <p className="text-white text-lg">Loading your portfolio...</p>
+          </div>
         </div>
       </>
     );
