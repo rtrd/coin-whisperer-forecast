@@ -70,11 +70,12 @@ const SUPPORTED_CHAINS = [
 
 export const WalletConnector: React.FC<{
   onConnect: (addr: string, chainId: string | number) => void;
-}> = ({ onConnect }) => {
+  chainId: string | number | null;
+  setChainId: React.Dispatch<React.SetStateAction<string | number>>;
+}> = ({ onConnect, chainId, setChainId }) => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
-  const [chainId, setChainId] = useState<string | number | null>(null);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [selectNamespace, setNamespace] = useState<ChainNamespace>("eip155");
 
@@ -89,6 +90,18 @@ export const WalletConnector: React.FC<{
     open(); // open wallet QR modal
     setTimeout(() => setIsConnecting(false), 1000);
   };
+
+  useEffect(() => {
+    return () => {
+      disconnect();
+      setIsConnected(false);
+      setWalletAddress("");
+      setChainId(null);
+      setShowNetworkModal(false);
+      removeAddressFromStorage();
+      console.log("Wallet disconnected on page leave");
+    };
+  }, []);
 
   useEffect(() => {
     if (isAccountConnected && address) {
@@ -124,7 +137,6 @@ export const WalletConnector: React.FC<{
     selectedChainId: string | number,
     namespace: ChainNamespace = "eip155"
   ) => {
-    // debugger;
     handleAppkitConnect();
     setChainId(selectedChainId);
     setNamespace(namespace);

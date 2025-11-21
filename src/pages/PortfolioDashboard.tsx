@@ -179,7 +179,7 @@ export const PortfolioDashboard = () => {
           </div>
         </div>
       </CardHeader>
-      
+
       {aiRecommendations !== null && aiRecommendations.length > 0 ? (
         <CardContent className="space-y-3 pt-0">
           {aiRecommendations.slice(0, 3).map((rec) => (
@@ -450,7 +450,11 @@ export const PortfolioDashboard = () => {
                 </p>
               </div>
 
-              <WalletConnector onConnect={handleWalletConnect} />
+              <WalletConnector
+                chainId={chainId}
+                onConnect={handleWalletConnect}
+                setChainId={setChainId}
+              />
 
               <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="text-center bg-gray-800/80 border-gray-700">
@@ -498,7 +502,7 @@ export const PortfolioDashboard = () => {
   if (isWalletConnected && loadingPortfolio) {
     return (
       <>
-        <EnhancedSEOHead seoData={seoData} /> 
+        <EnhancedSEOHead seoData={seoData} />
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500 mx-auto mb-4"></div>
@@ -537,7 +541,7 @@ export const PortfolioDashboard = () => {
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white"
                 onClick={async () => {
-                  console.log('Disconnect wallet button is triggered')
+                  console.log("Disconnect wallet button is triggered");
                   window.location.reload();
                   await disconnect();
                 }}
