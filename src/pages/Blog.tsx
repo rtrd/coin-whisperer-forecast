@@ -20,8 +20,6 @@ const Blog = () => {
   const [loading, setLoading] = useState(true);
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   
-  // Initialize ad script on page load
-  useAdScript();
 
   const seoData = generateBlogSEO();
 
