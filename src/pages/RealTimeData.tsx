@@ -708,15 +708,7 @@ const RealTimeData = () => {
                     </div>
                   </div>
 
-                  {/* Google Ad Manager - Bottom Ad */}
-                  <GAMAdUnit
-                    adUnitId="div-gpt-ad-1752654531765-1"
-                    size={[728, 90]}
-                    className="mt-8"
-                  />
                 </div>
-                <VdoFloatingAd />
-                <VdoBannerAd />
                 <Footer />
               </>
             )}

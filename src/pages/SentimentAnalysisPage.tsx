@@ -972,20 +972,7 @@ const SentimentAnalysisPage = () => {
             </div>
           </div>
 
-          {/* Bottom Ad Placement */}
-          <div className="mt-12 flex justify-center">
-            <AdUnit type="leaderboard" className="ad-click" />
-          </div>
-
-          {/* Google Ad Manager - Bottom Ad */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mt-8"
-          />
         </div>
-        <VdoFloatingAd />
-        <VdoBannerAd />
         {/* Footer */}
         <Footer />
       </div>
