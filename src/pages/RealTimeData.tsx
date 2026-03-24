@@ -18,8 +18,6 @@ import { generateRealTimeDataSEO } from "@/utils/pageSeo";
 
 const RealTimeData = () => {
   const seoData = generateRealTimeDataSEO();
-  // Initialize ad script on page load
-  useAdScript();
   
   const [marketData, setMarketData] = useState([]);
   const [liveStats, setLiveStats] = useState({
