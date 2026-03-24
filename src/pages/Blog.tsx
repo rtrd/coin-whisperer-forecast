@@ -1,8 +1,6 @@
 import { generateBlogSEO } from "@/utils/pageSeo";
-import { useAdScript } from "@/hooks/useAdScript";
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogLayout } from "@/components/blog/BlogLayout";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
@@ -22,8 +20,6 @@ const Blog = () => {
   const [loading, setLoading] = useState(true);
   const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   
-  // Initialize ad script on page load
-  useAdScript();
 
   const seoData = generateBlogSEO();
 
@@ -110,12 +106,6 @@ const Blog = () => {
       <BlogLayout cryptoOptions={cryptoOptions}>
         <BlogHeader />
         
-        {/* Ad Banner After Header */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-0"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
         
         <BlogFeaturedSection featuredArticle={featuredArticle} />
         <BlogTrendingSection trendingArticles={trendingArticles} />
@@ -127,12 +117,6 @@ const Blog = () => {
           <BlogIndexSection articles={articles} />
         </div>
         
-        {/* Ad Banner Before Footer */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-1"
-          size={[728, 90]}
-          className="mt-6 mb-6 md:mb-8"
-        />
       </BlogLayout>
     </>
   );

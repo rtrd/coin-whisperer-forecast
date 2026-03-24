@@ -17,7 +17,7 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
-import AdUnit from "@/components/ads/VdoBannerAd";
+
 import { fetchSentimentData } from "@/services/aiPredictionService";
 import { useLunarCrushMetrics } from "@/hooks/useLunarCrushMetrics";
 import { SentimentGauge } from "@/components/charts/SentimentGauge";

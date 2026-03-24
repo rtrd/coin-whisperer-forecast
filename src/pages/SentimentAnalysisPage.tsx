@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { generateSentimentAnalysisSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import {
@@ -36,18 +35,12 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const SentimentAnalysisPage = () => {
   const seoData = generateSentimentAnalysisSEO();
-  // Initialize ad script on page load
-  useAdScript();
 
   const [marketData, setMarketData] = useState([]);
   const [overallSentiment, setOverallSentiment] = useState({
@@ -346,12 +339,6 @@ const SentimentAnalysisPage = () => {
           />
         </div>
 
-        {/* Google Ad Manager - Header Ad */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-0"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
 
         <div className="container mx-auto px-4 pb-8">
           {/* Back Button */}
@@ -683,15 +670,6 @@ const SentimentAnalysisPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 1 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                {/* <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-2"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                /> */}
-                <span id="ct_cVqQhaBjbGn"></span>
-              </div>
 
               {/* Top Cryptocurrencies by Sentiment */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm overflow-hidden relative">
@@ -858,14 +836,6 @@ const SentimentAnalysisPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 2 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-3"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                />
-              </div>
 
               {/* Sentiment Analysis FAQ */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -998,25 +968,11 @@ const SentimentAnalysisPage = () => {
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <AdUnit type="skyscraper" className="ad-click" />
               </div>
             </div>
           </div>
 
-          {/* Bottom Ad Placement */}
-          <div className="mt-12 flex justify-center">
-            <AdUnit type="leaderboard" className="ad-click" />
-          </div>
-
-          {/* Google Ad Manager - Bottom Ad */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mt-8"
-          />
         </div>
-        <VdoFloatingAd />
-        <VdoBannerAd />
         {/* Footer */}
         <Footer />
       </div>

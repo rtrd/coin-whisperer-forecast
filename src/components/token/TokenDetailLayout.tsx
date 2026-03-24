@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -10,17 +10,12 @@ import { TokenDetailAnalysis } from "./TokenDetailAnalysis";
 import { TokenSidebar } from "./TokenSidebar";
 import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
-import AdUnit from "@/components/ads/VdoBannerAd";
 import { TokenResourcesPanel } from "./TokenResourcesPanel";
 import { TokenPriceTimeline } from "./TokenPriceTimeline";
 import { TokenPriceAlerts } from "./TokenPriceAlerts";
 import { TokenComparison } from "./TokenComparison";
 import { TokenDeveloperActivity } from "./TokenDeveloperActivity";
-import { TokenMarketMetrics } from "./TokenMarketMetrics";
-import { TokenPricePerformance } from "./TokenPricePerformance";
 import { useTokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenDetailLayoutProps {
@@ -84,13 +79,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   const analysisRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'sentiment' | 'technical' | 'social'>('sentiment');
 
-  const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
-  const customClass = useMemo(
-    () =>
-      isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6",
-    [isMobile]
-  );
-
   const { data: tokenInfo, isLoading: tokenInfoLoading } = useTokenInfo(tokenId);
 
   const handleNavigateToChart = () => {
@@ -124,16 +112,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           </Link>
         </div>
 
-        {/* Ad Banner Before Price Chart */}
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_300v_1"
-              : "/22181265/pumpparade_970v_1"
-          }
-        />
 
         {/* Main Content */}
         <div className="space-y-6">
@@ -166,26 +144,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             />
           </div>
 
-          {/* Ad Banner After Price Chart - Responsive */}
-          <AdUnit
-            className={customClass}
-            isMobile={isMobile}
-            adUnit={
-              isMobile
-                ? "/22181265/pumpparade_mob_300v_2"
-                : "/22181265/pumpparade_970v_2"
-            }
-          />
-
-          {/* Ad Banner After Price Chart - Centered */}
-          {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-            <AdBanner
-              width={728}
-              height={120}
-              position="horizontal"
-              className="max-w-full h-full"
-            />
-          </div> */}
         </div>
 
         {/* Enhanced Resources & Alerts Section */}
@@ -233,16 +191,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           />
         </div>
 
-        {/* Ad Banner Between Comparison and Market Analysis */}
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_300v_3"
-              : "/22181265/pumpparade_970v_3"
-          }
-        />
 
         {/* Market Analysis and Sidebar Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 mt-6" ref={analysisRef}>
@@ -261,9 +209,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             />
           </div>
 
-          {/* Sidebar with Ad + TokenSidebar + Developer Activity */}
+          {/* Sidebar with TokenSidebar + Developer Activity */}
           <div className="lg:col-span-1 space-y-6">
-            <VdoBannerAd />
             <TokenSidebar
               currentTokenId={tokenId}
               selectedCrypto={cryptoId}
@@ -273,24 +220,9 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               cryptoData={cryptoData}
             />
             <TokenDeveloperActivity tokenInfo={tokenInfo} isLoading={tokenInfoLoading} />
-            <AdUnit
-              adUnit={"/22181265/pumpparade_stickyrail"}
-              isMobile={isMobile}
-              className={customClass}
-            />
           </div>
         </div>
 
-        {/* Ad Banner Between Market Analysis and Other Tokens */}
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_300v_4"
-              : "/22181265/pumpparade_970v_4"
-          }
-        />
 
         {/* Other Tokens Section */}
         <div className="mt-6">
@@ -299,18 +231,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             cryptoOptions={allCryptosData || []}
           />
         </div>
-        <br />
-
-        {/* Ad Banner Before Footer */}
-        {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-          <AdBanner
-            width={728}
-            height={120}
-            position="horizontal"
-            className="max-w-full h-full"
-          />
-        </div> */}
-        <VdoFloatingAd />
         {/* Internal Linking */}
         <div className="mt-12 mb-8">
           <InternalLinking
@@ -330,15 +250,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           <Footer />
         </div>
 
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_stickyfooter"
-              : "/22181265/pumpparade_sticky_footer"
-          }
-        />
       </div>
 
       {/* Sticky Buy/Sell Buttons */}

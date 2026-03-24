@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { generateTechnicalAnalysisSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,21 +22,15 @@ import {
   PieChart,
   BarChart,
 } from "lucide-react";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const TechnicalAnalysisPage = () => {
   const seoData = generateTechnicalAnalysisSEO();
-  // Initialize ad script on page load
-  useAdScript();
 
   const [marketData, setMarketData] = useState([]);
 
@@ -144,12 +137,6 @@ const TechnicalAnalysisPage = () => {
           />
         </div>
 
-        {/* Google Ad Manager - Header Ad */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-0"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
 
         <div className="container mx-auto px-4 pb-8">
           {/* Back Button */}
@@ -265,15 +252,6 @@ const TechnicalAnalysisPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 1 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                {/* <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-2"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                /> */}
-                <span id="ct_cVqQhaBjbGn"></span>
-              </div>
 
               {/* Technical Analysis Calculations */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -368,14 +346,6 @@ const TechnicalAnalysisPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 2 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-3"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                />
-              </div>
 
               {/* Technical Analysis FAQ */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -509,25 +479,11 @@ const TechnicalAnalysisPage = () => {
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <AdUnit type="skyscraper" className="ad-click" />
               </div>
             </div>
           </div>
 
-          {/* Bottom Ad Placement */}
-          <div className="mt-12 flex justify-center">
-            <AdUnit type="leaderboard" className="ad-click" />
-          </div>
-
-          {/* Google Ad Manager - Bottom Ad */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mt-8"
-          />
         </div>
-       <VdoFloatingAd />
-       <VdoBannerAd/>
         <Footer />
       </div>
     </>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { generateAIPricePredictionSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,16 +23,12 @@ import {
   ChartLine,
   Users,
 } from "lucide-react";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { SignupLock } from "@/components/SignupLock";
 import { LazyLiveAIPredictions } from "@/components/lazy/LazyLiveAIPredictions";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
@@ -224,15 +219,6 @@ const AIPricePrediction = () => {
         </CardContent>
       </Card>
 
-      {/* Ad Banner After Section 1 */}
-      <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-        {/* <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-2"
-          size={[728, 120]}
-          className="max-w-full h-full"
-        /> */}
-        <span id="ct_cVqQhaBjbGn"></span>
-      </div>
 
       {/* AI Price Prediction FAQ */}
       <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -356,14 +342,6 @@ const AIPricePrediction = () => {
         </CardContent>
       </Card>
 
-      {/* Ad Banner After Section 2 */}
-      <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-3"
-          size={[728, 120]}
-          className="max-w-full h-full"
-        />
-      </div>
 
       {/* Live Predictions */}
       <LazyLiveAIPredictions />
@@ -383,12 +361,6 @@ const AIPricePrediction = () => {
           />
         </div>
 
-        {/* Google Ad Manager - Header Ad */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-0"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
 
         <div className="container mx-auto px-4 pb-8">
           {/* Back Button */}
@@ -417,27 +389,11 @@ const AIPricePrediction = () => {
             <div className="lg:col-span-1 order-first lg:order-last">
               <div className="lg:sticky lg:top-8 space-y-4 sm:space-y-6 lg:space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <div className="hidden lg:block">
-                  <AdUnit type="skyscraper" className="ad-click" />
-                </div>
               </div>
             </div>
           </div>
 
-          {/* Bottom Ad Placement */}
-          <div className="mt-12 flex justify-center">
-            <AdUnit type="leaderboard" className="ad-click" />
-          </div>
-
-          {/* Google Ad Manager - Bottom Ad */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mt-8"
-          />
         </div>
-        <VdoBannerAd />
-        <VdoFloatingAd />
         <Footer />
       </div>
     </>
