@@ -704,7 +704,6 @@ const RealTimeData = () => {
                     <div className="hidden lg:block">
                       <div className="sticky top-8 space-y-8">
                         <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                        <AdUnit type="skyscraper" />
                       </div>
                     </div>
                   </div>
