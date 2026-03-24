@@ -22,8 +22,6 @@ const Subscribe = () => {
 
   const seoData = generateSubscribeSEO();
   
-  // Initialize ad script on page load
-  useAdScript();
 
   // Track page view on component mount
   React.useEffect(() => {
