@@ -79,13 +79,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
   const analysisRef = useRef<HTMLDivElement>(null);
   const [activeTab, setActiveTab] = useState<'sentiment' | 'technical' | 'social'>('sentiment');
 
-  const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
-  const customClass = useMemo(
-    () =>
-      isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6",
-    [isMobile]
-  );
-
   const { data: tokenInfo, isLoading: tokenInfoLoading } = useTokenInfo(tokenId);
 
   const handleNavigateToChart = () => {
