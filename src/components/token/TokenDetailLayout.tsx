@@ -144,26 +144,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             />
           </div>
 
-          {/* Ad Banner After Price Chart - Responsive */}
-          <AdUnit
-            className={customClass}
-            isMobile={isMobile}
-            adUnit={
-              isMobile
-                ? "/22181265/pumpparade_mob_300v_2"
-                : "/22181265/pumpparade_970v_2"
-            }
-          />
-
-          {/* Ad Banner After Price Chart - Centered */}
-          {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-            <AdBanner
-              width={728}
-              height={120}
-              position="horizontal"
-              className="max-w-full h-full"
-            />
-          </div> */}
         </div>
 
         {/* Enhanced Resources & Alerts Section */}
