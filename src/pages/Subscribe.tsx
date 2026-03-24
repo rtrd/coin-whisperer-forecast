@@ -133,12 +133,6 @@ const Subscribe = () => {
             priceChange={2.5}
           />
 
-          {/* Ad Banner After Header */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-0"
-            size={[728, 90]}
-            className="mb-6 md:mb-8"
-          />
 
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
