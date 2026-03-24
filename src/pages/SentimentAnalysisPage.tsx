@@ -968,7 +968,6 @@ const SentimentAnalysisPage = () => {
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <AdUnit type="skyscraper" className="ad-click" />
               </div>
             </div>
           </div>
