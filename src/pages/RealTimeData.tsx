@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,16 +7,12 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Activity, TrendingUp, BarChart3, Zap, Clock, Globe, Eye, Radar, Signal, Radio, Wifi, Monitor, ChartLine, ChartBar, ChartPie, Target, Users, MessageCircle } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import { apiService } from "@/services/apiService";
 import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHelpers';
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import ScrollToTop from "@/components/ScrollToTop";
 import { generateRealTimeDataSEO } from "@/utils/pageSeo";
 
