@@ -278,14 +278,6 @@ const Subscribe = () => {
           </div>
         </div>
         
-        {/* Ad Banner Before Footer */}
-        <div className="container mx-auto px-4 py-4 md:py-8">
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mb-6"
-          />
-        </div>
       </div>
       
       <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
