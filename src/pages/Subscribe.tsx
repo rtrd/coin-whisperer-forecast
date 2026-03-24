@@ -15,8 +15,6 @@ import { PremiumFeatureCard } from "@/components/subscribe/PremiumFeatureCard";
 import { TestimonialCard } from "@/components/subscribe/TestimonialCard";
 import { LiveStatsWidget } from "@/components/subscribe/LiveStatsWidget";
 import { ComparisonTable } from "@/components/subscribe/ComparisonTable";
-import { useAdScript } from "@/hooks/useAdScript";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const Subscribe = () => {
   const [email, setEmail] = useState('');
