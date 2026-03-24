@@ -346,14 +346,6 @@ const MotiMeter = () => {
                   )}
           </div>
 
-          {/* Ad Banner After Section 2 */}
-          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-8 mb-8">
-            <GAMAdUnit
-              adUnitId="div-gpt-ad-1752654531765-4"
-              size={[728, 120]}
-              className="max-w-full h-full"
-            />
-          </div>
 
           {/* Trending Articles Widget - Full width */}
           <div className="mt-12">
