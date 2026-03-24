@@ -9,11 +9,7 @@ export const HeadImprovements = () => {
       
       {/* Resource Hints for External Domains */}
       <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="" />
-      <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossOrigin="" />
-      <link rel="preconnect" href="https://securepubads.g.doubleclick.net" crossOrigin="" />
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-      <link rel="dns-prefetch" href="//cdn.bmcdn6.com" />
-      <link rel="dns-prefetch" href="//appsha-prm.ctengine.io" />
       
       {/* Enhanced Security Headers */}
       <meta httpEquiv="X-Content-Type-Options" content="nosniff" />

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle } from "lucide-react";
-import { AdUnit } from "@/components/ads/AdService";
 import { DynamicPredictionAdjuster } from "@/components/DynamicPredictionAdjuster";
 import { LockedTechnicalAnalysis } from "@/components/LockedTechnicalAnalysis";
 import { LockedSentimentAnalysis } from "@/components/LockedSentimentAnalysis";
@@ -93,11 +92,6 @@ export const IndexSidebar: React.FC<IndexSidebarProps> = ({
   }, [selectedCrypto]);
   return (
     <div className="space-y-6">
-      {/* Side Ad - Full width to match other components */}
-      <div className="w-full min-h-[250px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden">
-        <AdUnit type="sidebar" className="w-full h-full ad-click" />
-      </div>
-
       {/* Dynamic Prediction Adjuster */}
       <DynamicPredictionAdjuster
         selectedCrypto={selectedCrypto}

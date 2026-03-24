@@ -120,7 +120,6 @@ export const AdvancedSEOHead = ({
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-      <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
       <link rel="dns-prefetch" href="//lunarcrush.com" />
       
       {/* Security and Performance */}

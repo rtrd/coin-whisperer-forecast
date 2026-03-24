@@ -5,7 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HeadImprovements } from "@/components/layout/HeadImprovements";
-import { useAdRefresh } from "./hooks/useAdRefresh";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
@@ -29,7 +28,6 @@ import DefiPulse from "./pages/DefiPulse";
 import NotFound from "./pages/NotFound";
 import ViewEmails from "./pages/EmailList";
 import { PrivacyPolicy } from "./pages/PrivacyPolicy";
-import VdoFloatingAd from "./components/ads/VdoFloatingAd";
 import { TopNavigation } from "./components/TopNavigation";
 import { WagmiAppkitProvider } from "./providers/WagmiAppkitProvider";
 import { useAlerts } from "./hooks/useAlerts";
@@ -70,7 +68,6 @@ const AppContent = () => {
   return (
     <>
       <TopNavigation />
-      <VdoFloatingAd />
       <ScrollToTop />
       <AppRoutes />
     </>
@@ -79,7 +76,6 @@ const AppContent = () => {
 
 const AppWithHooks = () => {
   useAlerts(); // Initialize alerts functionality
-  useAdRefresh(); // Initialize ad refresh functionality
   usePerformanceOptimization(); // Initialize performance optimizations
 
   return <AppContent />;

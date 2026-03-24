@@ -13,7 +13,6 @@ import { useCryptoData } from "@/hooks/useCryptoData";
 import { usePrediction } from "@/hooks/usePrediction";
 import { useCryptoFilters } from "@/hooks/useCryptoFilters";
 import { generateHomepageSEO } from "@/utils/pageSeo";
-import { useAdScript } from "@/hooks/useAdScript";
 import { useLocation } from "react-router-dom";
 
 const Index = () => {
@@ -25,9 +24,6 @@ const Index = () => {
   const location = useLocation();
   const seoData = generateHomepageSEO();
   const breadcrumbs = generateBreadcrumbs(location.pathname);
-  
-  // Initialize ad script on page load
-  useAdScript();
 
   const {
     filteredCryptos,
@@ -111,10 +107,7 @@ const Index = () => {
       <FAQSchema faqs={cryptoFAQs} />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
-        <ins className="688243f4cd78b050d770b5b9" style={{display:"inline-block",width:"1px",height:"1px"}}></ins>
-        <script dangerouslySetInnerHTML={{__html: `!function(e,n,c,t,o,r,d){!function e(n,c,t,o,r,m,d,s,a){s=c.getElementsByTagName(t)[0],(a=c.createElement(t)).async=!0,a.src="https://"+r[m]+"/js/"+o+".js?v="+d,a.onerror=function(){a.remove(),(m+=1)>=r.length||e(n,c,t,o,r,m)},s.parentNode.insertBefore(a,s)}(window,document,"script","688243f4cd78b050d770b5b9",["cdn.bmcdn6.com"], 0, new Date().getTime())}();`}} />
-    
-    <IndexContent
+        <IndexContent
           selectedCrypto={selectedCrypto}
           cryptoOptions={filteredCryptos}
           currentPrice={currentPrice}

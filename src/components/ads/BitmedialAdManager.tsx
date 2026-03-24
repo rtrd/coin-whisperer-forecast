@@ -1,14 +1,10 @@
-import { useEffect } from 'react';
-import { useAdScript } from '@/hooks/useAdScript';
+import type { ReactNode } from "react";
 
 interface BitmedialAdManagerProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
 }
 
-export const BitmedialAdManager: React.FC<BitmedialAdManagerProps> = ({ children }) => {
-  // Use the enhanced ad script hook that handles refreshing
-  useAdScript();
-
+export const BitmedialAdManager = ({ children }: BitmedialAdManagerProps) => {
   return <>{children}</>;
 };
 

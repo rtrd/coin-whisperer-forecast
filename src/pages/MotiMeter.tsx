@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { generateMotiMeterSEO } from "@/utils/pageSeo";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -11,36 +10,19 @@ import { TrendingUp, Flame, BarChart3, ShoppingCart, TrendingDown, Home, Search,
 import { useMotiMeterData } from "@/hooks/useMotiMeterData";
 import { MotiToken } from "@/types/motiMeter";
 import { IndexHeader } from "@/components/IndexHeader";
-import { AdUnit } from "@/components/ads/AdService";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
-
-declare global {
-  interface Window {
-    googletag: any;
-  }
-}
 
 const MotiMeter = () => {
   const seoData = generateMotiMeterSEO();
-  // Initialize ad script on page load
-  useAdScript();
   const { data: motiTokens, isLoading, error } = useMotiMeterData('24h');
 
   const cryptoOptions = [
     { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Major', score: 8.5, prediction: '+12.5%' },
     { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Major', score: 8.2, prediction: '+8.3%' }
   ];
-
-  useEffect(() => {
-    // Display header ad
-    if (window.googletag && window.googletag.display) {
-      window.googletag.display('div-gpt-ad-header-moti');
-    }
-  }, []);
 
   const handleBuyToken = (token: MotiToken) => {
     // Use eToro affiliate link instead of CoinGecko
@@ -85,11 +67,6 @@ const MotiMeter = () => {
         </div>
 
         <div className="container mx-auto px-4 pb-8">
-          {/* Header Ad */}
-          <div className="flex justify-center mb-6">
-            <div id='div-gpt-ad-header-moti' style={{minWidth: '728px', minHeight: '90px'}}></div>
-          </div>
-
           {/* Back to Home Button */}
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">

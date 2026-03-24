@@ -122,7 +122,6 @@ export const AdvancedPerformanceOptimizer = ({
       {/* Enhanced DNS Prefetch */}
       <link rel="dns-prefetch" href="//www.googletagmanager.com" />
       <link rel="dns-prefetch" href="//www.google-analytics.com" />
-      <link rel="dns-prefetch" href="//pagead2.googlesyndication.com" />
       <link rel="dns-prefetch" href="//lunarcrush.com" />
       <link rel="dns-prefetch" href="//coinmarketcap.com" />
       <link rel="dns-prefetch" href="//cryptopanic.com" />

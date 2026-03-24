@@ -6,7 +6,6 @@ import { Rocket, TrendingUp, TrendingDown, Sparkles, LayoutList, LayoutGrid, Wif
 import { LiveTokenFeed } from "./pump/LiveTokenFeed";
 import { PopularMemecoins } from "./pump/PopularMemecoins";
 import { usePumpPortalData } from "@/hooks/usePumpPortalData";
-import { GAMAdUnit } from "./ads/GAMAdUnit";
 
 export const PumpFunIntegration = () => {
   const { newLaunches, isConnected, error } = usePumpPortalData();
@@ -37,17 +36,6 @@ export const PumpFunIntegration = () => {
           />
         </CardContent>
       </Card>
-
-      {/* Ad Section */}
-      <div className="flex justify-center py-2">
-        <div className="w-full max-w-2xl">
-          <GAMAdUnit 
-            adUnitId="lovable_leaderboard"
-            size={[728, 90]}
-            className="mx-auto bg-gray-800/20 rounded-lg p-4 border border-gray-700/30"
-          />
-        </div>
-      </div>
 
       {/* Popular Memecoins Section */}
       <PopularMemecoins />
