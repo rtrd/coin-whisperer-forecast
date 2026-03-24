@@ -1,8 +1,6 @@
 import { generateBlogSEO } from "@/utils/pageSeo";
-import { useAdScript } from "@/hooks/useAdScript";
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { BlogHeader } from "@/components/blog/BlogHeader";
 import { BlogLayout } from "@/components/blog/BlogLayout";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
