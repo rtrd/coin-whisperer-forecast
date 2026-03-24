@@ -32,8 +32,6 @@ import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 const PortfolioTracking = () => {
   const seoData = generatePortfolioTrackingSEO();
-  // Initialize ad script on page load
-  useAdScript();
 
   const [marketData, setMarketData] = useState([]);
   const [portfolioDemo, setPortfolioDemo] = useState({
