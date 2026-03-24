@@ -389,9 +389,6 @@ const AIPricePrediction = () => {
             <div className="lg:col-span-1 order-first lg:order-last">
               <div className="lg:sticky lg:top-8 space-y-4 sm:space-y-6 lg:space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <div className="hidden lg:block">
-                  <AdUnit type="skyscraper" className="ad-click" />
-                </div>
               </div>
             </div>
           </div>
