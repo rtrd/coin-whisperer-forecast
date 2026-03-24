@@ -36,14 +36,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const SentimentAnalysisPage = () => {
   const seoData = generateSentimentAnalysisSEO();
   // Initialize ad script on page load
