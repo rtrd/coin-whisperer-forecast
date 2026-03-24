@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
@@ -10,17 +10,12 @@ import { TokenDetailAnalysis } from "./TokenDetailAnalysis";
 import { TokenSidebar } from "./TokenSidebar";
 import { TokenDetailOtherTokens } from "./TokenDetailOtherTokens";
 import { TokenDetailActions } from "./TokenDetailActions";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { InternalLinking, TokenLinks } from "@/components/seo/InternalLinking";
-import AdUnit from "@/components/ads/VdoBannerAd";
 import { TokenResourcesPanel } from "./TokenResourcesPanel";
 import { TokenPriceTimeline } from "./TokenPriceTimeline";
 import { TokenPriceAlerts } from "./TokenPriceAlerts";
 import { TokenComparison } from "./TokenComparison";
 import { TokenDeveloperActivity } from "./TokenDeveloperActivity";
-import { TokenMarketMetrics } from "./TokenMarketMetrics";
-import { TokenPricePerformance } from "./TokenPricePerformance";
 import { useTokenInfo } from "@/hooks/useTokenInfo";
 
 interface TokenDetailLayoutProps {
