@@ -209,9 +209,8 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             />
           </div>
 
-          {/* Sidebar with Ad + TokenSidebar + Developer Activity */}
+          {/* Sidebar with TokenSidebar + Developer Activity */}
           <div className="lg:col-span-1 space-y-6">
-            <VdoBannerAd />
             <TokenSidebar
               currentTokenId={tokenId}
               selectedCrypto={cryptoId}
@@ -221,11 +220,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
               cryptoData={cryptoData}
             />
             <TokenDeveloperActivity tokenInfo={tokenInfo} isLoading={tokenInfoLoading} />
-            <AdUnit
-              adUnit={"/22181265/pumpparade_stickyrail"}
-              isMobile={isMobile}
-              className={customClass}
-            />
           </div>
         </div>
 
