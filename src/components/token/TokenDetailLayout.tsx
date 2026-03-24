@@ -223,16 +223,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           </div>
         </div>
 
-        {/* Ad Banner Between Market Analysis and Other Tokens */}
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_300v_4"
-              : "/22181265/pumpparade_970v_4"
-          }
-        />
 
         {/* Other Tokens Section */}
         <div className="mt-6">
