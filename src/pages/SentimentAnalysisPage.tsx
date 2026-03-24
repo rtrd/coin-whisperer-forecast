@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { generateSentimentAnalysisSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import {
