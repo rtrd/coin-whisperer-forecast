@@ -250,15 +250,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           <Footer />
         </div>
 
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_stickyfooter"
-              : "/22181265/pumpparade_sticky_footer"
-          }
-        />
       </div>
 
       {/* Sticky Buy/Sell Buttons */}

@@ -117,12 +117,6 @@ const Blog = () => {
           <BlogIndexSection articles={articles} />
         </div>
         
-        {/* Ad Banner Before Footer */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-1"
-          size={[728, 90]}
-          className="mt-6 mb-6 md:mb-8"
-        />
       </BlogLayout>
     </>
   );
