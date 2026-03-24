@@ -174,14 +174,6 @@ const MotiMeter = () => {
             </CardContent>
           </Card>
 
-          {/* Ad Banner After Section 1 */}
-          <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mb-8">
-            <GAMAdUnit
-              adUnitId="div-gpt-ad-1752654531765-3"
-              size={[728, 120]}
-              className="max-w-full h-full"
-            />
-          </div>
 
           {/* MOTI Token Rankings */}
           <div className="mb-6">
