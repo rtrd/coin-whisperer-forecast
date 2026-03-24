@@ -137,12 +137,6 @@ const TechnicalAnalysisPage = () => {
           />
         </div>
 
-        {/* Google Ad Manager - Header Ad */}
-        <GAMAdUnit
-          adUnitId="div-gpt-ad-1752654531765-0"
-          size={[728, 90]}
-          className="mb-6 md:mb-8"
-        />
 
         <div className="container mx-auto px-4 pb-8">
           {/* Back Button */}
