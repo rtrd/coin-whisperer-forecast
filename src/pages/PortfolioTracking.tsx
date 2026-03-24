@@ -515,29 +515,15 @@ const PortfolioTracking = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 2 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-                {/* <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-4"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                /> */}
-                <div className="max-w-full h-full">
-                  <VdoBannerAd />
-                </div>
-              </div>
             </div>
 
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <AdUnit type="skyscraper" />
               </div>
             </div>
           </div>
         </div>
-        <VdoFloatingAd />
-        <VdoBannerAd />
         <Footer />
       </div>
     </>
