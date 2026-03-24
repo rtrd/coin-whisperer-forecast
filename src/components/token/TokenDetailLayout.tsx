@@ -231,18 +231,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
             cryptoOptions={allCryptosData || []}
           />
         </div>
-        <br />
-
-        {/* Ad Banner Before Footer */}
-        {/* <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center mt-6">
-          <AdBanner
-            width={728}
-            height={120}
-            position="horizontal"
-            className="max-w-full h-full"
-          />
-        </div> */}
-        <VdoFloatingAd />
         {/* Internal Linking */}
         <div className="mt-12 mb-8">
           <InternalLinking
