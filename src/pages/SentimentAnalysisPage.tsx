@@ -41,8 +41,6 @@ import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 const SentimentAnalysisPage = () => {
   const seoData = generateSentimentAnalysisSEO();
-  // Initialize ad script on page load
-  useAdScript();
 
   const [marketData, setMarketData] = useState([]);
   const [overallSentiment, setOverallSentiment] = useState({
