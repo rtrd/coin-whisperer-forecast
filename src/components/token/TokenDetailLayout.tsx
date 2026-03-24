@@ -112,16 +112,6 @@ export const TokenDetailLayout: React.FC<TokenDetailLayoutProps> = ({
           </Link>
         </div>
 
-        {/* Ad Banner Before Price Chart */}
-        <AdUnit
-          className={customClass}
-          isMobile={isMobile}
-          adUnit={
-            isMobile
-              ? "/22181265/pumpparade_mob_300v_1"
-              : "/22181265/pumpparade_970v_1"
-          }
-        />
 
         {/* Main Content */}
         <div className="space-y-6">
