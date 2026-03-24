@@ -670,15 +670,6 @@ const SentimentAnalysisPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 1 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                {/* <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-2"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                /> */}
-                <span id="ct_cVqQhaBjbGn"></span>
-              </div>
 
               {/* Top Cryptocurrencies by Sentiment */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm overflow-hidden relative">
