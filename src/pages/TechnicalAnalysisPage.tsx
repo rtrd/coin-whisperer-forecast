@@ -31,8 +31,6 @@ const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const TechnicalAnalysisPage = () => {
   const seoData = generateTechnicalAnalysisSEO();
-  // Initialize ad script on page load
-  useAdScript();
 
   const [marketData, setMarketData] = useState([]);
 
