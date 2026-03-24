@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,13 +13,9 @@ import { generateMarketData } from "@/components/MarketDataUtils";
 import { getTokenUrlId } from "@/utils/tokenMapping";
 import { MarketDataFilters, FilterType } from "@/components/MarketDataFilters";
 import { generateAllTokensSEO } from "@/utils/pageSeo";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const AllTokens = () => {
   const [filteredCryptos, setFilteredCryptos] = useState<any[]>([]);
-  
-  // Initialize ad script on page load
-  useAdScript();
   const [activeFilter, setActiveFilter] = useState<FilterType>("market_cap");
   const location = useLocation();
   const { AllCryptosData } = location.state || { AllCryptosData: [] };
@@ -53,7 +48,6 @@ const AllTokens = () => {
   const handleFilterChange = (filters: any) => {
     let filtered = AllCryptosData;
 
-    // Apply search filter
     if (filters.searchTerm && filters.searchTerm.trim() !== "") {
       filtered = filtered.filter(
         (crypto) =>
@@ -64,22 +58,12 @@ const AllTokens = () => {
       );
     }
 
-    //Apply prediction range filter
-    // if (filters.predictionRange && (filters.predictionRange[0] > -100 || filters.predictionRange[1] < 100)){
-    //      filtered = filtered.filter(crypto => {
-    //   const predictionValue = parseFloat(crypto.prediction.replace('%', '').replace('+', ''));
-    //   return predictionValue >= filters.predictionRange[0] && predictionValue <= filters.predictionRange[1];
-    // });
-    // }
-
-    // Apply category filter
     if (filters.category && filters.category !== "all") {
       filtered = filtered.filter(
         (crypto) => crypto.category === filters.category
       );
     }
 
-    // Apply price range filter
     if (
       filters.priceRange &&
       (filters.priceRange[0] > 0 || filters.priceRange[1] < 1000000)
@@ -91,7 +75,6 @@ const AllTokens = () => {
       );
     }
 
-    // Apply 24h change range filter
     if (
       filters.change24hRange &&
       (filters.change24hRange[0] > -50 || filters.change24hRange[1] < 50)
@@ -103,7 +86,6 @@ const AllTokens = () => {
       );
     }
 
-    // Apply volume range filter
     if (
       filters.volumeRange &&
       (filters.volumeRange[0] > 0 || filters.volumeRange[1] < 1000000000)
@@ -114,7 +96,6 @@ const AllTokens = () => {
           crypto.total_volume <= filters.volumeRange[1]
       );
     }
-    // Apply market cap range filter
     if (
       filters.marketCapRange &&
       (filters.marketCapRange[0] > 0 ||
@@ -127,7 +108,6 @@ const AllTokens = () => {
       );
     }
 
-    // Sorting
     let sorted = [...filtered];
 
     if (filters.sortBy !== undefined && filters.sortBy !== "") {
@@ -170,19 +150,11 @@ const AllTokens = () => {
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
         <div className="container mx-auto px-4 py-4 md:py-8">
-          {/* Homepage Header */}
           <IndexHeader
             selectedCrypto="bitcoin"
             cryptoOptions={cryptoOptions}
             currentPrice={50000}
             priceChange={2.5}
-          />
-
-          {/* Ad Banner After Header */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-0"
-            size={[728, 90]}
-            className="mb-6 md:mb-8"
           />
 
           <div className="mb-6">
@@ -202,10 +174,8 @@ const AllTokens = () => {
             <h2 className="text-2xl font-semibold text-white mt-6 mb-4">Market Data & Analysis Tools</h2>
           </div>
 
-          {/* Crypto Filters */}
           <CryptoFilters onFilterChange={handleFilterChange} />
 
-          {/* Token List */}
           <Card className="bg-gray-800/50 border-gray-700 shadow-2xl">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
@@ -265,13 +235,6 @@ const AllTokens = () => {
               </div>
             </CardContent>
           </Card>
-          
-          {/* Ad Banner Before Footer */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mt-6 mb-6"
-          />
         </div>
 
         <Footer />

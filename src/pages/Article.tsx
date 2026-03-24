@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useAdScript } from "@/hooks/useAdScript";
 import { useParams, Link, useLocation } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import { ArticleIndex } from "@/components/ArticleIndex";
@@ -26,22 +24,13 @@ import { AdvancedSEOHead } from "@/components/seo/AdvancedSEOHead";
 import { EnhancedBreadcrumbSchema } from "@/components/seo/EnhancedBreadcrumbSchema";
 import { AdvancedPerformanceOptimizer } from "@/components/seo/AdvancedPerformanceOptimizer";
 import { calculateReadingTime } from "@/utils/readingTime";
-import AdUnit from "@/components/ads/VdoBannerAd";
-import { useIsMobile } from "@/hooks/useIsMobile";
 
 const CACHE_KEY = "topGainersAndLosers";
 const CACHE_DURATION = 1000 * 60 * 10; // 10 minutes
 
 const Article = () => {
   const { articleId } = useParams<{ articleId: string }>();
-  const isMobile = window.matchMedia(`(max-width: ${768}px)`).matches;
-  const customClass = useMemo(
-    () => (isMobile ? "flex justify-center !px-4 mb-6" : "flex justify-center mb-6"),
-    [isMobile]
-  );
 
-  // Initialize ad script on page load
-  // useAdScript();
   const [articlesData, setArticlesData] = useState<any[]>([]);
   const [allArticlesData, setallArticlesData] = useState<any[]>([]);
   const [topGainnersandLoosers, setallTopGainnersandLoosers] = useState<any[]>(
@@ -51,7 +40,6 @@ const Article = () => {
   const location = useLocation();
 
   const articles = (() => {
-    // Prioritize state data if available
     if (location.state?.article) {
       const stateArticle = Array.isArray(location.state.article)
         ? location.state.article.map(formatArticleForDisplay)
@@ -59,7 +47,6 @@ const Article = () => {
       return stateArticle;
     }
 
-    // Fallback to fetched data
     const fallbackArticle = allArticlesData.find(
       (a) => a.id === Number(articleId)
     );
@@ -99,11 +86,8 @@ const Article = () => {
           setallTopGainnersandLoosers(data);
           return;
         }
-      } catch (err) {
-        // If cache is corrupted, ignore and fetch fresh
-      }
+      } catch (err) {}
     }
-    // Fetch and cache if not found or expired
     try {
       const data = await getAllCryptos();
       setallTopGainnersandLoosers(data);
@@ -111,10 +95,7 @@ const Article = () => {
         CACHE_KEY,
         JSON.stringify({ data, timestamp: Date.now() })
       );
-    } catch (err) {
-      // // Handle fetch error if needed
-      // setallArticlesData([]);
-    }
+    } catch (err) {}
   };
 
   const transformArticles = (posts: any[]) => {
@@ -130,7 +111,7 @@ const Article = () => {
         post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
         "https://via.placeholder.com/300";
       const url = post.link;
-      const content = decodeHtmlEntities(post.content?.rendered || ""); // full HTML content
+      const content = decodeHtmlEntities(post.content?.rendered || "");
       const tagname = post.tagNames?.filter((t: string) => t)?.join(", ");
 
       return {
@@ -160,7 +141,7 @@ const Article = () => {
         console.error("Fetched article data is not an array:", AllarticleData);
       }
     } finally {
-      setLoading(false); // <-- SET LOADING FALSE AFTER FETCH
+      setLoading(false);
     }
   };
 
@@ -204,7 +185,6 @@ const Article = () => {
 
   return (
     <>
-      {/* Advanced SEO Head */}
       {seoData && (
         <AdvancedSEOHead
           seoData={seoData}
@@ -216,14 +196,12 @@ const Article = () => {
         />
       )}
 
-      {/* Breadcrumb Schema */}
       <EnhancedBreadcrumbSchema
         articleTitle={article?.title}
         customBreadcrumbs={undefined}
         tokenName={undefined}
       />
 
-      {/* Performance Optimizer */}
       <AdvancedPerformanceOptimizer
         pageType="article"
         criticalResources={[article?.image].filter(Boolean)}
@@ -238,15 +216,6 @@ const Article = () => {
             priceChange={2.5}
           />
 
-          {/* Header Ad - below header description */}
-          {/* <div className="flex justify-center mt-6 mb-8">
-            <AdUnit type="header" className="ad-click" />
-          </div> */}
-
-          {/* Additional Header Ad Placement */}
-          {/* <div className="flex justify-center mb-8">
-            <AdUnit type="leaderboard" className="ad-click" />
-          </div> */}
           {/* Back Button */}
           <div className="flex items-center gap-4 mb-6">
             <Link to="/">
@@ -260,37 +229,13 @@ const Article = () => {
             </Link>
           </div>
 
-          <div>
-            <AdUnit
-              isMobile={isMobile}
-              className={customClass}
-              adUnit={
-                isMobile
-                  ? "/22181265/pumpparade_mob_300v_1"
-                  : "/22181265/pumpparade_970v_1"
-              }
-            />
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-3 space-y-8">
-              {/* Article Content with Header */}
               <Card className="bg-gray-800/50 border-gray-700 overflow-hidden rounded-lg">
                 <ArticleHeader article={article} />
                 <br />
                 <br />
-                <div className="flex justify-center">
-                  <AdUnit
-                    isMobile={isMobile}
-                    className={customClass}
-                    adUnit={
-                      isMobile
-                        ? "/22181265/pumpparade_mob_300v_2"
-                        : "/22181265/pumpparade_970v_2"
-                    }
-                  />
-                </div>
 
                 <ArticleContent
                   content={article.content}
@@ -300,19 +245,6 @@ const Article = () => {
                 />
               </Card>
 
-              {/* Square Ads between tags and related articles */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
-                <AdUnit
-                  isMobile={isMobile}
-                  className={customClass}
-                  adUnit={
-                    isMobile
-                      ? "/22181265/pumpparade_mob_stickyfooter"
-                      : "/22181265/pumpparade_sticky_footer"
-                  }
-                />
-              </div>
-
               {/* Related Articles */}
               <RelatedArticles articles={transformedArticles} />
             </div>
@@ -320,19 +252,9 @@ const Article = () => {
             {/* Sticky Sidebar */}
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
-                <VdoBannerAd adUnit={""} />
                 <ArticleIndex content={article.content} />
-                {/* <AdUnit type="skyscraper" className="ad-click" /> */}
-                {/* <VdoBannerAd /> */}
-                {/* Market Movers Widget */}
                 <MarketWinnersWidget
                   topGainnersandLoosers={topGainnersandLoosers}
-                />
-
-                {/* Ad placement below Market Movers */}
-                <AdUnit
-                  className="flex justify-center mt-5"
-                  adUnit="/22181265/pumpparade_stickyrail"
                 />
               </div>
             </div>

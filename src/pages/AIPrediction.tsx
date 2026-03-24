@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,9 +20,6 @@ import { generateAIPredictionSEO } from "@/utils/pageSeo";
 
 const AIPrediction = () => {
   const [cryptoOptions, setCryptoOptions] = useState<any[]>([]);
-  
-  // Initialize ad script on page load
-  useAdScript();
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCrypto, setSelectedCrypto] = useState('bitcoin');
   const [predictionDays, setPredictionDays] = useState(7);
@@ -39,7 +35,6 @@ const AIPrediction = () => {
     const categoryMap = Object.fromEntries(
       categories.map((c) => [c.id, c.category])
     );
-
     return tokens.map((token) => ({
       ...token,
       category: categoryMap[token.id] || "Unknown",
@@ -50,29 +45,22 @@ const AIPrediction = () => {
     try {
       setIsLoading(true);
       const data = await getAllCryptos();
-      
-      // Ensure data is an array
       if (!Array.isArray(data)) {
         console.error("API response is not an array:", data);
         throw new Error("Invalid API response format");
       }
-
       const updatedTokens = addCategoryToTokens(data, category);
-      
-      // Transform the API data to match the CryptoOption interface
       const transformedOptions = updatedTokens.map((crypto) => ({
         value: crypto.id,
         label: `${crypto.name} (${crypto.symbol.toUpperCase()})`,
         icon: getIconForCrypto(crypto.symbol.toLowerCase()),
         category: crypto.category,
-        score: Math.random() * 10, // Mock score for now
-        prediction: `+${(Math.random() * 20 - 5).toFixed(1)}%` // Mock prediction for now
+        score: Math.random() * 10,
+        prediction: `+${(Math.random() * 20 - 5).toFixed(1)}%`
       }));
-      
       setCryptoOptions(transformedOptions);
     } catch (error) {
       console.error("Error fetching coins:", error);
-      // Fallback to basic options if API fails
       setCryptoOptions([
         { value: 'bitcoin', label: 'Bitcoin (BTC)', icon: '₿', category: 'Layer 1', score: 8.5, prediction: '+12.5%' },
         { value: 'ethereum', label: 'Ethereum (ETH)', icon: 'Ξ', category: 'Layer 1', score: 8.2, prediction: '+8.3%' },
@@ -88,29 +76,15 @@ const AIPrediction = () => {
 
   const getIconForCrypto = (symbol: string): string => {
     const iconMap: { [key: string]: string } = {
-      'btc': '₿',
-      'eth': 'Ξ',
-      'bnb': '🔶',
-      'xrp': '💧',
-      'ada': '₳',
-      'sol': '◎',
-      'avax': '🔺',
-      'matic': '🟣',
-      'dot': '⚫',
-      'link': '🔗',
-      'uni': '🦄',
-      'usdt': '💰',
-      'usdc': '💵',
-      'dai': '🔹',
-      'doge': '🐕',
-      'shib': '🐕‍🦺',
+      'btc': '₿', 'eth': 'Ξ', 'bnb': '🔶', 'xrp': '💧', 'ada': '₳', 'sol': '◎',
+      'avax': '🔺', 'matic': '🟣', 'dot': '⚫', 'link': '🔗', 'uni': '🦄',
+      'usdt': '💰', 'usdc': '💵', 'dai': '🔹', 'doge': '🐕', 'shib': '🐕‍🦺',
     };
     return iconMap[symbol] || '🪙';
   };
 
   const handlePredict = async () => {
     if (!cryptoData || cryptoData.length === 0) return;
-    
     await generatePrediction(cryptoData, selectedCrypto, predictionDays, modelType);
     setShowPrediction(true);
   };
@@ -121,19 +95,17 @@ const AIPrediction = () => {
 
   useEffect(() => {
     getCryptos();
-    // Track page view
     trackPageView('/ai-prediction');
     trackFeatureUsage('ai_prediction_page', 'view');
   }, []);
 
-  // Get current price data for the selected crypto
   const currentPrice = cryptoData && cryptoData.length > 0 ? cryptoData[cryptoData.length - 1].price : 50000;
   const priceChange = cryptoData && cryptoData.length > 1 ? 
     ((cryptoData[cryptoData.length - 1].price - cryptoData[cryptoData.length - 2].price) / cryptoData[cryptoData.length - 2].price * 100) : 2.5;
 
   if (isLoading) {
-  return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-x-hidden">
+    return (
+      <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-x-hidden">
         <div className="container mx-auto px-4 py-8">
           <div className="flex items-center justify-center min-h-[60vh]">
             <div className="text-center">
@@ -161,7 +133,6 @@ const AIPrediction = () => {
         </div>
 
         <div className="container mx-auto px-4 pb-8">
-          {/* Header */}
           <div className="flex items-center gap-4 mb-8">
             <Link to="/">
               <Button variant="outline" size="sm" className="bg-gray-800 border-gray-600 text-white hover:bg-gray-700">
@@ -182,7 +153,6 @@ const AIPrediction = () => {
             </p>
           </div>
 
-          {/* AI Prediction Interface */}
           <Card className="bg-gray-800/50 border-gray-700 shadow-2xl mb-8">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-3">
@@ -191,7 +161,6 @@ const AIPrediction = () => {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* AI Prediction Controls */}
               <AIPredictionControls
                 predictionDays={predictionDays}
                 setPredictionDays={setPredictionDays}
@@ -207,7 +176,6 @@ const AIPrediction = () => {
                 cryptoOptions={cryptoOptions}
               />
 
-              {/* AI Prediction Results */}
               {showPrediction && prediction && (
                 <AIPredictionResults
                   prediction={prediction}
@@ -220,17 +188,14 @@ const AIPrediction = () => {
             </CardContent>
           </Card>
 
-          {/* Crypto Prediction Features Section */}
           <div className="mb-12">
             <CryptoPredictionFeatures />
           </div>
 
-          {/* FAQ Section */}
           <div className="mb-12">
             <CryptoPredictionFAQ />
           </div>
 
-          {/* Additional SEO Content */}
           <div className="bg-gray-800/30 rounded-xl p-8 mb-8 border border-gray-700">
             <h2 className="text-2xl font-bold text-white mb-6">Why Choose Our AI Crypto Price Prediction Tool?</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-gray-300">
