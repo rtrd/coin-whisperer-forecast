@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { generatePortfolioTrackingSEO } from "@/utils/pageSeo";
 import { Link } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,18 +26,12 @@ import {
   Smartphone,
   Bell,
 } from "lucide-react";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 const PortfolioTracking = () => {
   const seoData = generatePortfolioTrackingSEO();
-  // Initialize ad script on page load
-  useAdScript();
 
   const [marketData, setMarketData] = useState([]);
   const [portfolioDemo, setPortfolioDemo] = useState({
@@ -398,15 +391,6 @@ const PortfolioTracking = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 1 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-                {/* <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-3"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                /> */}
-                <span id="ct_cVqQhaBjbGn"></span>
-              </div>
 
               {/* Portfolio Tracking FAQ */}
               <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -531,29 +515,15 @@ const PortfolioTracking = () => {
                 </CardContent>
               </Card>
 
-              {/* Ad Banner After Section 2 */}
-              <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center">
-                {/* <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-4"
-                  size={[728, 120]}
-                  className="max-w-full h-full"
-                /> */}
-                <div className="max-w-full h-full">
-                  <VdoBannerAd />
-                </div>
-              </div>
             </div>
 
             <div className="hidden lg:block">
               <div className="sticky top-8 space-y-8">
                 <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                <AdUnit type="skyscraper" />
               </div>
             </div>
           </div>
         </div>
-        <VdoFloatingAd />
-        <VdoBannerAd />
         <Footer />
       </div>
     </>

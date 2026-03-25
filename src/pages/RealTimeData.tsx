@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { EnhancedSEOHead } from "@/components/seo/EnhancedSEOHead";
-import { useAdScript } from "@/hooks/useAdScript";
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,23 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Activity, TrendingUp, BarChart3, Zap, Clock, Globe, Eye, Radar, Signal, Radio, Wifi, Monitor, ChartLine, ChartBar, ChartPie, Target, Users, MessageCircle } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { AdUnit } from "@/components/ads/AdService";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 import { IndexHeader } from "@/components/IndexHeader";
 import { MarketWinnersWidget } from "@/components/MarketWinnersWidget";
 import Footer from "@/components/Footer";
 import { getAllCryptos } from "../../utils/api";
 import { apiService } from "@/services/apiService";
 import { formatMarketCap, formatPrice, formatVolume } from '@/utils/marketDataHelpers';
-import VdoFloatingAd from "@/components/ads/VdoFloatingAd";
-import VdoBannerAd from "@/components/ads/VdoBannerAd";
 import ScrollToTop from "@/components/ScrollToTop";
 import { generateRealTimeDataSEO } from "@/utils/pageSeo";
 
 const RealTimeData = () => {
   const seoData = generateRealTimeDataSEO();
-  // Initialize ad script on page load
-  useAdScript();
   
   const [marketData, setMarketData] = useState([]);
   const [liveStats, setLiveStats] = useState({
@@ -155,12 +148,6 @@ const RealTimeData = () => {
                   />
                 </div>
 
-                {/* Google Ad Manager - Header Ad */}
-                <GAMAdUnit
-                  adUnitId="div-gpt-ad-1752654531765-0"
-                  size={[728, 90]}
-                  className="mb-6 md:mb-8"
-                />
 
                 <div className="container mx-auto px-4 pb-8">
         {/* Back Button */}
@@ -477,15 +464,6 @@ const RealTimeData = () => {
                         </CardContent>
                       </Card>
 
-                      {/* Ad Banner After Section 1 */}
-                      <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                        {/* <GAMAdUnit
-                          adUnitId="div-gpt-ad-1752654531765-2"
-                          size={[728, 120]}
-                          className="max-w-full h-full"
-                        /> */}
-                        <span id="ct_cVqQhaBjbGn"></span>
-                      </div>
 
                       {/* Market Movers Analysis */}
                       <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -635,14 +613,6 @@ const RealTimeData = () => {
                         </CardContent>
                       </Card>
 
-                      {/* Ad Banner After Section 2 */}
-                      <div className="w-full min-h-[120px] bg-gray-800/50 border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center my-8">
-                        <GAMAdUnit
-                          adUnitId="div-gpt-ad-1752654531765-3"
-                          size={[728, 120]}
-                          className="max-w-full h-full"
-                        />
-                      </div>
 
                       {/* Social Sentiment Intelligence */}
                       <Card className="bg-gray-800/50 border-gray-700 shadow-xl backdrop-blur-sm">
@@ -734,20 +704,11 @@ const RealTimeData = () => {
                     <div className="hidden lg:block">
                       <div className="sticky top-8 space-y-8">
                         <MarketWinnersWidget topGainnersandLoosers={marketData} />
-                        <AdUnit type="skyscraper" />
                       </div>
                     </div>
                   </div>
 
-                  {/* Google Ad Manager - Bottom Ad */}
-                  <GAMAdUnit
-                    adUnitId="div-gpt-ad-1752654531765-1"
-                    size={[728, 90]}
-                    className="mt-8"
-                  />
                 </div>
-                <VdoFloatingAd />
-                <VdoBannerAd />
                 <Footer />
               </>
             )}

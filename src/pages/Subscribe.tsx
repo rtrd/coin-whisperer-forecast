@@ -15,8 +15,6 @@ import { PremiumFeatureCard } from "@/components/subscribe/PremiumFeatureCard";
 import { TestimonialCard } from "@/components/subscribe/TestimonialCard";
 import { LiveStatsWidget } from "@/components/subscribe/LiveStatsWidget";
 import { ComparisonTable } from "@/components/subscribe/ComparisonTable";
-import { useAdScript } from "@/hooks/useAdScript";
-import { GAMAdUnit } from "@/components/ads/GAMAdUnit";
 
 const Subscribe = () => {
   const [email, setEmail] = useState('');
@@ -24,8 +22,6 @@ const Subscribe = () => {
 
   const seoData = generateSubscribeSEO();
   
-  // Initialize ad script on page load
-  useAdScript();
 
   // Track page view on component mount
   React.useEffect(() => {
@@ -137,12 +133,6 @@ const Subscribe = () => {
             priceChange={2.5}
           />
 
-          {/* Ad Banner After Header */}
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-0"
-            size={[728, 90]}
-            className="mb-6 md:mb-8"
-          />
 
           {/* Header */}
           <div className="flex items-center gap-4 mb-8">
@@ -288,14 +278,6 @@ const Subscribe = () => {
           </div>
         </div>
         
-        {/* Ad Banner Before Footer */}
-        <div className="container mx-auto px-4 py-4 md:py-8">
-          <GAMAdUnit
-            adUnitId="div-gpt-ad-1752654531765-1"
-            size={[728, 90]}
-            className="mb-6"
-          />
-        </div>
       </div>
       
       <div className="bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
