@@ -10,13 +10,13 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { X, Search, Calendar, Tag, Filter } from "lucide-react";
-import { ArticleFilterState, Article } from "@/types/blog";
+import { ArticleFilterState, WordPressTaxonomyTerm } from "@/types/blog";
 
 interface BlogArticleFiltersProps {
   filters: ArticleFilterState;
   onUpdateFilters: (newFilters: Partial<ArticleFilterState>) => void;
   onResetFilters: () => void;
-  articles: Article[];
+  categories: WordPressTaxonomyTerm[];
   resultsCount: number;
 }
 
@@ -24,30 +24,20 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
   filters,
   onUpdateFilters,
   onResetFilters,
-  articles,
+  categories,
   resultsCount,
 }) => {
-  // Extract unique values from articles (exclude special categories)
   const uniqueCategories = useMemo(() => {
-    const categories = articles.flatMap(article => 
-      article.allCategories || [article.category]
-    );
-    const filtered = categories.filter(category => 
-      !["Featured", "Trending"].includes(category)
-    );
-    return Array.from(new Set(filtered)).sort();
-  }, [articles]);
-
-  const uniqueTags = useMemo(() => {
-    const tags = articles.flatMap(article => article.tagNames || []);
-    return Array.from(new Set(tags)).sort();
-  }, [articles]);
+    return categories
+      .filter((category) => !["featured", "trending"].includes(category.slug))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [categories]);
 
   // Count active filters
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (filters.searchTerm) count++;
-    if (filters.category !== 'all') count++;
+    if (filters.categoryId) count++;
     if (filters.tags.length > 0) count++;
     if (filters.dateRange.start || filters.dateRange.end) count++;
     return count;
@@ -94,17 +84,23 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
             Category
           </label>
           <Select
-            value={filters.category}
-            onValueChange={(value) => onUpdateFilters({ category: value })}
+            value={filters.categoryId || "all"}
+            onValueChange={(value) =>
+              onUpdateFilters({ categoryId: value === "all" ? "" : value })
+            }
           >
             <SelectTrigger className="bg-gray-700 border-gray-600 text-white">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-gray-700 border-gray-600">
               <SelectItem value="all" className="text-white">All Categories</SelectItem>
-              {uniqueCategories.map(category => (
-                <SelectItem key={category} value={category} className="text-white">
-                  {category}
+              {uniqueCategories.map((category) => (
+                <SelectItem
+                  key={category.id}
+                  value={String(category.id)}
+                  className="text-white"
+                >
+                  {category.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -131,7 +127,6 @@ export const BlogArticleFilters: React.FC<BlogArticleFiltersProps> = ({
               <SelectItem value="date-asc" className="text-white">Oldest First</SelectItem>
               <SelectItem value="title-asc" className="text-white">Title (A-Z)</SelectItem>
               <SelectItem value="title-desc" className="text-white">Title (Z-A)</SelectItem>
-              <SelectItem value="category-asc" className="text-white">Category (A-Z)</SelectItem>
             </SelectContent>
           </Select>
         </div>

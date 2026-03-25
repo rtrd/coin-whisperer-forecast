@@ -1,151 +1,136 @@
-import React, { useState, useMemo } from "react";
-import { ArticleFilterState, Article, ViewMode } from "@/types/blog";
+import React, { useEffect, useState } from "react";
+import { ArticleFilterState, ViewMode } from "@/types/blog";
 import { BlogArticleFilters } from "./BlogArticleFilters";
 import { BlogArticlesList } from "./BlogArticlesList";
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { BookOpen } from "lucide-react";
-
-interface BlogIndexSectionProps {
-  articles: Article[];
-}
+import { useWordPressArchive, useWordPressCategories } from "@/hooks/useWordPressArticles";
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 
 const initialFilters: ArticleFilterState = {
-  searchTerm: '',
-  category: 'all',
+  searchTerm: "",
+  categoryId: "",
   tags: [],
   dateRange: {
-    start: '',
-    end: ''
+    start: "",
+    end: "",
   },
-  sortBy: 'date',
-  sortOrder: 'desc'
+  sortBy: "date",
+  sortOrder: "desc",
 };
 
-export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) => {
+const ArchiveSkeleton = () => (
+  <div className="space-y-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <Skeleton key={index} className="h-12 w-full" />
+      ))}
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {Array.from({ length: 8 }).map((_, index) => (
+        <div key={index} className="space-y-3">
+          <Skeleton className="aspect-[4/3] w-full rounded-lg" />
+          <Skeleton className="h-5 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
+export const BlogIndexSection: React.FC = () => {
   const [filters, setFilters] = useState<ArticleFilterState>(initialFilters);
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
-  const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 24; // Increased to show more articles
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const categoriesQuery = useWordPressCategories();
+  const archiveQuery = useWordPressArchive(filters);
+  const {
+    articles,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+    isFetchingNextPage,
+    isLoading,
+    totalResults,
+  } = archiveQuery;
+  const { ref: loadMoreRef, isIntersecting } = useIntersectionObserver({
+    threshold: 0,
+    rootMargin: "400px",
+    triggerOnce: false,
+  });
+
+  useEffect(() => {
+    if (isIntersecting && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage, isIntersecting]);
 
   const updateFilters = (newFilters: Partial<ArticleFilterState>) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-    setCurrentPage(1); // Reset to first page when filters change
+    setFilters((previousFilters) => ({
+      ...previousFilters,
+      ...newFilters,
+    }));
   };
 
   const resetFilters = () => {
     setFilters(initialFilters);
-    setCurrentPage(1);
   };
 
-  // Filter and sort articles
-  const filteredArticles = useMemo(() => {
-    // Include ALL articles in the archive section (don't exclude Featured/Trending)
-    let filtered = articles.filter(article => {
-      // Search filter
-      if (filters.searchTerm) {
-        const searchTerm = filters.searchTerm.toLowerCase();
-        const searchIn = [
-          article.title,
-          article.excerpt,
-          article.content || '',
-          ...(article.tagNames || [])
-        ].join(' ').toLowerCase();
-        
-        if (!searchIn.includes(searchTerm)) return false;
-      }
-
-      // Category filter
-      if (filters.category !== 'all') {
-        const articleCategories = article.allCategories || [article.category];
-        if (!articleCategories.includes(filters.category)) return false;
-      }
-
-      // Tags filter
-      if (filters.tags.length > 0) {
-        const articleTags = article.tagNames || [];
-        if (!filters.tags.some(tag => articleTags.includes(tag))) {
-          return false;
-        }
-      }
-
-      // Date range filter
-      if (filters.dateRange.start || filters.dateRange.end) {
-        const articleDate = new Date(article.date);
-        if (filters.dateRange.start && articleDate < new Date(filters.dateRange.start)) {
-          return false;
-        }
-        if (filters.dateRange.end && articleDate > new Date(filters.dateRange.end)) {
-          return false;
-        }
-      }
-
-      return true;
-    });
-
-    // Sort articles
-    filtered.sort((a, b) => {
-      let aValue: any, bValue: any;
-
-      switch (filters.sortBy) {
-        case 'date':
-          aValue = new Date(a.date);
-          bValue = new Date(b.date);
-          break;
-        case 'title':
-          aValue = a.title.toLowerCase();
-          bValue = b.title.toLowerCase();
-          break;
-        case 'category':
-          aValue = a.category.toLowerCase();
-          bValue = b.category.toLowerCase();
-          break;
-        default:
-          return 0;
-      }
-
-      if (aValue < bValue) return filters.sortOrder === 'asc' ? -1 : 1;
-      if (aValue > bValue) return filters.sortOrder === 'asc' ? 1 : -1;
-      return 0;
-    });
-
-    return filtered;
-  }, [articles, filters]);
-
-  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
-
-  console.log(`📄 BlogIndex: Displaying ${filteredArticles.length} of ${articles.length} total articles`);
-  console.log(`📄 BlogIndex: ${totalPages} pages with ${articlesPerPage} articles per page`);
+  const hasArticles = articles.length > 0;
 
   return (
     <div className="mb-12 mt-12">
       <div className="flex items-center gap-2 mb-8">
         <BookOpen className="h-6 w-6 text-blue-400" />
-        <h2 className="text-2xl font-bold text-white">Blog Archive ({filteredArticles.length} articles)</h2>
+        <h2 className="text-2xl font-bold text-white">
+          Blog Archive ({totalResults} articles)
+        </h2>
       </div>
-      
+
       <Card className="bg-gray-800/50 border-gray-700">
         <CardContent className="p-6">
-          {/* Filters */}
           <BlogArticleFilters
             filters={filters}
             onUpdateFilters={updateFilters}
             onResetFilters={resetFilters}
-            articles={articles}
-            resultsCount={filteredArticles.length}
+            categories={categoriesQuery.data || []}
+            resultsCount={totalResults}
           />
 
-          {/* Results */}
-          {filteredArticles.length > 0 ? (
-            <BlogArticlesList
-              articles={filteredArticles}
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-              articlesPerPage={articlesPerPage}
-            />
-          ) : (
+          {isLoading ? <ArchiveSkeleton /> : null}
+
+          {!isLoading && hasArticles ? (
+            <>
+              <BlogArticlesList
+                articles={articles}
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+                totalArticles={totalResults}
+              />
+
+              <div ref={loadMoreRef} className="mt-8 flex justify-center">
+                {isFetchingNextPage ? (
+                  <div className="text-sm text-gray-400">Loading more articles...</div>
+                ) : null}
+                {!hasNextPage ? (
+                  <div className="text-sm text-gray-500">All articles loaded.</div>
+                ) : null}
+              </div>
+            </>
+          ) : null}
+
+          {!isLoading && isError ? (
+            <div className="text-center py-12">
+              <div className="text-white text-lg mb-4">
+                Unable to load the archive right now
+              </div>
+              <p className="text-gray-400 mb-6">
+                Please try again in a moment.
+              </p>
+            </div>
+          ) : null}
+
+          {!isLoading && !isError && !hasArticles ? (
             <div className="text-center py-12">
               <div className="text-white text-lg mb-4">
                 No articles found matching your criteria
@@ -160,7 +145,7 @@ export const BlogIndexSection: React.FC<BlogIndexSectionProps> = ({ articles }) 
                 Clear all filters
               </button>
             </div>
-          )}
+          ) : null}
         </CardContent>
       </Card>
     </div>

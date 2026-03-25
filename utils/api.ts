@@ -1,4 +1,6 @@
 
+import type { WordPressPostsPageParams } from "../src/types/blog";
+
 // Re-export from the new centralized API service
 export { apiService } from '../src/services/apiService';
 
@@ -11,4 +13,14 @@ export const getAllCryptos = async () => {
 export const getWordPressPost = async <T>(): Promise<T> => {
   const { apiService } = await import('../src/services/apiService');
   return apiService.getWordPressPost<T>();
+};
+
+export const getWordPressPostsPage = async (params?: WordPressPostsPageParams) => {
+  const { apiService } = await import('../src/services/apiService');
+  return apiService.getWordPressPostsPage(params);
+};
+
+export const getWordPressPostById = async (id: number) => {
+  const { apiService } = await import('../src/services/apiService');
+  return apiService.getWordPressPostById(id);
 };

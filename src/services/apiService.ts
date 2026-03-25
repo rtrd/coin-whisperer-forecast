@@ -1,10 +1,41 @@
 import { CryptoToken } from "@/types/crypto";
 import { TokenInfo } from "@/hooks/useTokenInfo";
+import {
+  Article,
+  CategorySectionData,
+  WordPressPostsPage,
+  WordPressPostsPageParams,
+  WordPressTaxonomyTerm,
+} from "@/types/blog";
+import { decodeHtmlEntities } from "@/utils/htmlUtils";
+import { calculateReadingTime } from "@/utils/readingTime";
+import { createTaxonomyMap, hydrateArticles } from "@/utils/wordPressArticles";
 
 const API_KEY = import.meta.env.VITE_TOKEN_KEY;
 const SERVER_URL = "https://server.pumpparade.com";
+
+interface WordPressListPostResponse {
+  id: number;
+  date: string;
+  link: string;
+  title?: { rendered?: string };
+  excerpt?: { rendered?: string };
+  jetpack_featured_media_url?: string;
+  categories?: number[];
+  tags?: number[];
+}
+
+interface WordPressDetailPostResponse extends WordPressListPostResponse {
+  content?: { rendered?: string };
+  _embedded?: {
+    author?: Array<{ name?: string }>;
+    "wp:featuredmedia"?: Array<{ source_url?: string }>;
+  };
+}
+
 class ApiService {
   private baseUrl = "https://api.coingecko.com/api/v3";
+  private wordPressBaseUrl = "https://blog.pumpparade.com/wp-json/wp/v2";
 
   async getAllCryptos(): Promise<CryptoToken[]> {
     try {
@@ -108,71 +139,184 @@ class ApiService {
     }
   }
 
- async getWordPressPost<T = any[]>(): Promise<T> {
-  try {
-    let allPosts: any[] = [];
+  async getWordPressPostsPage(
+    params: WordPressPostsPageParams = {}
+  ): Promise<WordPressPostsPage> {
+    const page = params.page ?? 1;
+    const perPage = params.perPage ?? 24;
+    const searchParams = new URLSearchParams({
+      page: String(page),
+      per_page: String(perPage),
+      _fields:
+        "id,date,link,title,excerpt,jetpack_featured_media_url,categories,tags",
+    });
 
-    // Fetch first page to know total pages
-    const firstResponse = await fetch(
-      `https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed&per_page=100&page=1`
+    if (params.search) {
+      searchParams.set("search", params.search);
+    }
+    if (params.categoryId) {
+      searchParams.set("categories", String(params.categoryId));
+    }
+    if (params.after) {
+      searchParams.set("after", params.after);
+    }
+    if (params.before) {
+      searchParams.set("before", params.before);
+    }
+    if (params.orderBy) {
+      searchParams.set("orderby", params.orderBy);
+    }
+    if (params.order) {
+      searchParams.set("order", params.order);
+    }
+    if (params.tagId) {
+      searchParams.set("tags", String(params.tagId));
+    }
+    if (params.excludeId) {
+      searchParams.set("exclude", String(params.excludeId));
+    }
+
+    const response = await fetch(
+      `${this.wordPressBaseUrl}/posts?${searchParams.toString()}`
     );
 
-    if (!firstResponse.ok) {
-      throw new Error(`WordPress API error! status: ${firstResponse.status}`);
+    if (!response.ok) {
+      throw new Error(`WordPress API error! status: ${response.status}`);
     }
 
-    const firstPagePosts = await firstResponse.json();
-    allPosts = [...firstPagePosts];
+    const posts: WordPressListPostResponse[] = await response.json();
+    const total = Number(response.headers.get("X-WP-Total")) || posts.length;
+    const totalPages =
+      Number(response.headers.get("X-WP-TotalPages")) || (posts.length > 0 ? 1 : 0);
 
-    // WordPress provides total pages in headers
-    const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages")) || 1;
-
-    // Fetch remaining pages (if any) in parallel
-    const pageRequests: Promise<Response>[] = [];
-    for (let page = 2; page <= totalPages; page++) {
-      pageRequests.push(
-        fetch(
-          `https://blog.pumpparade.com/wp-json/wp/v2/posts?_embed&per_page=100&page=${page}`
-        )
-      );
-    }
-
-    const responses = await Promise.all(pageRequests);
-    for (const res of responses) {
-      if (res.ok) {
-        const posts = await res.json();
-        allPosts = [...allPosts, ...posts];
-      }
-    }
-
-    // Collect unique tag IDs
-    const allTagIds = Array.from(
-      new Set(allPosts.flatMap((post: any) => post.tags))
-    );
-    let tagMap: Record<number, string> = {};
-
-    if (allTagIds.length > 0) {
-      const tagsUrl = `https://blog.pumpparade.com/wp-json/wp/v2/tags?include=${allTagIds.join(",")}`;
-      const tagsResponse = await fetch(tagsUrl);
-      const tags = await tagsResponse.json();
-      tagMap = tags.reduce((acc: Record<number, string>, tag: any) => {
-        acc[tag.id] = tag.name;
-        return acc;
-      }, {});
-    }
-
-    // Attach tag names
-    const postsWithTagNames = allPosts.map((post: any) => ({
-      ...post,
-      tagNames: post.tags.map((tagId: number) => tagMap[tagId] || ""),
-    }));
-
-    return postsWithTagNames as T;
-  } catch (error) {
-    console.error("WordPress fetch error:", error);
-    throw error;
+    return {
+      articles: posts.map((post) => this.transformWordPressSummary(post)),
+      page,
+      perPage,
+      total,
+      totalPages,
+      hasNextPage: page < totalPages,
+    };
   }
-}
+
+  async getWordPressPostById(id: number): Promise<Article> {
+    const response = await fetch(`${this.wordPressBaseUrl}/posts/${id}?_embed=author`);
+
+    if (!response.ok) {
+      throw new Error(`WordPress API error! status: ${response.status}`);
+    }
+
+    const post: WordPressDetailPostResponse = await response.json();
+    return this.transformWordPressDetail(post);
+  }
+
+  async getWordPressCategories(): Promise<WordPressTaxonomyTerm[]> {
+    const response = await fetch(
+      `${this.wordPressBaseUrl}/categories?per_page=100&_fields=id,name,slug,count&orderby=count&order=desc`
+    );
+
+    if (!response.ok) {
+      throw new Error(`WordPress categories error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async getWordPressTags(): Promise<WordPressTaxonomyTerm[]> {
+    const response = await fetch(
+      `${this.wordPressBaseUrl}/tags?per_page=100&_fields=id,name,slug,count&orderby=count&order=desc`
+    );
+
+    if (!response.ok) {
+      throw new Error(`WordPress tags error! status: ${response.status}`);
+    }
+
+    return response.json();
+  }
+
+  async getWordPressCategorySections(
+    limitPerCategory: number = 4,
+    concurrency: number = 3
+  ): Promise<CategorySectionData[]> {
+    const categories = (await this.getWordPressCategories()).filter(
+      (category) => !["featured", "trending"].includes(category.slug)
+    );
+    const categoryMap = createTaxonomyMap(categories);
+    const sections: CategorySectionData[] = [];
+
+    for (let index = 0; index < categories.length; index += concurrency) {
+      const batch = categories.slice(index, index + concurrency);
+      const batchSections = await Promise.all(
+        batch.map(async (category) => {
+          const page = await this.getWordPressPostsPage({
+            page: 1,
+            perPage: limitPerCategory,
+            categoryId: category.id,
+          });
+
+          return {
+            category,
+            articles: hydrateArticles(page.articles, categoryMap),
+          };
+        })
+      );
+
+      sections.push(...batchSections.filter((section) => section.articles.length > 0));
+    }
+
+    return sections;
+  }
+
+  async getWordPressPost<T = any[]>(): Promise<T> {
+    const firstPage = await this.getWordPressPostsPage({
+      page: 1,
+      perPage: 100,
+    });
+
+    return firstPage.articles as T;
+  }
+
+  private stripHtml(html: string = ""): string {
+    return decodeHtmlEntities(html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
+  }
+
+  private transformWordPressSummary(post: WordPressListPostResponse): Article {
+    const excerpt = this.stripHtml(post.excerpt?.rendered || "");
+
+    return {
+      id: post.id,
+      title: decodeHtmlEntities(post.title?.rendered || "No Title"),
+      excerpt,
+      author: "Pump Parade Team",
+      date: post.date,
+      category: "Blog",
+      readTime: "4 min read",
+      image: post.jetpack_featured_media_url || "/placeholder.svg",
+      url: post.link,
+      content: "",
+      tags: [],
+      tagNames: [],
+      allCategories: [],
+      categoryIds: post.categories || [],
+      tagIds: post.tags || [],
+    };
+  }
+
+  private transformWordPressDetail(post: WordPressDetailPostResponse): Article {
+    const content = decodeHtmlEntities(post.content?.rendered || "");
+
+    return {
+      ...this.transformWordPressSummary(post),
+      author: post._embedded?.author?.[0]?.name || "Pump Parade Team",
+      excerpt: this.stripHtml(post.excerpt?.rendered || ""),
+      image:
+        post.jetpack_featured_media_url ||
+        post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
+        "/placeholder.svg",
+      content,
+      readTime: calculateReadingTime(content),
+    };
+  }
 
 
   async getFearGreedIndex(): Promise<{

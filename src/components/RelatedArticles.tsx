@@ -58,7 +58,7 @@ export const RelatedArticles: React.FC<RelatedArticlesProps> = ({
                     {relatedArticle.title}
                   </h3>
                   <div className="flex items-center justify-between text-xs text-gray-400 mb-2">
-                    <span>unknown</span>
+                    <span>{relatedArticle.author}</span>
                     <span>{relatedArticle.readTime}</span>
                   </div>
                   <div className="flex flex-wrap gap-1">

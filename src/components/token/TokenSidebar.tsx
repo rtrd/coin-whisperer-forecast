@@ -1,23 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 // import { AdBanner } from "@/components/AdBanner";
-import { ArticleCard } from "@/components/ArticleCard";
 import { DynamicTokenAnalysis } from "@/components/DynamicTokenAnalysis";
-import { TokenDataService } from "@/services/tokenDataService";
 import {
-  ExternalLink,
-  ArrowRight,
   FileText,
   BarChart3,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { getWordPressPost } from "../../../utils/api";
 import { trackArticleClick } from "@/utils/analytics";
-import { decodeHtmlEntities } from "@/utils/htmlUtils";
+import { useWordPressPostsPage } from "@/hooks/useWordPressArticles";
 
 interface TokenSidebarProps {
   currentTokenId: string;
@@ -30,7 +24,6 @@ interface TokenSidebarProps {
 }
 
 export function TokenSidebar({
-  currentTokenId,
   selectedCrypto,
   currentPrice,
   priceChange,
@@ -38,13 +31,13 @@ export function TokenSidebar({
   cryptoData,
   technicalIndicator,
 }: TokenSidebarProps) {
-  const [articles, setArticles] = useState<any[]>([]);
   const [currentArticleIndex, setCurrentArticleIndex] = useState(0);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchArticles();
-  }, []);
+  const articlesQuery = useWordPressPostsPage({
+    page: 1,
+    perPage: 6,
+  });
+  const articles = articlesQuery.data?.articles || [];
 
   // Auto-rotate articles every 5 seconds
   useEffect(() => {
@@ -56,35 +49,11 @@ export function TokenSidebar({
     }
   }, [articles.length]);
 
-  const fetchArticles = async () => {
-    try {
-      const articleData = await getWordPressPost();
-      if (Array.isArray(articleData)) {
-        const formattedArticles = articleData.slice(0, 6).map((post: any) => ({
-          id: post.id,
-          title: decodeHtmlEntities(post.title?.rendered || "No Title"),
-          excerpt:
-            decodeHtmlEntities(post.excerpt?.rendered?.replace(/<[^>]+>/g, "").slice(0, 120)) +
-              "..." || "",
-          author: post._embedded?.author?.[0]?.name || "Unknown",
-          date: new Date(post.date).toISOString().split("T")[0],
-          category: "Blog",
-          readTime: "4 min read",
-          image:
-            post.jetpack_featured_media_url ||
-            post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ||
-            "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
-          url: post.link,
-          content: post.content?.rendered || "",
-          tags: post.tagNames?.filter((t: string) => t && t.trim()) || [],
-          tagname: post.tagNames?.filter((t: string) => t)?.join(", ") || "",
-        }));
-        setArticles(formattedArticles);
-      }
-    } catch (error) {
-      console.error("Error fetching articles:", error);
+  useEffect(() => {
+    if (currentArticleIndex >= articles.length) {
+      setCurrentArticleIndex(0);
     }
-  };
+  }, [articles.length, currentArticleIndex]);
 
   const nextArticle = () => {
     setCurrentArticleIndex((prev) => (prev + 1) % articles.length);

@@ -1,7 +1,7 @@
 import React from "react";
 import { IndexHeader } from "@/components/IndexHeader";
 import { IndexNavigationCards } from "@/components/IndexNavigationCards";
-import { LazyWordPressIntegration } from "@/components/lazy/LazyWordPressIntegration";
+import WordPressIntegrationOptimized from "@/components/WordPressIntegrationOptimized";
 import { CryptoFilters } from "@/components/CryptoFilters";
 import { LazyMarketDataWidget } from "@/components/lazy/LazyMarketDataWidget";
 import Footer from "@/components/Footer";
@@ -42,7 +42,7 @@ export const IndexContent: React.FC<IndexContentProps> = ({
       </div>
 
       {/* WordPress Integration - Latest Crypto News & Analysis */}
-      <LazyWordPressIntegration />
+      <WordPressIntegrationOptimized />
       <div className="mb-8">
         <LockedAITradingSignals />
       </div>
